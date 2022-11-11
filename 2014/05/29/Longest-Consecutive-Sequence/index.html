@@ -185,6 +185,37 @@ Your algorithm should run in O(<i>n</i>) complexity.
     return len;
 &#125;</code></pre>
 
+<p>有一种不会超时，也不用 hashset.remove（）的代码。</p>
+<p>如下：</p>
+<pre><code class="hljs plaintext">class Solution &#123;
+    public int longestConsecutive(int[] nums) &#123;
+        Set&lt;Integer&gt; num_set = new HashSet&lt;Integer&gt;();
+        for (int num : nums) &#123;
+            num_set.add(num);
+        &#125;
+
+        int longestStreak = 0;
+
+        for (int num : num_set) &#123;
+            // 注意看：这是 left boundary，所以只需要 right direction check
+            // 这样就不会超时了。
+            if (!num_set.contains(num - 1)) &#123;
+                int currentNum = num;
+                int currentStreak = 1;
+
+                while (num_set.contains(currentNum + 1)) &#123;
+                    currentNum += 1;
+                    currentStreak += 1;
+                &#125;
+
+                longestStreak = Math.max(longestStreak, currentStreak);
+            &#125;
+        &#125;
+
+        return longestStreak;
+    &#125;
+&#125;</code></pre>
+
             </div>
         </div>
     </div>
