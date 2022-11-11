@@ -128,32 +128,37 @@ Merging the serialization of each level and removing trailing nulls we obtain:
 
 [1,2,3,4,5,6,null,null,null,7,8,9,10,null,null,11,12]
 </code></pre>
-<h1 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h1><pre><code class="hljs plaintext">Node head;
-Node tail;
-
-public Node treeToDoublyList(Node root) &#123;
-    if (root == null) &#123;
-        return root;
+<p>对于每一个 node，和 node.next，做深度优先搜索。</p>
+<p>dfs 一定需要记录的是尾巴节点 tail node。代码有一点点难写。</p>
+<h1 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h1><p>千万别忘了 someNode.next = xxx 之后，紧接着 someNode.prev = xxx</p>
+<pre><code class="hljs plaintext">class Solution &#123;
+    public Node flatten(Node head) &#123;
+        if (head != null) &#123;
+            flattenAndReturnTail(head);
+        &#125;
+        return head;
     &#125;
 
-    dfs(root);
-    head.left = tail;
-    tail.right = head;
-    return head;
-&#125;
+    private Node flattenAndReturnTail(Node node) &#123;
+        if (node.child == null) &#123;
+            if (node.next == null) &#123;
+                return node;
+            &#125; else &#123;
+                return flattenAndReturnTail(node.next);
+            &#125;
+        &#125; else &#123;
+            Node childTail = flattenAndReturnTail(node.child);
+            childTail.next = node.next;
+            if (node.next != null)
+            node.next.prev = childTail;
 
-private void dfs(Node node) &#123;
-    if (node == null) return;
-    dfs(node.left);
-    if (tail == null) &#123;
-        head = node;
-        tail = node;
-    &#125; else &#123;
-        tail.right = node;
-        node.left = tail;
-        tail = node;
+            node.next = node.child;
+            node.child.prev = node;
+
+            node.child = null;
+            return flattenAndReturnTail(childTail);
+        &#125;
     &#125;
-    dfs(tail.right);
 &#125;</code></pre>
 
             </div>
