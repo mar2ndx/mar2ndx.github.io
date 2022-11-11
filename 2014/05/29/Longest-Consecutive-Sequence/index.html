@@ -142,7 +142,7 @@ Your algorithm should run in O(<i>n</i>) complexity.
 <p>Assuming lookup, insertion and deletion are O(1) time, this algorithm would be O(N) time.</p>
 </blockquote>
 <p><strong>Updated on July 4th, 2014</strong>: Look at the 2nd for-loop. Here if I do ‘for (Integer in: set)’ to iterate all numbers, I will get “java.util.ConcurrentModificationException “. This is because we are iterating while modifying. <strong>The most tricky part of this solution is iteration thru the array</strong>, instead of the set. Take note of that!</p>
-<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><pre><code>public int longestConsecutive(int[] num) &#123;
+<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><pre><code class="hljs plaintext">public int longestConsecutive(int[] num) &#123;
     int longest = 1;
     HashSet&lt;Integer&gt; set = new HashSet&lt;Integer&gt;();
     for (Integer in: num) set.add(in);
@@ -159,8 +159,8 @@ Your algorithm should run in O(<i>n</i>) complexity.
         longest = Math.max(longest, right - left - 1);
     &#125;
     return longest;
-&#125;
-</code></pre>
+&#125;</code></pre>
+
 <p><strong>Updated Oct 29, 2022</strong></p>
 <pre><code class="hljs plaintext">public int longestConsecutive(int[] nums) &#123;
     Set&lt;Integer&gt; set = new HashSet&lt;Integer&gt;();

@@ -173,6 +173,7 @@ private TreeNode helper(TreeNode pre, TreeNode node) &#123;
 &#125;</code></pre>
 
 <p><strong>Second, standard recursive solution</strong></p>
+<p>看这里：helper function 的 return value 是 tail node，不是 head node。</p>
 <pre><code class="hljs plaintext">public void flatten(TreeNode root) &#123;
     helper(root);
 &#125;
