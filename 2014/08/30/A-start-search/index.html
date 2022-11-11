@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <link rel="shortcut icon" href="/images/avatar.png" type="image/x-icon" />
+    <title>
+        
+            [Fundamental] A-Star Search  |
+         
+        Mar2ndx&#39;s Algorithmic and System Design Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/solid.min.css">
+
+     
+    
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXXXX"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-XXXXXXXXXXXX');
+        </script>
+    
+
+
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body>
+    <div class="body-container">
+        <div class="header-wrapper"><header>
+    <div class="header-container">
+        <div class="header-menu-list">
+            <ul>
+            
+                <li>
+                    <a href="/">主页</a>
+                </li>
+            
+            </ul>
+        </div>
+    </div>
+</header>
+</div>
+        <div class="main-wrapper"><main>
+    <div class="main-container">
+        <div class="post-details">
+            
+            <div class="post-title">
+                <h1>[Fundamental] A-Star Search </h1>
+            </div>
+            <div class="post-meta">
+                <i class="fa-solid fa-clock"></i>&nbsp;<span class="post-date">2014/08/30</span>
+            </div>
+            
+            <div class="post-content">
+                <h3 id="Definition"><a href="#Definition" class="headerlink" title="Definition"></a>Definition</h3><p>A* is a computer algorithm that is widely used in pathfinding and graph traversal.</p>
+<p>It uses a knowledge-plus-heuristic cost function like this:</p>
+<blockquote>
+<p>f (n) = g(n) + h(n)</p>
+<p>f (n): estimated total cost of path through n to goal</p>
+<p>g(x) = past path-cost function</p>
+<p>h(x) = future path-cost function, which is an admissible “heuristic estimate” of the distance from x to the goal</p>
+</blockquote>
+<p>What sets A* <strong>apart from a greedy best-first search</strong> is that it also takes the distance already traveled into account.</p>
+<h3 id="Implementation"><a href="#Implementation" class="headerlink" title="Implementation"></a>Implementation</h3><p><a target="_blank" rel="noopener" href="http://en.wikipedia.org/wiki/A*_search_algorithm#Process">Maintains a priority queue</a> (lower f(x) means higher priority). At each step, node with the lowest f(x) value is removed from the queue, and neighbors are added to the queue.</p>
+<p>This continues until a goal node has a lower f value than any node in the queue. Goal found!</p>
+<h3 id="Relationship-with-Dijkstra"><a href="#Relationship-with-Dijkstra" class="headerlink" title="Relationship with Dijkstra"></a>Relationship with Dijkstra</h3><p><strong><a target="_blank" rel="noopener" href="http://stackoverflow.com/a/1332478">Dijkstra is a special case</a> for A*</strong> (when the <a target="_blank" rel="noopener" href="http://en.wikipedia.org/wiki/Dijkstra%27s_algorithm#Algorithm">heuristics is 0</a>).</p>
+<p>Illustration (A-star):</p>
+<p><img src="/images/path-find-Astar.gif"></p>
+<p>Illustration (Dijkstra’s algorithm):</p>
+<p><img src="/images/path-find-Dijkstras.gif"></p>
+
+            </div>
+        </div>
+    </div>
+</main>
+
+<script src="https://utteranc.es/client.js"
+    repo="owner/repo"
+    issue-term="pathname"
+    theme="github-light"
+    crossorigin="anonymous"
+    async>
+</script>
+
+  
+
+</div>
+        <div class="footer-wrapper"><footer>
+    <div class="footer-container">
+        <div class="footer-meta">
+            
+                <div class="footer-meta-copyright">
+                    &copy; 2022 mar2ndx.
+                </div>
+            
+            
+                <div class="footer-meta-licenese">
+                    Licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC-BY-NC-SA 4.0</a>
+                </div>
+            
+            
+        </div>
+    </div>
+</footer>
+</div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <link rel="shortcut icon" href="/images/avatar.png" type="image/x-icon" />
+    <title>
+        
+            [ItInt5] 跳马问题加强版 |
+         
+        Mar2ndx&#39;s Algorithmic and System Design Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/solid.min.css">
+
+     
+    
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXXXX"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-XXXXXXXXXXXX');
+        </script>
+    
+
+
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body>
+    <div class="body-container">
+        <div class="header-wrapper"><header>
+    <div class="header-container">
+        <div class="header-menu-list">
+            <ul>
+            
+                <li>
+                    <a href="/">主页</a>
+                </li>
+            
+            </ul>
+        </div>
+    </div>
+</header>
+</div>
+        <div class="main-wrapper"><main>
+    <div class="main-container">
+        <div class="post-details">
+            
+            <div class="post-title">
+                <h1>[ItInt5] 跳马问题加强版</h1>
+            </div>
+            <div class="post-meta">
+                <i class="fa-solid fa-clock"></i>&nbsp;<span class="post-date">2014/08/15</span>
+            </div>
+            
+            <div class="post-content">
+                <h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><p><a target="_blank" rel="noopener" href="http://www.itint5.com/oj/#12">link</a></p>
+<blockquote>
+<p>有一个无限大的棋盘，棋盘上有一匹马，马可以从长宽分别为p和q的矩形一个角移动到对角。即假设马当前的位置为(x,y)，那么下一步可以移动到(x+p,y+q)，(x+p,y-q)，(x-p,y+q)，(x-p,y-q)，(x+q,y+p)，(x+q,y-p)，(x-q,y+p)或者(x-q,y-p)这8个位置。</p>
+</blockquote>
+<blockquote>
+<p>问马是否能从坐标(x,y)按照上述移动规则移动到坐标(x2,y2)。</p>
+</blockquote>
+<h3 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h3><p><a target="_blank" rel="noopener" href="http://www.itint5.com/discuss/16/%E8%B7%B3%E9%A9%AC%E9%97%AE%E9%A2%98%E5%8A%A0%E5%BC%BA%E7%89%88">ref</a></p>
+<ol>
+<li>计算dx=x-x2,dy=y-y2。</li>
+<li>求出p,q的最大公约数g，如果dx或者dy不能被g整除，那么很显然无解。</li>
+<li>将p,q,dx,dy都除以g，现在p和q互质了。</li>
+<li>注意到马可以跳到点(0,2p)（先(p,q)跳一下，然后(p,-q)跳一下），重复这个过程，马可以跳到任意(0,2kp)的点，由于对称性，也可以跳到任意(2kp,0)的点。 </li>
+<li>下面这一步很关键，由于p,q互质，那么存在x,y满足px+qy=1（扩展欧几里德定理）。这样，马可以跳到(0,2)和和(2,0)，由于对称性，马可以跳到任意坐标都为偶数点。</li>
+<li>有了上面的结论，其实只用考虑(0,0),(0,1),(1,0),(1,1)这4个点是否可达。(0,0)是可达的，(0,1)和(1,0)由于对称性只用考虑(0,1)。</li>
+<li>对于(1,1)，其实是永远可达的。如果q,p都为奇数，可以先跳到(1+p,1+q)的点（利用5中的结论，可以跳到都是偶数的点），然后(-p,-q)跳到(1,1)。如果p,q一奇一偶，可以先跳到(1+p+q,1+q+p)的点（利用5中的结论），然后(-p,-q),(-q,-p)两步跳到(1,1)。</li>
+<li>对于(0,1)，如果p,q一奇一偶，那么也是永远可达的（同7可证）。如果p,q都是奇数，那么是不可能跳到(0,1)的，因为两个奇数不管怎么加减交替运算都不可能变成一奇一偶。</li>
+</ol>
+<p>所以最后的结论就是：__第3步之后，如果p,q一奇一偶，那么可达。否则dx,dy同奇或同偶才可达__。</p>
+<p>gcd的代码 (concise version):</p>
+<pre><code>int gcd(int a, int b) &#123;
+    return b ? gcd(b, a % b) : a;
+&#125;
+</code></pre>
+<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><p><strong>not written by me</strong></p>
+<pre><code>int gcd(int a, int b)&#123;
+    return b? gcd(b, a%b) : a;
+&#125;
+
+bool canJump(int p, int q, int x, int y, int x2, int y2) &#123;
+    if(p==0 &amp;&amp; q==0) return (x==x2)&amp;&amp;(y==y2);
+    int xDist = x2 - x, yDist = y2 - y;
+    int g1 = gcd(p, q);
+    if( xDist % g1 || yDist % g1) 
+        return false;
+    p = p/g1;
+    q = q/g1;
+    xDist = xDist/g1;
+    yDist = yDist/g1;
+    if((p-q)%2 ) 
+        return true;
+    else 
+        return (xDist-yDist)%2 == 0;
+&#125;
+</code></pre>
+
+            </div>
+        </div>
+    </div>
+</main>
+
+<script src="https://utteranc.es/client.js"
+    repo="owner/repo"
+    issue-term="pathname"
+    theme="github-light"
+    crossorigin="anonymous"
+    async>
+</script>
+
+  
+
+</div>
+        <div class="footer-wrapper"><footer>
+    <div class="footer-container">
+        <div class="footer-meta">
+            
+                <div class="footer-meta-copyright">
+                    &copy; 2022 mar2ndx.
+                </div>
+            
+            
+                <div class="footer-meta-licenese">
+                    Licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC-BY-NC-SA 4.0</a>
+                </div>
+            
+            
+        </div>
+    </div>
+</footer>
+</div>
+    </div>
+</body>
+</html>

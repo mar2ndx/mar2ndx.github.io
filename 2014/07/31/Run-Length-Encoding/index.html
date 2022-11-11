@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <link rel="shortcut icon" href="/images/avatar.png" type="image/x-icon" />
+    <title>
+        
+            [Question] Run-Length Encoding |
+         
+        Mar2ndx&#39;s Algorithmic and System Design Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/solid.min.css">
+
+     
+    
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXXXX"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-XXXXXXXXXXXX');
+        </script>
+    
+
+
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body>
+    <div class="body-container">
+        <div class="header-wrapper"><header>
+    <div class="header-container">
+        <div class="header-menu-list">
+            <ul>
+            
+                <li>
+                    <a href="/">主页</a>
+                </li>
+            
+            </ul>
+        </div>
+    </div>
+</header>
+</div>
+        <div class="main-wrapper"><main>
+    <div class="main-container">
+        <div class="post-details">
+            
+            <div class="post-title">
+                <h1>[Question] Run-Length Encoding</h1>
+            </div>
+            <div class="post-meta">
+                <i class="fa-solid fa-clock"></i>&nbsp;<span class="post-date">2014/07/31</span>
+            </div>
+            
+            <div class="post-content">
+                <h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><p><a target="_blank" rel="noopener" href="http://tech-queries.blogspot.sg/2008/11/run-length-encoding.html">link</a></p>
+<blockquote>
+<p>You are given a string like “aaaabbbcc”, do an in place conversion which write frequency of each charater(which come continuosly) with that character.</p>
+</blockquote>
+<blockquote>
+<p>Example:</p>
+<p>input: aaabbbcc</p>
+<p>output: a3b2c2</p>
+</blockquote>
+<h3 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h3><p>The most important point is <strong>whether or not you find the special cases</strong>, and did you clarify how to handle them.</p>
+<p><strong>First special case is only 1 character</strong>, should you append a ‘1’ or not. Note that this question requires ‘in place’ conversion. So ‘1’ is not supposed to be appended after single-occurance character. This is really important to know, if the question does not specify. (though sometimes, the question asks you to apppend a ‘1’, eg. <a target="_blank" rel="noopener" href="http://www.geeksforgeeks.org/run-length-encoding/">here</a>).</p>
+<p><strong>Second case is when occurance &gt;= 10</strong>. We could not simply append (‘0’ + numberOfOccurance), because the number could be 12. This is another very important case to take note.</p>
+<p>The code can be seen anywhere.</p>
+
+            </div>
+        </div>
+    </div>
+</main>
+
+<script src="https://utteranc.es/client.js"
+    repo="owner/repo"
+    issue-term="pathname"
+    theme="github-light"
+    crossorigin="anonymous"
+    async>
+</script>
+
+  
+
+</div>
+        <div class="footer-wrapper"><footer>
+    <div class="footer-container">
+        <div class="footer-meta">
+            
+                <div class="footer-meta-copyright">
+                    &copy; 2022 mar2ndx.
+                </div>
+            
+            
+                <div class="footer-meta-licenese">
+                    Licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC-BY-NC-SA 4.0</a>
+                </div>
+            
+            
+        </div>
+    </div>
+</footer>
+</div>
+    </div>
+</body>
+</html>

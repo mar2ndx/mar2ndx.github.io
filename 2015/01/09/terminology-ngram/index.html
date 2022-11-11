@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <link rel="shortcut icon" href="/images/avatar.png" type="image/x-icon" />
+    <title>
+        
+            [Design] Terminology: n-gram  |
+         
+        Mar2ndx&#39;s Algorithmic and System Design Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/solid.min.css">
+
+     
+    
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXXXX"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-XXXXXXXXXXXX');
+        </script>
+    
+
+
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body>
+    <div class="body-container">
+        <div class="header-wrapper"><header>
+    <div class="header-container">
+        <div class="header-menu-list">
+            <ul>
+            
+                <li>
+                    <a href="/">主页</a>
+                </li>
+            
+            </ul>
+        </div>
+    </div>
+</header>
+</div>
+        <div class="main-wrapper"><main>
+    <div class="main-container">
+        <div class="post-details">
+            
+            <div class="post-title">
+                <h1>[Design] Terminology: n-gram </h1>
+            </div>
+            <div class="post-meta">
+                <i class="fa-solid fa-clock"></i>&nbsp;<span class="post-date">2015/01/09</span>
+            </div>
+            
+            <div class="post-content">
+                <h3 id="n-gram"><a href="#n-gram" class="headerlink" title="n-gram"></a>n-gram</h3><p>In the fields of computational linguistics and probability, an <strong><a target="_blank" rel="noopener" href="http://en.wikipedia.org/wiki/N-gram">n-gram</a></strong> is a contiguous sequence of n items from a given sequence of text or speech.</p>
+<p>The items can be phonemes, syllables, letters, words or base pairs according to the application. The n-grams typically are collected from a text or speech corpus.</p>
+<h4 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h4><table border="1" width="100%" id="table5" cellpadding="3" style="border-collapse: collapse" bordercolor="#89B0D8" cellspacing="0">
+                <tbody><tr>
+                    <td bgcolor="#D9ECFF">
+                    <p align="center">frequency</p></td>
+                    <td bgcolor="#D9ECFF">
+                    <p align="center">word1</p></td>
+                    <td bgcolor="#D9ECFF">
+                    <p align="center">word2</p></td>
+                    <td bgcolor="#D9ECFF">
+                    <p align="center">word3</p></td>
+                </tr>
+                <tr>
+                    <td bgcolor="#F5F9FC">
+                    <p style="line-height: 150%; margin-top:0; margin-bottom:0" align="center">1419</p>
+                    </td>
+                    <td bgcolor="#F5F9FC">
+                    <p style="line-height: 150%; margin-top:0; margin-bottom:0" align="center">much</p>
+                    </td>
+                    <td bgcolor="#F5F9FC">
+                    <p style="line-height: 150%; margin-top:0; margin-bottom:0" align="center">the</p>
+                    </td>
+                    <td bgcolor="#F5F9FC">
+                    <p style="line-height: 150%; margin-top:0; margin-bottom:0" align="center">same</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td bgcolor="#F5F9FC">
+                    <p style="line-height: 150%; margin-top:0; margin-bottom:0" align="center">461</p>
+                    </td>
+                    <td bgcolor="#F5F9FC">
+                    <p style="line-height: 150%; margin-top:0; margin-bottom:0" align="center">much</p>
+                    </td>
+                    <td bgcolor="#F5F9FC">
+                    <p style="line-height: 150%; margin-top:0; margin-bottom:0" align="center">more</p>
+                    </td>
+                    <td bgcolor="#F5F9FC">
+                    <p style="line-height: 150%; margin-top:0; margin-bottom:0" align="center">likely</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td bgcolor="#F5F9FC">
+                    <p style="line-height: 150%; margin-top:0; margin-bottom:0" align="center">432</p>
+                    </td>
+                    <td bgcolor="#F5F9FC">
+                    <p style="line-height: 150%; margin-top:0; margin-bottom:0" align="center">much</p>
+                    </td>
+                    <td bgcolor="#F5F9FC">
+                    <p style="line-height: 150%; margin-top:0; margin-bottom:0" align="center">better</p>
+                    </td>
+                    <td bgcolor="#F5F9FC">
+                    <p style="line-height: 150%; margin-top:0; margin-bottom:0" align="center">than</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td bgcolor="#F5F9FC">
+                    <p style="line-height: 150%; margin-top:0; margin-bottom:0" align="center">266</p>
+                    </td>
+                    <td bgcolor="#F5F9FC">
+                    <p style="line-height: 150%; margin-top:0; margin-bottom:0" align="center">much</p>
+                    </td>
+                    <td bgcolor="#F5F9FC">
+                    <p style="line-height: 150%; margin-top:0; margin-bottom:0" align="center">more</p>
+                    </td>
+                    <td bgcolor="#F5F9FC">
+                    <p style="line-height: 150%; margin-top:0; margin-bottom:0" align="center">difficult</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td bgcolor="#F5F9FC">
+                    <p style="line-height: 150%; margin-top:0; margin-bottom:0" align="center">235</p>
+                    </td>
+                    <td bgcolor="#F5F9FC">
+                    <p style="line-height: 150%; margin-top:0; margin-bottom:0" align="center">much</p>
+                    </td>
+                    <td bgcolor="#F5F9FC">
+                    <p style="line-height: 150%; margin-top:0; margin-bottom:0" align="center">of</p>
+                    </td>
+                    <td bgcolor="#F5F9FC">
+                    <p style="line-height: 150%; margin-top:0; margin-bottom:0" align="center">the</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td bgcolor="#F5F9FC">
+                    <p style="line-height: 150%; margin-top:0; margin-bottom:0" align="center">226</p>
+                    </td>
+                    <td bgcolor="#F5F9FC">
+                    <p style="line-height: 150%; margin-top:0; margin-bottom:0" align="center">much</p>
+                    </td>
+                    <td bgcolor="#F5F9FC">
+                    <p style="line-height: 150%; margin-top:0; margin-bottom:0" align="center">more</p>
+                    </td>
+                    <td bgcolor="#F5F9FC">
+                    <p style="line-height: 150%; margin-top:0; margin-bottom:0" align="center">than</p>
+                    </td>
+                </tr>
+</tbody></table>
+
+<h4 id="Downloadable-n-grams-sets-for-English"><a href="#Downloadable-n-grams-sets-for-English" class="headerlink" title="Downloadable n-grams sets for English"></a>Downloadable n-grams sets for English</h4><ol>
+<li><strong><a target="_blank" rel="noopener" href="https://catalog.ldc.upenn.edu/LDC2006T13">Google n-grams</a></strong>, based on the web as of 2006.</li>
+<li><strong><a target="_blank" rel="noopener" href="http://www.ngrams.info/intro.asp">COCA n-grams</a></strong>, based on Corpus of Contemporary American English [COCA]. 450 million words from 1990 to 2012.</li>
+</ol>
+<p>With n-grams data (2, 3, 4, 5-word sequences, with their frequency), we can carry out powerful queries offline.</p>
+
+            </div>
+        </div>
+    </div>
+</main>
+
+<script src="https://utteranc.es/client.js"
+    repo="owner/repo"
+    issue-term="pathname"
+    theme="github-light"
+    crossorigin="anonymous"
+    async>
+</script>
+
+  
+
+</div>
+        <div class="footer-wrapper"><footer>
+    <div class="footer-container">
+        <div class="footer-meta">
+            
+                <div class="footer-meta-copyright">
+                    &copy; 2022 mar2ndx.
+                </div>
+            
+            
+                <div class="footer-meta-licenese">
+                    Licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC-BY-NC-SA 4.0</a>
+                </div>
+            
+            
+        </div>
+    </div>
+</footer>
+</div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <link rel="shortcut icon" href="/images/avatar.png" type="image/x-icon" />
+    <title>
+        
+            [Question] Insert Plus and Minus to Complete Expression  |
+         
+        Mar2ndx&#39;s Algorithmic and System Design Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/solid.min.css">
+
+     
+    
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXXXX"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-XXXXXXXXXXXX');
+        </script>
+    
+
+
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body>
+    <div class="body-container">
+        <div class="header-wrapper"><header>
+    <div class="header-container">
+        <div class="header-menu-list">
+            <ul>
+            
+                <li>
+                    <a href="/">主页</a>
+                </li>
+            
+            </ul>
+        </div>
+    </div>
+</header>
+</div>
+        <div class="main-wrapper"><main>
+    <div class="main-container">
+        <div class="post-details">
+            
+            <div class="post-title">
+                <h1>[Question] Insert Plus and Minus to Complete Expression </h1>
+            </div>
+            <div class="post-meta">
+                <i class="fa-solid fa-clock"></i>&nbsp;<span class="post-date">2013/11/21</span>
+            </div>
+            
+            <div class="post-content">
+                <h1 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h1><p><a target="_blank" rel="noopener" href="http://www.1point3acres.com/bbs/thread-148692-1-1.html">link</a></p>
+<blockquote>
+<p>Given a string of numbers, eg. “43868643”. Put ‘+’ and ‘-‘ in between, and build an expression.</p>
+</blockquote>
+<h1 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h1><p>Iterate thru the input string and do DFS recrusively.</p>
+<p>At each position, there’s 3 possibilities: plus, minus or do not skip.</p>
+<h1 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h1><pre><code>public List&lt;String&gt; solve(String str) &#123;
+    if (str == null || str.length() == 0) &#123;
+        return null;
+    &#125;
+    List&lt;String&gt; result = new ArrayList&lt;String&gt;();
+    helper(result, &quot;&quot;, 0, str);
+    Collections.sort(result);
+    return result;
+&#125;
+
+private void helper(List&lt;String&gt; result, String curExp, int curVal, String remain) &#123;
+    if (curVal == Integer.parseInt(remain)) &#123;
+        result.add(curExp + &quot;=&quot; + remain);
+    &#125; else if (curVal + Integer.parseInt(remain) == 0) &#123;
+        result.add(curExp + &quot;=-&quot; + remain);
+    &#125;
+    for (int i = 1; i &lt; remain.length(); i++) &#123;
+        String nextStr = remain.substring(0, i);
+        int nextNum = Integer.parseInt(nextStr);
+
+        // case 1: add a + between curExp and nextStr
+        String newExp = curExp + &quot;+&quot; + nextStr;
+        int newVal = curVal + nextNum;
+        helper(result, newExp, newVal, remain.substring(i));
+
+        // case 2: &#39;-&#39; sign
+        newExp = curExp + &quot;-&quot; + nextStr;
+        newVal = curVal - nextNum;
+        helper(result, newExp, newVal, remain.substring(i));
+    &#125;
+&#125;
+</code></pre>
+<h1 id="Testing"><a href="#Testing" class="headerlink" title="Testing"></a>Testing</h1><pre><code>Input is 4312
+Print the list:
++4-3+1=2
+-4+3-1=-2
+
+Input is 43868643
+Print the list:
++4+3+8+6-8-6-4=3
++4+3+8-6-8+6-4=3
++4+3+86-86-4=3
++4+3-8+6+8-6-4=3
++4+3-8+68-64=3
++4+3-8-6+8+6-4=3
++4+3-86+86-4=3
++4-3+8+6-8-6-4=-3
++4-3+8-6-8+6-4=-3
++4-3+86-86-4=-3
++4-3-8+6+8-6-4=-3
++4-3-8+68-64=-3
++4-3-8-6+8+6-4=-3
++4-3-86+86-4=-3
++43+8+6-8-6=43
++43+8-6-8+6=43
++43+86-86=43
++43-8+6+8-6=43
++43-8-6+8+6=43
++43-86+86=43
+-4+3+8+6-8-6+4=3
+-4+3+8-6-8+6+4=3
+-4+3+8-68+64=3
+-4+3+86-86+4=3
+-4+3-8+6+8-6+4=3
+-4+3-8-6+8+6+4=3
+-4+3-86+86+4=3
+-4-3+8+6-8-6+4=-3
+-4-3+8-6-8+6+4=-3
+-4-3+8-68+64=-3
+-4-3+86-86+4=-3
+-4-3-8+6+8-6+4=-3
+-4-3-8-6+8+6+4=-3
+-4-3-86+86+4=-3
+-43+8+6-8-6=-43
+-43+8-6-8+6=-43
+-43+86-86=-43
+-43-8+6+8-6=-43
+-43-8-6+8+6=-43
+-43-86+86=-43
+</code></pre>
+
+            </div>
+        </div>
+    </div>
+</main>
+
+<script src="https://utteranc.es/client.js"
+    repo="owner/repo"
+    issue-term="pathname"
+    theme="github-light"
+    crossorigin="anonymous"
+    async>
+</script>
+
+  
+
+</div>
+        <div class="footer-wrapper"><footer>
+    <div class="footer-container">
+        <div class="footer-meta">
+            
+                <div class="footer-meta-copyright">
+                    &copy; 2022 mar2ndx.
+                </div>
+            
+            
+                <div class="footer-meta-licenese">
+                    Licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC-BY-NC-SA 4.0</a>
+                </div>
+            
+            
+        </div>
+    </div>
+</footer>
+</div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <link rel="shortcut icon" href="/images/avatar.png" type="image/x-icon" />
+    <title>
+        
+            [Design] Composition Over Inheritance |
+         
+        Mar2ndx&#39;s Algorithmic and System Design Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/solid.min.css">
+
+     
+    
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXXXX"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-XXXXXXXXXXXX');
+        </script>
+    
+
+
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body>
+    <div class="body-container">
+        <div class="header-wrapper"><header>
+    <div class="header-container">
+        <div class="header-menu-list">
+            <ul>
+            
+                <li>
+                    <a href="/">主页</a>
+                </li>
+            
+            </ul>
+        </div>
+    </div>
+</header>
+</div>
+        <div class="main-wrapper"><main>
+    <div class="main-container">
+        <div class="post-details">
+            
+            <div class="post-title">
+                <h1>[Design] Composition Over Inheritance</h1>
+            </div>
+            <div class="post-meta">
+                <i class="fa-solid fa-clock"></i>&nbsp;<span class="post-date">2014/08/08</span>
+            </div>
+            
+            <div class="post-content">
+                <h3 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h3><p><a target="_blank" rel="noopener" href="http://en.wikipedia.org/wiki/Composition_over_inheritance">Composition over inheritance</a> in OOP is a technique by which classes achieve <strong>polymorphic behavior and code reuse</strong> by containing other classes <strong>instead of</strong> through inheritance. </p>
+<h3 id="Benefits"><a href="#Benefits" class="headerlink" title="Benefits"></a>Benefits</h3><p><a target="_blank" rel="noopener" href="http://en.wikipedia.org/wiki/Composition_over_inheritance#Benefits">It gives</a> the design <strong>higher flexibility</strong>, giving business-domain classes and more stable business domain in the long term. In other words, HAS-A can be better than an IS-A relationship.</p>
+<p><strong>And inheritance <a target="_blank" rel="noopener" href="http://stackoverflow.com/a/891908">breaks encapsulation</a></strong>! This post also points out these (which is hard to understand): </p>
+<blockquote>
+<ol>
+<li>You can’t change the implementation inherited from super classes at runtime (obviously because inheritance is defined at compile time).</li>
+</ol>
+</blockquote>
+<blockquote>
+<ol>
+<li>Inheritance exposes a subclass to details of its parent’s class implementation, that’s why it’s often said that inheritance breaks encapsulation (in a sense that you really need to focus on interfaces only not implementation, so reusing by sub classing is not always preferred).</li>
+</ol>
+</blockquote>
+<blockquote>
+<ol>
+<li>The tight coupling provided by inheritance makes the implementation of a subclass very bound up with the implementation of a super class that any change in the parent implementation will force the sub class to change.</li>
+</ol>
+</blockquote>
+<blockquote>
+<ol>
+<li>Excessive reusing by sub-classing can make the inheritance stack very deep and very confusing too.</li>
+</ol>
+</blockquote>
+
+            </div>
+        </div>
+    </div>
+</main>
+
+<script src="https://utteranc.es/client.js"
+    repo="owner/repo"
+    issue-term="pathname"
+    theme="github-light"
+    crossorigin="anonymous"
+    async>
+</script>
+
+  
+
+</div>
+        <div class="footer-wrapper"><footer>
+    <div class="footer-container">
+        <div class="footer-meta">
+            
+                <div class="footer-meta-copyright">
+                    &copy; 2022 mar2ndx.
+                </div>
+            
+            
+                <div class="footer-meta-licenese">
+                    Licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC-BY-NC-SA 4.0</a>
+                </div>
+            
+            
+        </div>
+    </div>
+</footer>
+</div>
+    </div>
+</body>
+</html>

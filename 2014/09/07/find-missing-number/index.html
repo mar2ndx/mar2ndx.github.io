@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <link rel="shortcut icon" href="/images/avatar.png" type="image/x-icon" />
+    <title>
+        
+            [CC150v4] 5.7 Find Missing Number  |
+         
+        Mar2ndx&#39;s Algorithmic and System Design Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/solid.min.css">
+
+     
+    
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXXXX"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-XXXXXXXXXXXX');
+        </script>
+    
+
+
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body>
+    <div class="body-container">
+        <div class="header-wrapper"><header>
+    <div class="header-container">
+        <div class="header-menu-list">
+            <ul>
+            
+                <li>
+                    <a href="/">主页</a>
+                </li>
+            
+            </ul>
+        </div>
+    </div>
+</header>
+</div>
+        <div class="main-wrapper"><main>
+    <div class="main-container">
+        <div class="post-details">
+            
+            <div class="post-title">
+                <h1>[CC150v4] 5.7 Find Missing Number </h1>
+            </div>
+            <div class="post-meta">
+                <i class="fa-solid fa-clock"></i>&nbsp;<span class="post-date">2014/09/07</span>
+            </div>
+            
+            <div class="post-content">
+                <h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><blockquote>
+<p>An array A[1…n] contains all the integers from 0 to n except for one number which is missing. In this problem, we cannot access an entire integer in A with a single operation.</p>
+</blockquote>
+<blockquote>
+<p>The elements of A are represented in binary, and the only operation we can use to access them is “fetch the jth bit of A[i]”, which takes constant time. Write code to find the missing integer. Can you do it in O(n) time?</p>
+</blockquote>
+<h3 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h3><p><strong>This is a difficult bit operation question</strong>.</p>
+<p>The main thing to understand is, for a particular bit:</p>
+<blockquote>
+<p>if the bit value of the removed number is 0, then count(0) &lt;= count(1)</p>
+</blockquote>
+<blockquote>
+<p>if the bit value of the removed number is 1, then count(0) &gt; count(1)</p>
+</blockquote>
+<p>By using this principle, we can easily find the missing value for each bit.</p>
+<p><strong>However, we must know when to stop checking</strong>. For example:</p>
+<blockquote>
+<p>input: 000, 001, 011</p>
+</blockquote>
+<p>We know that the last bit is 0, second last is 1. We shall stop here and return the result “010”. If we did not stop, the result value would be “110”, which is wrong. How this is handled is by <strong>passing only half of the input list each time</strong>, and we also add one condition at the beginning:</p>
+<pre><code>if (list.size() == 0)
+    return 0;
+</code></pre>
+<p>By doing this, we always limit the input list to a smaller range, until we finish finding all bits.</p>
+<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><p><strong>hard to write</strong></p>
+<pre><code>public static int findMissing(List&lt;BitInteger&gt; list) &#123;
+    return helper(list, BitInteger.INTEGER_SIZE - 1);
+&#125;
+
+private static int helper(List&lt;BitInteger&gt; list, int col) &#123;
+    if (list.size() == 0)
+        return 0;
+    List&lt;BitInteger&gt; zeroList = new ArrayList&lt;BitInteger&gt;();
+    List&lt;BitInteger&gt; oneList = new ArrayList&lt;BitInteger&gt;();
+    for (BitInteger bit : list) &#123;
+        if (bit.fetch(col) == 0) &#123;
+            zeroList.add(bit);
+        &#125; else &#123;
+            oneList.add(bit);
+        &#125;
+    &#125;
+    if (zeroList.size() &lt;= oneList.size()) &#123;
+        // this means the missing value contains a 0
+        return helper(zeroList, col - 1) &lt;&lt; 1;
+    &#125; else &#123;
+        // the missing value contains 1
+        return helper(oneList, col - 1) &lt;&lt; 1 | 1;
+    &#125;
+&#125;
+</code></pre>
+
+            </div>
+        </div>
+    </div>
+</main>
+
+<script src="https://utteranc.es/client.js"
+    repo="owner/repo"
+    issue-term="pathname"
+    theme="github-light"
+    crossorigin="anonymous"
+    async>
+</script>
+
+  
+
+</div>
+        <div class="footer-wrapper"><footer>
+    <div class="footer-container">
+        <div class="footer-meta">
+            
+                <div class="footer-meta-copyright">
+                    &copy; 2022 mar2ndx.
+                </div>
+            
+            
+                <div class="footer-meta-licenese">
+                    Licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC-BY-NC-SA 4.0</a>
+                </div>
+            
+            
+        </div>
+    </div>
+</footer>
+</div>
+    </div>
+</body>
+</html>

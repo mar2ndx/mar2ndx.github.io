@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <link rel="shortcut icon" href="/images/avatar.png" type="image/x-icon" />
+    <title>
+        
+            [Design] How is Pipe implemented in Unix/Linux  |
+         
+        Mar2ndx&#39;s Algorithmic and System Design Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/solid.min.css">
+
+     
+    
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXXXX"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-XXXXXXXXXXXX');
+        </script>
+    
+
+
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body>
+    <div class="body-container">
+        <div class="header-wrapper"><header>
+    <div class="header-container">
+        <div class="header-menu-list">
+            <ul>
+            
+                <li>
+                    <a href="/">主页</a>
+                </li>
+            
+            </ul>
+        </div>
+    </div>
+</header>
+</div>
+        <div class="main-wrapper"><main>
+    <div class="main-container">
+        <div class="post-details">
+            
+            <div class="post-title">
+                <h1>[Design] How is Pipe implemented in Unix/Linux </h1>
+            </div>
+            <div class="post-meta">
+                <i class="fa-solid fa-clock"></i>&nbsp;<span class="post-date">2015/07/23</span>
+            </div>
+            
+            <div class="post-content">
+                <h1 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h1><p>In Unix-like OS, <strong><a target="_blank" rel="noopener" href="https://goo.gl/0NAqd9">a pipeline is a set of processes</a> chained by their standard streams</strong>, so that the output of each process (stdout) feeds directly as input (stdin) to the next one.</p>
+<p><a target="_blank" rel="noopener" href="http://stackoverflow.com/a/17503877">Pipes are unidirectional byte streams which connect the standard output</a> from one process into the standard input of another process. <strong>Neither process is aware of this redirection</strong> and behaves just as it would normally. It is the shell which sets up these temporary pipes between the processes.</p>
+<h1 id="Process"><a href="#Process" class="headerlink" title="Process"></a>Process</h1><ol>
+<li><p>Linux has a VFS called <strong>pipefs</strong> that is mounted in the kernel (not in user space)</p>
+<blockquote>
+<p><strong><a target="_blank" rel="noopener" href="http://www.linux.org/threads/pipefs-sockfs-debugfs-and-securityfs.5383/">PipeFS</a></strong> is a unique virtual filesystem. <strong>This filesystem is mounted inside the kernel</strong> rather than in the userspace. While most filesystems are mounted under “/“, PipeFS is mounted on “pipe:”, <strong>making PipeFS its own root</strong> (yes, a second root filesystem).</p>
+<p>This filesystem is one superblock and cannot exceed that amount system-wide. The entry point of this filesystem/second-root is the system-call “pipe()”. Unlike the other virtual/pseudo filesystems, this one cannot be viewed.</p>
+<p>Many of you may be wondering what purpose this PipeFS filesystem serves. Unix pipes use this filesystem. When a pipe is used (eg. ls | less), <strong>the pipe() system-call makes a new pipe object on this filesystem</strong>. Without this filesystem, pipes cannot be made.</p>
+<p>Also, threads and forks communicate together via pipes. Without PipeFS, processes could not fork and threads could not communicate.</p>
+<p>Network pipes also rely on this virtual/pseudo filesystem.</p>
+</blockquote>
+</li>
+<li><p>pipefs has a single super block and is mounted at it’s own root (pipe:), alongside /</p>
+</li>
+<li><p>pipefs cannot be viewed directly unlike most file systems</p>
+</li>
+<li><p>The entry to pipefs is via the pipe(2) syscall</p>
+</li>
+<li><p>The pipe(2) syscall used by shells for piping with the | operator (or manually from any other process) creates a new file in pipefs which behaves pretty much like a normal file</p>
+</li>
+<li><p>The file on the left hand side of the pipe operator has its stdout redirected to the temporary file created in pipefs</p>
+</li>
+<li><p>The file on the right hand side of the pipe operator has its stdin set to the file on pipefs</p>
+</li>
+<li><p>pipefs is stored in memory and through some kernel magic</p>
+</li>
+</ol>
+<p>Ref: <a target="_blank" rel="noopener" href="http://unix.stackexchange.com/q/148401">http://unix.stackexchange.com/q/148401</a></p>
+
+            </div>
+        </div>
+    </div>
+</main>
+
+<script src="https://utteranc.es/client.js"
+    repo="owner/repo"
+    issue-term="pathname"
+    theme="github-light"
+    crossorigin="anonymous"
+    async>
+</script>
+
+  
+
+</div>
+        <div class="footer-wrapper"><footer>
+    <div class="footer-container">
+        <div class="footer-meta">
+            
+                <div class="footer-meta-copyright">
+                    &copy; 2022 mar2ndx.
+                </div>
+            
+            
+                <div class="footer-meta-licenese">
+                    Licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC-BY-NC-SA 4.0</a>
+                </div>
+            
+            
+        </div>
+    </div>
+</footer>
+</div>
+    </div>
+</body>
+</html>

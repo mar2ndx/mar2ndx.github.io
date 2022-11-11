@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <link rel="shortcut icon" href="/images/avatar.png" type="image/x-icon" />
+    <title>
+        
+            [Java OOP] PubSub (Publish–subscribe) pattern  |
+         
+        Mar2ndx&#39;s Algorithmic and System Design Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/solid.min.css">
+
+     
+    
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXXXX"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-XXXXXXXXXXXX');
+        </script>
+    
+
+
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body>
+    <div class="body-container">
+        <div class="header-wrapper"><header>
+    <div class="header-container">
+        <div class="header-menu-list">
+            <ul>
+            
+                <li>
+                    <a href="/">主页</a>
+                </li>
+            
+            </ul>
+        </div>
+    </div>
+</header>
+</div>
+        <div class="main-wrapper"><main>
+    <div class="main-container">
+        <div class="post-details">
+            
+            <div class="post-title">
+                <h1>[Java OOP] PubSub (Publish–subscribe) pattern </h1>
+            </div>
+            <div class="post-meta">
+                <i class="fa-solid fa-clock"></i>&nbsp;<span class="post-date">2015/02/05</span>
+            </div>
+            
+            <div class="post-content">
+                <h3 id="Publish–subscribe-pattern"><a href="#Publish–subscribe-pattern" class="headerlink" title="Publish–subscribe pattern"></a>Publish–subscribe pattern</h3><p><strong><a target="_blank" rel="noopener" href="http://en.wikipedia.org/wiki/Publish%E2%80%93subscribe_pattern">The publish–subscribe pattern</a> is a messaging pattern</strong> where senders of messages, called publishers, do not send messages directly to specific subscribers. Instead, published messages are characterized into classes without knowledge of subscribers.</p>
+<p>Similarly, subscribers express interest in one or more classes, without knowledge of what publishers there are.</p>
+<ol>
+<li>greater network scalability</li>
+<li>a more dynamic network topology</li>
+<li>decreased flexibility to modify the Publisher and its structure of the data published.</li>
+</ol>
+<p>Pub/sub is typically a part of a larger <strong>message-oriented middleware system</strong>. e.g. Java Message Service (JMS).</p>
+<h3 id="Difference-w-observer-pattern"><a href="#Difference-w-observer-pattern" class="headerlink" title="Difference w/ observer pattern"></a>Difference w/ observer pattern</h3><p>Refer to <strong>[Java OOP] Observer pattern</strong> or <a target="_blank" rel="noopener" href="http://stackoverflow.com/questions/15594905/difference-between-observer-pub-sub-and-data-binding">this link</a>:</p>
+<h4 id="Observer-or-Observable-Observer"><a href="#Observer-or-Observable-Observer" class="headerlink" title="Observer, or Observable/Observer:"></a>Observer, or Observable/Observer:</h4><blockquote>
+<p>A design pattern by which an object is imbued with the ability to notify others of specific events - typically done using actual events, which are kind of like slots in the object with the shape of a specific function/method. The observable is the one who provides notifications, and the observer receives those notifications. In .net, the observable can expose an event and the observer subscribes to that event with an “event handler”shaped hook. No assumptions are made about the specific mechanism which notifications occur, nor about the number of observers one observable can notify.</p>
+</blockquote>
+<h4 id="Pub-Sub"><a href="#Pub-Sub" class="headerlink" title="Pub/Sub:"></a>Pub/Sub:</h4><blockquote>
+<p>Another name (perhaps with more “broadcast” semantics) of the Observable/Observer pattern, which usually implies a more “dynamic” flavor - observers can subscribe or unsubscribe to notifications and one observable can “shout out” to multiple observers. In .net, one can use the standard events for this, since events are a form of MulticastDelegate, and so can support delivery of events to multiple subscribers, and also support unsubscription. Pub/sub has a slightly different meaning in certain contexts, usually involving more “anonymity” between event and eventer, which can be facilitated by any number of abstractions, usually involving some “middle man” (such as a message queue) who knows all parties, but the individual parties don’t know about each other.</p>
+</blockquote>
+
+            </div>
+        </div>
+    </div>
+</main>
+
+<script src="https://utteranc.es/client.js"
+    repo="owner/repo"
+    issue-term="pathname"
+    theme="github-light"
+    crossorigin="anonymous"
+    async>
+</script>
+
+  
+
+</div>
+        <div class="footer-wrapper"><footer>
+    <div class="footer-container">
+        <div class="footer-meta">
+            
+                <div class="footer-meta-copyright">
+                    &copy; 2022 mar2ndx.
+                </div>
+            
+            
+                <div class="footer-meta-licenese">
+                    Licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC-BY-NC-SA 4.0</a>
+                </div>
+            
+            
+        </div>
+    </div>
+</footer>
+</div>
+    </div>
+</body>
+</html>

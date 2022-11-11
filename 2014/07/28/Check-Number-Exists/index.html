@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <link rel="shortcut icon" href="/images/avatar.png" type="image/x-icon" />
+    <title>
+        
+            [Question] Check If Number Exists |
+         
+        Mar2ndx&#39;s Algorithmic and System Design Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/solid.min.css">
+
+     
+    
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXXXX"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-XXXXXXXXXXXX');
+        </script>
+    
+
+
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body>
+    <div class="body-container">
+        <div class="header-wrapper"><header>
+    <div class="header-container">
+        <div class="header-menu-list">
+            <ul>
+            
+                <li>
+                    <a href="/">主页</a>
+                </li>
+            
+            </ul>
+        </div>
+    </div>
+</header>
+</div>
+        <div class="main-wrapper"><main>
+    <div class="main-container">
+        <div class="post-details">
+            
+            <div class="post-title">
+                <h1>[Question] Check If Number Exists</h1>
+            </div>
+            <div class="post-meta">
+                <i class="fa-solid fa-clock"></i>&nbsp;<span class="post-date">2014/07/28</span>
+            </div>
+            
+            <div class="post-content">
+                <h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><p><a target="_blank" rel="noopener" href="http://tech-queries.blogspot.sg/2011/02/check-if-number-exist.html">link</a></p>
+<blockquote>
+<p>There is long list of natural numbers. Remove every 2nd no from list in 1st pass. Remove every 3rd no from list in 2nd pass. Find whether Nth natural no will exist after P passes. N and P are inputs.</p>
+</blockquote>
+<pre><code>Example: N is 15 and p is 3.
+Initial: 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20
+After 1st pass: 1 3 5 7 9 11 13 15 17 19
+After 2nd pass: 1 3 7 9 13 15 19
+After 3rd pass: 1 3 7 13 15 19
+After 4th pass: 1 3 7 13 19
+</code></pre>
+<blockquote>
+<p>So we see that 15 exists after 3 passes but vanishes after 4th pass.</p>
+</blockquote>
+<h3 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h3><p>We see that in any of the pass <strong>new position will be decreased by no of elements deleted</strong> between 1 and current position. </p>
+<p>Example: originally number is 15. After 1st pass, it becomes 8th element. After 2nd pass, it becomes 8 - (8 / 3) = 6th element. </p>
+<p>We stop when either P(i-1)/(i+1) is an integer, or when number is smaller than pass. </p>
+<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><p><strong>not written by me</strong> </p>
+<pre><code>bool check_posiiton(int n, int p)  
+&#123;  
+ int cur = n;  
+ int i = 0;  
+ while (i &lt;= p)  
+ &#123;  
+     i++;  
+     if (cur%(i+1) == 0)  
+     &#123;  
+         //Vanishes in this pass  
+         return false;  
+     &#125;  
+     else if (cur &lt; (i+1))  
+     &#123;  
+         //Number exist denominator is greater than numerator  
+         return true;  
+     &#125;  
+     cur = cur - cur/(i+1);  
+ &#125;  
+ return true;  
+&#125;  
+</code></pre>
+
+            </div>
+        </div>
+    </div>
+</main>
+
+<script src="https://utteranc.es/client.js"
+    repo="owner/repo"
+    issue-term="pathname"
+    theme="github-light"
+    crossorigin="anonymous"
+    async>
+</script>
+
+  
+
+</div>
+        <div class="footer-wrapper"><footer>
+    <div class="footer-container">
+        <div class="footer-meta">
+            
+                <div class="footer-meta-copyright">
+                    &copy; 2022 mar2ndx.
+                </div>
+            
+            
+                <div class="footer-meta-licenese">
+                    Licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC-BY-NC-SA 4.0</a>
+                </div>
+            
+            
+        </div>
+    </div>
+</footer>
+</div>
+    </div>
+</body>
+</html>

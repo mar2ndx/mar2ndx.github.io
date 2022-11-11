@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <link rel="shortcut icon" href="/images/avatar.png" type="image/x-icon" />
+    <title>
+        
+            MySql (2) - Master/slave |
+         
+        Mar2ndx&#39;s Algorithmic and System Design Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/solid.min.css">
+
+     
+    
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXXXX"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-XXXXXXXXXXXX');
+        </script>
+    
+
+
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body>
+    <div class="body-container">
+        <div class="header-wrapper"><header>
+    <div class="header-container">
+        <div class="header-menu-list">
+            <ul>
+            
+                <li>
+                    <a href="/">主页</a>
+                </li>
+            
+            </ul>
+        </div>
+    </div>
+</header>
+</div>
+        <div class="main-wrapper"><main>
+    <div class="main-container">
+        <div class="post-details">
+            
+            <div class="post-title">
+                <h1>MySql (2) - Master/slave</h1>
+            </div>
+            <div class="post-meta">
+                <i class="fa-solid fa-clock"></i>&nbsp;<span class="post-date">2022/10/27</span>
+            </div>
+            
+            <div class="post-content">
+                <h1 id="MySQL-2-master-slave"><a href="#MySQL-2-master-slave" class="headerlink" title="MySQL-2: master / slave"></a>MySQL-2: master / slave</h1><h1 id="NewSQL"><a href="#NewSQL" class="headerlink" title="NewSQL"></a>NewSQL</h1><p>MySQL 关系型</p>
+<p>NoSQL（Redis，MongoDB）</p>
+<p>NewSQL = 分布式 Relational DB，例如 淘宝的 TiDB</p>
+<h2 id="分布式-MySQL-最重要的3个概念"><a href="#分布式-MySQL-最重要的3个概念" class="headerlink" title="分布式 MySQL 最重要的3个概念"></a>分布式 MySQL 最重要的3个概念</h2><ol>
+<li>主从复制</li>
+<li>读写分离</li>
+<li>分库分表</li>
+</ol>
+<h1 id="主从复制"><a href="#主从复制" class="headerlink" title="主从复制"></a>主从复制</h1><h2 id="主从复制-的原理"><a href="#主从复制-的原理" class="headerlink" title="主从复制 的原理"></a>主从复制 的原理</h2><ol>
+<li>master开启binary log</li>
+<li>master事务提交，记录入bin log</li>
+<li>slave的I/O thread，读取master中的binary log</li>
+<li>slave写入relay log（中继人）</li>
+<li>slave的SQL thread读取relay log，并写入slave</li>
+</ol>
+<p><img src="/images/mysql-master-slave-structure.png"></p>
+<h2 id="主从复制-的步骤"><a href="#主从复制-的步骤" class="headerlink" title="主从复制 的步骤"></a>主从复制 的步骤</h2><ol>
+<li><p>关闭防火墙</p>
+<p> systemctl stop iptables<br> systemctl stop firewalld (默认)<br> systemctl disable firewalld.service</p>
+</li>
+<li><p>Master 开启 binary log</p>
+</li>
+<li><p>选择哪个DB用于主从复制</p>
+<p> binlog-do-db=白名单<br> binlog-ignore-db=黑名单</p>
+</li>
+<li><p>重启 mysql</p>
+</li>
+<li><p>授权 Replication Slave（复制权限）或者 All Privileges 给slave机器。</p>
+</li>
+<li><p>刷新权限：Flush privilege</p>
+</li>
+</ol>
+<h1 id="读写分离"><a href="#读写分离" class="headerlink" title="读写分离"></a>读写分离</h1><p>读写分离 depends on 主从复制.</p>
+<h2 id="Why-seperate-R-W？"><a href="#Why-seperate-R-W？" class="headerlink" title="Why seperate R/W？"></a>Why seperate R/W？</h2><p>默认情况下，master对外，slave只是个备份。</p>
+<p>所以：读写分离</p>
+<ol>
+<li>master：partial read + write</li>
+<li>slave：read</li>
+</ol>
+<h2 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h2><p>原理：read通常发给slave，除非发现 <strong>主从延时</strong>。</p>
+<p>用Linux 下面的 mysql-proxy实现的（linux下需要先安装）。</p>
+<p>配置文件用Lua写的：</p>
+<pre><code>proxy-backend-addresses = master_address
+proxy-read-only-backend-addresses = slave_address
+proxy-lua-script = .../mysql-proxy/rw-splitting.lua
+</code></pre>
+<p>Lua语言写的小脚本，可以内嵌在应用程序里。</p>
+<h3 id="Lua-配置"><a href="#Lua-配置" class="headerlink" title="Lua 配置"></a>Lua 配置</h3><p>举个例子：</p>
+<pre><code>min_idle_connections = 3,
+max_idle_connections = 4,
+</code></pre>
+<p>所有SQL走 proxy，Lua脚本规定了分流规则。</p>
+
+            </div>
+        </div>
+    </div>
+</main>
+
+<script src="https://utteranc.es/client.js"
+    repo="owner/repo"
+    issue-term="pathname"
+    theme="github-light"
+    crossorigin="anonymous"
+    async>
+</script>
+
+  
+
+</div>
+        <div class="footer-wrapper"><footer>
+    <div class="footer-container">
+        <div class="footer-meta">
+            
+                <div class="footer-meta-copyright">
+                    &copy; 2022 mar2ndx.
+                </div>
+            
+            
+                <div class="footer-meta-licenese">
+                    Licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC-BY-NC-SA 4.0</a>
+                </div>
+            
+            
+        </div>
+    </div>
+</footer>
+</div>
+    </div>
+</body>
+</html>

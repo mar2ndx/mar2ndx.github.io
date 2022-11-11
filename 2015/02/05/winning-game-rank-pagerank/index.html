@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <link rel="shortcut icon" href="/images/avatar.png" type="image/x-icon" />
+    <title>
+        
+            [Design] Winning Games Rank (pagerank)  |
+         
+        Mar2ndx&#39;s Algorithmic and System Design Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/solid.min.css">
+
+     
+    
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXXXX"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-XXXXXXXXXXXX');
+        </script>
+    
+
+
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body>
+    <div class="body-container">
+        <div class="header-wrapper"><header>
+    <div class="header-container">
+        <div class="header-menu-list">
+            <ul>
+            
+                <li>
+                    <a href="/">主页</a>
+                </li>
+            
+            </ul>
+        </div>
+    </div>
+</header>
+</div>
+        <div class="main-wrapper"><main>
+    <div class="main-container">
+        <div class="post-details">
+            
+            <div class="post-title">
+                <h1>[Design] Winning Games Rank (pagerank) </h1>
+            </div>
+            <div class="post-meta">
+                <i class="fa-solid fa-clock"></i>&nbsp;<span class="post-date">2015/02/05</span>
+            </div>
+            
+            <div class="post-content">
+                <h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><blockquote>
+<p>We have a history of match result of pingpong games, assume each match is &lt;player1, player2, result, timestamp&gt;, player1 and player2 are long type, result is a bit value (1 means player1 win).</p>
+</blockquote>
+<blockquote>
+<p>design a algorithm to sort the players by their possibility to win future games.</p>
+</blockquote>
+<h3 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h3><p>For each play,</p>
+<blockquote>
+<p>winning score = score_diff * {delay factor^(current time - winning time)};</p>
+</blockquote>
+<h3 id="Pagerank"><a href="#Pagerank" class="headerlink" title="Pagerank"></a>Pagerank</h3><p><a target="_blank" rel="noopener" href="http://google.about.com/od/searchengineoptimization/a/pagerankexplain.htm">PageRank</a> is what Google uses to <strong>determine the importance of a web page</strong>.</p>
+<p>It determines which pages appear in search results.</p>
+<p>Named after Larry Page.</p>
+<h4 id="Details"><a href="#Details" class="headerlink" title="Details"></a>Details</h4><ol>
+<li><p>PageRank thinks of links as votes to another page.</p>
+</li>
+<li><p>It also looks at the importance of the page that contains the link.</p>
+<ol>
+<li><p>Pages with <strong>higher PageRank</strong> have more weight in “voting”.</p>
+</li>
+<li><p>Pages with <strong>smaller total number of links</strong> on the page have more weight.</p>
+</li>
+</ol>
+</li>
+</ol>
+<h4 id="Increase-your-PageRank"><a href="#Increase-your-PageRank" class="headerlink" title="Increase your PageRank?"></a>Increase your PageRank?</h4><p>If you’d like to increase your PageRank, you need to have “back-links,” or other people linking to your website. You can <strong>trade links</strong> with other people, but make sure you only trade relevant links, and make sure you’re not trading links with a <strong>link farm</strong>.</p>
+<p>You can register your website with directories, such as the <strong>Open Directory Project</strong>, but use directories with high PageRank whenever possible.</p>
+<p>You can create some of <strong>your own back-links</strong> by linking to relevant pages <strong>within</strong> your own website. However, remember that the number of links you create counts into the equation. Don’t overdo it.</p>
+
+            </div>
+        </div>
+    </div>
+</main>
+
+<script src="https://utteranc.es/client.js"
+    repo="owner/repo"
+    issue-term="pathname"
+    theme="github-light"
+    crossorigin="anonymous"
+    async>
+</script>
+
+  
+
+</div>
+        <div class="footer-wrapper"><footer>
+    <div class="footer-container">
+        <div class="footer-meta">
+            
+                <div class="footer-meta-copyright">
+                    &copy; 2022 mar2ndx.
+                </div>
+            
+            
+                <div class="footer-meta-licenese">
+                    Licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC-BY-NC-SA 4.0</a>
+                </div>
+            
+            
+        </div>
+    </div>
+</footer>
+</div>
+    </div>
+</body>
+</html>

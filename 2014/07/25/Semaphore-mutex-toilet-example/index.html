@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <link rel="shortcut icon" href="/images/avatar.png" type="image/x-icon" />
+    <title>
+        
+            [Design] Semaphore Mutex Toilet Example |
+         
+        Mar2ndx&#39;s Algorithmic and System Design Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/solid.min.css">
+
+     
+    
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXXXX"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-XXXXXXXXXXXX');
+        </script>
+    
+
+
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body>
+    <div class="body-container">
+        <div class="header-wrapper"><header>
+    <div class="header-container">
+        <div class="header-menu-list">
+            <ul>
+            
+                <li>
+                    <a href="/">主页</a>
+                </li>
+            
+            </ul>
+        </div>
+    </div>
+</header>
+</div>
+        <div class="main-wrapper"><main>
+    <div class="main-container">
+        <div class="post-details">
+            
+            <div class="post-title">
+                <h1>[Design] Semaphore Mutex Toilet Example</h1>
+            </div>
+            <div class="post-meta">
+                <i class="fa-solid fa-clock"></i>&nbsp;<span class="post-date">2014/07/25</span>
+            </div>
+            
+            <div class="post-content">
+                <h2 id="Mutex-vs-Semaphore"><a href="#Mutex-vs-Semaphore" class="headerlink" title="Mutex vs. Semaphore"></a>Mutex vs. Semaphore</h2><p><strong>Mutex is a <a target="_blank" rel="noopener" href="http://koti.mbnet.fi/niclasw/MutexSemaphore.html">key to a toilet</a></strong>. One person can have the key - occupy the toilet. When finished, the person gives (frees) the key to the next person in queue.</p>
+<p>A mutex is really a semaphore with value 1.</p>
+<p><strong>Semaphore is the number of free identical toilet keys</strong>. Example, say we have four toilets with identical locks and keys. The semaphore count is set to 4 at beginning, then the count decrease as people are coming in, etc.</p>
+<h3 id="A-mutex-is-not-a-binary-semaphore"><a href="#A-mutex-is-not-a-binary-semaphore" class="headerlink" title="A mutex is not a binary semaphore"></a>A mutex is not a binary semaphore</h3><p><strong>A mutex is <a target="_blank" rel="noopener" href="http://www.geeksforgeeks.org/mutex-vs-semaphore/">locking mechanism</a></strong> used to synchronize access to a resource. Only one task can acquire the mutex.</p>
+<p>It means there will be ownership associated with mutex, and only the owner can release the lock.</p>
+<p><strong>Semaphore is signaling mechanism</strong> (“I am done, you can carry on” kind of signal).</p>
+<p>For example, if you are listening songs (assume it as one task) on your mobile and at the same time your friend called you, an interrupt will be triggered upon which an interrupt service routine (ISR) will signal the call processing task to wakeup.</p>
+
+            </div>
+        </div>
+    </div>
+</main>
+
+<script src="https://utteranc.es/client.js"
+    repo="owner/repo"
+    issue-term="pathname"
+    theme="github-light"
+    crossorigin="anonymous"
+    async>
+</script>
+
+  
+
+</div>
+        <div class="footer-wrapper"><footer>
+    <div class="footer-container">
+        <div class="footer-meta">
+            
+                <div class="footer-meta-copyright">
+                    &copy; 2022 mar2ndx.
+                </div>
+            
+            
+                <div class="footer-meta-licenese">
+                    Licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC-BY-NC-SA 4.0</a>
+                </div>
+            
+            
+        </div>
+    </div>
+</footer>
+</div>
+    </div>
+</body>
+</html>

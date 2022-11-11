@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <link rel="shortcut icon" href="/images/avatar.png" type="image/x-icon" />
+    <title>
+        
+            [LeetCode 142] Linked List Cycle II |
+         
+        Mar2ndx&#39;s Algorithmic and System Design Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/solid.min.css">
+
+     
+    
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXXXX"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-XXXXXXXXXXXX');
+        </script>
+    
+
+
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body>
+    <div class="body-container">
+        <div class="header-wrapper"><header>
+    <div class="header-container">
+        <div class="header-menu-list">
+            <ul>
+            
+                <li>
+                    <a href="/">主页</a>
+                </li>
+            
+            </ul>
+        </div>
+    </div>
+</header>
+</div>
+        <div class="main-wrapper"><main>
+    <div class="main-container">
+        <div class="post-details">
+            
+            <div class="post-title">
+                <h1>[LeetCode 142] Linked List Cycle II</h1>
+            </div>
+            <div class="post-meta">
+                <i class="fa-solid fa-clock"></i>&nbsp;<span class="post-date">2014/06/02</span>
+            </div>
+            
+            <div class="post-content">
+                <h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><p><a target="_blank" rel="noopener" href="https://oj.leetcode.com/problems/linked-list-cycle-ii/">link</a></p>
+<div class="question-content bg-color bg-img font-color">
+            <p class="font-color"></p><p class="font-color">
+Given a linked list, return the node where the cycle begins. If there is no cycle, return <code>null</code>.
+</p>
+
+<p class="font-color">
+Follow up:<br>
+Can you solve it without using extra space?
+</p><p class="font-color"></p>
+          </div>
+
+<h3 id="Stats"><a href="#Stats" class="headerlink" title="Stats"></a>Stats</h3><table border="2">
+    <tr>
+        <td>Adjusted Difficulty</td>
+        <td bgcolor="red">5</td>
+    </tr>
+    <tr>
+        <td>Time to use</td>
+        <td bgcolor="red">--------</td>
+    </tr>
+</table>
+
+<p>Ratings/Color = 1(white) 2(lime) 3(yellow) 4/5(red)</p>
+<h3 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h3><p><strong>This is an famous question, historically know as the <a target="_blank" rel="noopener" href="http://en.wikipedia.org/wiki/Cycle_detection#Tortoise_and_hare">Tortoise and hare</a></strong>.</p>
+<h3 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h3><p><a target="_blank" rel="noopener" href="http://fisherlei.blogspot.sg/2013/11/leetcode-linked-list-cycle-ii-solution.html">This blog</a> has a great solution.</p>
+<blockquote cite="">
+    <p class="font-color">现在有两个指针，第一个指针，每走一次走一步，第二个指针每走一次走两步，如果他们走了t次之后相遇在K点</p>
+    <p class="font-color">那么&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 指针一&nbsp; 走的路是&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; t = X + nY + K&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ①</p>
+    <p class="font-color">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 指针二&nbsp; 走的路是&nbsp;&nbsp;&nbsp;&nbsp; 2t = X + mY+ K&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ②&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; m,n为未知数</p>
+    <p class="font-color">把等式一代入到等式二中, 有</p>
+    <p class="font-color">2X + 2nY + 2K = X + mY + K</p>
+    <p class="font-color">=&gt;&nbsp;&nbsp; X+K&nbsp; =&nbsp; (m-2n)Y&nbsp;&nbsp;&nbsp; ③</p>
+    <p class="font-color">这就清晰了，X和K的关系是基于Y互补的。等于说，两个指针相遇以后，再往下走X步就回到Cycle的起点了。这就可以有O(n)的实现了。</p>
+</blockquote>
+
+<p><img src="/images/Linked-List-Cycle-II.png"></p>
+<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><pre><code>public ListNode detectCycle(ListNode head) &#123;
+    if (head == null || head.next == null)
+        return null;
+    ListNode first = head.next, second = first.next;
+    ListNode found = null;
+    while (first != null &amp;&amp; second != null) &#123;
+        if (first == second) &#123;
+            found = first;
+            break;
+        &#125;
+        first = first.next;
+        second = second.next;
+        if (second == null) break;
+        second = second.next;
+    &#125;
+    if (found == null) return null;
+    first = head;
+    while (first != second) &#123;
+        first = first.next;
+        second = second.next;
+    &#125;
+    return first;
+&#125;
+</code></pre>
+
+            </div>
+        </div>
+    </div>
+</main>
+
+<script src="https://utteranc.es/client.js"
+    repo="owner/repo"
+    issue-term="pathname"
+    theme="github-light"
+    crossorigin="anonymous"
+    async>
+</script>
+
+  
+
+</div>
+        <div class="footer-wrapper"><footer>
+    <div class="footer-container">
+        <div class="footer-meta">
+            
+                <div class="footer-meta-copyright">
+                    &copy; 2022 mar2ndx.
+                </div>
+            
+            
+                <div class="footer-meta-licenese">
+                    Licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC-BY-NC-SA 4.0</a>
+                </div>
+            
+            
+        </div>
+    </div>
+</footer>
+</div>
+    </div>
+</body>
+</html>

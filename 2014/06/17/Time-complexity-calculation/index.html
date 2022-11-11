@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <link rel="shortcut icon" href="/images/avatar.png" type="image/x-icon" />
+    <title>
+        
+            [Design] Time complexity calculation (Master theorem) |
+         
+        Mar2ndx&#39;s Algorithmic and System Design Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/solid.min.css">
+
+     
+    
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXXXX"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-XXXXXXXXXXXX');
+        </script>
+    
+
+
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body>
+    <div class="body-container">
+        <div class="header-wrapper"><header>
+    <div class="header-container">
+        <div class="header-menu-list">
+            <ul>
+            
+                <li>
+                    <a href="/">主页</a>
+                </li>
+            
+            </ul>
+        </div>
+    </div>
+</header>
+</div>
+        <div class="main-wrapper"><main>
+    <div class="main-container">
+        <div class="post-details">
+            
+            <div class="post-title">
+                <h1>[Design] Time complexity calculation (Master theorem)</h1>
+            </div>
+            <div class="post-meta">
+                <i class="fa-solid fa-clock"></i>&nbsp;<span class="post-date">2014/06/17</span>
+            </div>
+            
+            <div class="post-content">
+                <h3 id="Master-theorem"><a href="#Master-theorem" class="headerlink" title="Master theorem"></a>Master theorem</h3><p>In the analysis of algorithms, the <a target="_blank" rel="noopener" href="http://en.wikipedia.org/wiki/Master_theorem">master theorem</a> provides a cookbook solution in asymptotic terms (using Big O notation) for recurrence relations that occur in many divide and conquer algorithms. It was introduced and popularized by <strong>Introduction to Algorithms</strong>.</p>
+<h3 id="Examples-with-common-algorithms"><a href="#Examples-with-common-algorithms" class="headerlink" title="Examples with common algorithms"></a>Examples with common algorithms</h3><style type="text/css">
+.tg  {border-collapse:collapse;border-spacing:0;}
+.tg td{font-family:Arial, sans-serif;font-size:14px;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;}
+.tg th{font-family:Arial, sans-serif;font-size:14px;font-weight:normal;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;}
+</style>
+<table class="tg">
+  <tr>
+    <th class="tg-031e">Algorithm</th>
+    <th class="tg-031e">Recurrence</th>
+    <th class="tg-031e">Big-Oh Solution</th>
+  </tr>
+  <tr>
+    <td class="tg-031e">Binary Search</td>
+    <td class="tg-031e">T(n) = T(n/2) + O(1)</td>
+    <td class="tg-031e">O(log n)</td>
+  </tr>
+  <tr>
+    <td class="tg-031e">tree traversal</td>
+    <td class="tg-031e">T(n) = 2 T(n/2) + O(1)</td>
+    <td class="tg-031e">O(n)</td>
+  </tr>
+  <tr>
+    <td class="tg-031e">Mergesort</td>
+    <td class="tg-031e">T(n) = 2 T(n/2) + O(n)</td>
+    <td class="tg-031e">O(n log n)</td>
+  </tr>
+</table>
+
+<p><a target="_blank" rel="noopener" href="http://www.cs.duke.edu/~ola/ap/recurrence.html">source</a></p>
+
+            </div>
+        </div>
+    </div>
+</main>
+
+<script src="https://utteranc.es/client.js"
+    repo="owner/repo"
+    issue-term="pathname"
+    theme="github-light"
+    crossorigin="anonymous"
+    async>
+</script>
+
+  
+
+</div>
+        <div class="footer-wrapper"><footer>
+    <div class="footer-container">
+        <div class="footer-meta">
+            
+                <div class="footer-meta-copyright">
+                    &copy; 2022 mar2ndx.
+                </div>
+            
+            
+                <div class="footer-meta-licenese">
+                    Licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC-BY-NC-SA 4.0</a>
+                </div>
+            
+            
+        </div>
+    </div>
+</footer>
+</div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <link rel="shortcut icon" href="/images/avatar.png" type="image/x-icon" />
+    <title>
+        
+            [Java OOP] Java Vector and ArrayList  |
+         
+        Mar2ndx&#39;s Algorithmic and System Design Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/solid.min.css">
+
+     
+    
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXXXX"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-XXXXXXXXXXXX');
+        </script>
+    
+
+
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body>
+    <div class="body-container">
+        <div class="header-wrapper"><header>
+    <div class="header-container">
+        <div class="header-menu-list">
+            <ul>
+            
+                <li>
+                    <a href="/">主页</a>
+                </li>
+            
+            </ul>
+        </div>
+    </div>
+</header>
+</div>
+        <div class="main-wrapper"><main>
+    <div class="main-container">
+        <div class="post-details">
+            
+            <div class="post-title">
+                <h1>[Java OOP] Java Vector and ArrayList </h1>
+            </div>
+            <div class="post-meta">
+                <i class="fa-solid fa-clock"></i>&nbsp;<span class="post-date">2015/01/20</span>
+            </div>
+            
+            <div class="post-content">
+                <h3 id="Difference"><a href="#Difference" class="headerlink" title="Difference"></a>Difference</h3><ol>
+<li><p>Vectors are synchronized, ArrayLists are not.</p>
+</li>
+<li><p>Data Growth Methods</p>
+<p><a target="_blank" rel="noopener" href="http://stackoverflow.com/a/2986307">A Vector defaults to</a> doubling the size of its array, while the ArrayList increases its array size by 50 percent.</p>
+</li>
+</ol>
+<h3 id="Similarities"><a href="#Similarities" class="headerlink" title="Similarities"></a>Similarities</h3><ol>
+<li><p>Both Vector and ArrayList use <strong>growable array</strong> data structure.</p>
+</li>
+<li><p>They both are <strong>ordered collection classes</strong> as they maintain the elements insertion order.</p>
+</li>
+<li><p>Vector &amp; ArrayList both allows duplicate and null values.</p>
+</li>
+<li><p>They both grows and shrinks automatically when overflow and deletion happens.</p>
+</li>
+</ol>
+<p><a target="_blank" rel="noopener" href="http://beginnersbook.com/2013/12/difference-between-arraylist-and-vector-in-java/">source</a></p>
+<h3 id="History"><a href="#History" class="headerlink" title="History"></a>History</h3><p>The vector was not the part of collection framework - it has been included in collections later. It can be considered as <strong>Legacy code</strong>.</p>
+<p><strong>There is nothing about Vector which List collection cannot do</strong>. Therefore Vector should be avoided. If there is a need of thread-safe operation, make ArrayList synchronized.</p>
+
+            </div>
+        </div>
+    </div>
+</main>
+
+<script src="https://utteranc.es/client.js"
+    repo="owner/repo"
+    issue-term="pathname"
+    theme="github-light"
+    crossorigin="anonymous"
+    async>
+</script>
+
+  
+
+</div>
+        <div class="footer-wrapper"><footer>
+    <div class="footer-container">
+        <div class="footer-meta">
+            
+                <div class="footer-meta-copyright">
+                    &copy; 2022 mar2ndx.
+                </div>
+            
+            
+                <div class="footer-meta-licenese">
+                    Licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC-BY-NC-SA 4.0</a>
+                </div>
+            
+            
+        </div>
+    </div>
+</footer>
+</div>
+    </div>
+</body>
+</html>

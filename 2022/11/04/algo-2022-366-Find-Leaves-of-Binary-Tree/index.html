@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <link rel="shortcut icon" href="/images/avatar.png" type="image/x-icon" />
+    <title>
+        
+            366. Find Leaves of Binary Tree |
+         
+        Mar2ndx&#39;s Algorithmic and System Design Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/solid.min.css">
+
+     
+    
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXXXX"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-XXXXXXXXXXXX');
+        </script>
+    
+
+
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body>
+    <div class="body-container">
+        <div class="header-wrapper"><header>
+    <div class="header-container">
+        <div class="header-menu-list">
+            <ul>
+            
+                <li>
+                    <a href="/">主页</a>
+                </li>
+            
+            </ul>
+        </div>
+    </div>
+</header>
+</div>
+        <div class="main-wrapper"><main>
+    <div class="main-container">
+        <div class="post-details">
+            
+            <div class="post-title">
+                <h1>366. Find Leaves of Binary Tree</h1>
+            </div>
+            <div class="post-meta">
+                <i class="fa-solid fa-clock"></i>&nbsp;<span class="post-date">2022/11/04</span>
+            </div>
+            
+            <div class="post-content">
+                <p>Link: <a target="_blank" rel="noopener" href="https://leetcode.cn/problems/find-leaves-of-binary-tree/">https://leetcode.cn/problems/find-leaves-of-binary-tree/</a></p>
+<h1 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h1><p>difficulty: mid<br>adj diff: 4</p>
+<pre><code>Given the root of a binary tree, collect a tree&#39;s nodes as if you were doing this:
+
+Collect all the leaf nodes.
+Remove all the leaf nodes.
+Repeat until the tree is empty.
+
+Example 1:
+Input: root = [1,2,3,4,5]
+Output: [[4,5,3],[2],[1]]
+Explanation:
+[[3,5,4],[2],[1]] and [[3,4,5],[2],[1]] are also considered correct answers since per each level it does not matter the order on which elements are returned.
+Example 2:
+
+Input: root = [1]
+Output: [[1]]
+
+Constraints:
+
+The number of nodes in the tree is in the range [1, 100].
+-100 &lt;= Node.val &lt;= 100
+</code></pre>
+<p>这个题不简单。主要是：从上往下扫的时候，先看到 root，后看到 leaf，这怎么 build 结果链条啊？</p>
+<p>这个思路是：猜测这个 node 在 result list 的哪一层。我们暂且把这个 index 称为 leafLevel。</p>
+<p>看代码吧，很短。</p>
+<h1 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h1><pre><code class="hljs plaintext">class Solution &#123;
+    public List&lt;List&lt;Integer&gt;&gt; findLeaves(TreeNode root) &#123;
+        List&lt;List&lt;Integer&gt;&gt; ans = new ArrayList&lt;List&lt;Integer&gt;&gt;();
+        testDepth(ans, root);
+        return ans;
+    &#125;
+
+    private int testDepth(List&lt;List&lt;Integer&gt;&gt; ans, TreeNode node) &#123;
+        if (node == null) return 0;
+        int leafLevel = 1 + Math.max(testDepth(ans, node.left), testDepth(ans, node.right));
+        if (ans.size() &lt; leafLevel) &#123;
+            // because the traverse always bottom-up, so it&#x27;s safe to add to the end
+            ans.add(new LinkedList&lt;Integer&gt;());
+        &#125;
+        ans.get(leafLevel - 1).add(node.val);
+        return leafLevel;
+    &#125;
+&#125;</code></pre>
+
+            </div>
+        </div>
+    </div>
+</main>
+
+<script src="https://utteranc.es/client.js"
+    repo="owner/repo"
+    issue-term="pathname"
+    theme="github-light"
+    crossorigin="anonymous"
+    async>
+</script>
+
+  
+
+</div>
+        <div class="footer-wrapper"><footer>
+    <div class="footer-container">
+        <div class="footer-meta">
+            
+                <div class="footer-meta-copyright">
+                    &copy; 2022 mar2ndx.
+                </div>
+            
+            
+                <div class="footer-meta-licenese">
+                    Licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC-BY-NC-SA 4.0</a>
+                </div>
+            
+            
+        </div>
+    </div>
+</footer>
+</div>
+    </div>
+</body>
+</html>

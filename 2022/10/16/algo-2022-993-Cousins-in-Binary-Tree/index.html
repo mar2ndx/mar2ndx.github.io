@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <link rel="shortcut icon" href="/images/avatar.png" type="image/x-icon" />
+    <title>
+        
+            993. Cousins in Binary Tree |
+         
+        Mar2ndx&#39;s Algorithmic and System Design Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/solid.min.css">
+
+     
+    
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXXXX"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-XXXXXXXXXXXX');
+        </script>
+    
+
+
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body>
+    <div class="body-container">
+        <div class="header-wrapper"><header>
+    <div class="header-container">
+        <div class="header-menu-list">
+            <ul>
+            
+                <li>
+                    <a href="/">主页</a>
+                </li>
+            
+            </ul>
+        </div>
+    </div>
+</header>
+</div>
+        <div class="main-wrapper"><main>
+    <div class="main-container">
+        <div class="post-details">
+            
+            <div class="post-title">
+                <h1>993. Cousins in Binary Tree</h1>
+            </div>
+            <div class="post-meta">
+                <i class="fa-solid fa-clock"></i>&nbsp;<span class="post-date">2022/10/16</span>
+            </div>
+            
+            <div class="post-content">
+                <p>Link: <a target="_blank" rel="noopener" href="https://leetcode.cn/problems/cousins-in-binary-tree/">https://leetcode.cn/problems/cousins-in-binary-tree/</a></p>
+<h1 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h1><p>difficulty: easy<br>adj diff: 3</p>
+<pre><code>Given the root of a binary tree with unique values and the values of two different nodes of the tree x and y, return true if the nodes corresponding to the values x and y in the tree are cousins, or false otherwise.
+
+Two nodes of a binary tree are cousins if they have the same depth with different parents.
+
+Note that in a binary tree, the root node is at the depth 0, and children of each depth k node are at the depth k + 1.
+
+Example 1:
+
+Input: root = [1,2,3,4], x = 4, y = 3
+Output: false
+
+Example 2:
+
+Input: root = [1,2,3,null,4,null,5], x = 5, y = 4
+Output: true
+
+Example 3:
+
+Input: root = [1,2,3,null,4], x = 2, y = 3
+Output: false
+
+Constraints:
+
+    The number of nodes in the tree is in the range [2, 100].
+    1 &lt;= Node.val &lt;= 100
+    Each node has a unique value.
+    x != y
+    x and y are exist in the tree.
+</code></pre>
+<p>解法非常地类似 LCA 经典解法。</p>
+<h1 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h1><pre><code class="hljs plaintext">public boolean isCousins(TreeNode root, int x, int y) &#123;
+    int res = depth(0, root, x, y);
+    return res == Integer.MAX_VALUE;
+&#125;
+
+private int depth(int level, TreeNode node, int x, int y) &#123;
+    if (node == null) &#123;
+        return -1;
+    &#125; else if (node.val == x || node.val == y) &#123;
+        return level;
+    &#125;
+
+    int ll = depth(level + 1, node.left, x, y);
+    int rr = depth(level + 1, node.right, x, y);
+    if (ll == -1 &amp;&amp; rr == -1) &#123;
+        return -1;
+    &#125; else if (ll == -1) &#123;
+        return rr;
+    &#125; else if (rr == -1) &#123;
+        return ll;
+    &#125; else &#123;
+        return ll == rr &amp;&amp; ll - level &gt; 1 ? Integer.MAX_VALUE : -1;
+    &#125;
+&#125;</code></pre>
+
+            </div>
+        </div>
+    </div>
+</main>
+
+<script src="https://utteranc.es/client.js"
+    repo="owner/repo"
+    issue-term="pathname"
+    theme="github-light"
+    crossorigin="anonymous"
+    async>
+</script>
+
+  
+
+</div>
+        <div class="footer-wrapper"><footer>
+    <div class="footer-container">
+        <div class="footer-meta">
+            
+                <div class="footer-meta-copyright">
+                    &copy; 2022 mar2ndx.
+                </div>
+            
+            
+                <div class="footer-meta-licenese">
+                    Licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC-BY-NC-SA 4.0</a>
+                </div>
+            
+            
+        </div>
+    </div>
+</footer>
+</div>
+    </div>
+</body>
+</html>

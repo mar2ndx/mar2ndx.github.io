@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <link rel="shortcut icon" href="/images/avatar.png" type="image/x-icon" />
+    <title>
+        
+            [Google] Barrier, Goods Van and Distance  |
+         
+        Mar2ndx&#39;s Algorithmic and System Design Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/solid.min.css">
+
+     
+    
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXXXX"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-XXXXXXXXXXXX');
+        </script>
+    
+
+
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body>
+    <div class="body-container">
+        <div class="header-wrapper"><header>
+    <div class="header-container">
+        <div class="header-menu-list">
+            <ul>
+            
+                <li>
+                    <a href="/">主页</a>
+                </li>
+            
+            </ul>
+        </div>
+    </div>
+</header>
+</div>
+        <div class="main-wrapper"><main>
+    <div class="main-container">
+        <div class="post-details">
+            
+            <div class="post-title">
+                <h1>[Google] Barrier, Goods Van and Distance </h1>
+            </div>
+            <div class="post-meta">
+                <i class="fa-solid fa-clock"></i>&nbsp;<span class="post-date">2014/09/11</span>
+            </div>
+            
+            <div class="post-content">
+                <h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><p><a target="_blank" rel="noopener" href="http://www.mitbbs.com/article_t1/JobHunting/32631467_0_1.html">link</a></p>
+<blockquote>
+<p>2d array ＊代表障碍物 ＃代表货物 空白就是正常的路</p>
+</blockquote>
+<blockquote>
+<p>问如何找到一个点为出发点 能实现总共取货路径最短？ 每次只能拿一个货物，遇到障碍需要绕开，拿到以后要放回出发点，然后再取另一个.</p>
+</blockquote>
+<pre><code>＊＊＊＊＊＊＊＊＊＊
+＊  #           ＊
+＊  ＊＊＊  ＊   ＊
+＊              ＊
+＊     ＊＊   ＊ ＊
+＊  #    # # ＊＊＊
+＊＊＊＊＊＊＊＊＊＊
+</code></pre>
+<h3 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h3><p>This looks like a very difficult question, especially during a phone interview.</p>
+<p><strong>The 10th floor gives the best solution</strong>:</p>
+<blockquote>
+<p><strong>BFS from every box</strong>. in each box, a non-blocking cell (include box position, but exclude hazard position) will have a weight value, stand for the distance to the box.</p>
+</blockquote>
+<blockquote>
+<p>after bfs from all the boxes, each cell will have k weight, k is the number of boxes. sum all the weight in each cell, and find the cell with smallest sum of weight.</p>
+</blockquote>
+<blockquote>
+<p>One problem of this solution may lead to a cell of a box. We can then sort the cell by sum of weight and find the first position that is not a box.</p>
+</blockquote>
+<blockquote>
+<p>complexity O(k*n^2)</p>
+</blockquote>
+<p>Suggested at <a target="_blank" rel="noopener" href="http://www.mitbbs.com/article_t/JobHunting/32602449.html">this post</a>, we can also use <strong>A* search (with heuristic function)</strong> to solve.</p>
+<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><p><strong>not written</strong></p>
+
+            </div>
+        </div>
+    </div>
+</main>
+
+<script src="https://utteranc.es/client.js"
+    repo="owner/repo"
+    issue-term="pathname"
+    theme="github-light"
+    crossorigin="anonymous"
+    async>
+</script>
+
+  
+
+</div>
+        <div class="footer-wrapper"><footer>
+    <div class="footer-container">
+        <div class="footer-meta">
+            
+                <div class="footer-meta-copyright">
+                    &copy; 2022 mar2ndx.
+                </div>
+            
+            
+                <div class="footer-meta-licenese">
+                    Licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC-BY-NC-SA 4.0</a>
+                </div>
+            
+            
+        </div>
+    </div>
+</footer>
+</div>
+    </div>
+</body>
+</html>

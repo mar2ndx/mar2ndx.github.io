@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <link rel="shortcut icon" href="/images/avatar.png" type="image/x-icon" />
+    <title>
+        
+            [Google] Diameter of a Binary Tree  |
+         
+        Mar2ndx&#39;s Algorithmic and System Design Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/solid.min.css">
+
+     
+    
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXXXX"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-XXXXXXXXXXXX');
+        </script>
+    
+
+
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body>
+    <div class="body-container">
+        <div class="header-wrapper"><header>
+    <div class="header-container">
+        <div class="header-menu-list">
+            <ul>
+            
+                <li>
+                    <a href="/">主页</a>
+                </li>
+            
+            </ul>
+        </div>
+    </div>
+</header>
+</div>
+        <div class="main-wrapper"><main>
+    <div class="main-container">
+        <div class="post-details">
+            
+            <div class="post-title">
+                <h1>[Google] Diameter of a Binary Tree </h1>
+            </div>
+            <div class="post-meta">
+                <i class="fa-solid fa-clock"></i>&nbsp;<span class="post-date">2015/01/11</span>
+            </div>
+            
+            <div class="post-content">
+                <h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><p><a target="_blank" rel="noopener" href="http://www.geeksforgeeks.org/diameter-of-a-binary-tree/">link</a></p>
+<blockquote>
+<p>The diameter of a tree (sometimes called the width) is the number of nodes on the longest path between two leaves in the tree.</p>
+</blockquote>
+<p><img src="/images/tree-diameter-1.gif"></p>
+<h3 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h3><p>This is a similar question to <strong>[LeetCode 124] Binary Tree Maximum Path Sum</strong>. <strong>However there’s a significant difference</strong> which might be overlooked while coding.</p>
+<p>Look at this example:</p>
+<pre><code>     0
+       1
+        1
+       0  1
+           1
+</code></pre>
+<p>If we only want to find the max path, that would return result of 5, which is root-to-rightmost-leaf. However, the diameter should be 4, which is the distance between 2 leaf nodes.</p>
+<p>A solution is available for reading <a target="_blank" rel="noopener" href="http://stackoverflow.com/a/3124575">here</a>.</p>
+<p>For <strong>[Google] Crazy Distance Between Strings</strong>, there is another special case: {“1”, “11”, “10”}. The program will not output correct result (1), because this is not really the diameter of a tree, but instead, a max path from a non-leaf to a leaf. I leave this part for you to finish.</p>
+<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><p>Refer to <strong>[Google] Crazy Distance Between Strings</strong> for complete code.</p>
+
+            </div>
+        </div>
+    </div>
+</main>
+
+<script src="https://utteranc.es/client.js"
+    repo="owner/repo"
+    issue-term="pathname"
+    theme="github-light"
+    crossorigin="anonymous"
+    async>
+</script>
+
+  
+
+</div>
+        <div class="footer-wrapper"><footer>
+    <div class="footer-container">
+        <div class="footer-meta">
+            
+                <div class="footer-meta-copyright">
+                    &copy; 2022 mar2ndx.
+                </div>
+            
+            
+                <div class="footer-meta-licenese">
+                    Licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC-BY-NC-SA 4.0</a>
+                </div>
+            
+            
+        </div>
+    </div>
+</footer>
+</div>
+    </div>
+</body>
+</html>

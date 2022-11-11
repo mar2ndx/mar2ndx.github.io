@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <link rel="shortcut icon" href="/images/avatar.png" type="image/x-icon" />
+    <title>
+        
+            1710. Maximum Units on a Truck |
+         
+        Mar2ndx&#39;s Algorithmic and System Design Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/solid.min.css">
+
+     
+    
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXXXX"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-XXXXXXXXXXXX');
+        </script>
+    
+
+
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body>
+    <div class="body-container">
+        <div class="header-wrapper"><header>
+    <div class="header-container">
+        <div class="header-menu-list">
+            <ul>
+            
+                <li>
+                    <a href="/">主页</a>
+                </li>
+            
+            </ul>
+        </div>
+    </div>
+</header>
+</div>
+        <div class="main-wrapper"><main>
+    <div class="main-container">
+        <div class="post-details">
+            
+            <div class="post-title">
+                <h1>1710. Maximum Units on a Truck</h1>
+            </div>
+            <div class="post-meta">
+                <i class="fa-solid fa-clock"></i>&nbsp;<span class="post-date">2022/11/08</span>
+            </div>
+            
+            <div class="post-content">
+                <p>Link: <a target="_blank" rel="noopener" href="https://leetcode.cn/problems/maximum-units-on-a-truck/">https://leetcode.cn/problems/maximum-units-on-a-truck/</a></p>
+<h1 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h1><p>difficulty: easy<br>adj diff: 2</p>
+<pre><code>You are assigned to put some amount of boxes onto one truck. You are given a 2D array boxTypes, where boxTypes[i] = [numberOfBoxesi, numberOfUnitsPerBoxi]:
+
+numberOfBoxesi is the number of boxes of type i.
+numberOfUnitsPerBoxi is the number of units in each box of the type i.
+You are also given an integer truckSize, which is the maximum number of boxes that can be put on the truck. You can choose any boxes to put on the truck as long as the number of boxes does not exceed truckSize.
+
+Return the maximum total number of units that can be put on the truck.
+
+ 
+
+Example 1:
+
+Input: boxTypes = [[1,3],[2,2],[3,1]], truckSize = 4
+Output: 8
+Explanation: There are:
+- 1 box of the first type that contains 3 units.
+- 2 boxes of the second type that contain 2 units each.
+- 3 boxes of the third type that contain 1 unit each.
+You can take all the boxes of the first and second types, and one box of the third type.
+The total number of units will be = (1 * 3) + (2 * 2) + (1 * 1) = 8.
+Example 2:
+
+Input: boxTypes = [[5,10],[2,5],[4,7],[3,9]], truckSize = 10
+Output: 91
+ 
+
+Constraints:
+
+1 &lt;= boxTypes.length &lt;= 1000
+1 &lt;= numberOfBoxesi, numberOfUnitsPerBoxi &lt;= 1000
+1 &lt;= truckSize &lt;= 106
+</code></pre>
+<p>排序 + 贪心。</p>
+<h1 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h1><pre><code class="hljs plaintext">public int maximumUnits(int[][] boxTypes, int truckSize) &#123;
+    Arrays.sort(boxTypes, new Comparator&lt;int[]&gt;() &#123;
+        public int compare(int[] array1, int[] array2) &#123;
+            // sort boxes by numberOfUnitsPerBox (descending order)
+            return array2[1] - array1[1];
+        &#125;
+    &#125;);
+
+    int totalUnits = 0;
+    int p = 0;
+    while (p &lt; boxTypes.length) &#123;
+        int takeBoxes = Math.min(boxTypes[p][0], truckSize);
+        totalUnits += takeBoxes * boxTypes[p][1];
+        truckSize -= takeBoxes;
+        if (truckSize == 0)
+            break;
+        p++;
+    &#125;
+    return totalUnits;
+&#125;</code></pre>
+
+            </div>
+        </div>
+    </div>
+</main>
+
+<script src="https://utteranc.es/client.js"
+    repo="owner/repo"
+    issue-term="pathname"
+    theme="github-light"
+    crossorigin="anonymous"
+    async>
+</script>
+
+  
+
+</div>
+        <div class="footer-wrapper"><footer>
+    <div class="footer-container">
+        <div class="footer-meta">
+            
+                <div class="footer-meta-copyright">
+                    &copy; 2022 mar2ndx.
+                </div>
+            
+            
+                <div class="footer-meta-licenese">
+                    Licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC-BY-NC-SA 4.0</a>
+                </div>
+            
+            
+        </div>
+    </div>
+</footer>
+</div>
+    </div>
+</body>
+</html>

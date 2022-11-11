@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <link rel="shortcut icon" href="/images/avatar.png" type="image/x-icon" />
+    <title>
+        
+            241. Different Ways to Add Parentheses |
+         
+        Mar2ndx&#39;s Algorithmic and System Design Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/solid.min.css">
+
+     
+    
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXXXX"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-XXXXXXXXXXXX');
+        </script>
+    
+
+
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body>
+    <div class="body-container">
+        <div class="header-wrapper"><header>
+    <div class="header-container">
+        <div class="header-menu-list">
+            <ul>
+            
+                <li>
+                    <a href="/">主页</a>
+                </li>
+            
+            </ul>
+        </div>
+    </div>
+</header>
+</div>
+        <div class="main-wrapper"><main>
+    <div class="main-container">
+        <div class="post-details">
+            
+            <div class="post-title">
+                <h1>241. Different Ways to Add Parentheses</h1>
+            </div>
+            <div class="post-meta">
+                <i class="fa-solid fa-clock"></i>&nbsp;<span class="post-date">2022/10/19</span>
+            </div>
+            
+            <div class="post-content">
+                <p>Link: <a target="_blank" rel="noopener" href="https://leetcode.cn/problems/different-ways-to-add-parentheses/">https://leetcode.cn/problems/different-ways-to-add-parentheses/</a></p>
+<h1 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h1><p>difficulty: mid<br>adj diff: 5</p>
+<pre><code>Given a string expression of numbers and operators, return all possible results from computing all the different possible ways to group numbers and operators. You may return the answer in any order.
+
+The test cases are generated such that the output values fit in a 32-bit integer and the number of different results does not exceed 104.
+
+Example 1:
+
+Input: expression = &quot;2-1-1&quot;
+Output: [0,2]
+
+Explanation:
+
+    ((2-1)-1) = 0
+    (2-(1-1)) = 2
+
+Example 2:
+
+Input: expression = &quot;2*3-4*5&quot;
+Output: [-34,-14,-10,-10,10]
+
+Explanation:
+
+    (2*(3-(4*5))) = -34
+    ((2*3)-(4*5)) = -14
+    ((2*(3-4))*5) = -10
+    (2*((3-4)*5)) = -10
+    (((2*3)-4)*5) = 10
+
+Constraints:
+
+1 &lt;= expression.length &lt;= 20
+expression consists of digits and the operator &#39;+&#39;, &#39;-&#39;, and &#39;*&#39;.
+All the integer values in the input expression are in the range [0, 99].
+</code></pre>
+<p>这道题好难，不会。</p>
+<p>用 dfs + divide and concur，方法很巧妙。看代码</p>
+<h1 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h1><p>参考了：<a target="_blank" rel="noopener" href="https://leetcode.cn/problems/different-ways-to-add-parentheses/solution/by-ac_oier-z07i/">https://leetcode.cn/problems/different-ways-to-add-parentheses/solution/by-ac_oier-z07i/</a></p>
+<pre><code class="hljs plaintext">public List&lt;Integer&gt; diffWaysToCompute(String expression) &#123;
+    return dfs(expression.toCharArray(), 0, expression.length() - 1);
+&#125;
+
+private List&lt;Integer&gt; dfs(char[] input, int start, int end) &#123;
+    List&lt;Integer&gt; ans = new LinkedList&lt;Integer&gt;();
+
+    for (int i = start; i &lt;= end; i++) &#123;
+        if (isDigit(input[i])) &#123;
+            // we only look for operator, skip all numbers
+            continue;
+        &#125; else &#123;
+            // is an operator: &#123;+, -, *&#125;, divide and concur
+            List&lt;Integer&gt; leftChildren = dfs(input, start, i - 1);
+            List&lt;Integer&gt; rightChildren = dfs(input, i + 1, end);
+            for (Integer v: leftChildren) &#123;
+                for (Integer w: rightChildren) &#123;
+                    ans.add(calculate(v, input[i], w));
+                &#125;
+            &#125;
+        &#125;
+    &#125;
+
+    // if no operator is found? it&#x27;s just number
+    if (ans.isEmpty()) &#123;
+        int num = 0;
+        for (int i = start; i &lt;= end; i++) &#123;
+            num = num * 10 + input[i] - &#x27;0&#x27;;
+        &#125;
+        ans.add(num);
+    &#125;
+    return ans;
+&#125;
+
+private int calculate(int num1, char operator, int num2) &#123;
+    switch (operator) &#123;
+        case &#x27;+&#x27;: return num1 + num2;
+        case &#x27;-&#x27;: return num1 - num2;
+        case &#x27;*&#x27;: return num1 * num2;
+    &#125;
+    return 0;
+&#125;
+
+private boolean isDigit(char ch) &#123;
+    if (&#x27;0&#x27; &lt;= ch &amp;&amp; ch &lt;= &#x27;9&#x27;) &#123;
+        return true;
+    &#125;
+    return false;
+&#125;</code></pre>
+
+            </div>
+        </div>
+    </div>
+</main>
+
+<script src="https://utteranc.es/client.js"
+    repo="owner/repo"
+    issue-term="pathname"
+    theme="github-light"
+    crossorigin="anonymous"
+    async>
+</script>
+
+  
+
+</div>
+        <div class="footer-wrapper"><footer>
+    <div class="footer-container">
+        <div class="footer-meta">
+            
+                <div class="footer-meta-copyright">
+                    &copy; 2022 mar2ndx.
+                </div>
+            
+            
+                <div class="footer-meta-licenese">
+                    Licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC-BY-NC-SA 4.0</a>
+                </div>
+            
+            
+        </div>
+    </div>
+</footer>
+</div>
+    </div>
+</body>
+</html>

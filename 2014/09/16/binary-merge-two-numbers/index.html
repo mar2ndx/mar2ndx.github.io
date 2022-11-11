@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <link rel="shortcut icon" href="/images/avatar.png" type="image/x-icon" />
+    <title>
+        
+            [CC150v5] 5.1 Binary Merge 2 Numbers  |
+         
+        Mar2ndx&#39;s Algorithmic and System Design Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/solid.min.css">
+
+     
+    
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXXXX"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-XXXXXXXXXXXX');
+        </script>
+    
+
+
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body>
+    <div class="body-container">
+        <div class="header-wrapper"><header>
+    <div class="header-container">
+        <div class="header-menu-list">
+            <ul>
+            
+                <li>
+                    <a href="/">主页</a>
+                </li>
+            
+            </ul>
+        </div>
+    </div>
+</header>
+</div>
+        <div class="main-wrapper"><main>
+    <div class="main-container">
+        <div class="post-details">
+            
+            <div class="post-title">
+                <h1>[CC150v5] 5.1 Binary Merge 2 Numbers </h1>
+            </div>
+            <div class="post-meta">
+                <i class="fa-solid fa-clock"></i>&nbsp;<span class="post-date">2014/09/16</span>
+            </div>
+            
+            <div class="post-content">
+                <h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><blockquote>
+<p>You are given two 32-bit numbers, N andM, and two bit positions, i and j. Write a method to insert M into Nsuch that M starts at bit j and ends at bit i. You can assume that the bits j through i have enough space to fit all ofM. That is, ifM= 10011, you can assume that there are at least 5 bits between j and i. You would not, for example, have j-3 and i=2, because M could not fully fit between bit 3 and bit 2.</p>
+</blockquote>
+<blockquote>
+<p>EXAMPLE: </p>
+<p>Input: N = 16000000000, M = 10011, i = 2, j = 6</p>
+<p>Output: N = 10001001100</p>
+</blockquote>
+<h3 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h3><p><strong>This is a basic bit manipulation question</strong>. The key is to use binary maks. Two things to note: </p>
+<ol>
+<li><p>The ‘<del>‘ means negate. So (</del>0) is a sequence of 1 (the value equals to -1). </p>
+</li>
+<li><p>When shifting bits, <strong>DO NOT USE ‘&gt;&gt;’ because it’s signed shift</strong>. Instead, <strong>use ‘&gt;&gt;&gt;’ (unsigned right shift operator)</strong>. </p>
+</li>
+</ol>
+<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><p><strong>written by me</strong></p>
+<pre><code>public static int myAnswer(int n, int m, int i, int j) &#123;
+    int rr = (~0 &gt;&gt;&gt; (31 - j));
+    int ll = (~0 &lt;&lt; i);
+    // printBinary(rr);
+    // printBinary(ll);
+
+    int middleMask = ll &amp; rr;
+    int twoEndMask = ll ^ rr;
+
+    n = n &amp; twoEndMask;
+    m = (m &lt;&lt; i) &amp; middleMask;
+
+    return n | m;
+&#125;
+</code></pre>
+
+            </div>
+        </div>
+    </div>
+</main>
+
+<script src="https://utteranc.es/client.js"
+    repo="owner/repo"
+    issue-term="pathname"
+    theme="github-light"
+    crossorigin="anonymous"
+    async>
+</script>
+
+  
+
+</div>
+        <div class="footer-wrapper"><footer>
+    <div class="footer-container">
+        <div class="footer-meta">
+            
+                <div class="footer-meta-copyright">
+                    &copy; 2022 mar2ndx.
+                </div>
+            
+            
+                <div class="footer-meta-licenese">
+                    Licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC-BY-NC-SA 4.0</a>
+                </div>
+            
+            
+        </div>
+    </div>
+</footer>
+</div>
+    </div>
+</body>
+</html>

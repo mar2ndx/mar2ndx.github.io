@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <link rel="shortcut icon" href="/images/avatar.png" type="image/x-icon" />
+    <title>
+        
+            1864. Minimum Number of Swaps to Make the Binary String Alternating |
+         
+        Mar2ndx&#39;s Algorithmic and System Design Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/solid.min.css">
+
+     
+    
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXXXX"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-XXXXXXXXXXXX');
+        </script>
+    
+
+
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body>
+    <div class="body-container">
+        <div class="header-wrapper"><header>
+    <div class="header-container">
+        <div class="header-menu-list">
+            <ul>
+            
+                <li>
+                    <a href="/">主页</a>
+                </li>
+            
+            </ul>
+        </div>
+    </div>
+</header>
+</div>
+        <div class="main-wrapper"><main>
+    <div class="main-container">
+        <div class="post-details">
+            
+            <div class="post-title">
+                <h1>1864. Minimum Number of Swaps to Make the Binary String Alternating</h1>
+            </div>
+            <div class="post-meta">
+                <i class="fa-solid fa-clock"></i>&nbsp;<span class="post-date">2022/10/24</span>
+            </div>
+            
+            <div class="post-content">
+                <p>Link: <a target="_blank" rel="noopener" href="https://leetcode.cn/problems/minimum-number-of-swaps-to-make-the-binary-string-alternating/">https://leetcode.cn/problems/minimum-number-of-swaps-to-make-the-binary-string-alternating/</a></p>
+<h1 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h1><p>difficulty: mid<br>adj diff: 4</p>
+<pre><code>Given a binary string s, return the minimum number of character swaps to make it alternating, or -1 if it is impossible.
+
+The string is called alternating if no two adjacent characters are equal. For example, the strings &quot;010&quot; and &quot;1010&quot; are alternating, while the string &quot;0100&quot; is not.
+
+Any two characters may be swapped, even if they are not adjacent.
+
+Example 1:
+
+Input: s = &quot;111000&quot;
+Output: 1
+Explanation: Swap positions 1 and 4: &quot;111000&quot; -&gt; &quot;101010&quot;
+The string is now alternating.
+
+Example 2:
+
+Input: s = &quot;010&quot;
+Output: 0
+Explanation: The string is already alternating, no swaps are needed.
+
+Example 3:
+
+Input: s = &quot;1110&quot;
+Output: -1
+
+Constraints:
+
+    1 &lt;= s.length &lt;= 1000
+    s[i] is either &#39;0&#39; or &#39;1&#39;.
+</code></pre>
+<p>borning question.</p>
+<h1 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h1><pre><code class="hljs plaintext">public int minSwaps(String s) &#123;
+
+    // 类似前缀和
+    int count = 0;
+    for (char c : s.toCharArray()) &#123;
+        if (c == &#x27;1&#x27;) &#123;
+            count++;
+        &#125;
+        else &#123;
+            count--;
+        &#125;
+    &#125;
+
+    // 如果01差值大于1自然无法构建，那么就是-1
+    if (Math.abs(count) &gt; 1) &#123;
+        return -1;
+    &#125;
+
+    // 0、1一样多，那么就两种情况取小值
+    if (count == 0) &#123;
+        int count1 = 0;
+        int count2 = 0;
+        for (int i = 0; i &lt; s.length(); i++) &#123;
+            if (i % 2 == 0 &amp;&amp; s.charAt(i) == &#x27;0&#x27;) &#123;
+                count1++;
+            &#125;
+            if (i % 2 == 1 &amp;&amp; s.charAt(i) == &#x27;0&#x27;) &#123;
+                count2++;
+            &#125;
+        &#125;
+        return Math.min(count1, count2);
+    &#125;
+
+    // 1 更多
+    if (count == 1) &#123;
+        int count1 = 0;
+        for (int i = 0; i &lt; s.length(); i++) &#123;
+            if (i % 2 == 0 &amp;&amp; s.charAt(i) == &#x27;0&#x27;) &#123;
+                count1++;
+            &#125;
+        &#125;
+        return count1;
+    &#125;
+
+    // 0 更多
+    int count1 = 0;
+    for (int i = 0; i &lt; s.length(); i++) &#123;
+        if (i % 2 == 0 &amp;&amp; s.charAt(i) == &#x27;1&#x27;) &#123;
+            count1++;
+        &#125;
+    &#125;
+    return count1;
+&#125;</code></pre>
+
+            </div>
+        </div>
+    </div>
+</main>
+
+<script src="https://utteranc.es/client.js"
+    repo="owner/repo"
+    issue-term="pathname"
+    theme="github-light"
+    crossorigin="anonymous"
+    async>
+</script>
+
+  
+
+</div>
+        <div class="footer-wrapper"><footer>
+    <div class="footer-container">
+        <div class="footer-meta">
+            
+                <div class="footer-meta-copyright">
+                    &copy; 2022 mar2ndx.
+                </div>
+            
+            
+                <div class="footer-meta-licenese">
+                    Licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC-BY-NC-SA 4.0</a>
+                </div>
+            
+            
+        </div>
+    </div>
+</footer>
+</div>
+    </div>
+</body>
+</html>

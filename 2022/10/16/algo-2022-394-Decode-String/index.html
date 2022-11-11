@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <link rel="shortcut icon" href="/images/avatar.png" type="image/x-icon" />
+    <title>
+        
+            394. Decode String |
+         
+        Mar2ndx&#39;s Algorithmic and System Design Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/solid.min.css">
+
+     
+    
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXXXX"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-XXXXXXXXXXXX');
+        </script>
+    
+
+
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body>
+    <div class="body-container">
+        <div class="header-wrapper"><header>
+    <div class="header-container">
+        <div class="header-menu-list">
+            <ul>
+            
+                <li>
+                    <a href="/">主页</a>
+                </li>
+            
+            </ul>
+        </div>
+    </div>
+</header>
+</div>
+        <div class="main-wrapper"><main>
+    <div class="main-container">
+        <div class="post-details">
+            
+            <div class="post-title">
+                <h1>394. Decode String</h1>
+            </div>
+            <div class="post-meta">
+                <i class="fa-solid fa-clock"></i>&nbsp;<span class="post-date">2022/10/16</span>
+            </div>
+            
+            <div class="post-content">
+                <p>Link: <a target="_blank" rel="noopener" href="https://leetcode.cn/problems/decode-string/">https://leetcode.cn/problems/decode-string/</a></p>
+<h1 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h1><p>difficulty: mid<br>adj diff: 3</p>
+<pre><code>Given an encoded string, return its decoded string.
+
+The encoding rule is: k[encoded_string], where the encoded_string inside the square brackets is being repeated exactly k times. Note that k is guaranteed to be a positive integer.
+
+You may assume that the input string is always valid; there are no extra white spaces, square brackets are well-formed, etc. Furthermore, you may assume that the original data does not contain any digits and that digits are only for those repeat numbers, k. For example, there will not be input like 3a or 2[4].
+
+The test cases are generated so that the length of the output will never exceed 105.
+Example 1:
+
+Input: s = &quot;3[a]2[bc]&quot;
+Output: &quot;aaabcbc&quot;
+
+Example 2:
+
+Input: s = &quot;3[a2[c]]&quot;
+Output: &quot;accaccacc&quot;
+
+Example 3:
+
+Input: s = &quot;2[abc]3[cd]ef&quot;
+Output: &quot;abcabccdcdcdef&quot;
+Constraints:
+
+    1 &lt;= s.length &lt;= 30
+    s consists of lowercase English letters, digits, and square brackets &#39;[]&#39;.
+    s is guaranteed to be a valid input.
+    All the integers in s are in the range [1, 300].
+</code></pre>
+<h1 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h1><pre><code class="hljs plaintext">public String decodeString(String s) &#123;
+    int len = s.length();
+    Stack&lt;Character&gt; stack = new Stack&lt;Character&gt;();
+    for (int k = 0; k &lt; len; k++) &#123;
+        char c = s.charAt(k);
+        if (c == &#x27;[&#x27;) &#123;
+            stack.push(c);
+        &#125; else if (c == &#x27;]&#x27;) &#123;
+            List&lt;Character&gt; list = new ArrayList&lt;Character&gt;();
+            while (stack.peek() != &#x27;[&#x27;) &#123;
+                list.add(stack.pop());
+            &#125;
+            stack.pop();
+            int times = 0;
+            int zeros = 1;
+            while (!stack.isEmpty() &amp;&amp; (stack.peek() &gt;= &#x27;0&#x27; &amp;&amp; stack.peek() &lt;= &#x27;9&#x27;)) &#123;
+                times += zeros * (int) (stack.pop() - &#x27;0&#x27;);
+                zeros *= 10;
+            &#125;
+            for (int i = 0; i &lt; times; i++) &#123;
+                for (int j = list.size() - 1; j &gt;= 0; j--) &#123;
+                    stack.push(list.get(j));
+                &#125;
+            &#125;
+        &#125; else &#123; // either number or char
+            stack.push(c);
+        &#125;
+    &#125;
+    String res = &quot;&quot;;
+    while (!stack.isEmpty()) &#123;
+        res = stack.pop() + res;
+    &#125;
+    return res;
+&#125;</code></pre>
+
+            </div>
+        </div>
+    </div>
+</main>
+
+<script src="https://utteranc.es/client.js"
+    repo="owner/repo"
+    issue-term="pathname"
+    theme="github-light"
+    crossorigin="anonymous"
+    async>
+</script>
+
+  
+
+</div>
+        <div class="footer-wrapper"><footer>
+    <div class="footer-container">
+        <div class="footer-meta">
+            
+                <div class="footer-meta-copyright">
+                    &copy; 2022 mar2ndx.
+                </div>
+            
+            
+                <div class="footer-meta-licenese">
+                    Licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC-BY-NC-SA 4.0</a>
+                </div>
+            
+            
+        </div>
+    </div>
+</footer>
+</div>
+    </div>
+</body>
+</html>

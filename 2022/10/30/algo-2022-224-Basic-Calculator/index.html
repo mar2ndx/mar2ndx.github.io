@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <link rel="shortcut icon" href="/images/avatar.png" type="image/x-icon" />
+    <title>
+        
+            224. Basic Calculator |
+         
+        Mar2ndx&#39;s Algorithmic and System Design Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/solid.min.css">
+
+     
+    
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXXXX"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-XXXXXXXXXXXX');
+        </script>
+    
+
+
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body>
+    <div class="body-container">
+        <div class="header-wrapper"><header>
+    <div class="header-container">
+        <div class="header-menu-list">
+            <ul>
+            
+                <li>
+                    <a href="/">主页</a>
+                </li>
+            
+            </ul>
+        </div>
+    </div>
+</header>
+</div>
+        <div class="main-wrapper"><main>
+    <div class="main-container">
+        <div class="post-details">
+            
+            <div class="post-title">
+                <h1>224. Basic Calculator</h1>
+            </div>
+            <div class="post-meta">
+                <i class="fa-solid fa-clock"></i>&nbsp;<span class="post-date">2022/10/30</span>
+            </div>
+            
+            <div class="post-content">
+                <p>Link: <a target="_blank" rel="noopener" href="https://leetcode.cn/problems/basic-calculator/">https://leetcode.cn/problems/basic-calculator/</a></p>
+<h1 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h1><p>difficulty: hard<br>adj diff: 5</p>
+<pre><code>Given a string s representing a valid expression, implement a basic calculator to evaluate it, and return the result of the evaluation.
+
+Note: You are not allowed to use any built-in function which evaluates strings as mathematical expressions, such as eval().
+
+ 
+
+Example 1:
+
+Input: s = &quot;1 + 1&quot;
+Output: 2
+
+Example 2:
+
+Input: s = &quot; 2-1 + 2 &quot;
+Output: 3
+
+Example 3:
+
+Input: s = &quot;(1+(4+5+2)-3)+(6+8)&quot;
+Output: 23
+
+ 
+
+Constraints:
+
+    1 &lt;= s.length &lt;= 3 * 105
+    s consists of digits, &#39;+&#39;, &#39;-&#39;, &#39;(&#39;, &#39;)&#39;, and &#39; &#39;.
+    s represents a valid expression.
+    &#39;+&#39; is not used as a unary operation (i.e., &quot;+1&quot; and &quot;+(2 + 3)&quot; is invalid).
+    &#39;-&#39; could be used as a unary operation (i.e., &quot;-1&quot; and &quot;-(2 + 3)&quot; is valid).
+    There will be no two consecutive operators in the input.
+    Every number and running calculation will fit in a signed 32-bit integer.
+</code></pre>
+<p>Too hard. 太难了，不会写。</p>
+<p>2条Stack，一个存 number，一个存operator。看代码吧。</p>
+<h1 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h1><p>Solution reference: <a target="_blank" rel="noopener" href="https://leetcode.cn/problems/basic-calculator/solution/shuang-zhan-jie-jue-tong-yong-biao-da-sh-olym/">https://leetcode.cn/problems/basic-calculator/solution/shuang-zhan-jie-jue-tong-yong-biao-da-sh-olym/</a></p>
+<pre><code class="hljs plaintext">class Solution &#123;
+
+    Stack&lt;Integer&gt; numbers = new Stack&lt;Integer&gt;();
+    Stack&lt;Character&gt; operators = new Stack&lt;Character&gt;();
+
+    public int calculate(String s) &#123;
+        numbers.push(0);
+        char[] expression = s.replace(&quot; &quot;, &quot;&quot;).toCharArray();
+
+        for (int i = 0; i &lt; expression.length; i++) &#123;
+            char ch = expression[i];
+            if (ch == &#x27;(&#x27;) &#123;
+                operators.push(ch);
+            &#125; else if (ch == &#x27;)&#x27;) &#123;
+                while (!operators.isEmpty()) &#123;
+                    // 计算到最近一个左括号为止
+                    if (operators.peek() == &#x27;(&#x27;) &#123;
+                        operators.pop();
+                        break;
+                    &#125; else &#123;
+                        calculateOnce();
+                    &#125;
+                &#125;
+            &#125; else if (&#x27;0&#x27; &lt;= ch &amp;&amp; ch &lt;= &#x27;9&#x27;) &#123;
+                int u = 0;
+                int j = i;
+                // 将从 i 位置开始后面的连续数字整体取出，加入 numbers
+                while (j &lt; expression.length 
+                        &amp;&amp; (&#x27;0&#x27; &lt;= expression[j] &amp;&amp; expression[j] &lt;= &#x27;9&#x27;)
+                    ) &#123;
+                    u = u * 10 + (int)(expression[j++] - &#x27;0&#x27;);
+                &#125;
+                numbers.push(u);
+                i = j - 1;
+            &#125; else &#123; // is an operator, namely: + or -
+                if (i &gt; 0 
+                    &amp;&amp; (expression[i - 1] == &#x27;(&#x27; 
+                        || expression[i - 1] == &#x27;+&#x27; 
+                        || expression[i - 1] == &#x27;-&#x27;)
+                    ) &#123;
+                    numbers.push(0);
+                &#125;
+                // 有一个新操作要入栈时，先把栈内可以算的都算了
+                while (!operators.isEmpty() &amp;&amp; operators.peek() != &#x27;(&#x27;) &#123;
+                    calculateOnce();
+                &#125;
+                operators.push(ch);
+            &#125;
+        &#125;
+
+        while (!operators.isEmpty()) &#123;
+            calculateOnce();
+        &#125;
+        return numbers.peek();
+    &#125;
+
+    private void calculateOnce() &#123;
+        if (numbers.isEmpty() || numbers.size() &lt; 2) return;
+        if (operators.isEmpty()) return;
+        int b = numbers.pop(), a = numbers.pop();
+        char op = operators.pop();
+        numbers.push(op == &#x27;+&#x27; ? a + b : a - b);
+    &#125;
+&#125;</code></pre>
+
+            </div>
+        </div>
+    </div>
+</main>
+
+<script src="https://utteranc.es/client.js"
+    repo="owner/repo"
+    issue-term="pathname"
+    theme="github-light"
+    crossorigin="anonymous"
+    async>
+</script>
+
+  
+
+</div>
+        <div class="footer-wrapper"><footer>
+    <div class="footer-container">
+        <div class="footer-meta">
+            
+                <div class="footer-meta-copyright">
+                    &copy; 2022 mar2ndx.
+                </div>
+            
+            
+                <div class="footer-meta-licenese">
+                    Licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC-BY-NC-SA 4.0</a>
+                </div>
+            
+            
+        </div>
+    </div>
+</footer>
+</div>
+    </div>
+</body>
+</html>

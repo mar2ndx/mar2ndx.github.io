@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <link rel="shortcut icon" href="/images/avatar.png" type="image/x-icon" />
+    <title>
+        
+            1712. Ways to Split Array Into Three Subarrays |
+         
+        Mar2ndx&#39;s Algorithmic and System Design Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/solid.min.css">
+
+     
+    
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXXXX"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-XXXXXXXXXXXX');
+        </script>
+    
+
+
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body>
+    <div class="body-container">
+        <div class="header-wrapper"><header>
+    <div class="header-container">
+        <div class="header-menu-list">
+            <ul>
+            
+                <li>
+                    <a href="/">主页</a>
+                </li>
+            
+            </ul>
+        </div>
+    </div>
+</header>
+</div>
+        <div class="main-wrapper"><main>
+    <div class="main-container">
+        <div class="post-details">
+            
+            <div class="post-title">
+                <h1>1712. Ways to Split Array Into Three Subarrays</h1>
+            </div>
+            <div class="post-meta">
+                <i class="fa-solid fa-clock"></i>&nbsp;<span class="post-date">2022/10/15</span>
+            </div>
+            
+            <div class="post-content">
+                <p>Link: <a target="_blank" rel="noopener" href="https://leetcode.cn/problems/ways-to-split-array-into-three-subarrays/">https://leetcode.cn/problems/ways-to-split-array-into-three-subarrays/</a></p>
+<h1 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h1><p>difficulty: mid<br>adj diff: 4</p>
+<pre><code>A split of an integer array is good if:
+
+    The array is split into three non-empty contiguous subarrays - named left, mid, right respectively from left to right.
+    The sum of the elements in left is less than or equal to the sum of the elements in mid, and the sum of the elements in mid is less than or equal to the sum of the elements in right.
+
+Given nums, an array of non-negative integers, return the number of good ways to split nums. As the number may be too large, return it modulo 109 + 7.
+
+Example 1:
+
+Input: nums = [1,1,1]
+Output: 1
+Explanation: The only good way to split nums is [1] [1] [1].
+
+Example 2:
+
+Input: nums = [1,2,2,2,5,0]
+Output: 3
+Explanation: There are three good ways of splitting nums:
+[1] [2] [2,2,5,0]
+[1] [2,2] [2,5,0]
+[1,2] [2,2] [5,0]
+
+Example 3:
+
+Input: nums = [3,2,1]
+Output: 0
+Explanation: There is no good way to split nums.
+
+Constraints:
+
+    3 &lt;= nums.length &lt;= 105
+    0 &lt;= nums[i] &lt;= 104
+</code></pre>
+<p>这个题是二分搜索。</p>
+<p>我没写出来。</p>
+<h1 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h1><p>以下的代码 work：78 / 88 个通过测试用例</p>
+<p>But：超出时间限制</p>
+<pre><code class="hljs plaintext">public int waysToSplit(int[] nums) &#123;
+    int n = nums.length;
+    long[] sum = new long[n + 1];
+    for (int i = 1; i &lt;= n; i++) &#123;
+        sum[i] = sum[i - 1] + nums[i - 1];
+    &#125;
+    // special case: all 0s
+    if (sum[n] == 0) &#123;
+        return (n - 1)/2 * n;
+    &#125;
+
+    // pick a k, j as the start point of range2 and range3
+    // 优化：k依然像这样穷举，但是j可以二分搜索（不过要搜2次）。
+    // 第一次，搜j的最小可能值；第二次，搜j的最大可能值。就不写代码了。
+    int count = 0;
+    for (int k = 1; k &lt; n; k++) &#123;
+        if (sum[k] &gt; sum[n] / 3) &#123;
+            break;
+        &#125;
+        for (int j = k + 1; j &lt; n; j++) &#123;
+            // the 3 ranges are: [0, k - 1],
+            // [k, j - 1], and [j, n - 1]
+            if (sum[k] &gt; sum[j] - sum[k]) &#123;
+                continue;
+            &#125; else if (sum[j] - sum[k] &gt; sum[n] - sum[j]) &#123;
+                break;
+            &#125;
+            count++;
+        &#125;
+    &#125;
+    return count;
+&#125;</code></pre>
+
+<p>以下是别人的代码，2 次二分搜索，work：</p>
+<pre><code class="hljs plaintext">public int waysToSplit(int[] nums) &#123;
+    final int MODULO = 1000000007;
+    int ways = 0;
+    int n = nums.length;
+    int[] prefixSums = new int[n + 1];
+    for (int i = 0; i &lt; n; i++) &#123;
+        prefixSums[i + 1] = prefixSums[i] + nums[i];
+    &#125;
+    int total = prefixSums[n];
+    int leftMax = total / 3;
+    for (int i = 1; i &lt;= n - 2 &amp;&amp; prefixSums[i] &lt;= leftMax; i++) &#123;
+        int midMin = prefixSums[i] * 2, midMax = prefixSums[i] + (total - prefixSums[i]) / 2;
+        int start = searchStart(prefixSums, midMin, i + 1, n);
+        int end = searchEnd(prefixSums, midMax, i, n - 1);
+        ways = (ways + (end - start + 1)) % MODULO;
+    &#125;
+    return ways;
+&#125;
+
+public int searchStart(int[] prefixSums, int target, int low, int high) &#123;
+    while (low &lt; high) &#123;
+        int tmp = low + (high - low) / 2;
+        if (prefixSums[tmp] &gt;= target) &#123;
+            high = tmp;
+        &#125; else &#123;
+            low = tmp + 1;
+        &#125;
+    &#125;
+    return low;
+&#125;
+
+public int searchEnd(int[] prefixSums, int target, int low, int high) &#123;
+    while (low &lt; high) &#123;
+        int tmp = low + (high - low + 1) / 2;
+        if (prefixSums[tmp] &lt;= target) &#123;
+            low = tmp;
+        &#125; else &#123;
+            high = tmp - 1;
+        &#125;
+    &#125;
+    return low;
+&#125;</code></pre>
+
+            </div>
+        </div>
+    </div>
+</main>
+
+<script src="https://utteranc.es/client.js"
+    repo="owner/repo"
+    issue-term="pathname"
+    theme="github-light"
+    crossorigin="anonymous"
+    async>
+</script>
+
+  
+
+</div>
+        <div class="footer-wrapper"><footer>
+    <div class="footer-container">
+        <div class="footer-meta">
+            
+                <div class="footer-meta-copyright">
+                    &copy; 2022 mar2ndx.
+                </div>
+            
+            
+                <div class="footer-meta-licenese">
+                    Licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC-BY-NC-SA 4.0</a>
+                </div>
+            
+            
+        </div>
+    </div>
+</footer>
+</div>
+    </div>
+</body>
+</html>

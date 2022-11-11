@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <link rel="shortcut icon" href="/images/avatar.png" type="image/x-icon" />
+    <title>
+        
+            1740. Find Distance in a Binary Tree |
+         
+        Mar2ndx&#39;s Algorithmic and System Design Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/solid.min.css">
+
+     
+    
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXXXX"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-XXXXXXXXXXXX');
+        </script>
+    
+
+
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body>
+    <div class="body-container">
+        <div class="header-wrapper"><header>
+    <div class="header-container">
+        <div class="header-menu-list">
+            <ul>
+            
+                <li>
+                    <a href="/">主页</a>
+                </li>
+            
+            </ul>
+        </div>
+    </div>
+</header>
+</div>
+        <div class="main-wrapper"><main>
+    <div class="main-container">
+        <div class="post-details">
+            
+            <div class="post-title">
+                <h1>1740. Find Distance in a Binary Tree</h1>
+            </div>
+            <div class="post-meta">
+                <i class="fa-solid fa-clock"></i>&nbsp;<span class="post-date">2022/11/04</span>
+            </div>
+            
+            <div class="post-content">
+                <p>Link: <a target="_blank" rel="noopener" href="https://leetcode.cn/problems/find-distance-in-a-binary-tree/">https://leetcode.cn/problems/find-distance-in-a-binary-tree/</a></p>
+<h1 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h1><p>difficulty: mid<br>adj diff: 2</p>
+<pre><code>Given the root of a binary tree and two integers p and q, return the distance between the nodes of value p and value q in the tree.
+
+The distance between two nodes is the number of edges on the path from one to the other.
+
+
+
+Example 1:
+
+Input: root = [3,5,1,6,2,0,8,null,null,7,4], p = 5, q = 0
+Output: 3
+Explanation: There are 3 edges between 5 and 0: 5-3-1-0.
+
+Example 2:
+
+Input: root = [3,5,1,6,2,0,8,null,null,7,4], p = 5, q = 7
+Output: 2
+Explanation: There are 2 edges between 5 and 7: 5-2-7.
+
+Example 3:
+
+Input: root = [3,5,1,6,2,0,8,null,null,7,4], p = 5, q = 5
+Output: 0
+Explanation: The distance between a node and itself is 0.
+
+
+
+Constraints:
+
+    The number of nodes in the tree is in the range [1, 104].
+    0 &lt;= Node.val &lt;= 109
+    All Node.val are unique.
+    p and q are values in the tree.
+</code></pre>
+<p>应该不难。LCA变体。</p>
+<h1 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h1><p>代码来自于：<a target="_blank" rel="noopener" href="https://leetcode.cn/problems/find-distance-in-a-binary-tree/solution/bi-ren-he-ren-du-hao-de-jie-ti-by-java08-dusc/">https://leetcode.cn/problems/find-distance-in-a-binary-tree/solution/bi-ren-he-ren-du-hao-de-jie-ti-by-java08-dusc/</a></p>
+<pre><code class="hljs plaintext">class Solution &#123;
+    public int findDistance(TreeNode root, int p, int q) &#123;
+        if(p == q)&#123;
+            return 0;
+        &#125;
+        // 公共祖先
+        TreeNode parent = findCommonParent(root,p,q);
+        // 节点到公共祖先的距离
+        return getNodeDepth(parent,p) + getNodeDepth(parent,q);
+    &#125;
+
+    // 首先寻找公共祖先
+    private TreeNode findCommonParent(TreeNode root, int p, int q)&#123;
+        if(root == null)&#123;
+            return null;
+        &#125;
+        if(root.val == p || root.val == q)&#123;
+            return root;
+        &#125;
+        TreeNode left = findCommonParent(root.left,p,q);
+        TreeNode right = findCommonParent(root.right,p,q);
+        if(left != null &amp;&amp; right != null)&#123;
+            return root;
+        &#125;
+        return left == null ? right : left;
+    &#125;
+
+    // 到root节点的距离
+    private int getNodeDepth(TreeNode root,int p)&#123;
+        if(root == null)&#123;
+            // -1表示当前路径不是p的路径
+            return -1;
+        &#125;
+        if(root.val == p)&#123;
+            return 0;
+        &#125;
+        int left = getNodeDepth(root.left,p);
+        int right = getNodeDepth(root.right,p);
+        int ans = Math.max(left,right);
+        // 最大值是-1的话，表示不是p的路径，&gt;= 0则表示找到的p的路径，再加上自己本身的距离
+        return ans &gt;= 0 ? ans + 1 : -1;
+    &#125;
+
+&#125;</code></pre>
+
+            </div>
+        </div>
+    </div>
+</main>
+
+<script src="https://utteranc.es/client.js"
+    repo="owner/repo"
+    issue-term="pathname"
+    theme="github-light"
+    crossorigin="anonymous"
+    async>
+</script>
+
+  
+
+</div>
+        <div class="footer-wrapper"><footer>
+    <div class="footer-container">
+        <div class="footer-meta">
+            
+                <div class="footer-meta-copyright">
+                    &copy; 2022 mar2ndx.
+                </div>
+            
+            
+                <div class="footer-meta-licenese">
+                    Licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC-BY-NC-SA 4.0</a>
+                </div>
+            
+            
+        </div>
+    </div>
+</footer>
+</div>
+    </div>
+</body>
+</html>

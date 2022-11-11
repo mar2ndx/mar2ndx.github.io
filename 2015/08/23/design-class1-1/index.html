@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <link rel="shortcut icon" href="/images/avatar.png" type="image/x-icon" />
+    <title>
+        
+            [NineChap System Design] Class 1.1: Overview  |
+         
+        Mar2ndx&#39;s Algorithmic and System Design Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/solid.min.css">
+
+     
+    
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXXXX"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-XXXXXXXXXXXX');
+        </script>
+    
+
+
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body>
+    <div class="body-container">
+        <div class="header-wrapper"><header>
+    <div class="header-container">
+        <div class="header-menu-list">
+            <ul>
+            
+                <li>
+                    <a href="/">主页</a>
+                </li>
+            
+            </ul>
+        </div>
+    </div>
+</header>
+</div>
+        <div class="main-wrapper"><main>
+    <div class="main-container">
+        <div class="post-details">
+            
+            <div class="post-title">
+                <h1>[NineChap System Design] Class 1.1: Overview </h1>
+            </div>
+            <div class="post-meta">
+                <i class="fa-solid fa-clock"></i>&nbsp;<span class="post-date">2015/08/23</span>
+            </div>
+            
+            <div class="post-content">
+                <h1 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h1><h2 id="defination"><a href="#defination" class="headerlink" title="defination"></a>defination</h2><p>the process of defining the <strong>architecture, components, modules, interfaces and data</strong> to satisfy specified <strong>requirements</strong>.</p>
+<ol>
+<li>conceptual design (macro)</li>
+<li>logical design</li>
+<li>physical design (micro)</li>
+</ol>
+<h3 id="Top-down-design"><a href="#Top-down-design" class="headerlink" title="Top-down design"></a>Top-down design</h3><p>Eg. MS Office, Huawei Security System</p>
+<h3 id="Bottom-up-design"><a href="#Bottom-up-design" class="headerlink" title="Bottom-up design"></a>Bottom-up design</h3><p>Most start-up use, MVP first using Medetor + MongoDb.</p>
+<h2 id="5-steps-SNAKE-Principle"><a href="#5-steps-SNAKE-Principle" class="headerlink" title="5 steps (SNAKE Principle):"></a>5 steps (SNAKE Principle):</h2><ol>
+<li><strong>Scenario</strong>: case/interface - input</li>
+<li><strong>Necessary</strong>: constrain/hypothesis - input</li>
+<li><strong>Application</strong>: service/algorithm - output</li>
+<li><strong>Kilobit</strong>: data - output</li>
+<li><strong>Evolve</strong> - solution</li>
+</ol>
+<h1 id="A-top-down-example"><a href="#A-top-down-example" class="headerlink" title="A top-down example"></a>A top-down example</h1><p>Example one: <strong>design a radio</strong></p>
+<h2 id="Step-One-Scenario"><a href="#Step-One-Scenario" class="headerlink" title="Step One, Scenario"></a>Step One, Scenario</h2><ol>
+<li><p>brain storm</p>
+<ol>
+<li>register/log in</li>
+<li>play music</li>
+<li>recommendation</li>
+</ol>
+</li>
+<li><p>prioritize</p>
+<ol>
+<li>play music<ol>
+<li>Get channel</li>
+<li>select a channel</li>
+<li>play</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h2 id="Step-Two-Necessary"><a href="#Step-Two-Necessary" class="headerlink" title="Step Two, Necessary"></a>Step Two, Necessary</h2><ol>
+<li><p>ask</p>
+<ol>
+<li>total user - 100,000,000</li>
+<li><strong>daily users - 1,000,000</strong></li>
+</ol>
+</li>
+<li><p>predict</p>
+<ol>
+<li>user analysis</li>
+<li>Traffic analysis</li>
+<li>Memory analysis</li>
+<li>QPS</li>
+</ol>
+</li>
+</ol>
+<p>Details:</p>
+<ol>
+<li><p>user analysis</p>
+<blockquote>
+<p>Avg Concurrent users = daily users <strong>/ 5</strong> = 200,000</p>
+<p>Peak Concurrent users = concurrent user <strong>* 3</strong> = 600,000</p>
+</blockquote>
+<p>considering your product may grow in the next 3 month:</p>
+<blockquote>
+<p>Max Peak users in 3 month = Peak users <strong>* 10</strong> = 6,000,000</p>
+</blockquote>
+</li>
+<li><p>Traffic analysis</p>
+<blockquote>
+<p>Request of new music per user: 1 music/min</p>
+<p>Music size = 3MB</p>
+<p>Max peak traffic (in 3 months) = 6,000,000 * 3MB / 60 = 300GB/s</p>
+</blockquote>
+</li>
+<li><p>Memory analysis</p>
+<blockquote>
+<p>Memory per user (metadata) = 10KB</p>
+<p>Max daily memory = 1,000,000 * 10 * 10 = 100 million KB = 100GB</p>
+<p>(10 times of avg daily user)</p>
+</blockquote>
+</li>
+</ol>
+<h2 id="Step-Three-Application"><a href="#Step-Three-Application" class="headerlink" title="Step Three, Application"></a>Step Three, Application</h2><ol>
+<li>Replay the case, one service for each</li>
+<li>Merge the services</li>
+</ol>
+<p><img src="/images/design-class1-basic-receptionist.png"></p>
+<h2 id="Step-Four-Kilobit-data"><a href="#Step-Four-Kilobit-data" class="headerlink" title="Step Four, Kilobit: data"></a>Step Four, Kilobit: data</h2><ol>
+<li><p>Append 1 dataset for each service</p>
+<p>Eg. User service: stability, more addition, less modify and deletion.</p>
+<p>Eg. Channel Service: high concurrency, MongoDB</p>
+<p>Eg. Music Service: MP3 File Systems</p>
+</li>
+</ol>
+<p><img src="/images/design-class1-reco-5.png"></p>
+<h2 id="Last-Step-Evolve"><a href="#Last-Step-Evolve" class="headerlink" title="Last Step, Evolve"></a>Last Step, Evolve</h2><ol>
+<li><p>Better: constrains</p>
+<p>eg. able to handle 300GB/s traffic?</p>
+</li>
+<li><p>Broader: new cases</p>
+<p>share music? delete user account?</p>
+</li>
+<li><p>Deeper: details design</p>
+</li>
+</ol>
+<p>From views of <strong>Performance, Scalability and Robustness</strong>.</p>
+<p><img src="/images/design-class1-snake.jpg"></p>
+
+            </div>
+        </div>
+    </div>
+</main>
+
+<script src="https://utteranc.es/client.js"
+    repo="owner/repo"
+    issue-term="pathname"
+    theme="github-light"
+    crossorigin="anonymous"
+    async>
+</script>
+
+  
+
+</div>
+        <div class="footer-wrapper"><footer>
+    <div class="footer-container">
+        <div class="footer-meta">
+            
+                <div class="footer-meta-copyright">
+                    &copy; 2022 mar2ndx.
+                </div>
+            
+            
+                <div class="footer-meta-licenese">
+                    Licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC-BY-NC-SA 4.0</a>
+                </div>
+            
+            
+        </div>
+    </div>
+</footer>
+</div>
+    </div>
+</body>
+</html>

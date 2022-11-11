@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <link rel="shortcut icon" href="/images/avatar.png" type="image/x-icon" />
+    <title>
+        
+            [Ruby] RubyGems, gem, Gemfile and Bundler  |
+         
+        Mar2ndx&#39;s Algorithmic and System Design Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/solid.min.css">
+
+     
+    
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXXXX"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-XXXXXXXXXXXX');
+        </script>
+    
+
+
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body>
+    <div class="body-container">
+        <div class="header-wrapper"><header>
+    <div class="header-container">
+        <div class="header-menu-list">
+            <ul>
+            
+                <li>
+                    <a href="/">主页</a>
+                </li>
+            
+            </ul>
+        </div>
+    </div>
+</header>
+</div>
+        <div class="main-wrapper"><main>
+    <div class="main-container">
+        <div class="post-details">
+            
+            <div class="post-title">
+                <h1>[Ruby] RubyGems, gem, Gemfile and Bundler </h1>
+            </div>
+            <div class="post-meta">
+                <i class="fa-solid fa-clock"></i>&nbsp;<span class="post-date">2014/12/22</span>
+            </div>
+            
+            <div class="post-content">
+                <p>Sometme I found the different concepts in Ruby very confusing for beginners. So I write this post to explain some terminologies in ruby setup.</p>
+<h3 id="RubyGems-tool"><a href="#RubyGems-tool" class="headerlink" title="RubyGems (tool)"></a>RubyGems (tool)</h3><p><strong><a target="_blank" rel="noopener" href="http://en.wikipedia.org/wiki/RubyGems">RubyGems</a></strong> is a package manager for the Ruby programming language.</p>
+<p>It is a tool to manage the installation of gems, and a server for distributing them.</p>
+<p>RubyGems is very similar to apt-get, portage, and yum in functionality.</p>
+<h3 id="gem-command"><a href="#gem-command" class="headerlink" title="gem (command)"></a>gem (command)</h3><p>‘gem’ command allows you to interact with RubyGems. It is used build, upload, download, and install Gem packages.</p>
+<p>Installation:</p>
+<pre><code>gem install mygem
+</code></pre>
+<p>Uninstallation:</p>
+<pre><code>gem uninstall mygem
+</code></pre>
+<p>Listing installed gems:</p>
+<pre><code>gem list --local
+</code></pre>
+<p>Listing available gems, e.g.:</p>
+<pre><code>gem list --remote
+</code></pre>
+<h3 id="Gemfile-text-file"><a href="#Gemfile-text-file" class="headerlink" title="Gemfile (text file)"></a>Gemfile (text file)</h3><p><a target="_blank" rel="noopener" href="http://bundler.io/man/gemfile.5.html">A Gemfile</a> describes the gem dependencies required to execute associated Ruby code.</p>
+<p>It is placed in the root of the directory containing the associated code.</p>
+<p>A Gemfile is evaluated as Ruby code, in a context which makes available a number of methods used to describe the gem requirements.</p>
+<h3 id="gem-program"><a href="#gem-program" class="headerlink" title="gem (program)"></a>gem (program)</h3><p><a target="_blank" rel="noopener" href="http://stackoverflow.com/questions/5233924/what-is-a-ruby-gem">ref1</a>, <a target="_blank" rel="noopener" href="http://guides.rubygems.org/what-is-a-gem/">ref2</a></p>
+<p>A gem is a module/Library that you can install and use in every project on your server.</p>
+<p>Each gem has a <strong>name, version, and platform</strong>. For example, <strong>rake gem</strong> has a 10.3.2 version on platform Ruby.</p>
+<p>Inside a gems are the following components:</p>
+<ol>
+<li>Code (including tests and supporting utilities)</li>
+<li>Documentation</li>
+<li>gemspec</li>
+</ol>
+<p>Standard code structure:</p>
+<pre><code>% tree freewill
+freewill/
+├── bin/
+│   └── freewill
+├── lib/
+│   └── freewill.rb
+├── test/
+│   └── test_freewill.rb
+├── README
+├── Rakefile
+└── freewill.gemspec
+</code></pre>
+<h3 id="Bundler-dependency-manager"><a href="#Bundler-dependency-manager" class="headerlink" title="Bundler (dependency manager)"></a>Bundler (dependency manager)</h3><p><a target="_blank" rel="noopener" href="http://bundler.io/">ref</a></p>
+<p>Bundler manages an application’s dependencies.</p>
+<p>Bundler provides a consistent environment for Ruby projects by tracking and installing the exact gems and versions that are needed.</p>
+
+            </div>
+        </div>
+    </div>
+</main>
+
+<script src="https://utteranc.es/client.js"
+    repo="owner/repo"
+    issue-term="pathname"
+    theme="github-light"
+    crossorigin="anonymous"
+    async>
+</script>
+
+  
+
+</div>
+        <div class="footer-wrapper"><footer>
+    <div class="footer-container">
+        <div class="footer-meta">
+            
+                <div class="footer-meta-copyright">
+                    &copy; 2022 mar2ndx.
+                </div>
+            
+            
+                <div class="footer-meta-licenese">
+                    Licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC-BY-NC-SA 4.0</a>
+                </div>
+            
+            
+        </div>
+    </div>
+</footer>
+</div>
+    </div>
+</body>
+</html>

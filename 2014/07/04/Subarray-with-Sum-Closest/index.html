@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <link rel="shortcut icon" href="/images/avatar.png" type="image/x-icon" />
+    <title>
+        
+            [Question] Subarray with Sum Closest |
+         
+        Mar2ndx&#39;s Algorithmic and System Design Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/solid.min.css">
+
+     
+    
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXXXX"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-XXXXXXXXXXXX');
+        </script>
+    
+
+
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body>
+    <div class="body-container">
+        <div class="header-wrapper"><header>
+    <div class="header-container">
+        <div class="header-menu-list">
+            <ul>
+            
+                <li>
+                    <a href="/">主页</a>
+                </li>
+            
+            </ul>
+        </div>
+    </div>
+</header>
+</div>
+        <div class="main-wrapper"><main>
+    <div class="main-container">
+        <div class="post-details">
+            
+            <div class="post-title">
+                <h1>[Question] Subarray with Sum Closest</h1>
+            </div>
+            <div class="post-meta">
+                <i class="fa-solid fa-clock"></i>&nbsp;<span class="post-date">2014/07/04</span>
+            </div>
+            
+            <div class="post-content">
+                <h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><p><a target="_blank" rel="noopener" href="http://www.geeksforgeeks.org/minimum-length-subarray-sum-greater-given-value/">link</a></p>
+<blockquote>
+<p>Given an array of integers and a number x, find the smallest subarray with sum greater than the given value.</p>
+<p>Eg. input = (1, 4, 45, 6, 0, 19), 51, output (4, 45, 6)</p>
+</blockquote>
+<h3 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h3><p><strong>Solution 1 (the better one)</strong> is based on another question <strong>Subarray with 0 Sum</strong>. We calculate the 前缀和 of every number. Takes O(n) time. </p>
+<p>If all input are positive, there can be a <strong>Solution 2</strong> which is based on another question <strong>Subarray with Particular Sum</strong>. The sliding window search. It’s O(n) time as well. </p>
+<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><p><strong>Solution 2</strong> (for positive input) </p>
+<pre><code>int smallestSubWithSum(int arr[], int n, int x) &#123;
+    //  Initilize length of smallest subarray as n+1
+     int min_len = n + 1;
+
+     // Pick every element as starting point
+     for (int start=0; start&lt;n; start++)
+     &#123;
+          // Initialize sum starting with current start
+          int curr_sum = arr[start];
+
+          // If first element itself is greater
+          if (curr_sum &gt; x) return 1;
+
+          // Try different ending points for curremt start
+          for (int end=start+1; end&lt;n; end++)
+          &#123;
+              // add last element to current sum
+              curr_sum += arr[end];
+
+              // If sum becomes more than x and length of
+              // this subarray is smaller than current smallest
+              // length, update the smallest length (or result)
+              if (curr_sum &gt; x &amp;&amp; (end - start + 1) &lt; min_len)
+                 min_len = (end - start + 1);
+          &#125;
+     &#125;
+     return min_len;
+&#125;
+</code></pre>
+
+            </div>
+        </div>
+    </div>
+</main>
+
+<script src="https://utteranc.es/client.js"
+    repo="owner/repo"
+    issue-term="pathname"
+    theme="github-light"
+    crossorigin="anonymous"
+    async>
+</script>
+
+  
+
+</div>
+        <div class="footer-wrapper"><footer>
+    <div class="footer-container">
+        <div class="footer-meta">
+            
+                <div class="footer-meta-copyright">
+                    &copy; 2022 mar2ndx.
+                </div>
+            
+            
+                <div class="footer-meta-licenese">
+                    Licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC-BY-NC-SA 4.0</a>
+                </div>
+            
+            
+        </div>
+    </div>
+</footer>
+</div>
+    </div>
+</body>
+</html>

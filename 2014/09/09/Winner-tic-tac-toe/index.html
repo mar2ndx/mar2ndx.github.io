@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <link rel="shortcut icon" href="/images/avatar.png" type="image/x-icon" />
+    <title>
+        
+            [Google] Winner of tic-tac-toe |
+         
+        Mar2ndx&#39;s Algorithmic and System Design Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/solid.min.css">
+
+     
+    
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXXXX"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-XXXXXXXXXXXX');
+        </script>
+    
+
+
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body>
+    <div class="body-container">
+        <div class="header-wrapper"><header>
+    <div class="header-container">
+        <div class="header-menu-list">
+            <ul>
+            
+                <li>
+                    <a href="/">主页</a>
+                </li>
+            
+            </ul>
+        </div>
+    </div>
+</header>
+</div>
+        <div class="main-wrapper"><main>
+    <div class="main-container">
+        <div class="post-details">
+            
+            <div class="post-title">
+                <h1>[Google] Winner of tic-tac-toe</h1>
+            </div>
+            <div class="post-meta">
+                <i class="fa-solid fa-clock"></i>&nbsp;<span class="post-date">2014/09/09</span>
+            </div>
+            
+            <div class="post-content">
+                <h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><p><a target="_blank" rel="noopener" href="http://www.glassdoor.com/Interview/How-would-you-determine-if-someone-has-won-a-game-of-tic-tac-toe-on-a-board-of-any-size-QTN_1104.htm">link</a></p>
+<blockquote>
+<p>How would you determine if someone has won a game of tic-tac-toe on a board of any size? </p>
+</blockquote>
+<p>(This is also on CC150v4 19.2 and CC150v4 17.2)</p>
+<h3 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h3><p>First, confirm that when the number of pieces in a line equals to the dimension of the board, one person wins. Eg. for 10 * 10 board, 10 pieces need to be in 1 line. </p>
+<p><strong><a target="_blank" rel="noopener" href="http://www.glassdoor.com/Interview/How-would-you-determine-if-someone-has-won-a-game-of-tic-tac-toe-on-a-board-of-any-size-QTN_1104.htm">We can determine</a> if someone has won during a game in real time</strong>, as in checking after every move. </p>
+<blockquote>
+<p>Create an array of size 2n+2 at the beginning of the game and fill it with zeros. Each spot in the array will be a sum of X’s or O’s horizontally (the first n places in the array), vertically (the second n places in the array) and diagonally (the last 2 places). Then with every move, you add 1 to the 2 places (or 3 if on a diagnol) of the array if X, and subtract 1 if its an O. After adding you check and see if the value of the array is equal to n or -n, if it is, n mean X has won and -n means O has won.</p>
+</blockquote>
+<p>This is uses O(2n+2) space, but it’s the best solution I can find online. I wrote code posted below. </p>
+<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><p><strong>written by me</strong></p>
+<pre><code>enum Piece &#123;
+    Empty, Red, Blue
+&#125;;
+
+public static Piece hasWon3(Piece[][] board) &#123;
+
+    int N = board.length;
+
+    // O(2n+2) space to store count info
+    int[] rowCnt = new int[N];
+    int[] colCnt = new int[N];
+    int[] digCnt = new int[2];
+
+    for (int i = 0; i &lt; N; i++) &#123;
+        for (int j = 0; j &lt; N; j++) &#123;
+
+            int pieceValue = 0;
+            if (board[i][j] == Piece.Blue) &#123;
+                pieceValue = 1;
+            &#125; else if (board[i][j] == Piece.Red) &#123;
+                pieceValue = -1;
+            &#125;
+
+            // if empty, pieceValue is 0
+            // if blue, add 1 in count
+            // if red, subtract 1 in count
+            rowCnt[i] += pieceValue;
+            if (checkFinish(rowCnt[i], N) != null) &#123;
+                return checkFinish(rowCnt[i], N);
+            &#125;
+
+            // after adding the count, check if the game finishes
+            colCnt[j] += pieceValue;
+            if (checkFinish(colCnt[j], N) != null) &#123;
+                return checkFinish(colCnt[j], N);
+            &#125;
+
+            if (i == j) &#123;
+                digCnt[0] += pieceValue;
+                if (checkFinish(digCnt[0], N) != null) &#123;
+                    return checkFinish(digCnt[0], N);
+                &#125;
+            &#125; else if (i + j == N) &#123;
+                digCnt[1] += pieceValue;
+                if (checkFinish(digCnt[1], N) != null) &#123;
+                    return checkFinish(digCnt[1], N);
+                &#125;
+            &#125;
+        &#125;
+    &#125;
+    // game not finished, continue
+    return Piece.Empty;
+&#125;
+
+private static Piece checkFinish(int count, int N) &#123;
+    if (count == N)
+        return Piece.Blue;
+    else if (count == -1 * N)
+        return Piece.Red;
+    else
+        return null;
+&#125;
+</code></pre>
+
+            </div>
+        </div>
+    </div>
+</main>
+
+<script src="https://utteranc.es/client.js"
+    repo="owner/repo"
+    issue-term="pathname"
+    theme="github-light"
+    crossorigin="anonymous"
+    async>
+</script>
+
+  
+
+</div>
+        <div class="footer-wrapper"><footer>
+    <div class="footer-container">
+        <div class="footer-meta">
+            
+                <div class="footer-meta-copyright">
+                    &copy; 2022 mar2ndx.
+                </div>
+            
+            
+                <div class="footer-meta-licenese">
+                    Licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC-BY-NC-SA 4.0</a>
+                </div>
+            
+            
+        </div>
+    </div>
+</footer>
+</div>
+    </div>
+</body>
+</html>

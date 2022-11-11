@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <link rel="shortcut icon" href="/images/avatar.png" type="image/x-icon" />
+    <title>
+        
+            [CC150v5] 8.10 Implement a Hashmap |
+         
+        Mar2ndx&#39;s Algorithmic and System Design Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/solid.min.css">
+
+     
+    
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXXXX"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-XXXXXXXXXXXX');
+        </script>
+    
+
+
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body>
+    <div class="body-container">
+        <div class="header-wrapper"><header>
+    <div class="header-container">
+        <div class="header-menu-list">
+            <ul>
+            
+                <li>
+                    <a href="/">主页</a>
+                </li>
+            
+            </ul>
+        </div>
+    </div>
+</header>
+</div>
+        <div class="main-wrapper"><main>
+    <div class="main-container">
+        <div class="post-details">
+            
+            <div class="post-title">
+                <h1>[CC150v5] 8.10 Implement a Hashmap</h1>
+            </div>
+            <div class="post-meta">
+                <i class="fa-solid fa-clock"></i>&nbsp;<span class="post-date">2014/08/25</span>
+            </div>
+            
+            <div class="post-content">
+                <h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><blockquote>
+<p>Design and implement a hash table which uses chaining (linked lists) to handle collisions.</p>
+</blockquote>
+<h3 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h3><p>I wrote this topic before (using Java source code as a reference). This time, I would like to take another (easier) approach.</p>
+<p>The main part of this is to use an array of list structure like this:</p>
+<pre><code>LinkedList&lt;Cell&lt;K, V&gt;&gt;[] items;
+</code></pre>
+<p>And the Cell Class looks like this:</p>
+<pre><code>public class Cell&lt;K, V&gt; &#123;
+    private K key;
+    private V value;
+
+    public Cell(K k, V v) &#123;
+        key = k;
+        value = v;
+    &#125;
+
+    public boolean equivalent(Cell&lt;K, V&gt; c) &#123;
+        return equivalent(c.getKey());
+    &#125;
+
+    public boolean equivalent(K k) &#123;
+        return key.equals(k);
+    &#125;
+
+    public K getKey() &#123;
+        return key;
+    &#125;
+
+    public V getValue() &#123;
+        return value;
+    &#125;
+&#125;
+</code></pre>
+<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><p><strong>written by me</strong></p>
+<pre><code>public class HashMapCC150&lt;K, V&gt; &#123;
+
+    int size;
+    LinkedList&lt;Cell&lt;K, V&gt;&gt;[] items;
+
+    public HashMapCC150(int num) &#123;
+        this.size = num;
+        items = (LinkedList&lt;Cell&lt;K, V&gt;&gt;[]) new LinkedList[10];
+    &#125;
+
+    public V get(K k) &#123;
+        int hashValue = this.calculateHashCode(k);
+        if (items[hashValue] == null) &#123;
+            items[hashValue] = new LinkedList&lt;Cell&lt;K, V&gt;&gt;();
+            return null;
+        &#125;
+        for (Cell&lt;K, V&gt; cell : items[hashValue]) &#123;
+            if (k.equals(cell.getKey())) &#123;
+                return cell.getValue();
+            &#125;
+        &#125;
+        return null;
+    &#125;
+
+    public V put(K k, V v) &#123;
+        int hashValue = this.calculateHashCode(k);
+        if (items[hashValue] == null) &#123;
+            items[hashValue] = new LinkedList&lt;Cell&lt;K, V&gt;&gt;();
+        &#125;
+        for (Cell&lt;K, V&gt; cell : items[hashValue]) &#123;
+            if (k.equals(cell.getKey())) &#123;
+                items[hashValue].remove(cell);
+                break;
+            &#125;
+        &#125;
+        Cell&lt;K, V&gt; newItem = new Cell&lt;K, V&gt;(k, v);
+        items[hashValue].add(newItem);
+        return null;
+    &#125;
+
+    public V remove(K k) &#123;
+        // not written
+        return null;
+    &#125;
+
+    private int calculateHashCode(K k) &#123;
+        return k.toString().length() % size;
+    &#125;
+
+    public static void main(String[] args) &#123;
+        HashMapCC150&lt;String, String&gt; map = new HashMapCC150&lt;String, String&gt;(10);
+        map.put(&quot;kevin&quot;, &quot;durant&quot;);
+        map.put(&quot;steven&quot;, &quot;curry&quot;);
+        map.put(&quot;al&quot;, &quot;jefferson&quot;);
+        System.out.println(map.get(&quot;kevin&quot;));
+        System.out.println(map.get(&quot;steven&quot;));
+        System.out.println(map.get(&quot;al&quot;));
+        map.put(&quot;kevin&quot;, &quot;martin&quot;);
+        map.put(&quot;steven&quot;, &quot;nash&quot;);
+        map.put(&quot;kevin&quot;, &quot;braynt&quot;);
+        System.out.println(map.get(&quot;kevin&quot;));
+        System.out.println(map.get(&quot;steven&quot;));
+        System.out.println(map.get(&quot;al&quot;));
+    &#125;
+&#125;
+
+class Cell&lt;K, V&gt; &#123;
+    private K key;
+    private V value;
+
+    public Cell(K k, V v) &#123;
+        key = k;
+        value = v;
+    &#125;
+
+    public boolean equivalent(Cell&lt;K, V&gt; c) &#123;
+        return equivalent(c.getKey());
+    &#125;
+
+    public boolean equivalent(K k) &#123;
+        return key.equals(k);
+    &#125;
+
+    public K getKey() &#123;
+        return key;
+    &#125;
+
+    public V getValue() &#123;
+        return value;
+    &#125;
+&#125;
+</code></pre>
+
+            </div>
+        </div>
+    </div>
+</main>
+
+<script src="https://utteranc.es/client.js"
+    repo="owner/repo"
+    issue-term="pathname"
+    theme="github-light"
+    crossorigin="anonymous"
+    async>
+</script>
+
+  
+
+</div>
+        <div class="footer-wrapper"><footer>
+    <div class="footer-container">
+        <div class="footer-meta">
+            
+                <div class="footer-meta-copyright">
+                    &copy; 2022 mar2ndx.
+                </div>
+            
+            
+                <div class="footer-meta-licenese">
+                    Licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC-BY-NC-SA 4.0</a>
+                </div>
+            
+            
+        </div>
+    </div>
+</footer>
+</div>
+    </div>
+</body>
+</html>

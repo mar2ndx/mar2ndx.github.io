@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <link rel="shortcut icon" href="/images/avatar.png" type="image/x-icon" />
+    <title>
+        
+            [Question] Construct a BST from Preorder Traversal |
+         
+        Mar2ndx&#39;s Algorithmic and System Design Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/solid.min.css">
+
+     
+    
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXXXX"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-XXXXXXXXXXXX');
+        </script>
+    
+
+
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body>
+    <div class="body-container">
+        <div class="header-wrapper"><header>
+    <div class="header-container">
+        <div class="header-menu-list">
+            <ul>
+            
+                <li>
+                    <a href="/">主页</a>
+                </li>
+            
+            </ul>
+        </div>
+    </div>
+</header>
+</div>
+        <div class="main-wrapper"><main>
+    <div class="main-container">
+        <div class="post-details">
+            
+            <div class="post-title">
+                <h1>[Question] Construct a BST from Preorder Traversal</h1>
+            </div>
+            <div class="post-meta">
+                <i class="fa-solid fa-clock"></i>&nbsp;<span class="post-date">2014/07/29</span>
+            </div>
+            
+            <div class="post-content">
+                <h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><p><a target="_blank" rel="noopener" href="http://www.geeksforgeeks.org/g-fact-17/">link</a></p>
+<blockquote>
+<p>Given preorder, construct the BST. </p>
+</blockquote>
+<h3 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h3><p>We can get <strong>Inorder traversal</strong> by sorting the given Preorder traversal. So we have the required two traversals to construct the Binary Search Tree. </p>
+<p>A very similar approach would be <strong>always spliting the array</strong> by the head value. Time complexity is O(nlgn) for a balanced BST, or O(n^2) for a screwed tree. </p>
+<p><strong>Howver, there’s <a target="_blank" rel="noopener" href="http://www.geeksforgeeks.org/construct-bst-from-given-preorder-traversa/">O(n) solutions</a></strong>. </p>
+<blockquote>
+<p>The trick is to set a range {min .. max} for every node. Initialize the range as {INT_MIN .. INT_MAX}. The first node will definitely be in range, so create root node. To construct the left subtree, set the range as {INT_MIN …root-&gt;data}. If a values is in the range {INT_MIN .. root-&gt;data}, the values is part part of left subtree. To construct the right subtree, set the range as {root-&gt;data..max .. INT_MAX}.</p>
+</blockquote>
+<p><strong>The key</strong> is the we need <strong>a public variable</strong> as a pointer (to traverse thru the array). </p>
+<p>There’s another <a target="_blank" rel="noopener" href="http://www.geeksforgeeks.org/construct-bst-from-given-preorder-traversal-set-2/">O(n) solution</a> using stack. I wont’ cover for now. </p>
+<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><p><strong>written by me</strong></p>
+<p>It’s not an easy question, to be frank. </p>
+<pre><code>int p;
+
+public TreeNode solution(int[] preorder) &#123;
+    p = 0;
+    return helper(preorder, Integer.MIN_VALUE, Integer.MAX_VALUE);
+&#125;
+
+private TreeNode helper(int[] A, int min, int max) &#123;
+    int len = A.length;
+    if (p &gt;= len) &#123;
+        return null;
+    &#125; else if (A[p] &lt; min || A[p] &gt; max) &#123;
+        return null;
+    &#125;
+    TreeNode root = new TreeNode(A[p]);
+    p++;
+    root.left = helper(A, min, root.val);
+    root.right = helper(A, root.val, max);
+    return root;
+&#125;
+</code></pre>
+
+            </div>
+        </div>
+    </div>
+</main>
+
+<script src="https://utteranc.es/client.js"
+    repo="owner/repo"
+    issue-term="pathname"
+    theme="github-light"
+    crossorigin="anonymous"
+    async>
+</script>
+
+  
+
+</div>
+        <div class="footer-wrapper"><footer>
+    <div class="footer-container">
+        <div class="footer-meta">
+            
+                <div class="footer-meta-copyright">
+                    &copy; 2022 mar2ndx.
+                </div>
+            
+            
+                <div class="footer-meta-licenese">
+                    Licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC-BY-NC-SA 4.0</a>
+                </div>
+            
+            
+        </div>
+    </div>
+</footer>
+</div>
+    </div>
+</body>
+</html>

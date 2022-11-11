@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <link rel="shortcut icon" href="/images/avatar.png" type="image/x-icon" />
+    <title>
+        
+            [CC150v5] 8.4 Design a Parking Lot  |
+         
+        Mar2ndx&#39;s Algorithmic and System Design Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/solid.min.css">
+
+     
+    
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXXXX"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-XXXXXXXXXXXX');
+        </script>
+    
+
+
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body>
+    <div class="body-container">
+        <div class="header-wrapper"><header>
+    <div class="header-container">
+        <div class="header-menu-list">
+            <ul>
+            
+                <li>
+                    <a href="/">主页</a>
+                </li>
+            
+            </ul>
+        </div>
+    </div>
+</header>
+</div>
+        <div class="main-wrapper"><main>
+    <div class="main-container">
+        <div class="post-details">
+            
+            <div class="post-title">
+                <h1>[CC150v5] 8.4 Design a Parking Lot </h1>
+            </div>
+            <div class="post-meta">
+                <i class="fa-solid fa-clock"></i>&nbsp;<span class="post-date">2014/08/25</span>
+            </div>
+            
+            <div class="post-content">
+                <h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><blockquote>
+<p>Design a Parking Lot.</p>
+</blockquote>
+<h3 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h3><p>Class hierarchy:</p>
+<ol>
+<li>A parking lot has multiple Levels.</li>
+<li>A Level has multiple Parking Spot.</li>
+<li>A Spot can park motorcycle, car or bus, which all belongs to Vehicle.</li>
+</ol>
+<p>Implement methods:</p>
+<ol>
+<li>Vehicle.parkInSpot(Spot s)</li>
+<li>Vehicle.leaveSpot(Spot s)</li>
+<li>Vehicle.canFitIn(Spot s)</li>
+<li>ParkingLot.parkVehicle(Vehicle v)</li>
+<li>Level.parkVehicle(Vehicle v)</li>
+<li>Level.parkVehicleAtSpot(Vehicle v, Spot s)</li>
+<li>Level.findAvailableSpot(VehicleType vt)</li>
+</ol>
+<p><strong>ParkingLot Class is just a wrapper class of Levels</strong>. By doing this, we seperated out parking logic from other broader actions (like Spot management).</p>
+<p>The code below is from CC150v5. <strong>Its design is a bit strange</strong> (a car can occupy multiple spots), so just use this code as a guide but not a reference.</p>
+<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><p>ParkingLot.java</p>
+<pre><code>public class ParkingLot &#123;
+    private Level[] levels;
+    private final int NUM_LEVELS = 5;
+
+    public ParkingLot() &#123;
+        levels = new Level[NUM_LEVELS];
+        for (int i = 0; i &lt; NUM_LEVELS; i++) &#123;
+            levels[i] = new Level(i, 30);
+        &#125;
+    &#125;
+
+    /* Park the vehicle in a spot (or multiple spots). Return false if failed. */
+    public boolean parkVehicle(Vehicle vehicle) &#123;
+        for (int i = 0; i &lt; levels.length; i++) &#123;
+            if (levels[i].parkVehicle(vehicle)) &#123;
+                return true;
+            &#125;
+        &#125;
+        return false;
+    &#125;
+
+    public void print() &#123;
+        for (int i = 0; i &lt; levels.length; i++) &#123;
+            System.out.print(&quot;Level&quot; + i + &quot;: &quot;);
+            levels[i].print();
+            System.out.println(&quot;&quot;);
+        &#125;
+        System.out.println(&quot;&quot;);
+    &#125;
+&#125;
+</code></pre>
+<p>Level.java</p>
+<pre><code>/* Represents a level in a parking garage */
+public class Level &#123;
+    private int floor;
+    private ParkingSpot[] spots;
+    private int availableSpots = 0; // number of free spots
+    private static final int SPOTS_PER_ROW = 10;
+
+    public Level(int flr, int numberSpots) &#123;
+        floor = flr;
+        spots = new ParkingSpot[numberSpots];
+        int largeSpots = numberSpots / 4;
+        int bikeSpots = numberSpots / 4;
+        int compactSpots = numberSpots - largeSpots - bikeSpots;
+        for (int i = 0; i &lt; numberSpots; i++) &#123;
+            VehicleSize sz = VehicleSize.Motorcycle;
+            if (i &lt; largeSpots) &#123;
+                sz = VehicleSize.Large;
+            &#125; else if (i &lt; largeSpots + compactSpots) &#123;
+                sz = VehicleSize.Compact;
+            &#125;
+            int row = i / SPOTS_PER_ROW;
+            spots[i] = new ParkingSpot(this, row, i, sz);
+        &#125;
+        availableSpots = numberSpots;
+    &#125;
+
+    public int availableSpots() &#123;
+        return availableSpots;
+    &#125;
+
+    /* Try to find a place to park this vehicle. Return false if failed. */
+    public boolean parkVehicle(Vehicle vehicle) &#123;
+        if (availableSpots() &lt; vehicle.getSpotsNeeded()) &#123;
+            return false;
+        &#125;
+        int spotNumber = findAvailableSpots(vehicle);
+        if (spotNumber &lt; 0) &#123;
+            return false;
+        &#125;
+        return parkStartingAtSpot(spotNumber, vehicle);
+    &#125;
+
+    /* Park a vehicle starting at the spot spotNumber, and continuing until vehicle.spotsNeeded. */
+    private boolean parkStartingAtSpot(int spotNumber, Vehicle vehicle) &#123;
+        vehicle.clearSpots();
+        boolean success = true;
+        for (int i = spotNumber; i &lt; spotNumber + vehicle.spotsNeeded; i++) &#123;
+             success &amp;= spots[i].park(vehicle);
+        &#125;
+        availableSpots -= vehicle.spotsNeeded;
+        return success;
+    &#125;
+
+    /* find a spot to park this vehicle. Return index of spot, or -1 on failure. */
+    private int findAvailableSpots(Vehicle vehicle) &#123;
+        int spotsNeeded = vehicle.getSpotsNeeded();
+        int lastRow = -1;
+        int spotsFound = 0;
+        for (int i = 0; i &lt; spots.length; i++) &#123;
+            ParkingSpot spot = spots[i];
+            if (lastRow != spot.getRow()) &#123;
+                spotsFound = 0;
+                lastRow = spot.getRow();
+            &#125;
+            if (spot.canFitVehicle(vehicle)) &#123;
+                spotsFound++;
+            &#125; else &#123;
+                spotsFound = 0;
+            &#125;
+            if (spotsFound == spotsNeeded) &#123;
+                return i - (spotsNeeded - 1);
+            &#125;
+        &#125;
+        return -1;
+    &#125;
+
+    public void print() &#123;
+        int lastRow = -1;
+        for (int i = 0; i &lt; spots.length; i++) &#123;
+            ParkingSpot spot = spots[i];
+            if (spot.getRow() != lastRow) &#123;
+                System.out.print(&quot;  &quot;);
+                lastRow = spot.getRow();
+            &#125;
+            spot.print();
+        &#125;
+    &#125;
+
+    /* When a car was removed from the spot, increment availableSpots */
+    public void spotFreed() &#123;
+        availableSpots++;
+    &#125;
+&#125;
+</code></pre>
+
+            </div>
+        </div>
+    </div>
+</main>
+
+<script src="https://utteranc.es/client.js"
+    repo="owner/repo"
+    issue-term="pathname"
+    theme="github-light"
+    crossorigin="anonymous"
+    async>
+</script>
+
+  
+
+</div>
+        <div class="footer-wrapper"><footer>
+    <div class="footer-container">
+        <div class="footer-meta">
+            
+                <div class="footer-meta-copyright">
+                    &copy; 2022 mar2ndx.
+                </div>
+            
+            
+                <div class="footer-meta-licenese">
+                    Licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC-BY-NC-SA 4.0</a>
+                </div>
+            
+            
+        </div>
+    </div>
+</footer>
+</div>
+    </div>
+</body>
+</html>

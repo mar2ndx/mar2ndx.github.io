@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <link rel="shortcut icon" href="/images/avatar.png" type="image/x-icon" />
+    <title>
+        
+            [CC150v5] 17.13 Convert BST to DLL  |
+         
+        Mar2ndx&#39;s Algorithmic and System Design Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/solid.min.css">
+
+     
+    
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXXXX"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-XXXXXXXXXXXX');
+        </script>
+    
+
+
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body>
+    <div class="body-container">
+        <div class="header-wrapper"><header>
+    <div class="header-container">
+        <div class="header-menu-list">
+            <ul>
+            
+                <li>
+                    <a href="/">主页</a>
+                </li>
+            
+            </ul>
+        </div>
+    </div>
+</header>
+</div>
+        <div class="main-wrapper"><main>
+    <div class="main-container">
+        <div class="post-details">
+            
+            <div class="post-title">
+                <h1>[CC150v5] 17.13 Convert BST to DLL </h1>
+            </div>
+            <div class="post-meta">
+                <i class="fa-solid fa-clock"></i>&nbsp;<span class="post-date">2014/09/30</span>
+            </div>
+            
+            <div class="post-content">
+                <h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><blockquote>
+<p>Consider a simple node-like data structure called BiNode, which has pointers to two other nodes.</p>
+</blockquote>
+<pre><code>public class BiNode &#123;
+    public BiNode node1, node2;
+    public int data;
+&#125;
+</code></pre>
+<blockquote>
+<p>The data structure BiNode could be used to represent both a binary tree (where node1 is the left node and node2 is the right node) or a doubly linked list (where node1 is the previous node and node2 is the next node). Implement a method to convert a binary search tree (implemented with BiNode) into a doubly linked list. The values should be kept in order and the operation should be performed in place (that is, on the original data structure). </p>
+</blockquote>
+<h3 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h3><p>At another post <strong>[LeetCode Plus] Convert BST to Circular DLL</strong>, we already discussed 2 approaches: </p>
+<ol>
+<li>in-order traversal approach</li>
+<li>divide and conquer approach</li>
+</ol>
+<p>First approach isn’t intuitive. We will further discuss D&amp;C approach here. </p>
+<p><strong>The key of the solution is how we return both HEAD and TAIL</strong>. The book suggests 3 ways: </p>
+<ol>
+<li>Build a <strong>data structure</strong> to store both head and tail</li>
+<li><strong>Just return head</strong>, and retrieve tail by traversing thru - bad time complexity O(n^2)</li>
+<li><strong>Use circular linked-list</strong>! Time O(n). </li>
+</ol>
+<p>I wrote the code for 1st and 2nd approach. And 3rd is already covered in previous post. </p>
+<ul>
+<li>You need to understand why we need the list to be circular. </li>
+</ul>
+<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><p><strong>Approach 1</strong></p>
+<pre><code>public static BiNode convert(BiNode root) &#123;
+    BiNodePair res = helper(root);
+    return res.leftMost;
+&#125;
+
+private static BiNodePair helper(BiNode node) &#123;
+    if (node == null) &#123;
+        return null;
+    &#125;
+    BiNodePair res = new BiNodePair(node, node);
+    if (node.node1 != null) &#123;
+        BiNodePair leftRes = helper(node.node1);
+        res.leftMost = leftRes.leftMost;
+        leftRes.rightMost.node2 = node;
+        node.node1 = leftRes.rightMost;
+    &#125;
+    if (node.node2 != null) &#123;
+        BiNodePair rightRes = helper(node.node2);
+        res.rightMost = rightRes.rightMost;
+        rightRes.leftMost.node1 = node;
+        node.node2 = rightRes.leftMost;
+    &#125;
+    return res;
+&#125;
+
+static class BiNodePair &#123;
+    BiNode leftMost;
+    BiNode rightMost;
+
+    public BiNodePair(BiNode node1, BiNode node2) &#123;
+        leftMost = node1;
+        rightMost = node2;
+    &#125;
+&#125;
+</code></pre>
+<p><strong>Approach 2</strong></p>
+<pre><code>public static BiNode convert(BiNode root) &#123;
+    if (root == null) &#123;
+        return null;
+    &#125;
+    return helper(root);
+&#125;
+
+private static BiNode helper(BiNode node) &#123;
+    // node is not null
+    BiNode newHead = node;
+    // do left part
+    if (node.node1 != null) &#123;
+        newHead = helper(node.node1);
+        BiNode leftTail = getListTail(newHead);
+        leftTail.node2 = node;
+        node.node1 = leftTail;
+    &#125;
+    // do right part
+    if (node.node2 != null) &#123;
+        BiNode rightHead = helper(node.node2);
+        node.node2 = rightHead;
+        rightHead.node1 = node;
+    &#125;
+    return newHead;
+&#125;
+
+private static BiNode getListTail(BiNode head) &#123;
+    // head is not null
+    while (head.node2 != null) &#123;
+        head = head.node2;
+    &#125;
+    return head;
+&#125;
+</code></pre>
+
+            </div>
+        </div>
+    </div>
+</main>
+
+<script src="https://utteranc.es/client.js"
+    repo="owner/repo"
+    issue-term="pathname"
+    theme="github-light"
+    crossorigin="anonymous"
+    async>
+</script>
+
+  
+
+</div>
+        <div class="footer-wrapper"><footer>
+    <div class="footer-container">
+        <div class="footer-meta">
+            
+                <div class="footer-meta-copyright">
+                    &copy; 2022 mar2ndx.
+                </div>
+            
+            
+                <div class="footer-meta-licenese">
+                    Licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC-BY-NC-SA 4.0</a>
+                </div>
+            
+            
+        </div>
+    </div>
+</footer>
+</div>
+    </div>
+</body>
+</html>

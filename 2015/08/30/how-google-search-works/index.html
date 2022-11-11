@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <link rel="shortcut icon" href="/images/avatar.png" type="image/x-icon" />
+    <title>
+        
+            [Design] How Google search works  |
+         
+        Mar2ndx&#39;s Algorithmic and System Design Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/solid.min.css">
+
+     
+    
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXXXX"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-XXXXXXXXXXXX');
+        </script>
+    
+
+
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body>
+    <div class="body-container">
+        <div class="header-wrapper"><header>
+    <div class="header-container">
+        <div class="header-menu-list">
+            <ul>
+            
+                <li>
+                    <a href="/">主页</a>
+                </li>
+            
+            </ul>
+        </div>
+    </div>
+</header>
+</div>
+        <div class="main-wrapper"><main>
+    <div class="main-container">
+        <div class="post-details">
+            
+            <div class="post-title">
+                <h1>[Design] How Google search works </h1>
+            </div>
+            <div class="post-meta">
+                <i class="fa-solid fa-clock"></i>&nbsp;<span class="post-date">2015/08/30</span>
+            </div>
+            
+            <div class="post-content">
+                <h1 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h1><p>Launched on Sep 15th, 1997</p>
+<p><strong>60 trillion individual pages. 100 million GB data</strong>.</p>
+<p><strong>40,000 search per second</strong>, or 3 billion search per day.</p>
+<p>As of Feb 2015, 65% market share in US.</p>
+<h1 id="1-Crawl"><a href="#1-Crawl" class="headerlink" title="1. Crawl"></a>1. Crawl</h1><p>Google crawl from 1 page to another using <strong><a target="_blank" rel="noopener" href="https://support.google.com/webmasters/answer/182072?vid=1-635765406868848825-432642872">Googlebot</a></strong>. It starts from previous urls crawled, or augmented with <strong><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Site_map">Sitemap data</a></strong></p>
+<blockquote>
+<p><strong>A sitemap</strong> is a list of pages of a web site accessible to crawlers or users. It can be either a document in any form used as a planning tool for Web design, or a Web page that lists the pages on a Web site, typically organized in hierarchical fashion.</p>
+</blockquote>
+<h1 id="2-Indexing"><a href="#2-Indexing" class="headerlink" title="2. Indexing"></a>2. Indexing</h1><p>Compile the data (key content tags, atrributes, like title tags, ALT attributes). Google don’t process rich media or dynamic files.</p>
+<h1 id="3-Algorithm"><a href="#3-Algorithm" class="headerlink" title="3. Algorithm"></a>3. Algorithm</h1><p>When search, pull all relevant results from the Index.</p>
+<p>Rank the result based on 200+ factors, one of which is the <strong><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/PageRank">PageRank</a></strong> for a given page.</p>
+<blockquote>
+<p><strong>PageRank</strong> is the measure of the importance of a page based on the incoming links from other pages. In simple terms, each link to a page on your site from another site adds to your site’s PageRank.</p>
+</blockquote>
+<blockquote>
+<p>Not all links are equal: Google works hard to identify spam links. The best types of links are those that are given based on the quality of your content.</p>
+</blockquote>
+<p>To rank higher, follow <a target="_blank" rel="noopener" href="https://support.google.com/webmasters/answer/35769?vid=1-635765406868848825-432642872">Webmaster Guidelines</a>.</p>
+
+            </div>
+        </div>
+    </div>
+</main>
+
+<script src="https://utteranc.es/client.js"
+    repo="owner/repo"
+    issue-term="pathname"
+    theme="github-light"
+    crossorigin="anonymous"
+    async>
+</script>
+
+  
+
+</div>
+        <div class="footer-wrapper"><footer>
+    <div class="footer-container">
+        <div class="footer-meta">
+            
+                <div class="footer-meta-copyright">
+                    &copy; 2022 mar2ndx.
+                </div>
+            
+            
+                <div class="footer-meta-licenese">
+                    Licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC-BY-NC-SA 4.0</a>
+                </div>
+            
+            
+        </div>
+    </div>
+</footer>
+</div>
+    </div>
+</body>
+</html>

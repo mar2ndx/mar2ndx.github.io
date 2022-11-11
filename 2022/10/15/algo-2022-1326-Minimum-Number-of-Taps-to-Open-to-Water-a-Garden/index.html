@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <link rel="shortcut icon" href="/images/avatar.png" type="image/x-icon" />
+    <title>
+        
+            1326. Minimum Number of Taps to Open to Water a Garden |
+         
+        Mar2ndx&#39;s Algorithmic and System Design Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/solid.min.css">
+
+     
+    
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXXXX"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-XXXXXXXXXXXX');
+        </script>
+    
+
+
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body>
+    <div class="body-container">
+        <div class="header-wrapper"><header>
+    <div class="header-container">
+        <div class="header-menu-list">
+            <ul>
+            
+                <li>
+                    <a href="/">主页</a>
+                </li>
+            
+            </ul>
+        </div>
+    </div>
+</header>
+</div>
+        <div class="main-wrapper"><main>
+    <div class="main-container">
+        <div class="post-details">
+            
+            <div class="post-title">
+                <h1>1326. Minimum Number of Taps to Open to Water a Garden</h1>
+            </div>
+            <div class="post-meta">
+                <i class="fa-solid fa-clock"></i>&nbsp;<span class="post-date">2022/10/15</span>
+            </div>
+            
+            <div class="post-content">
+                <p>Link: <a target="_blank" rel="noopener" href="https://leetcode.cn/problems/minimum-number-of-taps-to-open-to-water-a-garden/">https://leetcode.cn/problems/minimum-number-of-taps-to-open-to-water-a-garden/</a></p>
+<h1 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h1><p>difficulty: hard<br>adj diff: 5</p>
+<pre><code>There is a one-dimensional garden on the x-axis. The garden starts at the point 0 and ends at the point n. (i.e The length of the garden is n).
+
+There are n + 1 taps located at points [0, 1, ..., n] in the garden.
+
+Given an integer n and an integer array ranges of length n + 1 where ranges[i] (0-indexed) means the i-th tap can water the area [i - ranges[i], i + ranges[i]] if it was open.
+
+Return the minimum number of taps that should be open to water the whole garden, If the garden cannot be watered return -1.
+Example 1:
+
+Input: n = 5, ranges = [3,4,1,1,0,0]
+Output: 1
+Explanation: The tap at point 0 can cover the interval [-3,3]
+The tap at point 1 can cover the interval [-3,5]
+The tap at point 2 can cover the interval [1,3]
+The tap at point 3 can cover the interval [2,4]
+The tap at point 4 can cover the interval [4,4]
+The tap at point 5 can cover the interval [5,5]
+Opening Only the second tap will water the whole garden [0,5]
+
+Example 2:
+
+Input: n = 3, ranges = [0,0,0,0]
+Output: -1
+Explanation: Even if you activate all the four taps you cannot water the whole garden.
+Constraints:
+
+    1 &lt;= n &lt;= 104
+    ranges.length == n + 1
+    0 &lt;= ranges[i] &lt;= 100
+</code></pre>
+<h2 id="Explan"><a href="#Explan" class="headerlink" title="Explan"></a>Explan</h2><p>这道题很难。</p>
+<p>这个 dp 方程，基本是这个意思：</p>
+<p>dp[i]指的是：能 reach 到 i 的所有 tap 之中，最远最远能 reach 到哪个 position？假如是 w，则记录为：</p>
+<pre><code>dp[i] = w
+</code></pre>
+<p>最后，判断有几个不同的 w 值，就行了。</p>
+<pre><code>ranges[] = &#123;3, 0, 0, 0&#125;;
+maxReach[] = &#123;3, 3, 3, 0&#125;;
+return 1;
+</code></pre>
+<h1 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h1><pre><code class="hljs plaintext">public int minTaps(int n, int[] ranges) &#123;
+    int[] maxReach = new int[n + 1];
+    // maxReach[i] = w, means that:
+    // Pick a tap that could reach position i,
+    // it could also (for the max) reach position w.
+    for (int i = 0; i &lt;= n; i++) &#123;
+        int leftBound = Math.max(0, i - ranges[i]);
+        int rightBound = Math.min(n, i + ranges[i]);
+        // be careful: j &lt; rightBound, not j &lt;= rightBound
+        // because a tap can reach position rightBound,
+        // doesn&#x27;t mean it can cover the area right side of rightBound
+        // thus maxReach[rightBound] is still 0
+        for (int j = leftBound; j &lt; rightBound; j++) &#123;
+            maxReach[j] = Math.max(maxReach[j], rightBound);
+        &#125;
+    &#125;
+    int start = 0;
+    int steps = 0;
+    while (start &lt; n) &#123;
+        if (maxReach[start] == 0) &#123;
+            return -1;
+        &#125;
+        // eg. ranges[] = &#123;3, 0, 0, 0&#125;
+        // maxReach[] = &#123;3, 3, 3, 0&#125;, then return 1
+        start = maxReach[start];
+        steps++;
+    &#125;
+    return steps;
+&#125;</code></pre>
+
+            </div>
+        </div>
+    </div>
+</main>
+
+<script src="https://utteranc.es/client.js"
+    repo="owner/repo"
+    issue-term="pathname"
+    theme="github-light"
+    crossorigin="anonymous"
+    async>
+</script>
+
+  
+
+</div>
+        <div class="footer-wrapper"><footer>
+    <div class="footer-container">
+        <div class="footer-meta">
+            
+                <div class="footer-meta-copyright">
+                    &copy; 2022 mar2ndx.
+                </div>
+            
+            
+                <div class="footer-meta-licenese">
+                    Licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC-BY-NC-SA 4.0</a>
+                </div>
+            
+            
+        </div>
+    </div>
+</footer>
+</div>
+    </div>
+</body>
+</html>

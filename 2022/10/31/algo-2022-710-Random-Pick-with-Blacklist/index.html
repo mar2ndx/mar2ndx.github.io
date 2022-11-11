@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <link rel="shortcut icon" href="/images/avatar.png" type="image/x-icon" />
+    <title>
+        
+            710. Random Pick with Blacklist |
+         
+        Mar2ndx&#39;s Algorithmic and System Design Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/solid.min.css">
+
+     
+    
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXXXX"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-XXXXXXXXXXXX');
+        </script>
+    
+
+
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body>
+    <div class="body-container">
+        <div class="header-wrapper"><header>
+    <div class="header-container">
+        <div class="header-menu-list">
+            <ul>
+            
+                <li>
+                    <a href="/">主页</a>
+                </li>
+            
+            </ul>
+        </div>
+    </div>
+</header>
+</div>
+        <div class="main-wrapper"><main>
+    <div class="main-container">
+        <div class="post-details">
+            
+            <div class="post-title">
+                <h1>710. Random Pick with Blacklist</h1>
+            </div>
+            <div class="post-meta">
+                <i class="fa-solid fa-clock"></i>&nbsp;<span class="post-date">2022/10/31</span>
+            </div>
+            
+            <div class="post-content">
+                <p>Link: <a target="_blank" rel="noopener" href="https://leetcode.cn/problems/random-pick-with-blacklist/">https://leetcode.cn/problems/random-pick-with-blacklist/</a></p>
+<h1 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h1><pre><code>difficulty: hard
+adj diff: 5
+
+You are given an integer n and an array of unique integers blacklist. Design an algorithm to pick a random integer in the range [0, n - 1] that is not in blacklist. Any integer that is in the mentioned range and not in blacklist should be equally likely to be returned.
+
+Optimize your algorithm such that it minimizes the number of calls to the built-in random function of your language.
+
+Implement the Solution class:
+
+    Solution(int n, int[] blacklist) Initializes the object with the integer n and the blacklisted integers blacklist.
+    int pick() Returns a random integer in the range [0, n - 1] and not in blacklist.
+
+Example 1:
+
+Input
+[&quot;Solution&quot;, &quot;pick&quot;, &quot;pick&quot;, &quot;pick&quot;, &quot;pick&quot;, &quot;pick&quot;, &quot;pick&quot;, &quot;pick&quot;]
+[[7, [2, 3, 5]], [], [], [], [], [], [], []]
+Output
+[null, 0, 4, 1, 6, 1, 0, 4]
+
+Explanation
+Solution solution = new Solution(7, [2, 3, 5]);
+solution.pick(); // return 0, any integer from [0,1,4,6] should be ok. Note that for every call of pick,
+                 // 0, 1, 4, and 6 must be equally likely to be returned (i.e., with probability 1/4).
+solution.pick(); // return 4
+solution.pick(); // return 1
+solution.pick(); // return 6
+solution.pick(); // return 1
+solution.pick(); // return 0
+solution.pick(); // return 4
+Constraints:
+
+    1 &lt;= n &lt;= 109
+    0 &lt;= blacklist.length &lt;= min(105, n - 1)
+    0 &lt;= blacklist[i] &lt; n
+    All the values of blacklist are unique.
+    At most 2 * 104 calls will be made to pick.
+</code></pre>
+<p>这道题，代码比较难写。</p>
+<p>思路如下：</p>
+<pre><code>// n = 11 &amp; blacklist = &#123;7, 9&#125;
+// 0 1 2 3 4 5 6 (7) 8 (9) 10
+</code></pre>
+<p>在 11 - 2 = 9 的位置，做一下切割：</p>
+<pre><code>// 0 1 2 3 4 5 6 (7) 8 ||| (9) 10
+</code></pre>
+<p>然后，在 map 种，放入整个 k-v：</p>
+<pre><code>// map = &#123; 7 =&gt; 10&#125;
+</code></pre>
+<p>这样，我 generate 一个[0, 9) 范围内的 int rand = generateRandom()。如果 rand == 7，则返回 10；否则直接返回 rand。</p>
+<h1 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h1><pre><code class="hljs plaintext">class Solution &#123;
+
+    Random random = new Random();
+    Map&lt;Integer, Integer&gt; map = new HashMap&lt;Integer, Integer&gt;();
+    int range;
+
+    public Solution(int n, int[] blacklist) &#123;
+        // eg. 0 1 2 3 4 5 6 (7) 8 (9) 10 (n = 11 &amp; blacklist = &#123;7, 9&#125;)
+        // generate random number in the range of [0, 8]
+        // if got 8, return 8; if got 7, return 10;
+        Arrays.sort(blacklist);
+        range = n - blacklist.length;
+
+        if (blacklist.length == 0) return;
+
+        // eg. 0 1 2 3 4 5 6 (7) 8 || (9) 10 (range = 9)
+        // need to put into the map [7 -&gt; 10]
+        int left = 0, right = blacklist.length - 1;
+        int validNum = n - 1;
+
+        while (left &lt;= right &amp;&amp; blacklist[left] &lt; range) &#123;
+            while (blacklist[right] == validNum) &#123;
+                right--;
+                validNum--;
+            &#125;
+            map.put(blacklist[left], validNum);
+            left++;
+            validNum--;
+        &#125;
+    &#125;
+
+    public int pick() &#123;
+        int genRand = random.nextInt(range);
+        if (map.containsKey(genRand)) &#123;
+            return map.get(genRand);
+        &#125; else &#123;
+            return genRand;
+        &#125;
+    &#125;
+&#125;</code></pre>
+
+            </div>
+        </div>
+    </div>
+</main>
+
+<script src="https://utteranc.es/client.js"
+    repo="owner/repo"
+    issue-term="pathname"
+    theme="github-light"
+    crossorigin="anonymous"
+    async>
+</script>
+
+  
+
+</div>
+        <div class="footer-wrapper"><footer>
+    <div class="footer-container">
+        <div class="footer-meta">
+            
+                <div class="footer-meta-copyright">
+                    &copy; 2022 mar2ndx.
+                </div>
+            
+            
+                <div class="footer-meta-licenese">
+                    Licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC-BY-NC-SA 4.0</a>
+                </div>
+            
+            
+        </div>
+    </div>
+</footer>
+</div>
+    </div>
+</body>
+</html>

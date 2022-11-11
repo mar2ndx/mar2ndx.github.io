@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <link rel="shortcut icon" href="/images/avatar.png" type="image/x-icon" />
+    <title>
+        
+            [UVa] Wooden Sticks  |
+         
+        Mar2ndx&#39;s Algorithmic and System Design Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/solid.min.css">
+
+     
+    
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXXXX"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-XXXXXXXXXXXX');
+        </script>
+    
+
+
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body>
+    <div class="body-container">
+        <div class="header-wrapper"><header>
+    <div class="header-container">
+        <div class="header-menu-list">
+            <ul>
+            
+                <li>
+                    <a href="/">主页</a>
+                </li>
+            
+            </ul>
+        </div>
+    </div>
+</header>
+</div>
+        <div class="main-wrapper"><main>
+    <div class="main-container">
+        <div class="post-details">
+            
+            <div class="post-title">
+                <h1>[UVa] Wooden Sticks </h1>
+            </div>
+            <div class="post-meta">
+                <i class="fa-solid fa-clock"></i>&nbsp;<span class="post-date">2015/04/14</span>
+            </div>
+            
+            <div class="post-content">
+                <h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><p><a target="_blank" rel="noopener" href="https://icpcarchive.ecs.baylor.edu/index.php?option=com_onlinejudge&Itemid=8&page=show_problem&problem=323">link</a></p>
+<body>There is a pile of <i>n </i>wooden sticks. The length and weight of
+each stick are known in advance. The sticks are
+to be processed by a woodworking machine in one by one fashion. It
+needs some time, called setup time, for
+the machine to prepare processing a stick. The setup times are
+associated with cleaning operations and
+changing tools and shapes in the machine. The setup times of the
+woodworking machine are given as follows:
+<ul>
+<li>The setup time for the first wooden
+stick is 1 minute.</li>
+<li>
+Right after processing a stick of length <i>l </i>and weight <i>w
+</i>, the machine will need no setup time for a stick
+of length <i>l</i>' and weight <i>w</i>' if <i>l </i>&lt;=<i>l</i>'
+and <i>w </i>&lt;=<i>w</i>' . </li>
+</ul>
+Otherwise, it will need 1 minute for setup.<br>
+You are to find the minimum setup time to process a given pile of <i>n
+</i>wooden sticks. For example, if you have
+five sticks whose pairs of length and weight are (4,9), (5,2), (2,1), (3,5),
+and (1,4) then the minimum setup
+time should be 2 minutes since there is a sequence of pairs (1,4),
+(3,5), (4,9), (2,1), (5,2).
+<h2><font size="4" color="#ff0000"><a name="SECTION0001001000000000000000">Input</a> <br>
+</font></h2>
+The input consists of <i>T</i> test cases. The number of test cases (<i>T</i>) is given in the first line of the input file. Each
+test case consists of two lines: The first line has an integer <i>n</i>,
+1&lt;=<i>n&lt;=</i>5000, that represents the number of
+wooden sticks in the test case, and the second line contains 2<i>n </i>positive
+integers <i>l<sub>1</sub></i>, <i>w<sub>1</sub></i>, <i>l<sub>2</sub></i>,
+<i>w<sub>2</sub></i>, ..., <i>l<sub>n</sub></i>, <i>w<sub>n</sub></i>,
+each of magnitude at most 10000, where <i>l<sub>i</sub> </i>and <i>w<sub>i</sub>
+</i>are the length and weight of the <i>i </i>th wooden stick,
+respectively. The 2<i>n </i>integers are delimited by one or
+more spaces.
+
+<h2><font size="4" color="#ff0000"><a name="SECTION0001002000000000000000">Output</a>&nbsp;</font>
+</h2>
+The output should contain the minimum setup time in minutes, one per
+line.
+<h2><font size="4" color="#ff0000"><a name="SECTION0001003000000000000000">Sample Input</a> <br>
+</font></h2>
+
+<pre>3
+5
+4 9 5 2 2 1 3 5 1 4
+3
+2 2 1 1 2 2
+3
+1 3 2 2 3 1
+</pre>
+
+<h2><font size="4" color="#ff0000"><a name="SECTION000
+1004000000000000000">Sample Output</a>&nbsp;</font>
+</h2>
+
+<pre>2
+1
+3
+</pre>
+
+</body>
+
+<h3 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h3><p>This question is a little similar to <a href="/cc150v5/2014-09-17-stack-up-boxes">[CC150v5] 9.10 Stack Up the Boxes</a>, yet different.</p>
+<h3 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h3><p>Solution quoted from <a target="_blank" rel="noopener" href="http://www.csdn123.com/html/blogs/20130823/58042.htm">脚本百事通</a>:</p>
+<blockquote>
+<p>按长度从小到大排序, 若长度相同, 则按重量从小到大排序(先按重量再按长度也行)</p>
+</blockquote>
+<blockquote>
+<p>然后, 我们针对当前木棍, 与剩下的木棍比较, 满足 w1 &lt;= w2 &amp;&amp; l1 &lt;= l2 的, 就更新一下当前棍, 并标记~</p>
+</blockquote>
+<blockquote>
+<p>当所有木棍都被编组后 输出到底设置了几次~</p>
+</blockquote>
+<p><a target="_blank" rel="noopener" href="http://www.android100.org/html/201502/03/109926.html">ref1</a>, <a target="_blank" rel="noopener" href="http://blog.csdn.net/keshuai19940722/article/details/10735689">ref2</a></p>
+<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><p>The following Java code is written by me</p>
+<pre><code>public int count(Pair[] points) &#123;
+    Arrays.sort(points, new PointComparator());
+    // now the array is sorted with Point.x
+    int total = 0;
+    int p = 0;
+    int len = points.length;
+
+    while (p &lt; len) &#123;
+        // find the next non-null point
+        while (p &lt; len &amp;&amp; points[p] == null) &#123;
+            p++;
+        &#125;
+        if (p == len) &#123;
+            break;
+        &#125;
+        // use points[p] as the first elements in the queue
+        Pair temp = copy(points[p]);
+        points[p] = null;
+        total++;
+
+        // then mark all elements that follow points[p]
+        for (int k = p + 1; k &lt; len; k++) &#123;
+            if (points[k] == null || points[k].y &lt; temp.y) &#123;
+                continue;
+            &#125;
+            temp = copy(points[k]);
+            points[k] = null;
+        &#125;
+        p++;
+    &#125;
+    return total;
+&#125;
+
+Pair copy(Pair p) &#123;
+    Pair newP = new Pair(p.x, p.y);
+    return newP;
+&#125;
+
+class PointComparator implements Comparator&lt;Pair&gt; &#123;
+
+    @Override
+    public int compare(Pair p1, Pair p2) &#123;
+        return p1.x - p2.x;
+    &#125;
+&#125;
+</code></pre>
+
+            </div>
+        </div>
+    </div>
+</main>
+
+<script src="https://utteranc.es/client.js"
+    repo="owner/repo"
+    issue-term="pathname"
+    theme="github-light"
+    crossorigin="anonymous"
+    async>
+</script>
+
+  
+
+</div>
+        <div class="footer-wrapper"><footer>
+    <div class="footer-container">
+        <div class="footer-meta">
+            
+                <div class="footer-meta-copyright">
+                    &copy; 2022 mar2ndx.
+                </div>
+            
+            
+                <div class="footer-meta-licenese">
+                    Licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC-BY-NC-SA 4.0</a>
+                </div>
+            
+            
+        </div>
+    </div>
+</footer>
+</div>
+    </div>
+</body>
+</html>

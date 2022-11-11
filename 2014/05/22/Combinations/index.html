@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <link rel="shortcut icon" href="/images/avatar.png" type="image/x-icon" />
+    <title>
+        
+            [LeetCode 77] Combinations |
+         
+        Mar2ndx&#39;s Algorithmic and System Design Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/solid.min.css">
+
+     
+    
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXXXX"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-XXXXXXXXXXXX');
+        </script>
+    
+
+
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body>
+    <div class="body-container">
+        <div class="header-wrapper"><header>
+    <div class="header-container">
+        <div class="header-menu-list">
+            <ul>
+            
+                <li>
+                    <a href="/">主页</a>
+                </li>
+            
+            </ul>
+        </div>
+    </div>
+</header>
+</div>
+        <div class="main-wrapper"><main>
+    <div class="main-container">
+        <div class="post-details">
+            
+            <div class="post-title">
+                <h1>[LeetCode 77] Combinations</h1>
+            </div>
+            <div class="post-meta">
+                <i class="fa-solid fa-clock"></i>&nbsp;<span class="post-date">2014/05/22</span>
+            </div>
+            
+            <div class="post-content">
+                <h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><p><a target="_blank" rel="noopener" href="https://oj.leetcode.com/problems/combinations/">link</a></p>
+<div class="question-content">
+            <p></p><p>
+Given two integers <i>n</i> and <i>k</i>, return all possible combinations of <i>k</i> numbers out of 1 ... <i>n</i>.
+</p>
+<p>
+For example,<br>
+If <i>n</i> = 4 and <i>k</i> = 2, a solution is:
+</p>
+
+<pre>[
+  [2,4],
+  [3,4],
+  [2,3],
+  [1,2],
+  [1,3],
+  [1,4],
+]
+</pre><p></p>
+
+<pre><code>      &lt;/div&gt;
+</code></pre>
+<h3 id="Stats"><a href="#Stats" class="headerlink" title="Stats"></a>Stats</h3><table border="2">
+    <tr>
+        <td>Frequency</td>
+        <td bgcolor="red">4</td>
+    </tr>
+    <tr>
+        <td>Difficulty</td>
+        <td bgcolor="yellow">3</td>
+    </tr>
+    <tr>
+        <td>Adjusted Difficulty</td>
+        <td bgcolor="yellow">3</td>
+    </tr>
+    <tr>
+        <td>Time to use</td>
+        <td bgcolor="red">----------</td>
+    </tr>
+</table>
+
+<p>Ratings/Color = 1(white) 2(lime) 3(yellow) 4/5(red)</p>
+<h3 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h3><p><strong>This is a very classic problem</strong>.</p>
+<p>The solution is standard, and we must be able to write it without even using our <strong>brain</strong> (only use hands).</p>
+<h3 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h3><p>Solution 1, recursive DFS calls.</p>
+<p>Solution 2, nested loop. Code is shown below.</p>
+<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><p><strong>First, my DFS solution</strong></p>
+<pre><code>public ArrayList&lt;ArrayList&lt;Integer&gt;&gt; combine(int n, int k) &#123;
+    ArrayList&lt;ArrayList&lt;Integer&gt;&gt; ans = new ArrayList&lt;ArrayList&lt;Integer&gt;&gt;();
+    if (k == 0) return ans;
+    helper(ans, new ArrayList&lt;Integer&gt;(), n, k, 0, 0);
+    return ans;
+&#125;
+
+private void helper(ArrayList&lt;ArrayList&lt;Integer&gt;&gt; ans,ArrayList&lt;Integer&gt; list,
+                    int n, int k, int curPt, int preNum) &#123;
+    if (curPt == k) &#123;
+        ans.add(new ArrayList&lt;Integer&gt;(list));
+        return;
+    &#125;
+    for (int i = preNum + 1; i &lt;= n - k + 1 + curPt; i ++) &#123;
+        list.add(i);
+        helper(ans, list, n, k, curPt + 1, i);
+        list.remove(list.size() - 1);
+    &#125;
+&#125;
+</code></pre>
+<p><strong>Second, my nested for-loop solution</strong></p>
+<pre><code>public ArrayList&lt;ArrayList&lt;Integer&gt;&gt; combine(int n, int k) &#123;
+    ArrayList&lt;ArrayList&lt;Integer&gt;&gt; ans = new ArrayList&lt;ArrayList&lt;Integer&gt;&gt;();
+    ans.add(new ArrayList&lt;Integer&gt;());
+    if (n == 0 || k == 0 || k &gt; n) return ans;
+    ArrayList&lt;ArrayList&lt;Integer&gt;&gt; temp = null;
+    for (int i = 0; i &lt; k; i ++) &#123;
+        temp = new ArrayList&lt;ArrayList&lt;Integer&gt;&gt;();
+        for (ArrayList&lt;Integer&gt; a: ans) &#123;
+            for (int j = 1; j &lt;= n; j ++) &#123;
+                if (a.size() &gt; 0 &amp;&amp; a.get(a.size() - 1) &gt;= j)
+                    continue;
+                a.add(j);
+                temp.add(new ArrayList&lt;Integer&gt;(a));
+                a.remove(a.size() - 1);
+            &#125;
+        &#125;
+        ans = temp;
+    &#125;
+    return ans;
+&#125;
+</code></pre>
+<p><strong>Updated June 14th, rewrote the code using template</strong></p>
+<pre><code>public List&lt;List&lt;Integer&gt;&gt; combine(int n, int k) &#123;
+    List&lt;List&lt;Integer&gt;&gt; ans = new LinkedList&lt;List&lt;Integer&gt;&gt;();
+    if (n == 0 || k == 0 || n &lt; k) &#123;
+        return ans;
+    &#125;
+    helper(ans, new LinkedList&lt;Integer&gt;(), n, k, 1);
+    return ans;
+&#125;
+
+private void helper(List&lt;List&lt;Integer&gt;&gt; ans, List&lt;Integer&gt; path, int n, int k, int pos) &#123;
+    if (path.size() == k) &#123;
+        ans.add(new LinkedList&lt;Integer&gt;(path));
+        return;
+    &#125;
+    for (int i = pos; i &lt;= n; i++) &#123;
+        path.add(i);
+        helper(ans, path, n, k, i + 1);
+        path.remove(path.size() - 1);
+    &#125;
+&#125;
+</code></pre>
+
+            </div>
+        </div>
+    </div>
+</main>
+
+<script src="https://utteranc.es/client.js"
+    repo="owner/repo"
+    issue-term="pathname"
+    theme="github-light"
+    crossorigin="anonymous"
+    async>
+</script>
+
+  
+
+</div>
+        <div class="footer-wrapper"><footer>
+    <div class="footer-container">
+        <div class="footer-meta">
+            
+                <div class="footer-meta-copyright">
+                    &copy; 2022 mar2ndx.
+                </div>
+            
+            
+                <div class="footer-meta-licenese">
+                    Licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC-BY-NC-SA 4.0</a>
+                </div>
+            
+            
+        </div>
+    </div>
+</footer>
+</div>
+    </div>
+</body>
+</html>

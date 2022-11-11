@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <link rel="shortcut icon" href="/images/avatar.png" type="image/x-icon" />
+    <title>
+        
+            1654. Minimum Jumps to Reach Home |
+         
+        Mar2ndx&#39;s Algorithmic and System Design Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/solid.min.css">
+
+     
+    
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXXXX"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-XXXXXXXXXXXX');
+        </script>
+    
+
+
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body>
+    <div class="body-container">
+        <div class="header-wrapper"><header>
+    <div class="header-container">
+        <div class="header-menu-list">
+            <ul>
+            
+                <li>
+                    <a href="/">主页</a>
+                </li>
+            
+            </ul>
+        </div>
+    </div>
+</header>
+</div>
+        <div class="main-wrapper"><main>
+    <div class="main-container">
+        <div class="post-details">
+            
+            <div class="post-title">
+                <h1>1654. Minimum Jumps to Reach Home</h1>
+            </div>
+            <div class="post-meta">
+                <i class="fa-solid fa-clock"></i>&nbsp;<span class="post-date">2022/10/09</span>
+            </div>
+            
+            <div class="post-content">
+                <p>Link: <a target="_blank" rel="noopener" href="https://leetcode.cn/problems/minimum-jumps-to-reach-home/">https://leetcode.cn/problems/minimum-jumps-to-reach-home/</a></p>
+<h1 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h1><p>difficulty: mid<br>adj diff: 4</p>
+<pre><code>A certain bug&#39;s home is on the x-axis at position x. Help them get there from position 0.
+
+The bug jumps according to the following rules:
+
+    It can jump exactly a positions forward (to the right).
+    It can jump exactly b positions backward (to the left).
+    It cannot jump backward twice in a row.
+    It cannot jump to any forbidden positions.
+
+The bug may jump forward beyond its home, but it cannot jump to positions numbered with negative integers.
+
+Given an array of integers forbidden, where forbidden[i] means that the bug cannot jump to the position forbidden[i], and integers a, b, and x, return the minimum number of jumps needed for the bug to reach its home. If there is no possible sequence of jumps that lands the bug on position x, return -1.
+
+Example 1:
+
+Input: forbidden = [14,4,18,1,15], a = 3, b = 15, x = 9
+Output: 3
+Explanation: 3 jumps forward (0 -&gt; 3 -&gt; 6 -&gt; 9) will get the bug home.
+
+Example 2:
+
+Input: forbidden = [8,3,16,6,12,20], a = 15, b = 13, x = 11
+Output: -1
+
+Example 3:
+
+Input: forbidden = [1,6,2,14,5,17,4], a = 16, b = 9, x = 7
+Output: 2
+Explanation: One jump forward (0 -&gt; 16) then one jump backward (16 -&gt; 7) will get the bug home.
+
+Constraints:
+
+    1 &lt;= forbidden.length &lt;= 1000
+    1 &lt;= a, b, forbidden[i] &lt;= 2000
+    0 &lt;= x &lt;= 2000
+    All the elements in forbidden are distinct.
+    Position x is not forbidden.
+</code></pre>
+<h1 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h1><pre><code class="hljs plaintext">public int minimumJumps(int[] forbidden, int a, int b, int x) &#123;
+    Set&lt;Integer&gt; visited = new HashSet&lt;Integer&gt;();
+    for (Integer i: forbidden) &#123;
+        visited.add(i);
+    &#125;
+
+    Queue&lt;GraphNode&gt; queue = new LinkedList&lt;GraphNode&gt;();
+    queue.add(new GraphNode(0, false, 0));
+
+    while (!queue.isEmpty()) &#123;
+        GraphNode nextNode = queue.poll();
+        if (nextNode.pos == x) &#123;
+            return nextNode.steps;
+        &#125;
+        // else: visit nextNode.pos + a and nextNode.pos - b (if true)
+        if (nextNode.pos + a &lt;= 6666 &amp;&amp; !visited.contains(nextNode.pos + a)) &#123;
+            visited.add(nextNode.pos + a);
+            queue.offer(new GraphNode(nextNode.pos + a, true, nextNode.steps + 1));
+        &#125;
+        if (nextNode.pos - b &gt; 0 &amp;&amp; !visited.contains(nextNode.pos - b) &amp;&amp; nextNode.direction == true) &#123;
+            queue.offer(new GraphNode(nextNode.pos - b, false, nextNode.steps + 1));
+        &#125;
+    &#125;
+    return -1;
+&#125;
+
+class GraphNode &#123;
+    int pos;
+    boolean direction;
+    int steps;
+
+    public GraphNode(int p, boolean toRight, int count) &#123;
+        pos = p;
+        direction = toRight;
+        steps = count;
+    &#125;
+&#125;</code></pre>
+
+            </div>
+        </div>
+    </div>
+</main>
+
+<script src="https://utteranc.es/client.js"
+    repo="owner/repo"
+    issue-term="pathname"
+    theme="github-light"
+    crossorigin="anonymous"
+    async>
+</script>
+
+  
+
+</div>
+        <div class="footer-wrapper"><footer>
+    <div class="footer-container">
+        <div class="footer-meta">
+            
+                <div class="footer-meta-copyright">
+                    &copy; 2022 mar2ndx.
+                </div>
+            
+            
+                <div class="footer-meta-licenese">
+                    Licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC-BY-NC-SA 4.0</a>
+                </div>
+            
+            
+        </div>
+    </div>
+</footer>
+</div>
+    </div>
+</body>
+</html>

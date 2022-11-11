@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <link rel="shortcut icon" href="/images/avatar.png" type="image/x-icon" />
+    <title>
+        
+            [Question] Max Sum In A 2D Array (sub-matrix)  |
+         
+        Mar2ndx&#39;s Algorithmic and System Design Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/solid.min.css">
+
+     
+    
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXXXX"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-XXXXXXXXXXXX');
+        </script>
+    
+
+
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body>
+    <div class="body-container">
+        <div class="header-wrapper"><header>
+    <div class="header-container">
+        <div class="header-menu-list">
+            <ul>
+            
+                <li>
+                    <a href="/">主页</a>
+                </li>
+            
+            </ul>
+        </div>
+    </div>
+</header>
+</div>
+        <div class="main-wrapper"><main>
+    <div class="main-container">
+        <div class="post-details">
+            
+            <div class="post-title">
+                <h1>[Question] Max Sum In A 2D Array (sub-matrix) </h1>
+            </div>
+            <div class="post-meta">
+                <i class="fa-solid fa-clock"></i>&nbsp;<span class="post-date">2014/08/01</span>
+            </div>
+            
+            <div class="post-content">
+                <h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><p><a target="_blank" rel="noopener" href="http://tech-queries.blogspot.sg/2010/05/find-max-sum-in-2d-array.html">link</a></p>
+<blockquote>
+<p>Given a 2D array, find the maximum sum subarray in it. For example, in the following 2D array, the maximum sum subarray is highlighted with blue rectangle and sum of this subarray is 29.</p>
+</blockquote>
+<p><img src="/images/max-sum-2d-matrix.png"></p>
+<h3 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h3><p><strong>Note that this is a difficult(and high-frequency) question</strong>.</p>
+<p>Try convert this question to “<strong>max sum in 1D array</strong>“ by sum up all numbers in the same column. (we know that in 1D array, the algo runs O(n) time)</p>
+<p>There’s in total O(n^2) combinations of ways to sum up a column. So the <strong>total time complexity is O(n^3)</strong>.</p>
+<h3 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h3><ol>
+<li><p>Traverse matrix at row level.</p>
+</li>
+<li><p>have a temporary 1-D array and initialize all members as 0.</p>
+</li>
+<li><p>For each row do following</p>
+<ol>
+<li>add value in temporary array for all rows below current row</li>
+<li>apply 1-D kadane on temporary array</li>
+<li>if your current result is greater than current maximum sum, update.</li>
+</ol>
+</li>
+</ol>
+<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><p><strong>written by me</strong></p>
+<pre><code>public int maxSum(int[][] A) &#123;
+    int m = A.length;
+    int n = A[0].length;
+    int maxResult = Integer.MIN_VALUE;
+    for (int i = 0; i &lt; m; i++) &#123;
+        int[] temp = new int[n];
+        for (int j = i; j &lt; m; j++) &#123;
+            // from row#i to row#(m-1), add the number into temp[]
+            for (int k = 0; k &lt; n; k++) &#123;
+                temp[k] += A[j][k];
+            &#125;
+            // find max sum for 1D array
+            maxResult = Math.max(maxResult, maxSum(temp));
+        &#125;
+    &#125;
+    return maxResult;
+&#125;
+
+private int maxSum(int[] B) &#123;
+    int sumSoFar = 0;
+    int maxSum = Integer.MIN_VALUE;
+    for (int i = 0; i &lt; B.length; i++) &#123;
+        maxSum = Math.max(maxSum, sumSoFar + B[i]);
+        sumSoFar = Math.max(0, sumSoFar + B[i]);
+    &#125;
+    return maxSum;
+&#125;
+</code></pre>
+
+            </div>
+        </div>
+    </div>
+</main>
+
+<script src="https://utteranc.es/client.js"
+    repo="owner/repo"
+    issue-term="pathname"
+    theme="github-light"
+    crossorigin="anonymous"
+    async>
+</script>
+
+  
+
+</div>
+        <div class="footer-wrapper"><footer>
+    <div class="footer-container">
+        <div class="footer-meta">
+            
+                <div class="footer-meta-copyright">
+                    &copy; 2022 mar2ndx.
+                </div>
+            
+            
+                <div class="footer-meta-licenese">
+                    Licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC-BY-NC-SA 4.0</a>
+                </div>
+            
+            
+        </div>
+    </div>
+</footer>
+</div>
+    </div>
+</body>
+</html>

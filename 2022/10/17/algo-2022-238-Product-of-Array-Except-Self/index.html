@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <link rel="shortcut icon" href="/images/avatar.png" type="image/x-icon" />
+    <title>
+        
+            238. Product of Array Except Self |
+         
+        Mar2ndx&#39;s Algorithmic and System Design Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/solid.min.css">
+
+     
+    
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXXXX"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-XXXXXXXXXXXX');
+        </script>
+    
+
+
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body>
+    <div class="body-container">
+        <div class="header-wrapper"><header>
+    <div class="header-container">
+        <div class="header-menu-list">
+            <ul>
+            
+                <li>
+                    <a href="/">主页</a>
+                </li>
+            
+            </ul>
+        </div>
+    </div>
+</header>
+</div>
+        <div class="main-wrapper"><main>
+    <div class="main-container">
+        <div class="post-details">
+            
+            <div class="post-title">
+                <h1>238. Product of Array Except Self</h1>
+            </div>
+            <div class="post-meta">
+                <i class="fa-solid fa-clock"></i>&nbsp;<span class="post-date">2022/10/17</span>
+            </div>
+            
+            <div class="post-content">
+                <p>Link: <a target="_blank" rel="noopener" href="https://leetcode.cn/problems/product-of-array-except-self/">https://leetcode.cn/problems/product-of-array-except-self/</a></p>
+<h1 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h1><p>difficulty: mid<br>adj diff: 3</p>
+<pre><code>Given an integer array nums, return an array answer such that answer[i] is equal to the product of all the elements of nums except nums[i].
+
+The product of any prefix or suffix of nums is guaranteed to fit in a 32-bit integer.
+
+You must write an algorithm that runs in O(n) time and without using the division operation.
+
+Example 1:
+
+Input: nums = [1,2,3,4]
+Output: [24,12,8,6]
+Example 2:
+
+Input: nums = [-1,1,0,-3,3]
+Output: [0,0,9,0,0]
+
+Constraints:
+
+2 &lt;= nums.length &lt;= 105
+-30 &lt;= nums[i] &lt;= 30
+The product of any prefix or suffix of nums is guaranteed to fit in a 32-bit integer.
+
+Follow up: Can you solve the problem in O(1) extra space complexity? (The output array does not count as extra space for space complexity analysis.)
+</code></pre>
+<p>左右，乘 2 次就行了。</p>
+<h1 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h1><pre><code class="hljs plaintext">public int[] productExceptSelf(int[] nums) &#123;
+    int len = nums.length;
+    int[] ans = new int[len];
+
+    ans[0] = 1;
+    int temp = 1;
+    for (int i = 1; i &lt; len; i++) &#123;
+        // Input: [1, 2, 3, 4]
+        // ans  : [1, 1, 2, 6]
+        temp *= nums[i - 1];
+        ans[i] = temp;
+    &#125;
+    temp = 1;
+    for (int i = len - 2; i &gt;= 0; i--) &#123;
+        // Input:= [ 1, 2 , 3, 4]
+        // Output: [24, 12, 8, 6]
+        temp *= nums[i + 1];
+        ans[i] *= temp;
+    &#125;
+
+    return ans;
+&#125;</code></pre>
+
+            </div>
+        </div>
+    </div>
+</main>
+
+<script src="https://utteranc.es/client.js"
+    repo="owner/repo"
+    issue-term="pathname"
+    theme="github-light"
+    crossorigin="anonymous"
+    async>
+</script>
+
+  
+
+</div>
+        <div class="footer-wrapper"><footer>
+    <div class="footer-container">
+        <div class="footer-meta">
+            
+                <div class="footer-meta-copyright">
+                    &copy; 2022 mar2ndx.
+                </div>
+            
+            
+                <div class="footer-meta-licenese">
+                    Licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC-BY-NC-SA 4.0</a>
+                </div>
+            
+            
+        </div>
+    </div>
+</footer>
+</div>
+    </div>
+</body>
+</html>

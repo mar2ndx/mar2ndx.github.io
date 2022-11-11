@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <link rel="shortcut icon" href="/images/avatar.png" type="image/x-icon" />
+    <title>
+        
+            1366. Rank Teams by Votes |
+         
+        Mar2ndx&#39;s Algorithmic and System Design Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/solid.min.css">
+
+     
+    
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXXXX"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-XXXXXXXXXXXX');
+        </script>
+    
+
+
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body>
+    <div class="body-container">
+        <div class="header-wrapper"><header>
+    <div class="header-container">
+        <div class="header-menu-list">
+            <ul>
+            
+                <li>
+                    <a href="/">主页</a>
+                </li>
+            
+            </ul>
+        </div>
+    </div>
+</header>
+</div>
+        <div class="main-wrapper"><main>
+    <div class="main-container">
+        <div class="post-details">
+            
+            <div class="post-title">
+                <h1>1366. Rank Teams by Votes</h1>
+            </div>
+            <div class="post-meta">
+                <i class="fa-solid fa-clock"></i>&nbsp;<span class="post-date">2022/10/30</span>
+            </div>
+            
+            <div class="post-content">
+                <p>Link: <a target="_blank" rel="noopener" href="https://leetcode.cn/problems/rank-teams-by-votes/">https://leetcode.cn/problems/rank-teams-by-votes/</a></p>
+<h1 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h1><p>difficulty: mid<br>adj diff: 3</p>
+<pre><code>In a special ranking system, each voter gives a rank from highest to lowest to all teams participated in the competition.
+
+The ordering of teams is decided by who received the most position-one votes. If two or more teams tie in the first position, we consider the second position to resolve the conflict, if they tie again, we continue this process until the ties are resolved. If two or more teams are still tied after considering all positions, we rank them alphabetically based on their team letter.
+
+Given an array of strings votes which is the votes of all voters in the ranking systems. Sort all teams according to the ranking system described above.
+
+Return a string of all teams sorted by the ranking system.
+
+ 
+
+Example 1:
+
+Input: votes = [&quot;ABC&quot;,&quot;ACB&quot;,&quot;ABC&quot;,&quot;ACB&quot;,&quot;ACB&quot;]
+Output: &quot;ACB&quot;
+Explanation: Team A was ranked first place by 5 voters. No other team was voted as first place so team A is the first team.
+Team B was ranked second by 2 voters and was ranked third by 3 voters.
+Team C was ranked second by 3 voters and was ranked third by 2 voters.
+As most of the voters ranked C second, team C is the second team and team B is the third.
+
+Example 2:
+
+Input: votes = [&quot;WXYZ&quot;,&quot;XYZW&quot;]
+Output: &quot;XWYZ&quot;
+Explanation: X is the winner due to tie-breaking rule. X has same votes as W for the first position but X has one vote as second position while W doesn&#39;t have any votes as second position. 
+
+Example 3:
+
+Input: votes = [&quot;ZMNAGUEDSJYLBOPHRQICWFXTVK&quot;]
+Output: &quot;ZMNAGUEDSJYLBOPHRQICWFXTVK&quot;
+Explanation: Only one voter so his votes are used for the ranking.
+
+ 
+
+Constraints:
+
+    1 &lt;= votes.length &lt;= 1000
+    1 &lt;= votes[i].length &lt;= 26
+    votes[i].length == votes[j].length for 0 &lt;= i, j &lt; votes.length.
+    votes[i][j] is an English uppercase letter.
+    All characters of votes[i] are unique.
+    All the characters that occur in votes[0] also occur in votes[j] where 1 &lt;= j &lt; votes.length.
+</code></pre>
+<p>用到的 data structure 比较多。</p>
+<p>主要的思路就是：用一个长度为26的array来代表一个队的得票数。然后自定义 comparator （2种写法：implements Comparator, 或者 implements Comparable）。</p>
+<p>其实可以省一个 data structure，在 comparator 种复用一下 map 的数据，就行了。</p>
+<h1 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h1><pre><code class="hljs plaintext">class Solution &#123;
+    public String rankTeams(String[] votes) &#123;
+        // there is only 26 positions for each team
+        // eg. Team-A = &#123;2, 3, 1, 0, 6, 7&#125;
+        // eg. Team-B = &#123;2, 3, 1, 4, 1, 7&#125;
+        Map&lt;Character, TeamVotes&gt; map = new HashMap&lt;Character, TeamVotes&gt;();
+        for (String s: votes) &#123;
+            char[] countVotes = s.toCharArray();
+            for (int i = 0; i &lt; countVotes.length; i++) &#123;
+                char oneVote = countVotes[i];
+                if (!map.containsKey(oneVote)) &#123;
+                    map.put(oneVote, new TeamVotes(oneVote));
+                &#125;
+                map.get(oneVote).votes[i]++;
+            &#125;
+        &#125;
+
+        // put the map into a list and sort it
+        List&lt;TeamVotes&gt; list = new ArrayList&lt;TeamVotes&gt;();
+        for (char charKey: map.keySet()) &#123;
+            list.add(map.get(charKey));
+        &#125;
+        Collections.sort(list);
+
+        StringBuilder sb = new StringBuilder();
+        for (TeamVotes tv: list) &#123;
+            sb.append(tv.team);
+        &#125;
+        return sb.toString();
+    &#125;
+
+    class TeamVotes implements Comparable&lt;TeamVotes&gt; &#123;
+        char team;
+        int[] votes;
+
+        public TeamVotes(char teamName) &#123;
+            this.team = teamName;
+            votes = new int[26];
+        &#125;
+
+        public int compareTo(TeamVotes tv) &#123;
+            for (int i = 0; i &lt; 26; i++) &#123;
+                if (this.votes[i] &lt; tv.votes[i]) &#123;
+                    return 1;
+                &#125; else if (this.votes[i] &gt; tv.votes[i]) &#123;
+                    return -1;
+                &#125;
+            &#125;
+            return this.team - tv.team;
+        &#125;
+    &#125;
+&#125;</code></pre>
+
+            </div>
+        </div>
+    </div>
+</main>
+
+<script src="https://utteranc.es/client.js"
+    repo="owner/repo"
+    issue-term="pathname"
+    theme="github-light"
+    crossorigin="anonymous"
+    async>
+</script>
+
+  
+
+</div>
+        <div class="footer-wrapper"><footer>
+    <div class="footer-container">
+        <div class="footer-meta">
+            
+                <div class="footer-meta-copyright">
+                    &copy; 2022 mar2ndx.
+                </div>
+            
+            
+                <div class="footer-meta-licenese">
+                    Licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC-BY-NC-SA 4.0</a>
+                </div>
+            
+            
+        </div>
+    </div>
+</footer>
+</div>
+    </div>
+</body>
+</html>

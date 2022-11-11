@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <link rel="shortcut icon" href="/images/avatar.png" type="image/x-icon" />
+    <title>
+        
+            727. Minimum Window Subsequence |
+         
+        Mar2ndx&#39;s Algorithmic and System Design Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/solid.min.css">
+
+     
+    
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXXXX"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-XXXXXXXXXXXX');
+        </script>
+    
+
+
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body>
+    <div class="body-container">
+        <div class="header-wrapper"><header>
+    <div class="header-container">
+        <div class="header-menu-list">
+            <ul>
+            
+                <li>
+                    <a href="/">主页</a>
+                </li>
+            
+            </ul>
+        </div>
+    </div>
+</header>
+</div>
+        <div class="main-wrapper"><main>
+    <div class="main-container">
+        <div class="post-details">
+            
+            <div class="post-title">
+                <h1>727. Minimum Window Subsequence</h1>
+            </div>
+            <div class="post-meta">
+                <i class="fa-solid fa-clock"></i>&nbsp;<span class="post-date">2022/11/04</span>
+            </div>
+            
+            <div class="post-content">
+                <p>Link: <a target="_blank" rel="noopener" href="https://leetcode.cn/problems/sliding-window-maximum/">https://leetcode.cn/problems/sliding-window-maximum/</a></p>
+<h1 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h1><p>difficulty: high<br>adj diff: 4</p>
+<pre><code>Given strings s1 and s2, return the minimum contiguous substring part of s1, so that s2 is a subsequence of the part.
+
+If there is no such window in s1 that covers all characters in s2, return the empty string &quot;&quot;. If there are multiple such minimum-length windows, return the one with the left-most starting index.
+
+
+
+Example 1:
+
+Input: s1 = &quot;abcdebdde&quot;, s2 = &quot;bde&quot;
+Output: &quot;bcde&quot;
+Explanation: 
+&quot;bcde&quot; is the answer because it occurs before &quot;bdde&quot; which has the same length.
+&quot;deb&quot; is not a smaller window because the elements of s2 in the window must occur in order.
+
+Example 2:
+
+Input: s1 = &quot;jmeqksfrsdcmsiwvaovztaqenprpvnbstl&quot;, s2 = &quot;u&quot;
+Output: &quot;&quot;
+
+
+
+Constraints:
+
+    1 &lt;= s1.length &lt;= 2 * 104
+    1 &lt;= s2.length &lt;= 100
+    s1 and s2 consist of lowercase English letters.
+</code></pre>
+<p>注意：用Map来记录出现的 occurence count 是错误的解法！</p>
+<p>因为，substring 的字母顺序不能变。</p>
+<p>这是<a target="_blank" rel="noopener" href="https://leetcode.cn/problems/minimum-window-subsequence/solution/itcharge-727-zui-xiao-chuang-kou-zi-xu-l-v3az/">网友给的正确的解法</a>：</p>
+<ol>
+<li>向右扩大窗口，匹配字符，直到匹配完 s2 的最后一个字符。</li>
+<li>当满足条件时，缩小窗口，并更新最小窗口的起始位置和最短长度。</li>
+<li>缩小窗口到不满足条件为止。</li>
+</ol>
+<blockquote>
+<p>这道题的难点在于第二步中如何缩小窗口。</p>
+<p>当匹配到一个子序列时，可以采用逆向匹配的方式，从 s2 的最后一位字符匹配到 s2 的第一位字符。<br>找到符合要求的最大下标，即是窗口的左边界。</p>
+</blockquote>
+<h1 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h1><p>代码源自于：<a target="_blank" rel="noopener" href="https://leetcode.cn/problems/minimum-window-subsequence/solution/shuang-zhi-zhen-jia-bi-100-by-tsinghuach-wf2z/">https://leetcode.cn/problems/minimum-window-subsequence/solution/shuang-zhi-zhen-jia-bi-100-by-tsinghuach-wf2z/</a></p>
+<pre><code class="hljs plaintext">class Solution &#123;
+    public String minWindow(String s1, String s2) &#123;
+        //S = &quot;abcdebdde&quot;, T = &quot;bde&quot;
+        //left-&gt;    -&lt;right
+        //bcde   bde
+        char [] s=s1.toCharArray();
+        char [] t=s2.toCharArray();//转化的数组 
+        int left=0;
+        int right=0;
+        int i=0;//循环t
+        int start=0;//起始位置
+        int minlength=s.length+1;//最短长度  //abcdebdde  a-&gt;e   a-d
+        //abcdef  bcd
+        while(left&lt;s.length)&#123; //遍历字符的起始位置
+            if(s[left]==t[i])&#123;
+                i++;
+            &#125;
+            if(i==t.length)&#123;//包含了
+                right=left;//备份
+                while(i&gt;0)&#123;
+                    if(s[left]==t[i-1])&#123; //相等，回退
+                        i--;//退回，恢复0
+                    &#125;
+                    left--;
+                &#125;
+                left++;
+                if(right-left+1&lt;minlength)&#123; //保存最短
+                    minlength=right-left+1;//缩短长度
+                    start=left;
+
+                &#125;
+            &#125;
+            left++;
+        &#125;
+        if(minlength==s.length+1)&#123;
+            return &quot;&quot;;
+        &#125;else&#123;
+            return s1.substring(start,start+minlength);
+        &#125;
+    &#125;
+&#125;</code></pre>
+
+            </div>
+        </div>
+    </div>
+</main>
+
+<script src="https://utteranc.es/client.js"
+    repo="owner/repo"
+    issue-term="pathname"
+    theme="github-light"
+    crossorigin="anonymous"
+    async>
+</script>
+
+  
+
+</div>
+        <div class="footer-wrapper"><footer>
+    <div class="footer-container">
+        <div class="footer-meta">
+            
+                <div class="footer-meta-copyright">
+                    &copy; 2022 mar2ndx.
+                </div>
+            
+            
+                <div class="footer-meta-licenese">
+                    Licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC-BY-NC-SA 4.0</a>
+                </div>
+            
+            
+        </div>
+    </div>
+</footer>
+</div>
+    </div>
+</body>
+</html>

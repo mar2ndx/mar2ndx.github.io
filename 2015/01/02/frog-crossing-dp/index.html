@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <link rel="shortcut icon" href="/images/avatar.png" type="image/x-icon" />
+    <title>
+        
+            [Question] Frog Crossing (dynamic programming)  |
+         
+        Mar2ndx&#39;s Algorithmic and System Design Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/solid.min.css">
+
+     
+    
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXXXX"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-XXXXXXXXXXXX');
+        </script>
+    
+
+
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body>
+    <div class="body-container">
+        <div class="header-wrapper"><header>
+    <div class="header-container">
+        <div class="header-menu-list">
+            <ul>
+            
+                <li>
+                    <a href="/">主页</a>
+                </li>
+            
+            </ul>
+        </div>
+    </div>
+</header>
+</div>
+        <div class="main-wrapper"><main>
+    <div class="main-container">
+        <div class="post-details">
+            
+            <div class="post-title">
+                <h1>[Question] Frog Crossing (dynamic programming) </h1>
+            </div>
+            <div class="post-meta">
+                <i class="fa-solid fa-clock"></i>&nbsp;<span class="post-date">2015/01/02</span>
+            </div>
+            
+            <div class="post-content">
+                <h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><p><a target="_blank" rel="noopener" href="https://tkramesh.wordpress.com/2011/02/15/frog-crossing-more-on-dynamic-programming-3/">link</a></p>
+<blockquote>
+<p>A frog wants to cross the river n meters wide. There’re some stones, but not complete from 1 to n.</p>
+</blockquote>
+<blockquote>
+<p>The frog has a peculiar jumping rule. If it jumps x meters on one jump, the next jump has to lie in the range {x-1, x, x+1}. Further, the 1st jump that the frog makes is of exactly 1 meter.</p>
+</blockquote>
+<blockquote>
+<p>Given whether stones are removed or not as array of 0 and 1, check if it is possible to reach the other end.</p>
+</blockquote>
+<h3 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h3><p><strong>This is a difficult DP question</strong>. It can be solved in O(n^2) time.</p>
+<p>The main equation is:</p>
+<blockquote>
+<p>can_reach [s, d] =</p>
+<p>Stone[d] AND Stone[s] AND [ can_reach [(d-s)-1, s] OR can_reach[d-s, s] OR can_reach[d-s)+1, s] ].</p>
+<p>where ‘s’ is starting point, and ‘d’ is destination.</p>
+</blockquote>
+<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><pre><code>public boolean canCross(int[] stones) &#123;
+    if (stones.length &lt; 2 || (stones[0] != 1 || stones[1] != 1)) &#123;
+        // invalid input data
+        return false;
+    &#125;
+    int n = stones.length;
+    boolean[][] dp = new boolean[n][n];
+    // dp[i][j] denotes that frog can jump from index i to j
+
+    for (int i = 0; i &lt; n; i++) &#123;
+        for (int j = i + 1; j &lt; n; j++) &#123;
+            if (stones[i] == 0 || stones[j] == 0) &#123;
+                // if either stones i or stone j is removed, skip
+                continue;
+            &#125;
+            // note that j start from (i+1) because we make sure dp[i][i]
+            // false. Otherwise, dp[i][i+1] will always be true
+
+            if (i == 0) &#123;
+                // if jump from position 0, can only reach 1
+                dp[i][j] = j == 1;
+            &#125; else &#123;
+                // if jump from other positions, need to check previous
+                // distance, within range or not.
+                int dis = j - i;
+                for (int pre = i - dis - 1; pre &lt;= i - dis + 1; pre++) &#123;
+                    // pre is the previous position where frog jumps to i
+                    if (pre &lt; 0) &#123;
+                        continue;
+                    &#125; else if (dp[pre][i]) &#123;
+                        // frog jumps from pre to i, then frog is able to
+                        // jump from i to j
+                        dp[i][j] = true;
+                        break;
+                    &#125;
+                &#125;
+            &#125;
+            // finish calculating dp[i][j], now check termination
+            if (j == n - 1 &amp;&amp; dp[i][j]) &#123;
+                return true;
+            &#125;
+        &#125;
+    &#125;
+    return false;
+&#125;
+</code></pre>
+
+            </div>
+        </div>
+    </div>
+</main>
+
+<script src="https://utteranc.es/client.js"
+    repo="owner/repo"
+    issue-term="pathname"
+    theme="github-light"
+    crossorigin="anonymous"
+    async>
+</script>
+
+  
+
+</div>
+        <div class="footer-wrapper"><footer>
+    <div class="footer-container">
+        <div class="footer-meta">
+            
+                <div class="footer-meta-copyright">
+                    &copy; 2022 mar2ndx.
+                </div>
+            
+            
+                <div class="footer-meta-licenese">
+                    Licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC-BY-NC-SA 4.0</a>
+                </div>
+            
+            
+        </div>
+    </div>
+</footer>
+</div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <link rel="shortcut icon" href="/images/avatar.png" type="image/x-icon" />
+    <title>
+        
+            [Google] Number of slices  |
+         
+        Mar2ndx&#39;s Algorithmic and System Design Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/solid.min.css">
+
+     
+    
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXXXX"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-XXXXXXXXXXXX');
+        </script>
+    
+
+
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body>
+    <div class="body-container">
+        <div class="header-wrapper"><header>
+    <div class="header-container">
+        <div class="header-menu-list">
+            <ul>
+            
+                <li>
+                    <a href="/">主页</a>
+                </li>
+            
+            </ul>
+        </div>
+    </div>
+</header>
+</div>
+        <div class="main-wrapper"><main>
+    <div class="main-container">
+        <div class="post-details">
+            
+            <div class="post-title">
+                <h1>[Google] Number of slices </h1>
+            </div>
+            <div class="post-meta">
+                <i class="fa-solid fa-clock"></i>&nbsp;<span class="post-date">2015/02/09</span>
+            </div>
+            
+            <div class="post-content">
+                <h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><p><a target="_blank" rel="noopener" href="http://www.careercup.com/question?id=5090693043191808">link</a></p>
+<blockquote>
+<p>Calculate the number of slices. Slice means that the difference between the maximum and minimum in the slice &lt;= 2.</p>
+</blockquote>
+<blockquote>
+<p>eg. Given array 3 5 7 6 3.</p>
+</blockquote>
+<blockquote>
+<p>There’re 10: (0,0) (1,1) (2,2) (3,3) (4,4) (5,5) (0,1) (1,2) (1,3) (2,3).</p>
+</blockquote>
+<h3 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h3><p>If only asked to output the total number of such slices, we can do it in <strong>O(n) using sliding-window-like algorithm</strong>, with the help of addtional queue-like data structure.</p>
+<p>This is <strong>a very difficult question</strong>! Quoted from the <a target="_blank" rel="noopener" href="http://www.careercup.com/question?id=5090693043191808">top answer</a>:</p>
+<blockquote>
+<p>The basic idea is that you can start with arr[0] and then see <strong>how many more elements you can include before you violate the max -min &lt;= K constraint</strong>. When you reach some index j you can no longer include, you know the maximum subarray starting at index 0 is arr[0…j-1], and you can count j different subarrays there.</p>
+</blockquote>
+<blockquote>
+<p>… you then start with a[1]. Now [1…j-1] has to be valid, so you try to advance the right boundary again (try arr[1…j], then arr[1…j+1]) and so on until again you reach a point past which you can’t advance. Then you’ll try string at a[2], and so on. This is what they mean when they talk about <strong>“crawling” over the array</strong>.</p>
+</blockquote>
+<blockquote>
+<p>The key issue here is how you will check whether a particular subarray is valid efficiently…</p>
+</blockquote>
+<p>Sliding window is explained above. Now, <strong>the minMaxQueue</strong> explain in <a target="_blank" rel="noopener" href="https://codility.com/media/train/solution-count-bounded-slices.pdf">this pdf</a>:</p>
+<blockquote>
+<p>The PDF … have <strong>1 queue each</strong> (i.e. 2 queues in total) for min and max (the min is treated analogous to the max case).</p>
+</blockquote>
+<blockquote>
+<p>For maxQueue, whenever a new value comes in the max queue, they remove all values less than the value, since those <strong>can never be the max</strong>. For that reason the queue’s values are in descending order. And the max at any given time is the first element.</p>
+</blockquote>
+<p>In this way, getting min/max is O(1), thus entire solution is O(n). Nice question!</p>
+<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><p>Not written.</p>
+
+            </div>
+        </div>
+    </div>
+</main>
+
+<script src="https://utteranc.es/client.js"
+    repo="owner/repo"
+    issue-term="pathname"
+    theme="github-light"
+    crossorigin="anonymous"
+    async>
+</script>
+
+  
+
+</div>
+        <div class="footer-wrapper"><footer>
+    <div class="footer-container">
+        <div class="footer-meta">
+            
+                <div class="footer-meta-copyright">
+                    &copy; 2022 mar2ndx.
+                </div>
+            
+            
+                <div class="footer-meta-licenese">
+                    Licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC-BY-NC-SA 4.0</a>
+                </div>
+            
+            
+        </div>
+    </div>
+</footer>
+</div>
+    </div>
+</body>
+</html>

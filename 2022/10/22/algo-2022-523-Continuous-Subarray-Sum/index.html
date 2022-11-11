@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <link rel="shortcut icon" href="/images/avatar.png" type="image/x-icon" />
+    <title>
+        
+            523. Continuous Subarray Sum |
+         
+        Mar2ndx&#39;s Algorithmic and System Design Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/solid.min.css">
+
+     
+    
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXXXX"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-XXXXXXXXXXXX');
+        </script>
+    
+
+
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body>
+    <div class="body-container">
+        <div class="header-wrapper"><header>
+    <div class="header-container">
+        <div class="header-menu-list">
+            <ul>
+            
+                <li>
+                    <a href="/">主页</a>
+                </li>
+            
+            </ul>
+        </div>
+    </div>
+</header>
+</div>
+        <div class="main-wrapper"><main>
+    <div class="main-container">
+        <div class="post-details">
+            
+            <div class="post-title">
+                <h1>523. Continuous Subarray Sum</h1>
+            </div>
+            <div class="post-meta">
+                <i class="fa-solid fa-clock"></i>&nbsp;<span class="post-date">2022/10/22</span>
+            </div>
+            
+            <div class="post-content">
+                <p>Link: <a target="_blank" rel="noopener" href="https://leetcode.cn/problems/continuous-subarray-sum/">https://leetcode.cn/problems/continuous-subarray-sum/</a></p>
+<h1 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h1><p>difficulty: mid<br>adj diff: 2</p>
+<pre><code>Given an integer array nums and an integer k, return true if nums has a continuous subarray of size at least two whose elements sum up to a multiple of k, or false otherwise.
+
+An integer x is a multiple of k if there exists an integer n such that x = n * k. 0 is always a multiple of k.
+
+Example 1:
+
+Input: nums = [23,2,4,6,7], k = 6
+Output: true
+Explanation: [2, 4] is a continuous subarray of size 2 whose elements sum up to 6.
+Example 2:
+
+Input: nums = [23,2,6,4,7], k = 6
+Output: true
+Explanation: [23, 2, 6, 4, 7] is an continuous subarray of size 5 whose elements sum up to 42.
+42 is a multiple of 6 because 42 = 7 * 6 and 7 is an integer.
+Example 3:
+
+Input: nums = [23,2,6,4,7], k = 13
+Output: false
+
+Constraints:
+
+1 &lt;= nums.length &lt;= 105
+0 &lt;= nums[i] &lt;= 109
+0 &lt;= sum(nums[i]) &lt;= 231 - 1
+1 &lt;= k &lt;= 231 - 1
+</code></pre>
+<p>就是用一个 map 不断的记录就行了。</p>
+<h1 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h1><pre><code class="hljs plaintext">public boolean checkSubarraySum(int[] nums, int k) &#123;
+    int len = nums.length;
+    int[] prefixSum = new int[len + 1];
+    Map&lt;Integer, Integer&gt; map = new HashMap&lt;Integer, Integer&gt;();
+    map.put(0, -1);
+
+    for (int i = 1; i &lt;= len; i++) &#123;
+        prefixSum[i] = (prefixSum[i - 1] + nums[i - 1]) % k;
+        if (map.containsKey(prefixSum[i])) &#123;
+            if (i - map.get(prefixSum[i]) &gt; 2)
+            // check the subarray length (need to be at least 2)
+                return true;
+        &#125; else &#123;
+            map.put(prefixSum[i], i - 1);
+        &#125;
+    &#125;
+    return false;
+&#125;</code></pre>
+
+            </div>
+        </div>
+    </div>
+</main>
+
+<script src="https://utteranc.es/client.js"
+    repo="owner/repo"
+    issue-term="pathname"
+    theme="github-light"
+    crossorigin="anonymous"
+    async>
+</script>
+
+  
+
+</div>
+        <div class="footer-wrapper"><footer>
+    <div class="footer-container">
+        <div class="footer-meta">
+            
+                <div class="footer-meta-copyright">
+                    &copy; 2022 mar2ndx.
+                </div>
+            
+            
+                <div class="footer-meta-licenese">
+                    Licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC-BY-NC-SA 4.0</a>
+                </div>
+            
+            
+        </div>
+    </div>
+</footer>
+</div>
+    </div>
+</body>
+</html>

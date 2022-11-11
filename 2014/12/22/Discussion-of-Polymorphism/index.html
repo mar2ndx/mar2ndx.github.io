@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <link rel="shortcut icon" href="/images/avatar.png" type="image/x-icon" />
+    <title>
+        
+            [Java OOP] Discussion of Polymorphism  |
+         
+        Mar2ndx&#39;s Algorithmic and System Design Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/solid.min.css">
+
+     
+    
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXXXX"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-XXXXXXXXXXXX');
+        </script>
+    
+
+
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body>
+    <div class="body-container">
+        <div class="header-wrapper"><header>
+    <div class="header-container">
+        <div class="header-menu-list">
+            <ul>
+            
+                <li>
+                    <a href="/">主页</a>
+                </li>
+            
+            </ul>
+        </div>
+    </div>
+</header>
+</div>
+        <div class="main-wrapper"><main>
+    <div class="main-container">
+        <div class="post-details">
+            
+            <div class="post-title">
+                <h1>[Java OOP] Discussion of Polymorphism </h1>
+            </div>
+            <div class="post-meta">
+                <i class="fa-solid fa-clock"></i>&nbsp;<span class="post-date">2014/12/22</span>
+            </div>
+            
+            <div class="post-content">
+                <h1 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h1><p>Polymorphism is to <a target="_blank" rel="noopener" href="http://javarevisited.blogspot.sg/2011/08/what-is-polymorphism-in-java-example.html">use common interface</a> instead of concrete implementation while coding.</p>
+<p>The most common use of polymorphism in OOP occurs <strong>when a parent class reference is used to refer to a child class object</strong>.</p>
+<h2 id="Quick-Summary"><a href="#Quick-Summary" class="headerlink" title="Quick Summary:"></a>Quick Summary:</h2><p><a target="_blank" rel="noopener" href="http://www.ntu.edu.sg/home/ehchua/programming/java/J3b_OOPInheritancePolymorphism.html">ref</a></p>
+<ol>
+<li><p>A subclass instance can be assigned to a superclass’ reference.</p>
+</li>
+<li><p>Once substituted, we can invoke methods defined in super-class; we CANNOT invoke methods from sub-class.</p>
+</li>
+<li><p>if sub-class overrides inherited methods from the super-class, the overridden versions will be invoked.</p>
+</li>
+<li><p>Reference cannot point to superclass.</p>
+</li>
+</ol>
+<h2 id="Advantages"><a href="#Advantages" class="headerlink" title="Advantages"></a>Advantages</h2><ol>
+<li><p>Simpler programs</p>
+<p>eg.<br>superRef[] = new Circle[2];<br>superRef[0] = new Cylinder();<br>superRef[1] = new Circle();</p>
+<blockquote>
+<p>Just 1 single array to represent different objects</p>
+</blockquote>
+</li>
+<li><p>Better re-usability</p>
+</li>
+</ol>
+<h2 id="A-practical-example"><a href="#A-practical-example" class="headerlink" title="A practical example"></a>A practical example</h2><p>Cylinder is a subclass of Circle. We gonna do this:</p>
+<blockquote>
+<p>Circle c1 = new Cylinder();</p>
+</blockquote>
+<p>The code is below:</p>
+<pre><code>public class PolymorphismSubstitutabilityDemo &#123;
+
+    public static void main(String[] args) &#123;
+        Circle c1 = new Cylinder(1, &quot;white&quot;, 10);
+        System.out.println(c1.getClass());
+        System.out.println(c1.getRadius());
+        System.out.println(c1.getArea());
+    &#125;
+&#125;
+
+class Circle &#123;
+    int radius;
+    String color;
+
+    public Circle(int a, String b) &#123;
+        this.radius = a;
+        this.color = b;
+    &#125;
+
+    public int getRadius() &#123;
+        return radius;
+    &#125;
+
+    public double getArea() &#123;
+        return 3.14159 * Math.pow(radius, 2);
+    &#125;
+&#125;
+
+class Cylinder extends Circle &#123;
+    int height;
+
+    public Cylinder(int a, String b, int c) &#123;
+        super(a, b);
+        this.height = c;
+    &#125;
+
+    public double getArea() &#123;
+        return super.getArea() * height;
+    &#125;
+&#125;
+</code></pre>
+<p>The output of execution:</p>
+<pre><code>class Cylinder
+1
+31.4159
+</code></pre>
+
+            </div>
+        </div>
+    </div>
+</main>
+
+<script src="https://utteranc.es/client.js"
+    repo="owner/repo"
+    issue-term="pathname"
+    theme="github-light"
+    crossorigin="anonymous"
+    async>
+</script>
+
+  
+
+</div>
+        <div class="footer-wrapper"><footer>
+    <div class="footer-container">
+        <div class="footer-meta">
+            
+                <div class="footer-meta-copyright">
+                    &copy; 2022 mar2ndx.
+                </div>
+            
+            
+                <div class="footer-meta-licenese">
+                    Licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC-BY-NC-SA 4.0</a>
+                </div>
+            
+            
+        </div>
+    </div>
+</footer>
+</div>
+    </div>
+</body>
+</html>

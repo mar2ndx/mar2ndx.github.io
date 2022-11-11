@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <link rel="shortcut icon" href="/images/avatar.png" type="image/x-icon" />
+    <title>
+        
+            1428. Leftmost Column with at Least a One |
+         
+        Mar2ndx&#39;s Algorithmic and System Design Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/solid.min.css">
+
+     
+    
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXXXX"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-XXXXXXXXXXXX');
+        </script>
+    
+
+
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body>
+    <div class="body-container">
+        <div class="header-wrapper"><header>
+    <div class="header-container">
+        <div class="header-menu-list">
+            <ul>
+            
+                <li>
+                    <a href="/">主页</a>
+                </li>
+            
+            </ul>
+        </div>
+    </div>
+</header>
+</div>
+        <div class="main-wrapper"><main>
+    <div class="main-container">
+        <div class="post-details">
+            
+            <div class="post-title">
+                <h1>1428. Leftmost Column with at Least a One</h1>
+            </div>
+            <div class="post-meta">
+                <i class="fa-solid fa-clock"></i>&nbsp;<span class="post-date">2022/10/11</span>
+            </div>
+            
+            <div class="post-content">
+                <p>Link: <a target="_blank" rel="noopener" href="https://leetcode.cn/problems/leftmost-column-with-at-least-a-one/">https://leetcode.cn/problems/leftmost-column-with-at-least-a-one/</a></p>
+<h1 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h1><p>difficulty: mid<br>adj diff: 4</p>
+<pre><code>A row-sorted binary matrix means that all elements are 0 or 1 and each row of the matrix is sorted in non-decreasing order.
+
+Given a row-sorted binary matrix binaryMatrix, return the index (0-indexed) of the leftmost column with a 1 in it. If such an index does not exist, return -1.
+
+You can&#39;t access the Binary Matrix directly. You may only access the matrix using a BinaryMatrix interface:
+
+BinaryMatrix.get(row, col) returns the element of the matrix at index (row, col) (0-indexed).
+BinaryMatrix.dimensions() returns the dimensions of the matrix as a list of 2 elements [rows, cols], which means the matrix is rows x cols.
+Submissions making more than 1000 calls to BinaryMatrix.get will be judged Wrong Answer. Also, any solutions that attempt to circumvent the judge will result in disqualification.
+
+For custom testing purposes, the input will be the entire binary matrix mat. You will not have access to the binary matrix directly.
+
+Example 1:
+
+Input: mat = [[0,0],[1,1]]
+Output: 0
+Example 2:
+
+Input: mat = [[0,0],[0,1]]
+Output: 1
+Example 3:
+
+Input: mat = [[0,0],[0,0]]
+Output: -1
+
+Constraints:
+
+rows == mat.length
+cols == mat[i].length
+1 &lt;= rows, cols &lt;= 100
+mat[i][j] is either 0 or 1.
+mat[i] is sorted in non-decreasing order.
+</code></pre>
+<p>这个道题的难点在于想法。</p>
+<p>网友的一句话解法如下：</p>
+<blockquote>
+<p>从右下角开始，遇到 1 往左走，遇到 0 往上走，走到第一行，答案就很显然了</p>
+</blockquote>
+<h1 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h1><pre><code class="hljs plaintext">public int leftMostColumnWithOne(BinaryMatrix binaryMatrix) &#123;
+    List&lt;Integer&gt; dimension = binaryMatrix.dimensions();
+    int x = dimension.get(0) - 1;
+    int y = dimension.get(1) - 1;
+    while (x &gt;= 0 &amp;&amp; y &gt;= 0) &#123;
+        int val = binaryMatrix.get(x, y);
+        if (val == 0) &#123;
+            x--;
+        &#125; else if (val == 1) &#123;
+            y--;
+        &#125;
+    &#125;
+    return y + 1 == dimension.get(1) ? -1 : y+1;
+&#125;</code></pre>
+
+            </div>
+        </div>
+    </div>
+</main>
+
+<script src="https://utteranc.es/client.js"
+    repo="owner/repo"
+    issue-term="pathname"
+    theme="github-light"
+    crossorigin="anonymous"
+    async>
+</script>
+
+  
+
+</div>
+        <div class="footer-wrapper"><footer>
+    <div class="footer-container">
+        <div class="footer-meta">
+            
+                <div class="footer-meta-copyright">
+                    &copy; 2022 mar2ndx.
+                </div>
+            
+            
+                <div class="footer-meta-licenese">
+                    Licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC-BY-NC-SA 4.0</a>
+                </div>
+            
+            
+        </div>
+    </div>
+</footer>
+</div>
+    </div>
+</body>
+</html>

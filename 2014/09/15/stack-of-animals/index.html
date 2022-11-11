@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <link rel="shortcut icon" href="/images/avatar.png" type="image/x-icon" />
+    <title>
+        
+            [CC150v5] 3.7 Stack of Animals  |
+         
+        Mar2ndx&#39;s Algorithmic and System Design Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/solid.min.css">
+
+     
+    
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXXXX"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-XXXXXXXXXXXX');
+        </script>
+    
+
+
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body>
+    <div class="body-container">
+        <div class="header-wrapper"><header>
+    <div class="header-container">
+        <div class="header-menu-list">
+            <ul>
+            
+                <li>
+                    <a href="/">主页</a>
+                </li>
+            
+            </ul>
+        </div>
+    </div>
+</header>
+</div>
+        <div class="main-wrapper"><main>
+    <div class="main-container">
+        <div class="post-details">
+            
+            <div class="post-title">
+                <h1>[CC150v5] 3.7 Stack of Animals </h1>
+            </div>
+            <div class="post-meta">
+                <i class="fa-solid fa-clock"></i>&nbsp;<span class="post-date">2014/09/15</span>
+            </div>
+            
+            <div class="post-content">
+                <h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><blockquote>
+<p>An animal shelter holds only dogs and cats. People must adopt either the “oldest” animals, or they can select whether they would prefer a dog or a cat (and will receive the oldest animal of that type). They cannot select which specific animal they would like.</p>
+</blockquote>
+<blockquote>
+<p>Create the data structures to maintain this system and implement operations such as enqueue, dequeueAny, dequeueDog and dequeueCat. You may use the built-in LinkedList data structure.</p>
+</blockquote>
+<h3 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h3><p>There are 2 solutions.</p>
+<p><strong>First one is using a single queue</strong>. This makes ‘dequeueAny’ easy, but ‘dequeueCat’ and ‘dequeueDog’ difficult.</p>
+<p><strong>Second approach would be using 2 queues for dogs and cats</strong>. We need something like timestamp to be stored (more space usage).</p>
+<p>When we return, we peek both queues are choose the older one. <strong>This is recommended solution in the book</strong>.</p>
+<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><p><strong>from the book</strong></p>
+<p>Animal.java</p>
+<pre><code>public abstract class Animal &#123;
+    int order;
+    String name;
+
+    public Animal(String n) &#123;
+        name = n;
+    &#125;
+
+    public abstract String name();
+
+    public boolean isOlderThan(Animal a) &#123;
+        return this.order &lt; a.order;
+    &#125;
+&#125;
+
+class Cat extends Animal &#123;
+    public Cat(String n) &#123;
+        super(n);
+    &#125;
+
+    public String name() &#123;
+        return &quot;Cat: &quot; + name;
+    &#125;
+&#125;
+
+class Dog extends Animal &#123;
+    public Dog(String n) &#123;
+        super(n);
+    &#125;
+
+    public String name() &#123;
+        return &quot;Dog: &quot; + name;
+    &#125;
+&#125;
+</code></pre>
+<p>AnimalQueue.java</p>
+<pre><code>public class AnimalQueue &#123;
+    LinkedList&lt;Dog&gt; dogs = new LinkedList&lt;Dog&gt;();
+    LinkedList&lt;Cat&gt; cats = new LinkedList&lt;Cat&gt;();
+    private int order = 0;
+
+    public void enqueue(Animal a) &#123;
+        a.order = order;
+        order++;
+        if (a instanceof Dog) &#123;
+            dogs.addLast((Dog) a);
+        &#125; else if (a instanceof Cat) &#123;
+            cats.addLast((Cat) a);
+        &#125;
+    &#125;
+
+    public Animal dequeueAny() &#123;
+        if (dogs.size() == 0) &#123;
+            return dequeueCats();
+        &#125; else if (cats.size() == 0) &#123;
+            return dequeueDogs();
+        &#125;
+        Dog dog = dogs.peek();
+        Cat cat = cats.peek();
+        if (dog.isOlderThan(cat)) &#123;
+            return dogs.poll();
+        &#125; else &#123;
+            return cats.poll();
+        &#125;
+    &#125;
+
+    public Animal peek() &#123;
+        if (dogs.size() == 0) &#123;
+            return cats.peek();
+        &#125; else if (cats.size() == 0) &#123;
+            return dogs.peek();
+        &#125;
+        Dog dog = dogs.peek();
+        Cat cat = cats.peek();
+        if (dog.isOlderThan(cat)) &#123;
+            return dog;
+        &#125; else &#123;
+            return cat;
+        &#125;
+    &#125;
+
+    public int size() &#123;
+        return dogs.size() + cats.size();
+    &#125;
+
+    public Dog dequeueDogs() &#123;
+        return dogs.poll();
+    &#125;
+
+    public Dog peekDogs() &#123;
+        return dogs.peek();
+    &#125;
+
+    public Cat dequeueCats() &#123;
+        return cats.poll();
+    &#125;
+
+    public Cat peekCats() &#123;
+        return cats.peek();
+    &#125;
+&#125;
+</code></pre>
+
+            </div>
+        </div>
+    </div>
+</main>
+
+<script src="https://utteranc.es/client.js"
+    repo="owner/repo"
+    issue-term="pathname"
+    theme="github-light"
+    crossorigin="anonymous"
+    async>
+</script>
+
+  
+
+</div>
+        <div class="footer-wrapper"><footer>
+    <div class="footer-container">
+        <div class="footer-meta">
+            
+                <div class="footer-meta-copyright">
+                    &copy; 2022 mar2ndx.
+                </div>
+            
+            
+                <div class="footer-meta-licenese">
+                    Licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC-BY-NC-SA 4.0</a>
+                </div>
+            
+            
+        </div>
+    </div>
+</footer>
+</div>
+    </div>
+</body>
+</html>

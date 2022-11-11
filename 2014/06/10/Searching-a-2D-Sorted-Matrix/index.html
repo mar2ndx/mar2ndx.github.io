@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <link rel="shortcut icon" href="/images/avatar.png" type="image/x-icon" />
+    <title>
+        
+            [LeetCode Plus] Searching a 2D Sorted Matrix |
+         
+        Mar2ndx&#39;s Algorithmic and System Design Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/solid.min.css">
+
+     
+    
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXXXX"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-XXXXXXXXXXXX');
+        </script>
+    
+
+
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body>
+    <div class="body-container">
+        <div class="header-wrapper"><header>
+    <div class="header-container">
+        <div class="header-menu-list">
+            <ul>
+            
+                <li>
+                    <a href="/">主页</a>
+                </li>
+            
+            </ul>
+        </div>
+    </div>
+</header>
+</div>
+        <div class="main-wrapper"><main>
+    <div class="main-container">
+        <div class="post-details">
+            
+            <div class="post-title">
+                <h1>[LeetCode Plus] Searching a 2D Sorted Matrix</h1>
+            </div>
+            <div class="post-meta">
+                <i class="fa-solid fa-clock"></i>&nbsp;<span class="post-date">2014/06/10</span>
+            </div>
+            
+            <div class="post-content">
+                <h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><p><a target="_blank" rel="noopener" href="http://leetcode.com/2010/10/searching-2d-sorted-matrix.html">link</a></p>
+<blockquote>
+<p class="font-color">Write an efficient algorithm that searches for a value in an <i>n</i> x <i>m</i> table (two-dimensional array). This table is sorted along the rows and columns — that is,</p><p class="font-color">Table[i][j] ≤ Table[i][j + 1], <br>Table[i][j] ≤ Table[i + 1][j]</p>
+</blockquote>
+
+<h3 id="Related-questions"><a href="#Related-questions" class="headerlink" title="Related questions"></a>Related questions</h3><p><strong><a href="/leetcode/2014-05-21-Search-a-2D-Matrix">Search a 2D Matrix</a></strong>.</p>
+<p><strong><a href="/leetcode_plus/2014-06-10-Searching-a-2D-Sorted-Matrix">Searching a 2D Sorted Matrix</a></strong>.</p>
+<p><strong><a href="/question/2014-06-14-Count-negative-in-2D-Sorted-Matrix">Count negative in a 2D Sorted Matrix</a></strong>.</p>
+<h3 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h3><p>This is a extremely high-freq question. Almost every company will ask.</p>
+<p>This question is not to be confused with <strong><a href="/leetcode/2014-05-21-Search-a-2D-Matrix">Search a 2D Matrix</a></strong>.</p>
+<p><strong>Solution One: Step-wise Linear Search</strong>. Standard solution.</p>
+<p>Time = O(n). Worse case 2n steps.</p>
+<p>Note that <strong>this is the best solution</strong>!</p>
+<p><img src="/images/search_2D_matrix_1.png"></p>
+<blockquote>
+<p>begin with the upper right corner, we traverse one step to the left or bottom. For example, the picture below shows the traversed path (the red line) when we search for 13.</p>
+</blockquote>
+<pre><code>Essentially, each step we are able to eliminate either a row or a column.
+</code></pre>
+<p><strong>Solution Two: Quad Partition 四分法</strong>.</p>
+<p>Time = O(n^1.58). Analysis can be found in the original question post.</p>
+<p><img src="/images/search_2D_matrix_2.png"></p>
+<p>Basic idea is like binary search - get mid and divide. We can then discard 1/4 of the matrix. For example: search for 6, we can discard the bottom right sub-matrix.</p>
+<p><strong>Solution Three: Diagonal-based binary partition</strong>. This is based on previous solution, but better.</p>
+<p>Time = O(nlgn).</p>
+<p><img src="/images/search_2D_matrix_3.png"></p>
+<p>This is a good solution, but it would fail in a non-square matrix, so…</p>
+<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><p><strong>step-wise linear search</strong></p>
+<pre><code>bool stepWise(int mat[][N_MAX], int N, int target,
+              int &amp;row, int &amp;col) &#123;
+  if (target &lt; mat[0][0] || target &gt; mat[N-1][N-1]) return false;
+  row = 0;
+  col = N-1;
+  while (row &lt;= N-1 &amp;&amp; col &gt;= 0) &#123;
+    if (mat[row][col] &lt; target)
+      row++;
+    else if (mat[row][col] &gt; target)
+      col--;
+    else
+      return true;
+  &#125;
+  return false;
+&#125;
+</code></pre>
+
+            </div>
+        </div>
+    </div>
+</main>
+
+<script src="https://utteranc.es/client.js"
+    repo="owner/repo"
+    issue-term="pathname"
+    theme="github-light"
+    crossorigin="anonymous"
+    async>
+</script>
+
+  
+
+</div>
+        <div class="footer-wrapper"><footer>
+    <div class="footer-container">
+        <div class="footer-meta">
+            
+                <div class="footer-meta-copyright">
+                    &copy; 2022 mar2ndx.
+                </div>
+            
+            
+                <div class="footer-meta-licenese">
+                    Licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC-BY-NC-SA 4.0</a>
+                </div>
+            
+            
+        </div>
+    </div>
+</footer>
+</div>
+    </div>
+</body>
+</html>

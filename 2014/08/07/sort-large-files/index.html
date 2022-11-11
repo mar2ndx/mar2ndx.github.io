@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <link rel="shortcut icon" href="/images/avatar.png" type="image/x-icon" />
+    <title>
+        
+            [CC150v4] 9.4 Sort Large Files |
+         
+        Mar2ndx&#39;s Algorithmic and System Design Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/solid.min.css">
+
+     
+    
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXXXX"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-XXXXXXXXXXXX');
+        </script>
+    
+
+
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body>
+    <div class="body-container">
+        <div class="header-wrapper"><header>
+    <div class="header-container">
+        <div class="header-menu-list">
+            <ul>
+            
+                <li>
+                    <a href="/">主页</a>
+                </li>
+            
+            </ul>
+        </div>
+    </div>
+</header>
+</div>
+        <div class="main-wrapper"><main>
+    <div class="main-container">
+        <div class="post-details">
+            
+            <div class="post-title">
+                <h1>[CC150v4] 9.4 Sort Large Files</h1>
+            </div>
+            <div class="post-meta">
+                <i class="fa-solid fa-clock"></i>&nbsp;<span class="post-date">2014/08/07</span>
+            </div>
+            
+            <div class="post-content">
+                <h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><blockquote>
+<p>If you have a 2 GB file with one string per line, which sorting algorithm would you use to sort the file and why?</p>
+</blockquote>
+<h3 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h3><p><strong>External Sorting</strong> and N-way merge.</p>
+<ol>
+<li>Divide the file into K chunks, where X * K = 2 GB Bring each chunk into memory and sort the lines as usual using any O(n log n) algorithm Save the lines back to the file</li>
+<li>Now bring the next chunk into memory and sort</li>
+<li>Once we’re done, merge them one by one</li>
+</ol>
+<h3 id="Details"><a href="#Details" class="headerlink" title="Details"></a>Details</h3><p><a target="_blank" rel="noopener" href="http://en.wikipedia.org/wiki/External_sorting#External_merge_sort">Wiki example</a> of sorting 900 megabytes of data using only 100 megabytes of RAM:</p>
+<ol>
+<li><strong>Read 100 MB of the data in main memory and sort</strong> by some conventional method, like quicksort.</li>
+<li>Write the sorted data to disk.</li>
+<li>Repeat steps 1 and 2 until all of the data is in sorted 100 MB chunks (there are 900MB / 100MB = 9 chunks), which now need to be merged into one single output file.</li>
+<li><strong>Read the first 10 MB (= 100MB / (9 chunks + 1)) of each sorted chunk</strong> into input buffers in main memory and allocate the remaining 10 MB for an output buffer. (In practice, it might provide better performance to make the output buffer larger and the input buffers slightly smaller.)</li>
+<li><strong>Perform a 9-way merge</strong> and store the result in the output buffer. Whenever the output buffer fills, write it to the final sorted file and empty it. Whenever any of the 9 input buffers empties, fill it with the next 10 MB of its associated 100 MB sorted chunk until no more data from the chunk is available. <strong>This is the key step that makes external merge sort work externally</strong> – because the merge algorithm only makes one pass sequentially through each of the chunks, each chunk does not have to be loaded completely; rather, sequential parts of the chunk can be loaded as needed.</li>
+</ol>
+<h3 id="Similar-Question"><a href="#Similar-Question" class="headerlink" title="Similar Question"></a>Similar Question</h3><p><a target="_blank" rel="noopener" href="http://www.glassdoor.com/Interview/Sort-a-million-32-bit-integers-using-only-2MB-of-RAM-QTN_120936.htm">link</a></p>
+<blockquote>
+<p>[Google] Sort a million 32 bit integers using only 2MB of RAM.</p>
+</blockquote>
+<p>1 million integers = 4MB which is &gt; 2MB RAM.</p>
+<p>Solution: external sort - divide and conquer</p>
+<ol>
+<li>read half the list into 2MB ram and sort using quicksort (quicksort uses logn space - however 0.5m integers is less than 2MB (2000kb v 2048kb) so this should be okay).</li>
+<li>write sorted data to disk</li>
+<li>repeat for next chunk</li>
+<li>merging results: we need an output buffer. lets say this is 1MB. then we read 512KB from each of your chunks into input buffers. we then perform a 2-way merge of the data. when an input buffer becomes empty we can pull in the remainder of the chunk.</li>
+<li>when the output buffer is full we write this to disk.</li>
+<li>when the process completes we are left with 2x 1MB files sorted in the correct order.</li>
+</ol>
+
+            </div>
+        </div>
+    </div>
+</main>
+
+<script src="https://utteranc.es/client.js"
+    repo="owner/repo"
+    issue-term="pathname"
+    theme="github-light"
+    crossorigin="anonymous"
+    async>
+</script>
+
+  
+
+</div>
+        <div class="footer-wrapper"><footer>
+    <div class="footer-container">
+        <div class="footer-meta">
+            
+                <div class="footer-meta-copyright">
+                    &copy; 2022 mar2ndx.
+                </div>
+            
+            
+                <div class="footer-meta-licenese">
+                    Licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC-BY-NC-SA 4.0</a>
+                </div>
+            
+            
+        </div>
+    </div>
+</footer>
+</div>
+    </div>
+</body>
+</html>

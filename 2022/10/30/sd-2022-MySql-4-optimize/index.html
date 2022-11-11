@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <link rel="shortcut icon" href="/images/avatar.png" type="image/x-icon" />
+    <title>
+        
+            MySql (4) - Performance Optimization |
+         
+        Mar2ndx&#39;s Algorithmic and System Design Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/solid.min.css">
+
+     
+    
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXXXX"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-XXXXXXXXXXXX');
+        </script>
+    
+
+
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body>
+    <div class="body-container">
+        <div class="header-wrapper"><header>
+    <div class="header-container">
+        <div class="header-menu-list">
+            <ul>
+            
+                <li>
+                    <a href="/">主页</a>
+                </li>
+            
+            </ul>
+        </div>
+    </div>
+</header>
+</div>
+        <div class="main-wrapper"><main>
+    <div class="main-container">
+        <div class="post-details">
+            
+            <div class="post-title">
+                <h1>MySql (4) - Performance Optimization</h1>
+            </div>
+            <div class="post-meta">
+                <i class="fa-solid fa-clock"></i>&nbsp;<span class="post-date">2022/10/30</span>
+            </div>
+            
+            <div class="post-content">
+                <h1 id="MySQL-4-optimize"><a href="#MySQL-4-optimize" class="headerlink" title="MySQL-4: optimize"></a>MySQL-4: optimize</h1><h1 id="性能分析"><a href="#性能分析" class="headerlink" title="性能分析"></a>性能分析</h1><p>Steps：</p>
+<ol>
+<li>开启 slow query log</li>
+<li>查看执行计划：explain 有问题的SQL语句</li>
+<li>show profile 查看问题SQL的使用情况</li>
+</ol>
+<h2 id="Slow-Query"><a href="#Slow-Query" class="headerlink" title="Slow Query"></a>Slow Query</h2><p>除了用慢查询日志，还可以用：</p>
+<ol>
+<li>MySQL自带的 mysqldumpslow 工具</li>
+<li>一款Linux软件：percona-toolkit (DBA喜欢用)</li>
+</ol>
+<p><img src="/images/mysql-dumpslow-slow-query.png"></p>
+<h2 id="Profile"><a href="#Profile" class="headerlink" title="Profile"></a>Profile</h2><pre><code class="hljs plaintext">set profiling = 1</code></pre>
+
+<p>例如：</p>
+<p><img src="/images/mysql-profiling-for-query.png"></p>
+<p>可以看出：sending data 耗费了大量的时间。</p>
+<h1 id="服务器层的优化"><a href="#服务器层的优化" class="headerlink" title="服务器层的优化"></a>服务器层的优化</h1><ol>
+<li><p>扩大 Buffer pool：理论上可以到内存的70% ~ 80%</p>
+<p> 如何知道 buffer时候满了？看 innodb_buffer_pool_pages_free == 0 则说明满了。</p>
+<p> 在 my.cnf 中，可以改 innodb_buffer_pool_size = 750M</p>
+</li>
+<li><p>innodb_log_file_size 设置成 buffer log 的 25%</p>
+</li>
+<li><p>select from… 可以不放入 binlog</p>
+</li>
+<li><p>提高磁盘效率：SSD</p>
+</li>
+</ol>
+<h1 id="SQL-语句的优化"><a href="#SQL-语句的优化" class="headerlink" title="SQL 语句的优化"></a>SQL 语句的优化</h1><p>（重要！）</p>
+<h2 id="SQL-设计层面"><a href="#SQL-设计层面" class="headerlink" title="SQL 设计层面"></a>SQL 设计层面</h2><ol>
+<li>设计一些<strong>中间表</strong>，针对统计分析功能<ol>
+<li>或：实时性要求不高的话：OLTP，OLAP</li>
+</ol>
+</li>
+<li>创建一些冗余字段，例如 name 字段<ol>
+<li>这样可以避免很多关联查询</li>
+<li>注意：别出现数据的Consistancy问题</li>
+</ol>
+</li>
+<li>把 ID —— Name 的关联关系，放入缓存，这样计算的更快</li>
+<li>表太大的话：拆表<ol>
+<li>vertical split：太多字段了，拆成2个表 （例如，ID —— 产品介绍）</li>
+<li>horizontal split：sharding</li>
+</ol>
+</li>
+<li>建议每个表有一个primary key（主键索引），最好是int类型，而且是自增的。</li>
+</ol>
+<h2 id="SQL-语句层面"><a href="#SQL-语句层面" class="headerlink" title="SQL 语句层面"></a>SQL 语句层面</h2><ol>
+<li><p>索引优化<br> where字段，组合索引，索引下推，索引覆盖。。。<br> ‘on’ 关联字段的两边：排序 分组统计<br> 不要用 *</p>
+</li>
+<li><p>Limit优化<br> limit 可以停止全表扫描</p>
+</li>
+</ol>
+<h2 id="最终方案"><a href="#最终方案" class="headerlink" title="最终方案"></a>最终方案</h2><p>如果已经做了：SQL 参数优化，cache，indexing，还是性能不好。</p>
+<p>可以考虑最终极方案：</p>
+<ol>
+<li>读写分离</li>
+<li>分库分表</li>
+</ol>
+
+            </div>
+        </div>
+    </div>
+</main>
+
+<script src="https://utteranc.es/client.js"
+    repo="owner/repo"
+    issue-term="pathname"
+    theme="github-light"
+    crossorigin="anonymous"
+    async>
+</script>
+
+  
+
+</div>
+        <div class="footer-wrapper"><footer>
+    <div class="footer-container">
+        <div class="footer-meta">
+            
+                <div class="footer-meta-copyright">
+                    &copy; 2022 mar2ndx.
+                </div>
+            
+            
+                <div class="footer-meta-licenese">
+                    Licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC-BY-NC-SA 4.0</a>
+                </div>
+            
+            
+        </div>
+    </div>
+</footer>
+</div>
+    </div>
+</body>
+</html>

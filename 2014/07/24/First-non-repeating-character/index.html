@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <link rel="shortcut icon" href="/images/avatar.png" type="image/x-icon" />
+    <title>
+        
+            [Question] Find the first non-repeating character |
+         
+        Mar2ndx&#39;s Algorithmic and System Design Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/solid.min.css">
+
+     
+    
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXXXX"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-XXXXXXXXXXXX');
+        </script>
+    
+
+
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body>
+    <div class="body-container">
+        <div class="header-wrapper"><header>
+    <div class="header-container">
+        <div class="header-menu-list">
+            <ul>
+            
+                <li>
+                    <a href="/">主页</a>
+                </li>
+            
+            </ul>
+        </div>
+    </div>
+</header>
+</div>
+        <div class="main-wrapper"><main>
+    <div class="main-container">
+        <div class="post-details">
+            
+            <div class="post-title">
+                <h1>[Question] Find the first non-repeating character</h1>
+            </div>
+            <div class="post-meta">
+                <i class="fa-solid fa-clock"></i>&nbsp;<span class="post-date">2014/07/24</span>
+            </div>
+            
+            <div class="post-content">
+                <h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><p><a target="_blank" rel="noopener" href="http://www.geeksforgeeks.org/given-a-string-find-its-first-non-repeating-character/">link</a></p>
+<blockquote>
+<p>Question One: Given a string, find the first non-repeating character in it</p>
+</blockquote>
+<p><a target="_blank" rel="noopener" href="http://www.geeksforgeeks.org/find-first-non-repeating-character-stream-characters/">link</a></p>
+<blockquote>
+<p>Question Two: Given a stream of characters, find the first non-repeating character from stream. You need to tell the first non-repeating character in O(1) time at any moment.</p>
+</blockquote>
+<h3 id="From-a-string"><a href="#From-a-string" class="headerlink" title="From a string"></a>From a string</h3><ol>
+<li><p>Scan the string from left to right and construct the count array.</p>
+</li>
+<li><p>Again, scan the string from left to right and check for count of each<br>character, if you find an element who’s count is 1, return it. </p>
+</li>
+</ol>
+<p><strong>O(n) time</strong>. </p>
+<p>The array is size of 128 if it’s ASCII encoding. It can also be replaced with a HashMap if the length of the string is small. </p>
+<h3 id="From-a-stream-of-chars"><a href="#From-a-stream-of-chars" class="headerlink" title="From a stream of chars"></a>From a stream of chars</h3><p><strong>Use a DLL (doubly linked list), 1 count array and 1 DLL-node array</strong>. Alternatively, the 2 arrays can be replaced with 2 HashMaps. </p>
+<p>In totally, one DLL and 2 array are used. <strong>The DLL</strong> is used to get the sequence of non-repeating chars. <strong>The 1st array</strong> is for char count, and <strong>the 2nd array</strong> is for fast loop-up in the DLL. </p>
+<p>The detailed precedure: </p>
+<ol>
+<li><p>Create an empty DLL and 2 arrays: repeated[] and dllMap[]. </p>
+</li>
+<li><p>To get the first non-repeating character, return the head of DLL.</p>
+</li>
+<li><p>Following are steps to process a new character ‘x’ in stream.</p>
+<ol>
+<li><p>If repeated[x] is false and dllMap[x] is NULL, append x to DLL and store it in dllMap[x]. </p>
+</li>
+<li><p>If repeated[x] is false and dllMap[x] is not NULL, get DLL node of x using dllMap[x] and remove the node. Set repeated[x] as true and optionally clear dllMap[x].</p>
+</li>
+<li><p>If repeated[x] is true, ignore it. </p>
+</li>
+</ol>
+</li>
+</ol>
+<p>I didn’t write code for this question. </p>
+
+            </div>
+        </div>
+    </div>
+</main>
+
+<script src="https://utteranc.es/client.js"
+    repo="owner/repo"
+    issue-term="pathname"
+    theme="github-light"
+    crossorigin="anonymous"
+    async>
+</script>
+
+  
+
+</div>
+        <div class="footer-wrapper"><footer>
+    <div class="footer-container">
+        <div class="footer-meta">
+            
+                <div class="footer-meta-copyright">
+                    &copy; 2022 mar2ndx.
+                </div>
+            
+            
+                <div class="footer-meta-licenese">
+                    Licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC-BY-NC-SA 4.0</a>
+                </div>
+            
+            
+        </div>
+    </div>
+</footer>
+</div>
+    </div>
+</body>
+</html>

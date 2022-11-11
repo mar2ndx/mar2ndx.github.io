@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <link rel="shortcut icon" href="/images/avatar.png" type="image/x-icon" />
+    <title>
+        
+            2259. Remove Digit From Number to Maximize Result |
+         
+        Mar2ndx&#39;s Algorithmic and System Design Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/solid.min.css">
+
+     
+    
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXXXX"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-XXXXXXXXXXXX');
+        </script>
+    
+
+
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body>
+    <div class="body-container">
+        <div class="header-wrapper"><header>
+    <div class="header-container">
+        <div class="header-menu-list">
+            <ul>
+            
+                <li>
+                    <a href="/">主页</a>
+                </li>
+            
+            </ul>
+        </div>
+    </div>
+</header>
+</div>
+        <div class="main-wrapper"><main>
+    <div class="main-container">
+        <div class="post-details">
+            
+            <div class="post-title">
+                <h1>2259. Remove Digit From Number to Maximize Result</h1>
+            </div>
+            <div class="post-meta">
+                <i class="fa-solid fa-clock"></i>&nbsp;<span class="post-date">2022/11/08</span>
+            </div>
+            
+            <div class="post-content">
+                <p>Link: <a target="_blank" rel="noopener" href="https://leetcode.cn/problems/remove-digit-from-number-to-maximize-result/">https://leetcode.cn/problems/remove-digit-from-number-to-maximize-result/</a></p>
+<h1 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h1><pre><code>difficulty: easy
+adj diff: 2
+You are given a string number representing a positive integer and a character digit.
+
+Return the resulting string after removing exactly one occurrence of digit from number such that the value of the resulting string in decimal form is maximized. The test cases are generated such that digit occurs at least once in number.
+
+ 
+
+Example 1:
+
+Input: number = &quot;123&quot;, digit = &quot;3&quot;
+Output: &quot;12&quot;
+Explanation: There is only one &#39;3&#39; in &quot;123&quot;. After removing &#39;3&#39;, the result is &quot;12&quot;.
+Example 2:
+
+Input: number = &quot;1231&quot;, digit = &quot;1&quot;
+Output: &quot;231&quot;
+Explanation: We can remove the first &#39;1&#39; to get &quot;231&quot; or remove the second &#39;1&#39; to get &quot;123&quot;.
+Since 231 &gt; 123, we return &quot;231&quot;.
+Example 3:
+
+Input: number = &quot;551&quot;, digit = &quot;5&quot;
+Output: &quot;51&quot;
+Explanation: We can remove either the first or second &#39;5&#39; from &quot;551&quot;.
+Both result in the string &quot;51&quot;.
+ 
+
+Constraints:
+
+2 &lt;= number.length &lt;= 100
+number consists of digits from &#39;1&#39; to &#39;9&#39;.
+digit is a digit from &#39;1&#39; to &#39;9&#39;.
+digit occurs at least once in number.
+</code></pre>
+<p>只要找到第一个 position i，使：</p>
+<pre><code>num[i] &lt; num[i+1]
+</code></pre>
+<p>就行了。</p>
+<p>不用管 = 的情况（直接 skip）。</p>
+<h1 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h1><pre><code class="hljs plaintext">class Solution &#123;
+    public String removeDigit(String number, char digit) &#123;
+        int len = number.length();
+        for (int i = 0; i &lt; len - 1; i++) &#123;
+            if (number.charAt(i) == digit &amp;&amp; number.charAt(i) &lt; number.charAt(i + 1)) &#123;
+                // remove char at position i, return
+                return number.substring(0, i) + number.substring(i + 1);
+            &#125;
+        &#125;
+
+        int last = number.lastIndexOf(digit);
+        return number.substring(0, last) + number.substring(last + 1);
+    &#125;
+&#125;</code></pre>
+
+            </div>
+        </div>
+    </div>
+</main>
+
+<script src="https://utteranc.es/client.js"
+    repo="owner/repo"
+    issue-term="pathname"
+    theme="github-light"
+    crossorigin="anonymous"
+    async>
+</script>
+
+  
+
+</div>
+        <div class="footer-wrapper"><footer>
+    <div class="footer-container">
+        <div class="footer-meta">
+            
+                <div class="footer-meta-copyright">
+                    &copy; 2022 mar2ndx.
+                </div>
+            
+            
+                <div class="footer-meta-licenese">
+                    Licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC-BY-NC-SA 4.0</a>
+                </div>
+            
+            
+        </div>
+    </div>
+</footer>
+</div>
+    </div>
+</body>
+</html>

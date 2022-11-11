@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <link rel="shortcut icon" href="/images/avatar.png" type="image/x-icon" />
+    <title>
+        
+            [Question] The Skyline Problem |
+         
+        Mar2ndx&#39;s Algorithmic and System Design Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/solid.min.css">
+
+     
+    
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXXXX"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-XXXXXXXXXXXX');
+        </script>
+    
+
+
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body>
+    <div class="body-container">
+        <div class="header-wrapper"><header>
+    <div class="header-container">
+        <div class="header-menu-list">
+            <ul>
+            
+                <li>
+                    <a href="/">主页</a>
+                </li>
+            
+            </ul>
+        </div>
+    </div>
+</header>
+</div>
+        <div class="main-wrapper"><main>
+    <div class="main-container">
+        <div class="post-details">
+            
+            <div class="post-title">
+                <h1>[Question] The Skyline Problem</h1>
+            </div>
+            <div class="post-meta">
+                <i class="fa-solid fa-clock"></i>&nbsp;<span class="post-date">2014/07/01</span>
+            </div>
+            
+            <div class="post-content">
+                <h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><p><a target="_blank" rel="noopener" href="http://www.algorithmist.com/index.php/UVa_105">link</a></p>
+<blockquote>
+<p>Given n buildings, each building is an rectangle located on<br>x-axis, and indicated by (x1, x2, height). Calculate the<br>outline of all buildings. Output them in order.</p>
+</blockquote>
+<h3 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h3><p><strong>Solution 1 is keeping a heightmap (Brute force)</strong>. Keep an array of a certain size, and update max_height for every single point.</p>
+<p><strong>Solution 2 is using Sweeping line algorithm</strong>. Sweep from left to right, always try to find the largest height of the rectangle.</p>
+<p>First make sure the rectangles are sorted. While sweeping, if sees an building-start, insert the height to the heap. If a building-end, remove from the heap. Then the current maximum height is the max point in the heap. A visualized explanation can be found <a target="_blank" rel="noopener" href="https://briangordon.github.io/2014/08/the-skyline-problem.html">here</a>.</p>
+<p>Total cost is O(nlogn), <a target="_blank" rel="noopener" href="http://qr.ae/Yt74m">source</a>.</p>
+<p><strong>Two solutions compared</strong>:</p>
+<ol>
+<li><p>In the brute force approach, doubling the width of the buildings will double the runtime cost. With the sweep line algorithm, it won’t.</p>
+</li>
+<li><p>Sweep Line algorithm will work if the input is not discrete, whereas the heightmap approach requires integer coordinates.</p>
+</li>
+</ol>
+<p><strong>Updated on Feb 1st, 2015</strong>: using floor 26 of <a target="_blank" rel="noopener" href="http://www.mitbbs.com/article_t1/JobHunting/32569901_0_2.html">this post</a>, we can do insertion and deletion in max-heap, then peek the largest element in the heap.</p>
+<blockquote>
+<p>把所有的 turning points 放在一起，根据 coordination 从小到大 sort 。</p>
+</blockquote>
+<blockquote>
+<p>再用 max-heap, 把所有的 turning points 扫一遍，遇到 start turning point, 把<br>volume 放入 max-heap. 遇到 end turning point，把对应的 volume 从 max-heap 中取出。</p>
+</blockquote>
+<blockquote>
+<p>max-heap 的 max 值就是对应区间的最大 volume</p>
+</blockquote>
+<p>Code presented below.</p>
+<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><p>Brate force code from <a target="_blank" rel="noopener" href="http://www.cs.ucf.edu/~dmarino/ucf/java/Skyline.java">ucf</a>:</p>
+<pre><code>public static void main(String[] args) throws IOException &#123;
+
+    Scanner fin = new Scanner(new File(&quot;skyline.in&quot;));
+
+    // Read in general information about the buildings and skyline.
+    int numbuildings = fin.nextInt();
+    int min = fin.nextInt();
+    int max = fin.nextInt();
+    int size = max - min;
+
+    // Initialize the skyline.
+    int[] mysky = new int[size];
+    for (int i = 0; i &lt; size; i++)
+        mysky[i] = 0;
+
+    // For each building, edit the skyline as necessary.
+    for (int i = 0; i &lt; numbuildings; i++) &#123;
+        int left = fin.nextInt();
+        int height = fin.nextInt();
+        int right = fin.nextInt();
+
+        // Note how we have to offset the left and right boundaries
+        // due to how we set up our array. Basically, at each segment
+        // of the skyline that the current building is part of, we see
+        // if this current building is the tallest of the ones there.
+        // If so, we make the necessary update.
+        for (int j = left - min; j &lt; right - min; j++)
+            if (height &gt; mysky[j])
+                mysky[j] = height;
+    &#125;
+
+    // Beginning of the skyline.
+    System.out.print(min + &quot; &quot;);
+    int cnt = 0;
+
+    // Keep on going until you get right before the end of the skyline.
+    while (cnt &lt; size - 1) &#123;
+
+        // Increment cnt as long as the height is the same.
+        while (cnt &lt; size - 1 &amp;&amp; mysky[cnt] == mysky[cnt + 1])
+            cnt++;
+
+        // Print out information for this part of the skyline.
+        System.out.print(mysky[cnt] + &quot; &quot; + (cnt + 1 + min) + &quot; &quot;);
+        cnt++;
+    &#125;
+
+    // This is the case where the last segment is unique.
+    if (cnt == size - 1)
+        System.out.print(mysky[size - 1] + &quot; &quot; + max);
+    System.out.println();
+    fin.close();
+&#125;
+</code></pre>
+<p>The heap solution:</p>
+<pre><code>public int[] skyline(List&lt;Building&gt; bds, int min, int max) &#123;
+    int[] output = new int[max - min];
+
+    List&lt;Edge&gt;[] edges = new List[max - min];
+    for (int i = 0; i &lt; edges.length; i++) &#123;
+        edges[i] = new ArrayList&lt;Edge&gt;();
+    &#125;
+    for (Building b : bds) &#123;
+        // put all edges into an array of edges
+        edges[b.from].add(new Edge(b, true));
+        edges[b.to].add(new Edge(b, false));
+    &#125;
+
+    Queue&lt;Building&gt; heap = new PriorityQueue&lt;Building&gt;(100,
+            new Comparator&lt;Building&gt;() &#123;
+                public int compare(Building b1, Building b2) &#123;
+                    return b2.height - b1.height;
+                &#125;
+            &#125;);
+    for (int i = 0; i &lt; edges.length; i++) &#123;
+        // insert or remove each building at position i into max heap
+        for (Edge e : edges[i]) &#123;
+            if (e.isEnter) &#123;
+                heap.add(e.building);
+            &#125; else &#123;
+                heap.remove(e.building);
+            &#125;
+        &#125;
+        // then culculate the current hight, which is top of the heap
+        if (!heap.isEmpty()) &#123;
+            output[i] = heap.peek().height;
+        &#125;
+    &#125;
+
+    return output;
+&#125;
+
+static class Edge &#123;
+    Building building;
+    boolean isEnter;
+
+    public Edge(Building bld, boolean enter) &#123;
+        building = bld;
+        isEnter = enter;
+    &#125;
+&#125;
+
+static class Building &#123;
+    int from;
+    int to;
+    int height;
+
+    public Building(int a, int b, int c) &#123;
+        from = a;
+        to = b;
+        height = c;
+    &#125;
+&#125;
+</code></pre>
+
+            </div>
+        </div>
+    </div>
+</main>
+
+<script src="https://utteranc.es/client.js"
+    repo="owner/repo"
+    issue-term="pathname"
+    theme="github-light"
+    crossorigin="anonymous"
+    async>
+</script>
+
+  
+
+</div>
+        <div class="footer-wrapper"><footer>
+    <div class="footer-container">
+        <div class="footer-meta">
+            
+                <div class="footer-meta-copyright">
+                    &copy; 2022 mar2ndx.
+                </div>
+            
+            
+                <div class="footer-meta-licenese">
+                    Licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC-BY-NC-SA 4.0</a>
+                </div>
+            
+            
+        </div>
+    </div>
+</footer>
+</div>
+    </div>
+</body>
+</html>

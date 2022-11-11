@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <link rel="shortcut icon" href="/images/avatar.png" type="image/x-icon" />
+    <title>
+        
+            [Google] BST find ceiling  |
+         
+        Mar2ndx&#39;s Algorithmic and System Design Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/solid.min.css">
+
+     
+    
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXXXX"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-XXXXXXXXXXXX');
+        </script>
+    
+
+
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body>
+    <div class="body-container">
+        <div class="header-wrapper"><header>
+    <div class="header-container">
+        <div class="header-menu-list">
+            <ul>
+            
+                <li>
+                    <a href="/">主页</a>
+                </li>
+            
+            </ul>
+        </div>
+    </div>
+</header>
+</div>
+        <div class="main-wrapper"><main>
+    <div class="main-container">
+        <div class="post-details">
+            
+            <div class="post-title">
+                <h1>[Google] BST find ceiling </h1>
+            </div>
+            <div class="post-meta">
+                <i class="fa-solid fa-clock"></i>&nbsp;<span class="post-date">2015/02/08</span>
+            </div>
+            
+            <div class="post-content">
+                <h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><p><a target="_blank" rel="noopener" href="http://www.careercup.com/question?id=20229674">link</a></p>
+<blockquote>
+<p>A binary search tree is given. Find the ceiling of given key. Eg.</p>
+</blockquote>
+<pre><code>                    8
+               3          12
+           2      6    10    15
+                4
+</code></pre>
+<blockquote>
+<p>Ceiling is <a target="_blank" rel="noopener" href="http://www.geeksforgeeks.org/floor-and-ceil-from-a-bst/">defined</a> as:</p>
+</blockquote>
+<blockquote>
+<p>Ceil Value Node: Node with smallest data larger than the key value.</p>
+</blockquote>
+<blockquote>
+<p>Testing:</p>
+</blockquote>
+<pre><code>key - 13 =&gt; 15
+key - 4 =&gt;6
+key - 8 =&gt;10
+</code></pre>
+<h3 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h3><p><strong>A really interesting idea</strong> is to go top-to-bottom, and update value in every <strong>left turn only</strong>. Suggested by the <a target="_blank" rel="noopener" href="http://www.careercup.com/question?id=20229674">top answer</a>.</p>
+<p>It’s a very very tricky solution. I’ve never seen this b4.</p>
+<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><p>Not my code.</p>
+<pre><code>public int findCeil(TreeNode node, int num, int found) &#123;
+    if (node != null) &#123;
+        if (num &gt;= node.val)
+            return findCeil(node.right, num, found);
+        else
+            return findCeil(node.left, num, node.val);
+    &#125; else
+        return found;
+&#125;
+</code></pre>
+<p>Now input:</p>
+<blockquote>
+<p>TreeNode tree = Common.constructBstFromPreorder(new int[] { 40, 20, 10, 30, 60, 50, 70 });</p>
+</blockquote>
+<p>Output:</p>
+<pre><code>The ceiling of 0 is  10
+The ceiling of 1 is  10
+The ceiling of 2 is  10
+The ceiling of 3 is  10
+The ceiling of 4 is  10
+The ceiling of 5 is  10
+The ceiling of 6 is  10
+The ceiling of 7 is  10
+The ceiling of 8 is  10
+The ceiling of 9 is  10
+The ceiling of 10 is  20
+The ceiling of 11 is  20
+The ceiling of 12 is  20
+The ceiling of 13 is  20
+The ceiling of 14 is  20
+The ceiling of 15 is  20
+The ceiling of 16 is  20
+The ceiling of 17 is  20
+The ceiling of 18 is  20
+The ceiling of 19 is  20
+The ceiling of 20 is  30
+The ceiling of 21 is  30
+The ceiling of 22 is  30
+The ceiling of 23 is  30
+The ceiling of 24 is  30
+The ceiling of 25 is  30
+The ceiling of 26 is  30
+The ceiling of 27 is  30
+The ceiling of 28 is  30
+The ceiling of 29 is  30
+The ceiling of 30 is  40
+The ceiling of 31 is  40
+The ceiling of 32 is  40
+The ceiling of 33 is  40
+The ceiling of 34 is  40
+The ceiling of 35 is  40
+The ceiling of 36 is  40
+The ceiling of 37 is  40
+The ceiling of 38 is  40
+The ceiling of 39 is  40
+The ceiling of 40 is  50
+The ceiling of 41 is  50
+The ceiling of 42 is  50
+The ceiling of 43 is  50
+The ceiling of 44 is  50
+The ceiling of 45 is  50
+The ceiling of 46 is  50
+The ceiling of 47 is  50
+The ceiling of 48 is  50
+The ceiling of 49 is  50
+The ceiling of 50 is  60
+The ceiling of 51 is  60
+The ceiling of 52 is  60
+The ceiling of 53 is  60
+The ceiling of 54 is  60
+The ceiling of 55 is  60
+The ceiling of 56 is  60
+The ceiling of 57 is  60
+The ceiling of 58 is  60
+The ceiling of 59 is  60
+The ceiling of 60 is  70
+The ceiling of 61 is  70
+The ceiling of 62 is  70
+The ceiling of 63 is  70
+The ceiling of 64 is  70
+The ceiling of 65 is  70
+The ceiling of 66 is  70
+The ceiling of 67 is  70
+The ceiling of 68 is  70
+The ceiling of 69 is  70
+The ceiling of 70 is  2147483647
+The ceiling of 71 is  2147483647
+The ceiling of 72 is  2147483647
+The ceiling of 73 is  2147483647
+The ceiling of 74 is  2147483647
+The ceiling of 75 is  2147483647
+The ceiling of 76 is  2147483647
+The ceiling of 77 is  2147483647
+The ceiling of 78 is  2147483647
+The ceiling of 79 is  2147483647
+The ceiling of 80 is  2147483647
+The ceiling of 81 is  2147483647
+The ceiling of 82 is  2147483647
+The ceiling of 83 is  2147483647
+The ceiling of 84 is  2147483647
+The ceiling of 85 is  2147483647
+The ceiling of 86 is  2147483647
+The ceiling of 87 is  2147483647
+The ceiling of 88 is  2147483647
+The ceiling of 89 is  2147483647
+The ceiling of 90 is  2147483647
+The ceiling of 91 is  2147483647
+The ceiling of 92 is  2147483647
+The ceiling of 93 is  2147483647
+The ceiling of 94 is  2147483647
+The ceiling of 95 is  2147483647
+The ceiling of 96 is  2147483647
+The ceiling of 97 is  2147483647
+The ceiling of 98 is  2147483647
+The ceiling of 99 is  2147483647
+</code></pre>
+
+            </div>
+        </div>
+    </div>
+</main>
+
+<script src="https://utteranc.es/client.js"
+    repo="owner/repo"
+    issue-term="pathname"
+    theme="github-light"
+    crossorigin="anonymous"
+    async>
+</script>
+
+  
+
+</div>
+        <div class="footer-wrapper"><footer>
+    <div class="footer-container">
+        <div class="footer-meta">
+            
+                <div class="footer-meta-copyright">
+                    &copy; 2022 mar2ndx.
+                </div>
+            
+            
+                <div class="footer-meta-licenese">
+                    Licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC-BY-NC-SA 4.0</a>
+                </div>
+            
+            
+        </div>
+    </div>
+</footer>
+</div>
+    </div>
+</body>
+</html>

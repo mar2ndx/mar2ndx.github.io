@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <link rel="shortcut icon" href="/images/avatar.png" type="image/x-icon" />
+    <title>
+        
+            MyBatis and SSM (Spring/SpringMVC/MyBatis) |
+         
+        Mar2ndx&#39;s Algorithmic and System Design Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/solid.min.css">
+
+     
+    
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXXXX"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-XXXXXXXXXXXX');
+        </script>
+    
+
+
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body>
+    <div class="body-container">
+        <div class="header-wrapper"><header>
+    <div class="header-container">
+        <div class="header-menu-list">
+            <ul>
+            
+                <li>
+                    <a href="/">主页</a>
+                </li>
+            
+            </ul>
+        </div>
+    </div>
+</header>
+</div>
+        <div class="main-wrapper"><main>
+    <div class="main-container">
+        <div class="post-details">
+            
+            <div class="post-title">
+                <h1>MyBatis and SSM (Spring/SpringMVC/MyBatis)</h1>
+            </div>
+            <div class="post-meta">
+                <i class="fa-solid fa-clock"></i>&nbsp;<span class="post-date">2022/10/27</span>
+            </div>
+            
+            <div class="post-content">
+                <h1 id="MyBatis"><a href="#MyBatis" class="headerlink" title="MyBatis"></a>MyBatis</h1><p>MyBatis是一个持久层框架（persistence framework), 封装了JDBC的原装代码：</p>
+<ol>
+<li>定制化SQL</li>
+<li>存储过程</li>
+<li>高级映射</li>
+</ol>
+<blockquote>
+<p>Persistence framework 也是 Object-Relational Mapping (ORM) 工具。</p>
+<p>MyBatis provides a mapping engine that maps SQL results to object trees in a declarative way. </p>
+</blockquote>
+<h2 id="软件开发3层：SSM框架"><a href="#软件开发3层：SSM框架" class="headerlink" title="软件开发3层：SSM框架"></a>软件开发3层：SSM框架</h2><ol>
+<li>表现层 SpringMVC</li>
+<li>业务层 Spring</li>
+<li>持久层 MyBatis</li>
+</ol>
+<h2 id="SSM框架"><a href="#SSM框架" class="headerlink" title="SSM框架"></a>SSM框架</h2><p>SSM框架是spring MVC ，spring和mybatis框架的整合，是标准的MVC模式，将整个系统划分为表现层，controller层，service层，DAO层四层，使用spring MVC负责请求的转发和视图管理，spring实现业务对象管理，mybatis作为数据对象的持久化引擎</p>
+<p>相比于之前的SSH（Spring+Struts+Hibernate），SSM更加轻量化和灵活，是目前业界主流的Java Web开发框架。</p>
+<h2 id="Spring"><a href="#Spring" class="headerlink" title="Spring"></a>Spring</h2><p>简单来说，Spring是一个轻量级的控制反转（IoC）和面向切面（AOP）的容器框架。</p>
+<h2 id="SpringMVC"><a href="#SpringMVC" class="headerlink" title="SpringMVC"></a>SpringMVC</h2><p>SpringMVC把传统的模型层被拆分为了业务层(Service)和数据访问层（DAO,Data Access Object）。</p>
+<h2 id="MyBatis-1"><a href="#MyBatis-1" class="headerlink" title="MyBatis"></a>MyBatis</h2><p>MyBatis 是一款优秀的Java持久层框架(persistence framework)，它支持定制化 SQL、存储过程以及高级映射。MyBatis 消除了几乎所有的JDBC代码和参数的手工设置以及结果集的检索。MyBatis 使用简单的 XML配置文件或注解，将接口和 Java 的POJOs（Plain Old Java Objects，普通的 Java对象）映射成数据库中的记录。</p>
+<h2 id="MyBatis-缓存"><a href="#MyBatis-缓存" class="headerlink" title="MyBatis 缓存"></a>MyBatis 缓存</h2><p>一级缓存：sql session级别的。eg 同一个 findUserById（），多次调用，只要之间没有过数据写入操作，就可以直接调用缓存。</p>
+<p>二级缓存：是Mapper（namespace）级别。默认不开启（因为crud概率很高，所以缓存意义不大）。</p>
+<p>如果要开启二级缓存，则 class 需要 implements Sezerialzed。</p>
+
+            </div>
+        </div>
+    </div>
+</main>
+
+<script src="https://utteranc.es/client.js"
+    repo="owner/repo"
+    issue-term="pathname"
+    theme="github-light"
+    crossorigin="anonymous"
+    async>
+</script>
+
+  
+
+</div>
+        <div class="footer-wrapper"><footer>
+    <div class="footer-container">
+        <div class="footer-meta">
+            
+                <div class="footer-meta-copyright">
+                    &copy; 2022 mar2ndx.
+                </div>
+            
+            
+                <div class="footer-meta-licenese">
+                    Licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC-BY-NC-SA 4.0</a>
+                </div>
+            
+            
+        </div>
+    </div>
+</footer>
+</div>
+    </div>
+</body>
+</html>

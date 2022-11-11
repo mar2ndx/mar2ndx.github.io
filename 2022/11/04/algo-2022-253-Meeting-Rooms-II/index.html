@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <link rel="shortcut icon" href="/images/avatar.png" type="image/x-icon" />
+    <title>
+        
+            253. Meeting Rooms II |
+         
+        Mar2ndx&#39;s Algorithmic and System Design Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/solid.min.css">
+
+     
+    
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXXXX"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-XXXXXXXXXXXX');
+        </script>
+    
+
+
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body>
+    <div class="body-container">
+        <div class="header-wrapper"><header>
+    <div class="header-container">
+        <div class="header-menu-list">
+            <ul>
+            
+                <li>
+                    <a href="/">主页</a>
+                </li>
+            
+            </ul>
+        </div>
+    </div>
+</header>
+</div>
+        <div class="main-wrapper"><main>
+    <div class="main-container">
+        <div class="post-details">
+            
+            <div class="post-title">
+                <h1>253. Meeting Rooms II</h1>
+            </div>
+            <div class="post-meta">
+                <i class="fa-solid fa-clock"></i>&nbsp;<span class="post-date">2022/11/04</span>
+            </div>
+            
+            <div class="post-content">
+                <p>Link: <a target="_blank" rel="noopener" href="https://leetcode.cn/problems/meeting-rooms-ii/">https://leetcode.cn/problems/meeting-rooms-ii/</a></p>
+<h1 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h1><p>difficulty: mid<br>adj diff: 3</p>
+<pre><code>Given an array of meeting time intervals intervals where intervals[i] = [starti, endi], return the minimum number of conference rooms required.
+
+Example 1:
+
+Input: intervals = [[0,30],[5,10],[15,20]]
+Output: 2
+Example 2:
+
+Input: intervals = [[7,10],[2,4]]
+Output: 1
+
+Constraints:
+
+1 &lt;= intervals.length &lt;= 104
+0 &lt;= starti &lt; endi &lt;= 106
+</code></pre>
+<p>思路其实不难：那就是，我不在乎 「开始 time - 结束 time」时间的绑定关系。</p>
+<p>我只需要知道如下逻辑：</p>
+<ol>
+<li>3:10AM 有 meeting 开始了，room++</li>
+<li>3:12AM 有 meeting 开始了，room++</li>
+<li>3:13AM 有 meeting 结束了，room–</li>
+<li>3:15AM 有 meeting 开始了，room++</li>
+</ol>
+<p>以下的代码是做了一个新的 data strucuture。</p>
+<p>其实完全没必要，两个 array list 就行：one for meeting start_time, one for end_time. 然后双指针扫。</p>
+<h1 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h1><p>我的代码。</p>
+<pre><code class="hljs plaintext">public int minMeetingRooms(int[][] intervals) &#123;
+	MeetingTime[] timeList = new MeetingTime[intervals.length * 2];
+	int p = 0;
+	for (int[] meeting: intervals) &#123;
+		timeList[p++] = new MeetingTime(meeting[0], 1);
+		timeList[p++] = new MeetingTime(meeting[1], -1);
+	&#125;
+	Arrays.sort(timeList);
+	int roomsRequired = 0;
+	int maxRequired = 0;
+	for (MeetingTime time: timeList) &#123;
+		roomsRequired += time.startOrEnd;
+		maxRequired = Math.max(maxRequired, roomsRequired);
+	&#125;
+	return maxRequired;
+&#125;
+
+class MeetingTime implements Comparable&lt;MeetingTime&gt; &#123;
+	int time;
+	int startOrEnd; // startOrEnd = 1 means start, startOrEnd = -1 means end
+
+	public MeetingTime(int a, int b) &#123;
+		time = a;
+		startOrEnd = b;
+	&#125;
+
+	public int compareTo(MeetingTime m) &#123;
+		if (time == m.time) &#123;
+			return startOrEnd - m.startOrEnd;
+		&#125; else &#123;
+			return time - m.time;
+		&#125;
+	&#125;
+&#125;</code></pre>
+
+<p>代码思路源自：<a target="_blank" rel="noopener" href="https://leetcode.cn/problems/meeting-rooms-ii/solution/hui-yi-shi-ii-by-leetcode/">https://leetcode.cn/problems/meeting-rooms-ii/solution/hui-yi-shi-ii-by-leetcode/</a></p>
+<pre><code class="hljs plaintext">public int minMeetingRooms(int[][] intervals) &#123;
+    int len = intervals.length;
+    Integer[] startTimeArray = new Integer[len];
+    Integer[] endTimeArray = new Integer[len];
+
+    // build startTimeArray and endTimeArray
+    for (int i = 0; i &lt; len; i++) &#123;
+        startTimeArray[i] = intervals[i][0];
+        endTimeArray[i] = intervals[i][1];
+    &#125;
+    Arrays.sort(startTimeArray);
+    Arrays.sort(endTimeArray);
+
+    // 2 pointers: p for startTimeArray, q for endTimeArray
+    int p = 0;
+    int q = 0;
+    int usedRooms = 0;
+    int maxRooms = 0;
+
+    while (p &lt; len) &#123;
+        if (endTimeArray[q] &lt;= startTimeArray[p]) &#123;
+            // a meeting is finished at this time
+            usedRooms--;
+            q++;
+        &#125; else &#123;
+            usedRooms++;
+            p++;
+        &#125;
+        maxRooms = Math.max(maxRooms, usedRooms);
+    &#125;
+
+    return maxRooms;
+&#125;</code></pre>
+
+            </div>
+        </div>
+    </div>
+</main>
+
+<script src="https://utteranc.es/client.js"
+    repo="owner/repo"
+    issue-term="pathname"
+    theme="github-light"
+    crossorigin="anonymous"
+    async>
+</script>
+
+  
+
+</div>
+        <div class="footer-wrapper"><footer>
+    <div class="footer-container">
+        <div class="footer-meta">
+            
+                <div class="footer-meta-copyright">
+                    &copy; 2022 mar2ndx.
+                </div>
+            
+            
+                <div class="footer-meta-licenese">
+                    Licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC-BY-NC-SA 4.0</a>
+                </div>
+            
+            
+        </div>
+    </div>
+</footer>
+</div>
+    </div>
+</body>
+</html>
