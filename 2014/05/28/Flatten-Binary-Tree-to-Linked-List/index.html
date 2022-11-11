@@ -157,7 +157,7 @@ Basically, given a non-empty tree,<br>
 </blockquote>
 <p><strong>Analysis of all solutions (except first one) is found in <a target="_blank" rel="noopener" href="http://n00tc0d3r.blogspot.sg/2013/03/flatten-binary-tree-to-linked-list-in.html">this great article</a></strong>.</p>
 <h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><p><strong>First, my solution</strong>, a kind of recursive solution</p>
-<pre><code>public void flatten(TreeNode root) &#123;
+<pre><code class="hljs plaintext">public void flatten(TreeNode root) &#123;
     helper(new TreeNode(1234), root);
 &#125;
 
@@ -170,10 +170,10 @@ private TreeNode helper(TreeNode pre, TreeNode node) &#123;
     TreeNode b = node.right;
     TreeNode temp = helper(node, a);
     return helper(temp, b);
-&#125;
-</code></pre>
+&#125;</code></pre>
+
 <p><strong>Second, standard recursive solution</strong></p>
-<pre><code>public void flatten(TreeNode root) &#123;
+<pre><code class="hljs plaintext">public void flatten(TreeNode root) &#123;
     helper(root);
 &#125;
 
@@ -192,45 +192,44 @@ private TreeNode helper(TreeNode root) &#123;
     &#125;
     // return value is the last element of the flatten tree
     return root;
-&#125;
-</code></pre>
+&#125;</code></pre>
+
 <p><strong>Third, stack non-recursive solution</strong></p>
-<pre><code>public void flatten(TreeNode root) &#123;
-    TreeNode cur = root;
-    Stack&lt;TreeNode&gt; rtrees = new Stack&lt;TreeNode&gt;();
-    while (cur != null) &#123;
-        while (cur.left != null) &#123;
-            if (cur.right != null)
-                rtrees.push(cur.right);
-            cur.right = cur.left;
-            cur.left = null;
-            cur = cur.right;
-        &#125;
-        if (cur != null &amp;&amp; cur.right == null &amp;&amp; !rtrees.isEmpty()) &#123;
-            cur.right = rtrees.pop();
-        &#125;
-        cur = cur.right;
-    &#125;
-&#125;
-</code></pre>
+<pre><code class="hljs plaintext">public void flatten(TreeNode root) &#123;
+	TreeNode cur = root;
+	Stack&lt;TreeNode&gt; rtrees = new Stack&lt;TreeNode&gt;();
+	while (cur != null) &#123;
+		while (cur.left != null) &#123;
+			if (cur.right != null)
+				rtrees.push(cur.right);
+			cur.right = cur.left;
+			cur.left = null;
+			cur = cur.right;
+		&#125;
+		if (cur != null &amp;&amp; cur.right == null &amp;&amp; !rtrees.isEmpty()) &#123;
+			cur.right = rtrees.pop();
+		&#125;
+		cur = cur.right;
+	&#125;
+&#125;</code></pre>
+
 <p><strong>Fourth, non-stack non-recursive solution</strong></p>
-<pre><code>public void flatten(TreeNode root) &#123;
-    TreeNode cur = root;
-    while (cur != null) &#123;
-        if (cur.left != null) &#123;
-            if (cur.right != null) &#123; // if we need to prune a right subtree
-                TreeNode next = cur.left;
-                while (next.right != null)
-                    next = next.right;
-                next.right = cur.right;
-            &#125;
-            cur.right = cur.left;
-            cur.left = null;
-        &#125;
-        cur = cur.right;
-    &#125;
-&#125;
-</code></pre>
+<pre><code class="hljs plaintext">public void flatten(TreeNode root) &#123;
+	TreeNode cur = root;
+	while (cur != null) &#123;
+		if (cur.left != null) &#123;
+			if (cur.right != null) &#123; // if we need to prune a right subtree
+				TreeNode next = cur.left;
+				while (next.right != null)
+					next = next.right;
+				next.right = cur.right;
+			&#125;
+			cur.right = cur.left;
+			cur.left = null;
+		&#125;
+		cur = cur.right;
+	&#125;
+&#125;</code></pre>
 
             </div>
         </div>
