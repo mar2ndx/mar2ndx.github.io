@@ -60,7 +60,7 @@
                 <h1>681. Next Closest Time</h1>
             </div>
             <div class="post-meta">
-                <i class="fa-solid fa-clock"></i>&nbsp;<span class="post-date">2022/09/26</span>
+                <i class="fa-solid fa-clock"></i>&nbsp;<span class="post-date">2022/11/12</span>
             </div>
             
             <div class="post-content">
@@ -90,38 +90,47 @@ time is a valid time in the form &quot;HH:MM&quot;.
 0 &lt;= HH &lt; 24
 0 &lt;= MM &lt; 60
 </code></pre>
-<h1 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h1><p>quoted from here: <a target="_blank" rel="noopener" href="https://leetcode.cn/problems/next-closest-time/solution/jian-dan-yi-dong-de-suan-fa-yi-kan-jiu-d-t7q2/">https://leetcode.cn/problems/next-closest-time/solution/jian-dan-yi-dong-de-suan-fa-yi-kan-jiu-d-t7q2/</a></p>
-<pre><code class="hljs plaintext">public String nextClosestTime(String time) &#123;
-	List&lt;String&gt; memo = new ArrayList&lt;&gt;();  // 存储所有合理的事件
-	char[] cs = time.toCharArray();
-	Set&lt;Character&gt; set = new HashSet&lt;&gt;();
+<h1 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h1><p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/next-closest-time/solution/jian-dan-yi-dong-de-suan-fa-yi-kan-jiu-d-t7q2/">一个网友写的 穷举法 代码</a></p>
+<pre><code class="hljs plaintext">class Solution &#123;
+    public String nextClosestTime(String time) &#123;
+    	List&lt;String&gt; possibleTimes = new ArrayList&lt;&gt;();  // 存储所有合理的事件
+    	Set&lt;Character&gt; set = new HashSet&lt;&gt;();
 
-	List&lt;String&gt; hh = new ArrayList&lt;&gt;();    // 存储合理的小时部分
-	List&lt;String&gt; mm = new ArrayList&lt;&gt;();    // 存储合理的分钟部分
-	for(char c : cs)&#123;
-		if(c != &#x27;:&#x27;) set.add(c);
-	&#125;
+    	List&lt;String&gt; hourList = new LinkedList&lt;&gt;();    // 存储合理的小时部分
+    	List&lt;String&gt; monthList = new LinkedList&lt;&gt;();    // 存储合理的分钟部分
+    	for(char digit: time.toCharArray())&#123;
+    		if(digit != &#x27;:&#x27;) &#123;
+                set.add(digit);
+            &#125;
+    	&#125;
 
-	for(char c1: set)&#123;
-		for(char c2: set)&#123;
-			String str = &quot;&quot;+c1+c2;
-			if(str.compareTo(&quot;24&quot;) &lt; 0) hh.add(str);
-			if(str.compareTo(&quot;60&quot;) &lt; 0) mm.add(str);
-		&#125;
-	&#125;
+    	for(char ch1: set)&#123;
+    		for(char ch2: set)&#123;
+    			String str = ch1 + &quot;&quot; + ch2;
+    			if (str.compareTo(&quot;24&quot;) &lt; 0) &#123;
+                    hourList.add(str);
+                &#125;
+    			if (str.compareTo(&quot;60&quot;) &lt; 0) &#123;
+                    monthList.add(str);
+                &#125;
+    		&#125;
+    	&#125;
 
-	// 拼接小时与分钟部分
-	for(String h : hh)&#123;
-		for(String m : mm)&#123;
-			memo.add(h + &quot;:&quot; +m);
-		&#125;
-	&#125;
-
-	Collections.sort(memo);         // 排序
-	int idx = memo.indexOf(time);   // 获取当前索引
-	// 如果当前值在最后一个,返回第一个; 否则返回下一个
-	if( idx == memo.size()-1) return memo.get(0);
-	else return memo.get(idx+1);
+    	// 拼接小时与分钟部分
+    	for(String h : hourList)&#123;
+    		for(String m : monthList)&#123;
+    			possibleTimes.add(h + &quot;:&quot; +m);
+    		&#125;
+    	&#125;
+    	Collections.sort(possibleTimes);         // 排序
+    	
+        int i = possibleTimes.indexOf(time);   // 获取当前索引
+    	if (i == possibleTimes.size() - 1) &#123;
+            return possibleTimes.get(0);
+        &#125; else &#123;
+            return possibleTimes.get(i + 1);
+        &#125;
+    &#125;
 &#125;</code></pre>
 
             </div>

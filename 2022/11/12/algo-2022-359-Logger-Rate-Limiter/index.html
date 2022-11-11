@@ -60,7 +60,7 @@
                 <h1>359. Logger Rate Limiter</h1>
             </div>
             <div class="post-meta">
-                <i class="fa-solid fa-clock"></i>&nbsp;<span class="post-date">2022/09/24</span>
+                <i class="fa-solid fa-clock"></i>&nbsp;<span class="post-date">2022/11/12</span>
             </div>
             
             <div class="post-content">
@@ -101,26 +101,20 @@ At most 104 calls will be made to shouldPrintMessage.
 </code></pre>
 <h1 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h1><pre><code class="hljs plaintext">class Logger &#123;
 
-	Map&lt;String, Integer&gt; map;
+    Map&lt;String, Integer&gt; map;
 
-	public Logger() &#123;
-		map = new HashMap&lt;String, Integer&gt;();
-	&#125;
+    public Logger() &#123;
+        map = new HashMap&lt;String, Integer&gt;();
+    &#125;
 
-	public boolean shouldPrintMessage(int timestamp, String message) &#123;
-		if (map.containsKey(message) &amp;&amp; timestamp &lt; map.get(message) + 10) &#123;
-			return false;
-		&#125;
-		map.put(message, timestamp);
-		return true;
-	&#125;
-&#125;
-
-/**
- * Your Logger object will be instantiated and called as such:
- * Logger obj = new Logger();
- * boolean param_1 = obj.shouldPrintMessage(timestamp,message);
- */</code></pre>
+    public boolean shouldPrintMessage(int timestamp, String message) &#123;
+        if (map.containsKey(message) &amp;&amp; timestamp &lt; map.get(message) + 10) &#123;
+            return false;
+        &#125;
+        map.put(message, timestamp);
+        return true;
+    &#125;
+&#125;</code></pre>
 
             </div>
         </div>
