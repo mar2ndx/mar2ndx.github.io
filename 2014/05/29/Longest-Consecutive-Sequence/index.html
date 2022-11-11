@@ -162,6 +162,8 @@ Your algorithm should run in O(<i>n</i>) complexity.
 &#125;</code></pre>
 
 <p><strong>Updated Oct 29, 2022</strong></p>
+<p>一定要注意：for loop 里面，iterate array（然后 remove from HashSet）</p>
+<p>不要 iterate HashSet！会报错。</p>
 <pre><code class="hljs plaintext">public int longestConsecutive(int[] nums) &#123;
     Set&lt;Integer&gt; set = new HashSet&lt;Integer&gt;();
     for (int i: nums) &#123;
