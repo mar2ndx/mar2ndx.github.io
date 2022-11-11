@@ -94,7 +94,16 @@ n == bulbs.length
 bulbs is a permutation of numbers from 1 to n.
 0 &lt;= k &lt;= 2 * 104
 </code></pre>
-<h1 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h1><pre><code class="hljs plaintext"></code></pre>
+<p>思路：</p>
+<ol>
+<li>滑动窗口方法。</li>
+<li>maintain一个长度为 k+1 的窗口，其中，所有boundary 分别在 第x天，和第y天点亮。</li>
+<li>min-heap 中，放入 k-1 个元素，也就是 x天 和 y天 中间的所有bulb</li>
+<li>看看 min-heap中，最小天数是多少。假设是 w</li>
+<li>如果 w &gt; Math.min(x, y)，则说明 [x，y] 就是一个 valid answer：距离为k，并且中间所有bulb都是关灯状态。</li>
+<li>(Optionally) <a target="_blank" rel="noopener" href="https://leetcode.cn/problems/k-empty-slots/solution/k-ge-kong-hua-pen-by-leetcode/">有一种思路，那就是windwo不重叠</a>，下一次只需直接扫描没读过的元素就行了。不过我不是很理解。</li>
+</ol>
+<h1 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h1><pre><code class="hljs plaintext">TODO</code></pre>
 
             </div>
         </div>
