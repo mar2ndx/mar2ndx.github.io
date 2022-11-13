@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <link rel="shortcut icon" href="/images/avatar.png" type="image/x-icon" />
+    <title>
+        
+            2402. Meeting Rooms III |
+         
+        Mar2ndx&#39;s Algorithmic and System Design Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/solid.min.css">
+
+     
+    
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXXXX"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-XXXXXXXXXXXX');
+        </script>
+    
+
+
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body>
+    <div class="body-container">
+        <div class="header-wrapper"><header>
+    <div class="header-container">
+        <div class="header-menu-list">
+            <ul>
+            
+                <li>
+                    <a href="/">主页</a>
+                </li>
+            
+            </ul>
+        </div>
+    </div>
+</header>
+</div>
+        <div class="main-wrapper"><main>
+    <div class="main-container">
+        <div class="post-details">
+            
+            <div class="post-title">
+                <h1>2402. Meeting Rooms III</h1>
+            </div>
+            <div class="post-meta">
+                <i class="fa-solid fa-clock"></i>&nbsp;<span class="post-date">2022/11/13</span>
+            </div>
+            
+            <div class="post-content">
+                <p>Link: <a target="_blank" rel="noopener" href="https://leetcode.cn/problems/meeting-rooms-iii/">https://leetcode.cn/problems/meeting-rooms-iii/</a></p>
+<h1 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h1><p>difficulty: hard<br>adj diff: 4</p>
+<pre><code>You are given an integer n. There are n rooms numbered from 0 to n - 1.
+
+You are given a 2D integer array meetings where meetings[i] = [starti, endi] means that a meeting will be held during the half-closed time interval [starti, endi). All the values of starti are unique.
+
+Meetings are allocated to rooms in the following manner:
+
+Each meeting will take place in the unused room with the lowest number.
+If there are no available rooms, the meeting will be delayed until a room becomes free. The delayed meeting should have the same duration as the original meeting.
+When a room becomes unused, meetings that have an earlier original start time should be given the room.
+Return the number of the room that held the most meetings. If there are multiple rooms, return the room with the lowest number.
+
+A half-closed interval [a, b) is the interval between a and b including a and not including b.
+
+ 
+
+Example 1:
+
+Input: n = 2, meetings = [[0,10],[1,5],[2,7],[3,4]]
+Output: 0
+Explanation:
+- At time 0, both rooms are not being used. The first meeting starts in room 0.
+- At time 1, only room 1 is not being used. The second meeting starts in room 1.
+- At time 2, both rooms are being used. The third meeting is delayed.
+- At time 3, both rooms are being used. The fourth meeting is delayed.
+- At time 5, the meeting in room 1 finishes. The third meeting starts in room 1 for the time period [5,10).
+- At time 10, the meetings in both rooms finish. The fourth meeting starts in room 0 for the time period [10,11).
+Both rooms 0 and 1 held 2 meetings, so we return 0.
+Example 2:
+
+Input: n = 3, meetings = [[1,20],[2,10],[3,5],[4,9],[6,8]]
+Output: 1
+Explanation:
+- At time 1, all three rooms are not being used. The first meeting starts in room 0.
+- At time 2, rooms 1 and 2 are not being used. The second meeting starts in room 1.
+- At time 3, only room 2 is not being used. The third meeting starts in room 2.
+- At time 4, all three rooms are being used. The fourth meeting is delayed.
+- At time 5, the meeting in room 2 finishes. The fourth meeting starts in room 2 for the time period [5,10).
+- At time 6, all three rooms are being used. The fifth meeting is delayed.
+- At time 10, the meetings in rooms 1 and 2 finish. The fifth meeting starts in room 1 for the time period [10,12).
+Room 0 held 1 meeting while rooms 1 and 2 each held 2 meetings, so we return 1.
+ 
+
+Constraints:
+
+1 &lt;= n &lt;= 100
+1 &lt;= meetings.length &lt;= 105
+meetings[i].length == 2
+0 &lt;= starti &lt; endi &lt;= 5 * 105
+All the values of starti are unique.
+</code></pre>
+<p>这道题的算法并不算非常难：双 Heap。</p>
+<ol>
+<li>一个用来存放 空 room</li>
+<li>另一个用来存放 正在进行的 meeting</li>
+</ol>
+<p>难点来了：那就是 自定义 comparator。</p>
+<ol>
+<li>对于正在进行 meeting 的 heap，implements Comparable<Meeting> 然后定义 compareTo 方法，根据 endTime 从小到大排列。</li>
+<li>对于空 room，需要重新自定义一个 comparator()，根据 Room Index 来排列。</li>
+</ol>
+<h2 id="Comparable-Vs-Comparator"><a href="#Comparable-Vs-Comparator" class="headerlink" title="Comparable Vs Comparator"></a>Comparable Vs Comparator</h2><p>所以，看懂 Comparable 和 Comparator 的区别了吗？</p>
+<ol>
+<li>Comparable 是一个<strong>内比较器</strong> 的接口。用于 object 自己跟自己比较。</li>
+<li>Comparator 是一个<strong>外比较器</strong>，用于：<ol>
+<li>一个 object 没有 implement Comparable，例如 int[]</li>
+<li>实现了 Comparable，但是我们还想自定义一下</li>
+</ol>
+</li>
+</ol>
+<h1 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h1><p>Code 1 （同时使用 Comparable 和 Comparator，不太推荐）</p>
+<pre><code class="hljs plaintext">class Solution &#123;
+    public int mostBooked(int n, int[][] meetings) &#123;
+        int[] usedTime = new int[n];
+
+        // idleRooms: heap, ranked by room index number
+        Queue&lt;Meeting&gt; idleRooms = new PriorityQueue&lt;Meeting&gt;(new Comparator&lt;Meeting&gt;() &#123;
+            public int compare(Meeting m1, Meeting m2) &#123;
+                return m1.roomNumber - m2.roomNumber;
+            &#125;
+        &#125;);
+        for (int i = 0; i &lt; n; i++) &#123;
+            idleRooms.offer( new Meeting(i) );
+        &#125;
+
+        // inProgress: heap, ranked by meeting endTime
+        Queue&lt;Meeting&gt; inProgress = new PriorityQueue&lt;Meeting&gt;();
+        Arrays.sort(meetings, new Comparator&lt;int[]&gt;() &#123;
+            public int compare(int[] meeting1, int[] meeting2) &#123;
+                return meeting1[0] - meeting2[0];
+            &#125;
+        &#125;);
+
+        // in time-order, do the following:
+        // 1. get the next meeting (start time = T)
+        // 2. end meetings in inProgress, whose endTime is before T
+        // 3. fetch the next avaible room from idleRooms
+        // 4. start the meeting
+        for (int i = 0; i &lt; meetings.length; i++) &#123;
+            Meeting temp;
+            while (!inProgress.isEmpty() &amp;&amp; inProgress.peek().endTime &lt;= meetings[i][0]) &#123;
+                temp = inProgress.poll();
+                idleRooms.offer(temp);
+            &#125;
+
+            // if no room is idle, then meetings[i] would need to wait
+            long currentMeetingWaitTime = 0;
+            if (idleRooms.isEmpty()) &#123;
+                temp = inProgress.poll();
+                idleRooms.offer(temp);
+                currentMeetingWaitTime = temp.endTime - meetings[i][0];
+            &#125;
+            temp = idleRooms.poll();
+            ++usedTime[temp.roomNumber];
+
+            temp.endTime = meetings[i][1] + currentMeetingWaitTime;
+            inProgress.offer(temp);
+        &#125;
+
+        // All meetings are finished, now count
+        int mostUsedRoomNumber = 0;
+        for (int i = 1; i &lt; n; i++) &#123;
+            if (usedTime[i] &gt; usedTime[mostUsedRoomNumber]) &#123;
+                mostUsedRoomNumber = i;
+            &#125;
+        &#125;
+        return mostUsedRoomNumber;
+    &#125;
+&#125;
+
+class Meeting implements Comparable&lt;Meeting&gt; &#123;
+    int roomNumber;
+    long endTime;
+
+    public Meeting(int num) &#123;
+        roomNumber = num;
+    &#125;
+
+    public int compareTo(Meeting m) &#123;
+        if (this.endTime == m.endTime) &#123;
+            return this.roomNumber - m.roomNumber;
+        &#125;
+        return Long.compare(this.endTime, m.endTime) ;
+    &#125;
+&#125;</code></pre>
+
+<p>Code 2 （只用 Comparator，推荐）</p>
+<pre><code class="hljs plaintext">class Solution &#123;
+    public int mostBooked(int n, int[][] meetings) &#123;
+        int[] usedTime = new int[n];
+
+        // idleRooms: heap, ranked by room index number
+        Queue&lt;Meeting&gt; idleRooms = new PriorityQueue&lt;Meeting&gt;(new Comparator&lt;Meeting&gt;() &#123;
+            public int compare(Meeting m1, Meeting m2) &#123;
+                return m1.roomNumber - m2.roomNumber;
+            &#125;
+        &#125;);
+        for (int i = 0; i &lt; n; i++) &#123;
+            idleRooms.offer( new Meeting(i) );
+        &#125;
+
+        // inProgress: heap, ranked by meeting endTime
+        Queue&lt;Meeting&gt; inProgress = new PriorityQueue&lt;Meeting&gt;(new Comparator&lt;Meeting&gt;() &#123;
+            public int compare(Meeting m1, Meeting m2) &#123;
+                if (m1.endTime == m2.endTime) &#123;
+                    return m1.roomNumber - m2.roomNumber;
+                &#125;
+                return Long.compare(m1.endTime, m2.endTime);
+            &#125;
+        &#125;);
+        Arrays.sort(meetings, new Comparator&lt;int[]&gt;() &#123;
+            public int compare(int[] meeting1, int[] meeting2) &#123;
+                return meeting1[0] - meeting2[0];
+            &#125;
+        &#125;);
+
+        // in time-order, do the following:
+        // 1. get the next meeting (start time = T)
+        // 2. end meetings in inProgress, whose endTime is before T
+        // 3. fetch the next avaible room from idleRooms
+        // 4. start the meeting
+        for (int i = 0; i &lt; meetings.length; i++) &#123;
+            Meeting temp;
+            while (!inProgress.isEmpty() &amp;&amp; inProgress.peek().endTime &lt;= meetings[i][0]) &#123;
+                temp = inProgress.poll();
+                idleRooms.offer(temp);
+            &#125;
+
+            // if no room is idle, then meetings[i] would need to wait
+            long currentMeetingWaitTime = 0;
+            if (idleRooms.isEmpty()) &#123;
+                temp = inProgress.poll();
+                idleRooms.offer(temp);
+                currentMeetingWaitTime = temp.endTime - meetings[i][0];
+            &#125;
+            temp = idleRooms.poll();
+            ++usedTime[temp.roomNumber];
+
+            temp.endTime = meetings[i][1] + currentMeetingWaitTime;
+            inProgress.offer(temp);
+        &#125;
+
+        // All meetings are finished, now count
+        int mostUsedRoomNumber = 0;
+        for (int i = 1; i &lt; n; i++) &#123;
+            if (usedTime[i] &gt; usedTime[mostUsedRoomNumber]) &#123;
+                mostUsedRoomNumber = i;
+            &#125;
+        &#125;
+        return mostUsedRoomNumber;
+    &#125;
+&#125;
+
+class Meeting &#123;
+    int roomNumber;
+    long endTime;
+
+    public Meeting(int num) &#123;
+        roomNumber = num;
+    &#125;
+&#125;</code></pre>
+
+<p>Code 3，简略版。也就是 idleRooms 直接 = new PriorityQueue<Integer>() 。可以少写一个 Comparator），代码短很多。</p>
+<pre><code class="hljs plaintext">TODO</code></pre>
+
+            </div>
+        </div>
+    </div>
+</main>
+
+<script src="https://utteranc.es/client.js"
+    repo="owner/repo"
+    issue-term="pathname"
+    theme="github-light"
+    crossorigin="anonymous"
+    async>
+</script>
+
+  
+
+</div>
+        <div class="footer-wrapper"><footer>
+    <div class="footer-container">
+        <div class="footer-meta">
+            
+                <div class="footer-meta-copyright">
+                    &copy; 2022 mar2ndx.
+                </div>
+            
+            
+                <div class="footer-meta-licenese">
+                    Licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC-BY-NC-SA 4.0</a>
+                </div>
+            
+            
+        </div>
+    </div>
+</footer>
+</div>
+    </div>
+</body>
+</html>

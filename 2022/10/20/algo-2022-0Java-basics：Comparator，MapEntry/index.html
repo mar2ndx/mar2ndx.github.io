@@ -64,7 +64,8 @@
             </div>
             
             <div class="post-content">
-                <p>Comparator class 标准写法：</p>
+                <p><strong>经验：尽量用 Comparator，不要用 Comparable。</strong></p>
+<p>Comparator class 标准写法：</p>
 <pre><code class="hljs plaintext">Queue&lt;ListNode&gt; heap = new PriorityQueue(size, new NodeComparator());
 
 class NodeComparator implements Comparator&lt;ListNode&gt; &#123;
@@ -80,7 +81,8 @@ class NodeComparator implements Comparator&lt;ListNode&gt; &#123;
 	&#125;
 &#125;);</code></pre>
 
-<p>PriorityQueue inline 简化写法：</p>
+<p>PriorityQueue inline 简化写法 ：</p>
+<p>(这种写法只对 primitive type，比如 integer array，注意尽量少这么写！)</p>
 <pre><code class="hljs plaintext">PriorityQueue&lt;int[]&gt; queue = new PriorityQueue&lt;int[]&gt;(new Comparator&lt;int[]&gt;() &#123;
 	public int compare(int[] m, int[] n) &#123;
 		return m[1] - n[1];
