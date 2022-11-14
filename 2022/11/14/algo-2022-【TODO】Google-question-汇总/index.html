@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <link rel="shortcut icon" href="/images/avatar.png" type="image/x-icon" />
+    <title>
+        
+            Google questions |
+         
+        Mar2ndx&#39;s Algorithmic and System Design Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/solid.min.css">
+
+     
+    
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXXXX"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-XXXXXXXXXXXX');
+        </script>
+    
+
+
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body>
+    <div class="body-container">
+        <div class="header-wrapper"><header>
+    <div class="header-container">
+        <div class="header-menu-list">
+            <ul>
+            
+                <li>
+                    <a href="/">主页</a>
+                </li>
+            
+            </ul>
+        </div>
+    </div>
+</header>
+</div>
+        <div class="main-wrapper"><main>
+    <div class="main-container">
+        <div class="post-details">
+            
+            <div class="post-title">
+                <h1>Google questions</h1>
+            </div>
+            <div class="post-meta">
+                <i class="fa-solid fa-clock"></i>&nbsp;<span class="post-date">2022/11/14</span>
+            </div>
+            
+            <div class="post-content">
+                <h1 id="Leetcode"><a href="#Leetcode" class="headerlink" title="Leetcode"></a>Leetcode</h1><p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/shortest-path-in-a-grid-with-obstacles-elimination/">https://leetcode.cn/problems/shortest-path-in-a-grid-with-obstacles-elimination/</a></p>
+<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/path-with-maximum-probability/">https://leetcode.cn/problems/path-with-maximum-probability/</a></p>
+<h1 id="Q1"><a href="#Q1" class="headerlink" title="Q1"></a>Q1</h1><p>排序以下 table:</p>
+<pre><code>name  |  start  |  end
+abc          3          8
+bcd          7         10
+cde          3          6
+</code></pre>
+<p>output:</p>
+<pre><code>3    -    6      abc, cde
+6    -    7      bcd
+7    -    8      bcd, cde
+8    ‍‌‌‌‍‌‌‍‌‍‌‌‍‌‌‍‌‍-    10    bcd
+</code></pre>
+<p>Solution：用 Heap。类似：<a target="_blank" rel="noopener" href="https://mar2ndx.github.io/2014/07/01/The-Skyline-Problem/">https://mar2ndx.github.io/2014/07/01/The-Skyline-Problem/</a></p>
+<h1 id="Q2"><a href="#Q2" class="headerlink" title="Q2"></a>Q2</h1><p>一片房子有三个社区，&lt;!–swig￼0–&gt;</p>
+<p>排序所有的社区 并且每个社区不能有同样的门牌号（每个数字代表一个门牌号）</p>
+<p>完全没看懂。source：<a target="_blank" rel="noopener" href="https://www.1point3acres.com/bbs/thread-944293-1-1.html">https://www.1point3acres.com/bbs/thread-944293-1-1.html</a></p>
+<h1 id="Q3"><a href="#Q3" class="headerlink" title="Q3"></a>Q3</h1><pre><code>有一个list，
+[( &#39;John&#39;,5), (&#39;Mary&#39;,4), (&#39;Sherry&#39;,10), (&#39;John&#39;,3),(&#39;Mary&#39;,3),...........]
+这个list里有重复的人名，每个人名对应是他们短信里的字数。 给你这样一个list和特定数字N，要求你返回前N个最活跃的用户量。
+我用了dict来计数，计每个人一共说了多少话。然后就排序了。
+我是fail了。
+面我的是一个 很有好的国人小哥，在狗家工作了9个月的。 他和我说，这个时间复杂度太大了，当 这个list里的用户成千上万的时候。
+让我想有没有其他方法减少时间复杂度。我想不出来。 他大‍‌‌‌‍‌‌‍‌‍‌‌‍‌‌‍‌‍概给了我方向是用最大堆做。
+</code></pre>
+<h1 id="Q4"><a href="#Q4" class="headerlink" title="Q4"></a>Q4</h1><pre><code>第一题比较简单 就是non-decreasing contiguous array那道题，然后第二题就是第一题的变形， 你可以改变其中一个数字 比如原本[1,0,0,0,0,3,4] 你可以改掉0变成1 然后找到最长contiguous non decreasing array
+</code></pre>
+<p>其他参考：</p>
+<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/shortest-unsorted-continuous-subarray/">https://leetcode.cn/problems/shortest-unsorted-continuous-subarray/</a></p>
+<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/contiguous-array/">https://leetcode.cn/problems/contiguous-array/</a></p>
+<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/non-decreasing-array/solution/">https://leetcode.cn/problems/non-decreasing-array/solution/</a></p>
+<h1 id="Q5"><a href="#Q5" class="headerlink" title="Q5"></a>Q5</h1><pre><code>一个白人老大爷出的题
+给一个N面的骰子 一个小人 一段无限长的一维坐标 给一段范围[a,b] 小人从0点出发 根据骰子走x步 骰子可以掷无数次 小人走到[a, b]这个范围内包括a和b就算获胜
+</code></pre>
+<p>source：<a target="_blank" rel="noopener" href="https://www.1point3acres.com/bbs/thread-942744-1-1.html">https://www.1point3acres.com/bbs/thread-942744-1-1.html</a></p>
+<h1 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h1><p><a target="_blank" rel="noopener" href="https://www.1point3acres.com/bbs/thread-941066-1-1.html">https://www.1point3acres.com/bbs/thread-941066-1-1.html</a><br><a target="_blank" rel="noopener" href="https://www.1point3acres.com/bbs/thread-942679-1-1.html">https://www.1point3acres.com/bbs/thread-942679-1-1.html</a><br><a target="_blank" rel="noopener" href="https://www.1point3acres.com/bbs/thread-942984-1-1.html">https://www.1point3acres.com/bbs/thread-942984-1-1.html</a><br><a target="_blank" rel="noopener" href="https://www.1point3acres.com/bbs/thread-935670-1-1.html">https://www.1point3acres.com/bbs/thread-935670-1-1.html</a><br><a target="_blank" rel="noopener" href="https://www.1point3acres.com/bbs/thread-935154-1-1.html">https://www.1point3acres.com/bbs/thread-935154-1-1.html</a></p>
+
+            </div>
+        </div>
+    </div>
+</main>
+
+<script src="https://utteranc.es/client.js"
+    repo="owner/repo"
+    issue-term="pathname"
+    theme="github-light"
+    crossorigin="anonymous"
+    async>
+</script>
+
+  
+
+</div>
+        <div class="footer-wrapper"><footer>
+    <div class="footer-container">
+        <div class="footer-meta">
+            
+                <div class="footer-meta-copyright">
+                    &copy; 2022 mar2ndx.
+                </div>
+            
+            
+                <div class="footer-meta-licenese">
+                    Licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC-BY-NC-SA 4.0</a>
+                </div>
+            
+            
+        </div>
+    </div>
+</footer>
+</div>
+    </div>
+</body>
+</html>
