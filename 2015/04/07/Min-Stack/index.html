@@ -83,56 +83,14 @@ getMin() -- Retrieve the minimum element in the stack.
 </li>
 </ul>
 <p></p><p></p>
-              
-<pre><code>            &lt;div id=&quot;tags&quot; class=&quot;btn btn-xs btn-warning&quot;&gt;Show Tags&lt;/div&gt;
-            &lt;span class=&quot;hide&quot;&gt;
-              
-              &lt;a class=&quot;btn btn-xs btn-primary&quot; href=&quot;/tag/stack/&quot;&gt;Stack&lt;/a&gt;
-              
-              &lt;a class=&quot;btn btn-xs btn-primary&quot; href=&quot;/tag/data-structure/&quot;&gt;Data Structure&lt;/a&gt;
-              
-           sn’t look possible to go to left half or right half by doing constant number of comparisons at the mSolution &lt;/span&gt;
-</code></pre>
+<p>
+You must implement a solution with O(1) time complexity for each function.
+</p>
 </div>
 
-<h3 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h3><p>I’ve already cover this question in another post <strong>[Question] Min Stack</strong>. </p>
-<h3 id="My-Code"><a href="#My-Code" class="headerlink" title="My Code"></a>My Code</h3><pre><code>class MinStack &#123;
-
-    Stack&lt;Integer&gt; stack = new Stack&lt;Integer&gt;();
-    Stack&lt;Integer&gt; min = new Stack&lt;Integer&gt;();
-
-    public void push(int x) &#123;
-        stack.push(x);
-        if (min.isEmpty() || min.peek() &gt;= x) &#123;
-            min.push(x);
-        &#125;
-    &#125;
-
-    public void pop() &#123;
-        if (stack.isEmpty()) &#123;
-            return;
-        &#125;
-        int topNum = stack.pop();
-        if (topNum == min.peek()) &#123;
-            min.pop();
-        &#125;
-    &#125;
-
-    public int top() &#123;
-        if (stack.isEmpty()) &#123;
-            return 0;
-        &#125;
-        return stack.peek();
-    &#125;
-
-    public int getMin() &#123;
-        if (min.isEmpty()) &#123;
-            return 0;
-        &#125;
-        return min.peek();
-    &#125;
-&#125;
-</code></pre>
+<h2 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h2><p>辅助 stack （存最小值）。</p>
+<p>I covered this question in another post <strong>[Question] Min Stack</strong>. </p>
+<h2 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">class MinStack &#123;<br><br>	Stack&lt;Integer&gt; stack = new Stack&lt;Integer&gt;();<br>	Stack&lt;Integer&gt; min = new Stack&lt;Integer&gt;();<br><br>	public void push(int x) &#123;<br>		stack.push(x);<br>		if (min.isEmpty() || min.peek() &gt;= x) &#123;<br>			min.push(x);<br>		&#125;<br>	&#125;<br><br>	public void pop() &#123;<br>		if (stack.isEmpty()) &#123;<br>			return;<br>		&#125;<br>		int topNum = stack.pop();<br>		if (topNum == min.peek()) &#123;<br>			min.pop();<br>		&#125;<br>	&#125;<br><br>	public int top() &#123;<br>		if (stack.isEmpty()) &#123;<br>			return 0;<br>		&#125;<br>		return stack.peek();<br>	&#125;<br><br>	public int getMin() &#123;<br>		if (min.isEmpty()) &#123;<br>			return 0;<br>		&#125;<br>		return min.peek();<br>	&#125;<br>&#125;<br></code></pre></td></tr></table></figure>
 
             </div>
         </div>

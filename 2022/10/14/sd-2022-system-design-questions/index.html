@@ -75,36 +75,57 @@
 <p>rating system: 一个物品评分打星系统</p>
 <p>然后问俩个 local meachine, 网络不好, 两边都有大文件, 怎么样判定文件完全相同 -答 checksum, hash<br>接着问怎样能够列出不相同的文件, 最后他希望用 tree</p>
 <p>MySQL 的设计，需要尽量的规范化：normalization。减少数据冗余，但是查询比较麻烦，需要关联 Join。但是 NoSQL 需要反规范化 denormalize，为了方便查询而设计。例如：一个 video 在一个 date，一个小时内，view count，就可以存成这样：</p>
-<pre><code class="hljs plaintext">video_id + date_time | uploader_id | video_name | video_count:1500 | video_count:1600 | video_count:1700 |</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">video_id + date_time | uploader_id | video_name | video_count:1500 | video_count:1600 | video_count:1700 |<br></code></pre></td></tr></table></figure>
 
-<h1 id="Amazon"><a href="#Amazon" class="headerlink" title="Amazon"></a>Amazon</h1><pre><code>Tell me about a time when you have worked against tight deadlines and didn&#39;t have the time to consider all options before making a decision. What approach did you take?
+<h1 id="Amazon"><a href="#Amazon" class="headerlink" title="Amazon"></a>Amazon</h1><h2 id="Amazon-BQ-LP-questions"><a href="#Amazon-BQ-LP-questions" class="headerlink" title="Amazon BQ / LP questions"></a>Amazon BQ / LP questions</h2><pre><code>Tell me about a time when you have worked against tight deadlines and didn&#39;t have the time to consider all options before making a decision. What approach did you take?
+
 We ship millions of customer orders around the world, carried by different carriers like UPS, FedEx.  We report status of the delivery via a push notification and via website. These carriers have varying formats, SLAs, and QoSs. How would you design a system to maintain status of our shipments and report the same to the customer?
+
 Tell me about a time someone disagreed with your approach.
-Given a list of historic stock prices, write a function that tells when you should have bought and sold to make the most profit. You can only buy and sell once.
+
 Tell me about a time a customer wanted one thing, but you felt they needed something else. How did you approach the situation, what were your actions and what was the end result?
+
 Give me an example of a time when you didn&#39;t think you were going to meet the commitments you promised. How did you identify the risk and communicate it to stakeholders? What was the outcome?
 
-Thinking of Amazon Locker for example.  Each Locker has a position and a size. Given the number of times a locker has been used, find the size that is most popular.
-How would you design a class that behaves similar to a Java Map &lt;Date,Object&gt; except that get() returns the mapped value for not only an exact match but also for the latest Date in the Map
 Assume you are using an app that has a feed. To edit content, you would click on a button to open a new screen which has an edit text. Hitting submit will kick off an http request and update the first screen. What are the various manual tests you can think of to test this flow?
+
 Design a system used for taxi reservation. How would you handle conditions such as users, scale and other conditions.
+
 Model a system which will allow an administrator to control the product visibility of a sale at Amazon using a given set of rules. The system should allow the administrator to create rules on transaction information and thus disabling or enabling products visible for sale, such as price, category, etc.
+
 Give an example of a tough or critical piece of feedback you received. What was it and what did you do about it?
 Tell me about a time when you took on something significant outside your area of responsibility. Why was it important? What was the outcome?
+
 Tell me about a time you made a hard decision to sacrifice short term gain for a longer term goal.
+
 Give an example of when you saw a peer struggling and decided to step in and help. What was the situation and what actions did you take? What was the outcome?
+
 Give me an example of when you took an unpopular stance in a meeting with peers and your leader and you were the outlier. What was it, why did you feel strongly about it, and what did you do?
-Be prepared to answer a question using arrays, finding number of paths, etc.
-Write a background service that queries the status on the backend by a certain interval.
-Write a program that could determine the number of times a specific item is purchased.
-Take a look at resources such as CareerCup to get a feel for other styles of questions you may see: https://www.careercup.com/
-You may wish to review youtube videos by the author of “Cracking the Coding Interview”, Gayle Laakmann McDowell, on whiteboard interview demonstrations
 </code></pre>
 <p>BQ 半个小时，他从我的简历上挑了一段他感兴趣的实习经历，之后开始 dfs 式的提问。整个过程中对细节扣得非常细，比如我提到我在团队合作中帮助到了别人，他就会问我的帮助对别人具体产生了什么影响。我说我们团队需要考一个证书，他就问整个证书是干什么的，考这个证书都会涉及哪些知识哪些题型。我提了一下用户会要求一些定制化开发的内容，他就问具体哪一些是定制化的，最后的解决方案是什么。还问了我组里开会每天都会聊什么等等各种细节的东西。所以对于说过的每一句话每一个词，都会可能成为面试官提问你的理由。就这样，在浓浓的咖喱味儿口音中，我被提问了半个小时。</p>
+<h2 id="Amazon-System-Design"><a href="#Amazon-System-Design" class="headerlink" title="Amazon System Design"></a>Amazon System Design</h2><p>Write a background service that queries the status on the backend by a certain interval.</p>
+<p>Write a program that could determine the number of times a specific item is purchased.</p>
 <p>接下来是 coding，除了一道比较奇怪的题目，不是算法题，偏向 ood。一个亚麻用户下单送货支付的场景，给我了一些 class，给了一些 rule，写一个 method 检查是否符合所有 rule。比如要 check paymant method, check item, check address 之类的一共 4 条 rule。写完之后，follow up 1，怎么支持更多的 payment method。follow up2。如果有更多的 rule，要加进来，程序改怎么拓展。我答了用 DI，印度老哥要求写 DI 的伪代码。最后时间不够了，匆匆写了一些伪代码。</p>
-<p>coding:<br>convert json file to object with the variable type(没说必须 json object， 问了面试官我假设就 hashmap 也行)<br>数据类型有：<br>Map -”M”<br>List- “L”<br>Number- “N”<br>String-”S”<br>Boolean-”B”</p>
-<p>Input:<br>Person: {<br>name: “John”,<br>age: 40,<br>}<br>Output:<br>M: {Person:{<br>S: {name: “John”},<br>N: {age: 40}<br>}}</p>
-<p>反思为啥挂了，BQ 自我感觉答到不错，严格按 STAR， 每个问题 A 说了 3 个，flowup 的问题也都具体的答了。<br>coding 剩 25 分钟，刚开始看了题有点慌， 忘记问 map 里面是不是可以套好多个 map。后来经过提醒用了 recursion 处理 map。<br>json 在 java 的 API 都想不起来，暂且用 hashmap 去转换，代码最后剩 2 个 case 没写完。面试官说我已经 almost 的时候就感觉凉了。</p>
+<h2 id="Amazon-Coding"><a href="#Amazon-Coding" class="headerlink" title="Amazon Coding"></a>Amazon Coding</h2><p>How would you design a class that behaves similar to a Java Map &lt;Date,Object&gt; except that get() returns the mapped value for not only an exact match but also for the latest Date in the Map</p>
+<p>Thinking of Amazon Locker for example. Each Locker has a position and a size. Given the number of times a locker has been used, find the size that is most popular. </p>
+<p>Convert json file to object with the variable type(没说必须 json object， 问了面试官我假设就 hashmap 也行)<br>数据类型有：</p>
+<pre><code>Map -”M”
+List- “L”
+Number- “N”
+String-”S”
+Boolean-”B”
+
+Input:
+Person: &#123;
+name: “John”,
+age: 40,
+&#125;
+Output:
+M: &#123;Person:&#123;
+S: &#123;name: “John”&#125;,
+N: &#123;age: 40&#125;
+&#125;&#125;
+</code></pre>
 
             </div>
         </div>

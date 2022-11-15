@@ -94,40 +94,8 @@ Constraints:
     s is guaranteed to be a valid input.
     All the integers in s are in the range [1, 300].
 </code></pre>
-<h1 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h1><pre><code class="hljs plaintext">public String decodeString(String s) &#123;
-    int len = s.length();
-    Stack&lt;Character&gt; stack = new Stack&lt;Character&gt;();
-    for (int k = 0; k &lt; len; k++) &#123;
-        char c = s.charAt(k);
-        if (c == &#x27;[&#x27;) &#123;
-            stack.push(c);
-        &#125; else if (c == &#x27;]&#x27;) &#123;
-            List&lt;Character&gt; list = new ArrayList&lt;Character&gt;();
-            while (stack.peek() != &#x27;[&#x27;) &#123;
-                list.add(stack.pop());
-            &#125;
-            stack.pop();
-            int times = 0;
-            int zeros = 1;
-            while (!stack.isEmpty() &amp;&amp; (stack.peek() &gt;= &#x27;0&#x27; &amp;&amp; stack.peek() &lt;= &#x27;9&#x27;)) &#123;
-                times += zeros * (int) (stack.pop() - &#x27;0&#x27;);
-                zeros *= 10;
-            &#125;
-            for (int i = 0; i &lt; times; i++) &#123;
-                for (int j = list.size() - 1; j &gt;= 0; j--) &#123;
-                    stack.push(list.get(j));
-                &#125;
-            &#125;
-        &#125; else &#123; // either number or char
-            stack.push(c);
-        &#125;
-    &#125;
-    String res = &quot;&quot;;
-    while (!stack.isEmpty()) &#123;
-        res = stack.pop() + res;
-    &#125;
-    return res;
-&#125;</code></pre>
+<p>用 Stack 来做。</p>
+<h1 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">public String decodeString(String s) &#123;<br>    int len = s.length();<br>    Stack&lt;Character&gt; stack = new Stack&lt;Character&gt;();<br>    for (int k = 0; k &lt; len; k++) &#123;<br>        char c = s.charAt(k);<br>        if (c == &#x27;[&#x27;) &#123;<br>            stack.push(c);<br>        &#125; else if (c == &#x27;]&#x27;) &#123;<br>            List&lt;Character&gt; list = new ArrayList&lt;Character&gt;();<br>            while (stack.peek() != &#x27;[&#x27;) &#123;<br>                list.add(stack.pop());<br>            &#125;<br>            stack.pop();<br>            int times = 0;<br>            int zeros = 1;<br>            while (!stack.isEmpty() &amp;&amp; (stack.peek() &gt;= &#x27;0&#x27; &amp;&amp; stack.peek() &lt;= &#x27;9&#x27;)) &#123;<br>                times += zeros * (int) (stack.pop() - &#x27;0&#x27;);<br>                zeros *= 10;<br>            &#125;<br>            for (int i = 0; i &lt; times; i++) &#123;<br>                for (int j = list.size() - 1; j &gt;= 0; j--) &#123;<br>                    stack.push(list.get(j));<br>                &#125;<br>            &#125;<br>        &#125; else &#123; // either number or char<br>            stack.push(c);<br>        &#125;<br>    &#125;<br>    String res = &quot;&quot;;<br>    while (!stack.isEmpty()) &#123;<br>        res = stack.pop() + res;<br>    &#125;<br>    return res;<br>&#125;<br></code></pre></td></tr></table></figure>
 
             </div>
         </div>
