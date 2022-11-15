@@ -102,35 +102,48 @@ References
 <p>Other things to remember:</p>
 <ol>
 <li>uploading file/photo: use master/slave model</li>
-<li>don’t forget to calculate the storage size for DB.<br> eg. 500M user data, each take 68 bytes, then storage needed = 32GB<br> (user id 4 bytes, name 20 bytes, email 32 bytes, dataofbirth 4 bytes, creation time 4 byte, last login 4 bytes)</li>
-<li>data sharding - 如果按照 hash 分割，migration 非常困难。<br> solution：<br> 先范围，再hash。Or 一致性hash环（consistent hashing）</li>
-<li>如何 generate PhotoID？没有这个id，我们无法判断哪个 shard。所以：用snowflake算法，unique IDs</li>
+<li>don’t forget to calculate the storage size for DB.<br>eg. 500M user data, each take 68 bytes, then storage needed = 32GB<br>(user id 4 bytes, name 20 bytes, email 32 bytes, dataofbirth 4 bytes, creation time 4 byte, last login 4 bytes)</li>
+<li>data sharding - 如果按照 hash 分割，migration 非常困难。<br>solution：<br>先范围，再 hash。Or 一致性 hash 环（consistent hashing）</li>
+<li>如何 generate PhotoID？没有这个 id，我们无法判断哪个 shard。所以：用 snowflake 算法，unique IDs</li>
 </ol>
 <h1 id="3-most-popular-AWS-services"><a href="#3-most-popular-AWS-services" class="headerlink" title="3 most popular AWS services:"></a>3 most popular AWS services:</h1><ol>
 <li>EC2</li>
 <li>RDS: support multiple database engines including SQL Server, SQL, PostgreSQL</li>
-<li>S3: Simple Storage Service (S3) </li>
+<li>S3: Simple Storage Service (S3)</li>
 </ol>
 <h1 id="Consistent-Hashing"><a href="#Consistent-Hashing" class="headerlink" title="Consistent Hashing"></a>Consistent Hashing</h1><p>Use for data partitioning problem</p>
 <p>Dynamo and Cassandra use Consistent Hashing to distribute their data across nodes</p>
-<h1 id="How-to-ensure-API-security"><a href="#How-to-ensure-API-security" class="headerlink" title="How to ensure API security?"></a>How to ensure API security?</h1><p>For each API request post log-in, we are doing authentication by checking the validity of auth_token in Authorization HTTP header. </p>
+<h1 id="How-to-ensure-API-security"><a href="#How-to-ensure-API-security" class="headerlink" title="How to ensure API security?"></a>How to ensure API security?</h1><p>For each API request post log-in, we are doing authentication by checking the validity of auth_token in Authorization HTTP header.</p>
 <p>This makes sure that requests which originate from clients are legitimate.</p>
 <h1 id="Facebook-big-data"><a href="#Facebook-big-data" class="headerlink" title="Facebook big data"></a>Facebook big data</h1><p>Daily = 5 Petabyte = 5,000 Terabyte</p>
-<p>ODS = time-series counter </p>
+<p>ODS = time-series counter</p>
 <p>Scube = in-memory</p>
 <p>Hive = data warehouse</p>
-<p>None of the above are relational DB, thus no ACID properties. </p>
+<p>None of the above are relational DB, thus no ACID properties.</p>
 <p>ACID = atomic + consistency + isolation (invisible inter-mediate states) + durability (changes won’t undone)</p>
-<h1 id="Kafka"><a href="#Kafka" class="headerlink" title="Kafka"></a>Kafka</h1><p>Distributed streaming platform. Support publish-subscibe pattern. Not exactly same as messaging queue. </p>
-<p>Use cases: </p>
+<h1 id="Kafka"><a href="#Kafka" class="headerlink" title="Kafka"></a>Kafka</h1><p>Distributed streaming platform. Support publish-subscibe pattern. Not exactly same as messaging queue.</p>
+<p>Use cases:</p>
 <ol>
 <li>aggregate user activity on a website</li>
 <li>logs aggregation</li>
 </ol>
 <h1 id="News-Feed"><a href="#News-Feed" class="headerlink" title="News Feed"></a>News Feed</h1><p>pre-generation 然后存入一个 table。</p>
 <p>Pull（或者 long-pulling connection）比 Push 更好。</p>
-<p>因为：KOL有1M follower，push不过来。但是人可以关注是又上限的：maybe 1000，所以 pull 起来更快一点。</p>
-<p>News feed因为需要快速读写，所以 keep in memory. Eg. 100M users, each required 0.5MB space, then total space needed = 50TB. If each computer = 100GB, we need at least 500 machines. </p>
+<p>因为：KOL 有 1M follower，push 不过来。但是人可以关注是又上限的：maybe 1000，所以 pull 起来更快一点。</p>
+<p>News feed 因为需要快速读写，所以 keep in memory. Eg. 100M users, each required 0.5MB space, then total space needed = 50TB. If each computer = 100GB, we need at least 500 machines.</p>
+<h1 id="Counter-service"><a href="#Counter-service" class="headerlink" title="Counter service"></a>Counter service</h1><p>不能用 Redis 这种 in-memory 来做，除非用户量小于 1000.</p>
+<p>用 Kafka + DB 来做。</p>
+<h1 id="Chat-app"><a href="#Chat-app" class="headerlink" title="Chat app"></a>Chat app</h1><p>XMPP protocol over WebSocket (or TCP), it’s peer-to-peer</p>
+<p>We can’t use HTTP which is client-server communication protocol, impossible for chatting app。</p>
+<h2 id="Session-Manager"><a href="#Session-Manager" class="headerlink" title="Session Manager"></a>Session Manager</h2><p>stores user ID - connection ID</p>
+<p>so I can find user’s websocket, so I know where to send the message</p>
+<h1 id="How-does-Long-polling-work"><a href="#How-does-Long-polling-work" class="headerlink" title="How does Long polling work?"></a>How does Long polling work?</h1><ol>
+<li>long polling is built on HTTP</li>
+<li>normally, client send HTTP request and server respond</li>
+<li>for long-polling, client send the request but server does not close the connection. </li>
+</ol>
+<p>The server does not close the connection, instead, the connection is kept open until there is data for the server to send</p>
+<p>Once data is received by the client, it immediately makes another HTTP Long-polling request to the server</p>
 
             </div>
         </div>
