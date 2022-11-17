@@ -102,101 +102,11 @@ Design and implement a data structure for Least Recently Used (LRU) cache. It sh
 <p>This is easy, but <strong>do not forget about both key and value variable</strong>. We must use DoubleLinkedListNode.key when we want to delete tail.</p>
 </li>
 </ol>
-<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><p><strong>Updated on July 1st, 2014</strong>.</p>
-<p>This question tests your ability to write some DS by yourself, eg. DoubleLinkedList.</p>
-<pre><code>public class LRUCache &#123;
+<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><p>Write your own DS: DoubleLinkedList.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">public class LRUCache &#123;<br><br>    int size;<br>    int capacity;<br><br>    DoubleLinkedList head;<br>    DoubleLinkedList tail;<br>    HashMap&lt;Integer, DoubleLinkedList&gt; map;<br><br>    public LRUCache(int capacity) &#123;<br>        this.size = 0;<br>        this.capacity = capacity;<br>        head = null;<br>        tail = null;<br>        map = new HashMap&lt;Integer, DoubleLinkedList&gt;();<br>    &#125;<br><br>    public void remove(DoubleLinkedList node) &#123;<br>        if (node == head &amp;&amp; node == tail) &#123;<br>            head = null;<br>            tail = null;<br>        &#125; else if (node == head) &#123;<br>            head.next.prev = null;<br>            head = head.next;<br>        &#125; else if (node == tail) &#123;<br>            tail.prev.next = null;<br>            tail = tail.prev;<br>        &#125; else &#123;<br>            node.prev.next = node.next;<br>            node.next.prev = node.prev;<br>        &#125;<br>        node.prev = null;<br>        node.next = null;<br>    &#125;<br><br>    public void setHead(DoubleLinkedList node) &#123;<br>        node.next = head;<br>        node.prev = null;<br>        if (head != null) &#123;<br>            head.prev = node;<br>        &#125;<br><br>        head = node;<br>        if (tail == null) &#123;<br>            tail = node;<br>        &#125;<br>    &#125;<br><br>    public int get(int key) &#123;<br>        if (!map.containsKey(key)) &#123;<br>            // if key is not found<br>            return -1;<br>        &#125; else &#123;<br>            // if key is found<br>            DoubleLinkedList target = map.get(key);<br>            remove(target);<br>            setHead(target);<br>            return head.val;<br>        &#125;<br>    &#125;<br><br>    public void set(int key, int value) &#123;<br>        if (this.get(key) != -1) &#123;<br>            // key exist before, just replace the old value<br>            DoubleLinkedList old = map.get(key);<br>            old.val = value;<br>        &#125; else &#123;<br>            // this is a new key-value pair, insert it<br>            DoubleLinkedList newHead = new DoubleLinkedList(key, value);<br>            map.put(key, newHead);<br>            setHead(newHead);<br>            if (size == capacity) &#123;<br>                // delete tail<br>                map.remove(tail.key);<br>                remove(tail);<br>            &#125; else &#123;<br>                size++;<br>            &#125;<br>        &#125;<br>    &#125;<br><br>    class DoubleLinkedList &#123;<br>        int key;<br>        int val;<br>        DoubleLinkedList prev;<br>        DoubleLinkedList next;<br>        public DoubleLinkedList(int k, int v) &#123;<br>            this.key = k;<br>            this.val = v;<br>        &#125;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
 
-    int size;
-    int capacity;
-
-    DoubleLinkedList head;
-    DoubleLinkedList tail;
-    HashMap&lt;Integer, DoubleLinkedList&gt; map;
-
-    public LRUCache(int capacity) &#123;
-        this.size = 0;
-        this.capacity = capacity;
-        head = null;
-        tail = null;
-        map = new HashMap&lt;Integer, DoubleLinkedList&gt;();
-    &#125;
-
-    public void remove(DoubleLinkedList node) &#123;
-        if (node == head &amp;&amp; node == tail) &#123;
-            head = null;
-            tail = null;
-        &#125; else if (node == head) &#123;
-            head.next.prev = null;
-            head = head.next;
-        &#125; else if (node == tail) &#123;
-            tail.prev.next = null;
-            tail = tail.prev;
-        &#125; else &#123;
-            node.prev.next = node.next;
-            node.next.prev = node.prev;
-        &#125;
-        node.prev = null;
-        node.next = null;
-    &#125;
-
-    public void setHead(DoubleLinkedList node) &#123;
-        node.next = head;
-        node.prev = null;
-        if (head != null) &#123;
-            head.prev = node;
-        &#125;
-
-        head = node;
-        if (tail == null) &#123;
-            tail = node;
-        &#125;
-    &#125;
-
-    public int get(int key) &#123;
-        if (!map.containsKey(key)) &#123;
-            // if key is not found
-            return -1;
-        &#125; else &#123;
-            // if key is found
-            DoubleLinkedList target = map.get(key);
-            remove(target);
-            setHead(target);
-            return head.val;
-        &#125;
-    &#125;
-
-    public void set(int key, int value) &#123;
-        if (this.get(key) != -1) &#123;
-            // key exist before, just replace the old value
-            DoubleLinkedList old = map.get(key);
-            old.val = value;
-        &#125; else &#123;
-            // this is a new key-value pair, insert it
-            DoubleLinkedList newHead = new DoubleLinkedList(key, value);
-            map.put(key, newHead);
-            setHead(newHead);
-            if (size == capacity) &#123;
-                // delete tail
-                map.remove(tail.key);
-                remove(tail);
-            &#125; else &#123;
-                size++;
-            &#125;
-        &#125;
-    &#125;
-
-    class DoubleLinkedList &#123;
-        int key;
-        int val;
-        DoubleLinkedList prev;
-        DoubleLinkedList next;
-        public DoubleLinkedList(int k, int v) &#123;
-            this.key = k;
-            this.val = v;
-        &#125;
-    &#125;
-&#125;
-</code></pre>
+<p>Updated Nov 17th, 2022</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">class LRUCache &#123;<br><br>    int capacity;<br>    DoublyLinkedNode head;<br>    DoublyLinkedNode tail;<br>    HashMap&lt;Integer, DoublyLinkedNode&gt; map;<br><br>    public LRUCache(int capacity) &#123;<br>        this.capacity = capacity;<br>        head = null;<br>        tail = null;<br>        map = new HashMap&lt;Integer, DoublyLinkedNode&gt;();<br>    &#125;<br><br>    public int get(int key) &#123;<br>        if (!map.containsKey(key)) &#123;<br>            return -1;<br>        &#125; else &#123;<br>            DoublyLinkedNode target = map.get(key);<br>            removeNode(target);<br>            setHead(target);<br>            return head.val;<br>        &#125;<br>    &#125;<br><br>    public void put(int key, int value) &#123;<br>        if (this.get(key) != -1) &#123;<br>            DoublyLinkedNode curNode = map.get(key);<br>            curNode.val = value;<br>        &#125; else &#123;<br>            // this is a new key-value pair, insert it<br>            DoublyLinkedNode newHead = new DoublyLinkedNode(key, value);<br>            map.put(key, newHead);<br>            setHead(newHead);<br>            if (map.size() &gt; capacity) &#123;<br>                map.remove(tail.key);<br>                removeNode(tail);<br>            &#125;<br>        &#125;<br>    &#125;<br><br>    private void removeNode(DoublyLinkedNode node) &#123;<br>        if (node == head &amp;&amp; node == tail) &#123;<br>            head = null;<br>            tail = null;<br>        &#125; else if (node == head) &#123;<br>            head.next.prev = null;<br>            head = head.next;<br>        &#125; else if (node == tail) &#123;<br>            tail.prev.next = null;<br>            tail = tail.prev;<br>        &#125; else &#123;<br>            node.prev.next = node.next;<br>            node.next.prev = node.prev;<br>        &#125;<br>        node.prev = null;<br>        node.next = null;<br>    &#125;<br><br>    private void setHead(DoublyLinkedNode node) &#123;<br>        node.next = head;<br>        node.prev = null;<br>        if (head != null) &#123;<br>            head.prev = node;<br>        &#125;<br><br>        head = node;<br>        if (tail == null) &#123;<br>            tail = node;<br>        &#125;<br>    &#125;<br><br>    class DoublyLinkedNode &#123;<br>        int key;<br>        int val;<br>        DoublyLinkedNode prev;<br>        DoublyLinkedNode next;<br><br>        public DoublyLinkedNode(int k, int v) &#123;<br>            this.key = k;<br>            this.val = v;<br>        &#125;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
 
             </div>
         </div>
