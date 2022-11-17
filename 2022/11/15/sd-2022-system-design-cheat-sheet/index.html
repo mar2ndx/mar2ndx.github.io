@@ -140,7 +140,7 @@ References
 <h1 id="How-does-Long-polling-work"><a href="#How-does-Long-polling-work" class="headerlink" title="How does Long polling work?"></a>How does Long polling work?</h1><ol>
 <li>long polling is built on HTTP</li>
 <li>normally, client send HTTP request and server respond</li>
-<li>for long-polling, client send the request but server does not close the connection. </li>
+<li>for long-polling, client send the request but server does not close the connection.</li>
 </ol>
 <p>The server does not close the connection, instead, the connection is kept open until there is data for the server to send</p>
 <p>Once data is received by the client, it immediately makes another HTTP Long-polling request to the server</p>
