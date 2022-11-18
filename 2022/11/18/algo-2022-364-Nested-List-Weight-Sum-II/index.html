@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <link rel="shortcut icon" href="/images/avatar.png" type="image/x-icon" />
+    <title>
+        
+            364. Nested List Weight Sum II |
+         
+        Mar2ndx&#39;s Algorithmic and System Design Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/solid.min.css">
+
+     
+    
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXXXX"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-XXXXXXXXXXXX');
+        </script>
+    
+
+
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body>
+    <div class="body-container">
+        <div class="header-wrapper"><header>
+    <div class="header-container">
+        <div class="header-menu-list">
+            <ul>
+            
+                <li>
+                    <a href="/">主页</a>
+                </li>
+            
+            </ul>
+        </div>
+    </div>
+</header>
+</div>
+        <div class="main-wrapper"><main>
+    <div class="main-container">
+        <div class="post-details">
+            
+            <div class="post-title">
+                <h1>364. Nested List Weight Sum II</h1>
+            </div>
+            <div class="post-meta">
+                <i class="fa-solid fa-clock"></i>&nbsp;<span class="post-date">2022/11/18</span>
+            </div>
+            
+            <div class="post-content">
+                <p>Link: <a target="_blank" rel="noopener" href="https://leetcode.cn/problems/nested-list-weight-sum-ii/">https://leetcode.cn/problems/nested-list-weight-sum-ii/</a></p>
+<h1 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h1><p>difficulty: mid<br>adj diff: 3</p>
+<pre><code>You are given a nested list of integers nestedList. Each element is either an integer or a list whose elements may also be integers or other lists.
+
+The depth of an integer is the number of lists that it is inside of. For example, the nested list [1,[2,2],[[3],2],1] has each integer&#39;s value set to its depth. Let maxDepth be the maximum depth of any integer.
+
+The weight of an integer is maxDepth - (the depth of the integer) + 1.
+
+Return the sum of each integer in nestedList multiplied by its weight.
+
+ 
+
+Example 1:
+
+Input: nestedList = [[1,1],2,[1,1]]
+Output: 8
+Explanation: Four 1&#39;s with a weight of 1, one 2 with a weight of 2.
+1*1 + 1*1 + 2*2 + 1*1 + 1*1 = 8
+
+Example 2:
+
+Input: nestedList = [1,[4,[6]]]
+Output: 17
+Explanation: One 1 at depth 3, one 4 at depth 2, and one 6 at depth 1.
+1*3 + 4*2 + 6*1 = 17
+
+ 
+
+Constraints:
+
+    1 &lt;= nestedList.length &lt;= 50
+    The values of the integers in the nested list is in the range [-100, 100].
+    The maximum depth of any integer is less than or equal to 50.
+</code></pre>
+<p>基本上跟 339. Nested List Weight Sum 一样。唯一的区别是：乘以 depth 跟 max depth 的差值。</p>
+<h1 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h1><p>这是来自<a target="_blank" rel="noopener" href="https://leetcode.cn/problems/nested-list-weight-sum-ii/solution/dfs-jia-quan-qian-tao-xu-lie-he-ii-by-be-5trv/">网友的代码</a></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">class Solution &#123;<br>    public int depthSumInverse(List&lt;NestedInteger&gt; nestedList) &#123;<br>        int dep = calDep(nestedList);<br>        return solve(nestedList, dep);<br>    &#125;<br><br>    private int solve(List&lt;NestedInteger&gt; nestedList, int dep) &#123;<br>        int sum = 0;<br>        for (NestedInteger e : nestedList) &#123;<br>            if (e.isInteger()) &#123;<br>                sum += e.getInteger() * dep;<br>            &#125; else &#123;<br>                sum += solve(e.getList(), dep - 1);<br>            &#125;<br>        &#125;<br>        return sum;<br>    &#125;<br><br>    private int calDep(List&lt;NestedInteger&gt; l) &#123;<br>        int dep = 1;<br>        for (NestedInteger e : l) &#123;<br>            if (!e.isInteger()) &#123;<br>                dep = Math.max(dep, calDep(e.getList()) + 1);<br>            &#125;<br>        &#125;<br>        return dep;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+            </div>
+        </div>
+    </div>
+</main>
+
+<script src="https://utteranc.es/client.js"
+    repo="owner/repo"
+    issue-term="pathname"
+    theme="github-light"
+    crossorigin="anonymous"
+    async>
+</script>
+
+  
+
+</div>
+        <div class="footer-wrapper"><footer>
+    <div class="footer-container">
+        <div class="footer-meta">
+            
+                <div class="footer-meta-copyright">
+                    &copy; 2022 mar2ndx.
+                </div>
+            
+            
+                <div class="footer-meta-licenese">
+                    Licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC-BY-NC-SA 4.0</a>
+                </div>
+            
+            
+        </div>
+    </div>
+</footer>
+</div>
+    </div>
+</body>
+</html>

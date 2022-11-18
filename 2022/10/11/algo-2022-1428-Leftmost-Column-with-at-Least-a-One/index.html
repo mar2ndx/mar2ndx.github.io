@@ -99,25 +99,13 @@ cols == mat[i].length
 mat[i][j] is either 0 or 1.
 mat[i] is sorted in non-decreasing order.
 </code></pre>
-<p>这个道题的难点在于想法。</p>
+<p>这道题的难点在于想法。</p>
 <p>网友的一句话解法如下：</p>
 <blockquote>
-<p>从右下角开始，遇到 1 往左走，遇到 0 往上走，走到第一行，答案就很显然了</p>
+<p>从右下角开始，遇到 1 往左走，遇到 0 往上走</p>
+<p>走到第一行，答案就很显然了。</p>
 </blockquote>
-<h1 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h1><pre><code class="hljs plaintext">public int leftMostColumnWithOne(BinaryMatrix binaryMatrix) &#123;
-    List&lt;Integer&gt; dimension = binaryMatrix.dimensions();
-    int x = dimension.get(0) - 1;
-    int y = dimension.get(1) - 1;
-    while (x &gt;= 0 &amp;&amp; y &gt;= 0) &#123;
-        int val = binaryMatrix.get(x, y);
-        if (val == 0) &#123;
-            x--;
-        &#125; else if (val == 1) &#123;
-            y--;
-        &#125;
-    &#125;
-    return y + 1 == dimension.get(1) ? -1 : y+1;
-&#125;</code></pre>
+<h1 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">public int leftMostColumnWithOne(BinaryMatrix binaryMatrix) &#123;<br>    List&lt;Integer&gt; dimension = binaryMatrix.dimensions();<br>    int x = dimension.get(0) - 1;<br>    int y = dimension.get(1) - 1;<br>    while (x &gt;= 0 &amp;&amp; y &gt;= 0) &#123;<br>        int val = binaryMatrix.get(x, y);<br>        if (val == 0) &#123;<br>            x--;<br>        &#125; else if (val == 1) &#123;<br>            y--;<br>        &#125;<br>    &#125;<br>    return y + 1 == dimension.get(1) ? -1 : y+1;<br>&#125;<br></code></pre></td></tr></table></figure>
 
             </div>
         </div>

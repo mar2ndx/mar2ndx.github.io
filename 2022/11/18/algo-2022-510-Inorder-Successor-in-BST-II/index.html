@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <link rel="shortcut icon" href="/images/avatar.png" type="image/x-icon" />
+    <title>
+        
+            510. Inorder Successor in BST II |
+         
+        Mar2ndx&#39;s Algorithmic and System Design Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/solid.min.css">
+
+     
+    
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXXXX"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-XXXXXXXXXXXX');
+        </script>
+    
+
+
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body>
+    <div class="body-container">
+        <div class="header-wrapper"><header>
+    <div class="header-container">
+        <div class="header-menu-list">
+            <ul>
+            
+                <li>
+                    <a href="/">主页</a>
+                </li>
+            
+            </ul>
+        </div>
+    </div>
+</header>
+</div>
+        <div class="main-wrapper"><main>
+    <div class="main-container">
+        <div class="post-details">
+            
+            <div class="post-title">
+                <h1>510. Inorder Successor in BST II</h1>
+            </div>
+            <div class="post-meta">
+                <i class="fa-solid fa-clock"></i>&nbsp;<span class="post-date">2022/11/18</span>
+            </div>
+            
+            <div class="post-content">
+                <p>Link: <a target="_blank" rel="noopener" href="https://leetcode.cn/problems/inorder-successor-in-bst-ii/">https://leetcode.cn/problems/inorder-successor-in-bst-ii/</a></p>
+<h1 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h1><p>difficulty: mid<br>adj diff: 3</p>
+<pre><code>Given a node in a binary search tree, return the in-order successor of that node in the BST. If that node has no in-order successor, return null.
+
+The successor of a node is the node with the smallest key greater than node.val.
+
+You will have direct access to the node but not to the root of the tree. Each node will have a reference to its parent node. Below is the definition for Node:
+
+class Node &#123;
+    public int val;
+    public Node left;
+    public Node right;
+    public Node parent;
+&#125;
+
+Example 1:
+
+Input: tree = [2,1,3], node = 1
+Output: 2
+Explanation: 1&#39;s in-order successor node is 2. Note that both the node and the return value is of Node type.
+
+Example 2:
+
+Input: tree = [5,3,6,2,4,null,null,1], node = 6
+Output: null
+Explanation: There is no in-order successor of the current node, so the answer is null.
+
+Constraints:
+
+    The number of nodes in the tree is in the range [1, 104].
+    -105 &lt;= Node.val &lt;= 105
+    All Nodes will have unique values.
+
+Follow up: Could you solve it without looking up any of the node&#39;s values?
+</code></pre>
+<p>只有2种情况：</p>
+<ol>
+<li>有 right child</li>
+<li>无 right child</li>
+</ol>
+<p>不难。直接看代码。</p>
+<h1 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">class Solution &#123;<br><br>    public Node inorderSuccessor(Node node) &#123;<br>        if (node.right == null) &#123;<br>            while (node.parent != null &amp;&amp; node.parent.right == node) &#123;<br>                node = node.parent;<br>            &#125;<br>            return node.parent;<br>        &#125; else &#123;<br>            node = node.right;<br>            while (node.left != null) &#123;<br>                node = node.left;<br>            &#125;<br>            return node;<br>        &#125;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+            </div>
+        </div>
+    </div>
+</main>
+
+<script src="https://utteranc.es/client.js"
+    repo="owner/repo"
+    issue-term="pathname"
+    theme="github-light"
+    crossorigin="anonymous"
+    async>
+</script>
+
+  
+
+</div>
+        <div class="footer-wrapper"><footer>
+    <div class="footer-container">
+        <div class="footer-meta">
+            
+                <div class="footer-meta-copyright">
+                    &copy; 2022 mar2ndx.
+                </div>
+            
+            
+                <div class="footer-meta-licenese">
+                    Licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC-BY-NC-SA 4.0</a>
+                </div>
+            
+            
+        </div>
+    </div>
+</footer>
+</div>
+    </div>
+</body>
+</html>
