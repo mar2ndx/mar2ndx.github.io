@@ -112,62 +112,25 @@
 </ol>
 <h2 id="Use-Redis-in-Java"><a href="#Use-Redis-in-Java" class="headerlink" title="Use Redis in Java"></a>Use Redis in Java</h2><p>Jedis, Redisson 是官方推荐的 Java client。</p>
 <p>Jedis 开源。只需要添加依赖：</p>
-<pre><code class="hljs plaintext">&lt;dependency&gt;
-    &lt;groupId&gt;redis.clients&lt;/groupId&gt;
-    &lt;artifactId&gt;jedis&lt;/artifactId&gt;
-    &lt;version&gt;2.8.1&lt;/version&gt;
-&lt;/dependency&gt;</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">&lt;dependency&gt;<br>    &lt;groupId&gt;redis.clients&lt;/groupId&gt;<br>    &lt;artifactId&gt;jedis&lt;/artifactId&gt;<br>    &lt;version&gt;2.8.1&lt;/version&gt;<br>&lt;/dependency&gt;<br></code></pre></td></tr></table></figure>
 
 <p>Use It:</p>
-<pre><code class="hljs plaintext">Jedis jedis = new Jedis();
-
-jedis.set(&quot;events/city/rome&quot;, &quot;32,15,223,828&quot;);
-String cachedResponse = jedis.get(&quot;events/city/rome&quot;);</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">Jedis jedis = new Jedis();<br><br>jedis.set(&quot;events/city/rome&quot;, &quot;32,15,223,828&quot;);<br>String cachedResponse = jedis.get(&quot;events/city/rome&quot;);<br></code></pre></td></tr></table></figure>
 
 <h2 id="Jedis-连接池"><a href="#Jedis-连接池" class="headerlink" title="Jedis 连接池"></a>Jedis 连接池</h2><p>直接：Jedis jedis = new Jedis(); 这样是不 thread-safe 的。不行！</p>
 <p>正解是 <a target="_blank" rel="noopener" href="https://www.baeldung.com/jedis-java-redis-client-library">create a pool of connections to Redis </a>， 可复用，而且调用是线程安全的。</p>
 <p>这么写：</p>
-<pre><code class="hljs plaintext">final JedisPoolConfig poolConfig = buildPoolConfig();
-JedisPool jedisPool = new JedisPool(poolConfig, &quot;localhost&quot;);
-
-private JedisPoolConfig buildPoolConfig() &#123;
-    final JedisPoolConfig poolConfig = new JedisPoolConfig();
-    poolConfig.setMaxTotal(128);
-    poolConfig.setMaxIdle(128);
-    poolConfig.setMinIdle(16);
-    poolConfig.setTestOnBorrow(true);
-    poolConfig.setTestOnReturn(true);
-    poolConfig.setTestWhileIdle(true);
-    poolConfig.setMinEvictableIdleTimeMillis(Duration.ofSeconds(60).toMillis());
-    poolConfig.setTimeBetweenEvictionRunsMillis(Duration.ofSeconds(30).toMillis());
-    poolConfig.setNumTestsPerEvictionRun(3);
-    poolConfig.setBlockWhenExhausted(true);
-    return poolConfig;
-&#125;</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">final JedisPoolConfig poolConfig = buildPoolConfig();<br>JedisPool jedisPool = new JedisPool(poolConfig, &quot;localhost&quot;);<br><br>private JedisPoolConfig buildPoolConfig() &#123;<br>    final JedisPoolConfig poolConfig = new JedisPoolConfig();<br>    poolConfig.setMaxTotal(128);<br>    poolConfig.setMaxIdle(128);<br>    poolConfig.setMinIdle(16);<br>    poolConfig.setTestOnBorrow(true);<br>    poolConfig.setTestOnReturn(true);<br>    poolConfig.setTestWhileIdle(true);<br>    poolConfig.setMinEvictableIdleTimeMillis(Duration.ofSeconds(60).toMillis());<br>    poolConfig.setTimeBetweenEvictionRunsMillis(Duration.ofSeconds(30).toMillis());<br>    poolConfig.setNumTestsPerEvictionRun(3);<br>    poolConfig.setBlockWhenExhausted(true);<br>    return poolConfig;<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <h2 id="其他几种type"><a href="#其他几种type" class="headerlink" title="其他几种type"></a>其他几种type</h2><h3 id="2-List"><a href="#2-List" class="headerlink" title="2. List"></a>2. List</h3><p>原理：doubly linked list，无下标，有序。</p>
-<pre><code class="hljs plaintext">jedis.lpush(&quot;queue#tasks&quot;, &quot;firstTask&quot;);
-jedis.lpush(&quot;queue#tasks&quot;, &quot;secondTask&quot;);
-
-String task = jedis.rpop(&quot;queue#tasks&quot;);</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">jedis.lpush(&quot;queue#tasks&quot;, &quot;firstTask&quot;);<br>jedis.lpush(&quot;queue#tasks&quot;, &quot;secondTask&quot;);<br><br>String task = jedis.rpop(&quot;queue#tasks&quot;);<br></code></pre></td></tr></table></figure>
 
 <h3 id="3-hashes"><a href="#3-hashes" class="headerlink" title="3. hashes"></a>3. hashes</h3><p>k-v只能整取整存（类似 String）；</p>
 <p>但是hash类型，可以存一个Java object。get()的时候，可以只取一个字段。</p>
 <p>例如：取得一个用户(user)的地址(postal address)，不需要把整个user信息返回来。</p>
-<pre><code class="hljs plaintext">jedis.hset(&quot;user#1&quot;, &quot;name&quot;, &quot;Peter&quot;);
-jedis.hset(&quot;user#1&quot;, &quot;job&quot;, &quot;politician&quot;);
-		
-String name = jedis.hget(&quot;user#1&quot;, &quot;name&quot;);
-		
-Map&lt;String, String&gt; fields = jedis.hgetAll(&quot;user#1&quot;);
-String job = fields.get(&quot;job&quot;);</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">jedis.hset(&quot;user#1&quot;, &quot;name&quot;, &quot;Peter&quot;);<br>jedis.hset(&quot;user#1&quot;, &quot;job&quot;, &quot;politician&quot;);<br>		<br>String name = jedis.hget(&quot;user#1&quot;, &quot;name&quot;);<br>		<br>Map&lt;String, String&gt; fields = jedis.hgetAll(&quot;user#1&quot;);<br>String job = fields.get(&quot;job&quot;);<br></code></pre></td></tr></table></figure>
 
-<h3 id="4-Set"><a href="#4-Set" class="headerlink" title="4. Set"></a>4. Set</h3><pre><code class="hljs plaintext">jedis.sadd(&quot;nicknames&quot;, &quot;nickname#1&quot;);
-jedis.sadd(&quot;nicknames&quot;, &quot;nickname#2&quot;);
-jedis.sadd(&quot;nicknames&quot;, &quot;nickname#1&quot;);
-
-Set&lt;String&gt; nicknames = jedis.smembers(&quot;nicknames&quot;);
-boolean exists = jedis.sismember(&quot;nicknames&quot;, &quot;nickname#1&quot;);</code></pre>
+<h3 id="4-Set"><a href="#4-Set" class="headerlink" title="4. Set"></a>4. Set</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">jedis.sadd(&quot;nicknames&quot;, &quot;nickname#1&quot;);<br>jedis.sadd(&quot;nicknames&quot;, &quot;nickname#2&quot;);<br>jedis.sadd(&quot;nicknames&quot;, &quot;nickname#1&quot;);<br><br>Set&lt;String&gt; nicknames = jedis.smembers(&quot;nicknames&quot;);<br>boolean exists = jedis.sismember(&quot;nicknames&quot;, &quot;nickname#1&quot;);<br></code></pre></td></tr></table></figure>
 
 <h3 id="5-zset"><a href="#5-zset" class="headerlink" title="5. zset"></a>5. zset</h3><p>zset兼具 list 和 set 的特点。</p>
 <ol>
@@ -176,17 +139,11 @@ boolean exists = jedis.sismember(&quot;nicknames&quot;, &quot;nickname#1&quot;);
 <li>zset：有序，不可重复</li>
 </ol>
 <h2 id="get-set-delete-increment"><a href="#get-set-delete-increment" class="headerlink" title="get/set/delete/increment"></a>get/set/delete/increment</h2><p>语法：</p>
-<pre><code class="hljs plaintext">set key value
-get key
-getset key value (先get value，然后set成新的value）
-hdel key field</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">set key value<br>get key<br>getset key value (先get value，然后set成新的value）<br>hdel key field<br></code></pre></td></tr></table></figure>
 
 <p>数据增减：Incr</p>
 <p>语法：</p>
-<pre><code class="hljs plaintext">incr key
-incrby key increment
-decr key
-decrby key decrement</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">incr key<br>incrby key increment<br>decr key<br>decrby key decrement<br></code></pre></td></tr></table></figure>
 
 <p>如何保证原子性？</p>
 <ol>
@@ -195,10 +152,7 @@ decrby key decrement</code></pre>
 </ol>
 <p>【重要】：setnx = 当且仅当不存在时，赋值。</p>
 <p>eg. </p>
-<pre><code class="hljs plaintext">exists job = 0             # job还不存在
-setnx job &quot;programmer&quot; = 1 # job赋值成功
-setnx job &quot;developer&quot; = 0  # 再次赋值，失败了
-get job = &quot;programmer&quot;     # job依然是曾经的那个value</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">exists job = 0             # job还不存在<br>setnx job &quot;programmer&quot; = 1 # job赋值成功<br>setnx job &quot;developer&quot; = 0  # 再次赋值，失败了<br>get job = &quot;programmer&quot;     # job依然是曾经的那个value<br></code></pre></td></tr></table></figure>
 
 <p>用 SetNX 可以实现分布式lock。</p>
 <blockquote>

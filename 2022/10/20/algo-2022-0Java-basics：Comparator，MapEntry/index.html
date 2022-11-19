@@ -66,66 +66,32 @@
             <div class="post-content">
                 <p><strong>经验：尽量用 Comparator，不要用 Comparable。</strong></p>
 <p>Comparator class 标准写法：</p>
-<pre><code class="hljs plaintext">Queue&lt;ListNode&gt; heap = new PriorityQueue(size, new NodeComparator());
-
-class NodeComparator implements Comparator&lt;ListNode&gt; &#123;
-    public int compare(ListNode n1, ListNode n2) &#123;
-        return n1.val - n2.val;
-    &#125;
-&#125;</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">Queue&lt;ListNode&gt; heap = new PriorityQueue(size, new NodeComparator());<br><br>class NodeComparator implements Comparator&lt;ListNode&gt; &#123;<br>    public int compare(ListNode n1, ListNode n2) &#123;<br>        return n1.val - n2.val;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <p>Comparator inline 简化写法：</p>
-<pre><code class="hljs plaintext">Collections.sort(freq, new Comparator&lt;int[]&gt;() &#123;
-	public int compare(int[] keyValue1, int[] keyValue2) &#123;
-		return keyValue1[1] - keyValue2[1];
-	&#125;
-&#125;);</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">Collections.sort(freq, new Comparator&lt;int[]&gt;() &#123;<br>	public int compare(int[] keyValue1, int[] keyValue2) &#123;<br>		return keyValue1[1] - keyValue2[1];<br>	&#125;<br>&#125;);<br></code></pre></td></tr></table></figure>
 
 <p>PriorityQueue inline 简化写法 ：</p>
 <p>(这种写法只对 primitive type，比如 integer array，注意尽量少这么写！)</p>
-<pre><code class="hljs plaintext">PriorityQueue&lt;int[]&gt; queue = new PriorityQueue&lt;int[]&gt;(new Comparator&lt;int[]&gt;() &#123;
-	public int compare(int[] m, int[] n) &#123;
-		return m[1] - n[1];
-	&#125;
-&#125;);</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">PriorityQueue&lt;int[]&gt; queue = new PriorityQueue&lt;int[]&gt;(new Comparator&lt;int[]&gt;() &#123;<br>	public int compare(int[] m, int[] n) &#123;<br>		return m[1] - n[1];<br>	&#125;<br>&#125;);<br></code></pre></td></tr></table></figure>
 
 <p>class implements Comparable&lt;&gt; 写法：</p>
-<pre><code class="hljs plaintext">class TeamVotes implements Comparable&lt;TeamVotes&gt; &#123;
-    char team;
-
-    public int compareTo(TeamVotes tv) &#123;
-        return this.team - tv.team;
-    &#125;
-&#125;</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">class TeamVotes implements Comparable&lt;TeamVotes&gt; &#123;<br>    char team;<br><br>    public int compareTo(TeamVotes tv) &#123;<br>        return this.team - tv.team;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <p>Iterate a Map：</p>
-<pre><code class="hljs plaintext">Map&lt;Integer, Integer&gt; group = new HashMap&lt;Integer, Integer&gt;();
-for (Map.Entry&lt;Integer, Integer&gt; entry : group.entrySet()) &#123;
-	int a = entry.getKey();
-	int b = entry.getValue();
-	int keyValue = &#123;entry.getKey(), entry.getValue()&#125;;
-&#125;</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">Map&lt;Integer, Integer&gt; group = new HashMap&lt;Integer, Integer&gt;();<br>for (Map.Entry&lt;Integer, Integer&gt; entry : group.entrySet()) &#123;<br>	int a = entry.getKey();<br>	int b = entry.getValue();<br>	int keyValue = &#123;entry.getKey(), entry.getValue()&#125;;<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <p>Iterate a Map（简易版）：</p>
-<pre><code class="hljs plaintext">Map&lt;String, Object&gt; map = ...;
-for (String key : map.keySet()) &#123;
-	key;
-&#125;</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">Map&lt;String, Object&gt; map = ...;<br>for (String key : map.keySet()) &#123;<br>	key;<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <p>Iterate a HashSet:</p>
-<pre><code class="hljs plaintext">HashSet&lt;String&gt; set = new HashSet&lt;&gt;();
-
-// Iterate throw a simple for loop
-for (String ele : set) &#123;
-	// Print HashSet data
-	System.out.print(ele + &quot; &quot;);
-&#125;</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">HashSet&lt;String&gt; set = new HashSet&lt;&gt;();<br><br>// Iterate throw a simple for loop<br>for (String ele : set) &#123;<br>	// Print HashSet data<br>	System.out.print(ele + &quot; &quot;);<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <p>Or, using a Iterator:</p>
-<pre><code class="hljs plaintext">Iterator&lt;String&gt; itr = set.iterator();
-while (itr.hasNext()) &#123;
-   System.out.println(itr.next());
-&#125;</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">Iterator&lt;String&gt; itr = set.iterator();<br>while (itr.hasNext()) &#123;<br>   System.out.println(itr.next());<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>Java Enum：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">enum NodeType &#123;<br>    OPERAND,    // 操作数<br>    ADD,        // 加<br>    SUBTRACT,   // 减<br>    MULTIPLY,   // 乘<br>    DIVIDE      // 除<br>&#125;<br><br>switch (this.nodeType) &#123;<br>    case OPERAND:<br>        return this.number;<br>    case ADD:<br>        return left.evaluate() + right.evaluate();<br>    case SUBTRACT:<br>        return left.evaluate() - right.evaluate();<br>    case MULTIPLY:<br>        return left.evaluate() * right.evaluate();<br>    case DIVIDE:<br>        return left.evaluate() / right.evaluate();<br>    default:<br>        throw new AssertionError();<br>&#125;<br></code></pre></td></tr></table></figure>
 
             </div>
         </div>

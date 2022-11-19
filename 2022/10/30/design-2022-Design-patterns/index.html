@@ -201,8 +201,7 @@
 </ol>
 <h2 id="创建类-四、构建者"><a href="#创建类-四、构建者" class="headerlink" title="创建类 四、构建者"></a>创建类 四、构建者</h2><p>根据客户的需求，创建指定对象。</p>
 <p>例如：</p>
-<pre><code class="hljs plaintext">// 构建者模式
-StudentBuilder.id(123).name(&quot;Jordan&quot;).age(25).build();</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">// 构建者模式<br>StudentBuilder.id(123).name(&quot;Jordan&quot;).age(25).build();<br></code></pre></td></tr></table></figure>
 
 <h2 id="创建类-五、Singleton"><a href="#创建类-五、Singleton" class="headerlink" title="创建类 五、Singleton"></a>创建类 五、Singleton</h2><p>全局之中，只构建一个实例。</p>
 <p>Spring大多数对象都是 Singleton，一般被spring管理的bean，都是业务对象，不是数据对象。</p>
@@ -218,32 +217,10 @@ StudentBuilder.id(123).name(&quot;Jordan&quot;).age(25).build();</code></pre>
 <li>public static 方法：获取静态成员变量</li>
 </ol>
 <p>为什么饿汉式是thread-safe？因为JVM加载一个class的时候，过程默认加锁。</p>
-<pre><code class="hljs plaintext">public class SingletonDemo &#123;
-    private static SingletonDemo instance = null;
-    private SingletonDemo() &#123; &#125;
-    public static synchronized SingletonDemo getInstance() &#123;
-        if (instance == null) &#123;
-            instance = new SingletonDemo();
-        &#125;
-        return instance;
-    &#125;
-&#125;</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">public class SingletonDemo &#123;<br>    private static SingletonDemo instance = null;<br>    private SingletonDemo() &#123; &#125;<br>    public static synchronized SingletonDemo getInstance() &#123;<br>        if (instance == null) &#123;<br>            instance = new SingletonDemo();<br>        &#125;<br>        return instance;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <p>但是，以上的“方法锁”，效率不高。所以：</p>
-<pre><code class="hljs plaintext">public class SingletonDemo &#123;
-    private static volatile SingletonDemo instance = null;
-    private SingletonDemo() &#123; &#125;
-    public static SingletonDemo getInstance() &#123;
-        if (instance == null) &#123;
-            synchronized (SingletonDemo.class) &#123;
-                if (instance == null) &#123;
-                    instance = new SingletonDemo();
-                &#125;
-            &#125;
-        &#125;
-        return instance;
-    &#125;
-&#125;</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">public class SingletonDemo &#123;<br>    private static volatile SingletonDemo instance = null;<br>    private SingletonDemo() &#123; &#125;<br>    public static SingletonDemo getInstance() &#123;<br>        if (instance == null) &#123;<br>            synchronized (SingletonDemo.class) &#123;<br>                if (instance == null) &#123;<br>                    instance = new SingletonDemo();<br>                &#125;<br>            &#125;<br>        &#125;<br>        return instance;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <h3 id="关于-volatile"><a href="#关于-volatile" class="headerlink" title="关于 volatile"></a>关于 volatile</h3><p>并发编程的3大特性：（了解就行）</p>
 <p>1 原子性<br>2 有序性<br>3 可见性。</p>
