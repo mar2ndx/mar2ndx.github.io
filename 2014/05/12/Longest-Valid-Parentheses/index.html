@@ -101,42 +101,8 @@ Another example is <code>")()())"</code>, where the longest valid parentheses su
 <p><strong>The DP solution is not very difficult</strong>. Basically create an array of same length as string s. dp[i] denotes the length of valid parenthese ending with index i. The idea is similar to <a target="_blank" rel="noopener" href="http://blog.csdn.net/abcbc/article/details/8826782">this blog</a>, but he used reverse DP, and I use normal DP.</p>
 <p>I will explain DP with an example of input “<strong>)()()</strong>“. For this string, we have <strong>dp[0] = 0, dp[1] = 0, dp[2] = 2, dp[3] = 0</strong>. For dp[4], I check the 3rd position first, and find that dp[4] = 2. Then I also have to add dp[2] into dp[4] to make it complete. The end result is dp[4] = 2 + 2 = 4.</p>
 <h3 id="My-code"><a href="#My-code" class="headerlink" title="My code"></a>My code</h3><p>Stack method 1 (recommended)</p>
-<pre><code>public class Solution &#123;
-    public int longestValidParentheses(String s) &#123;
-        if (s == null || s.length() == 0) &#123;
-            return 0;
-        &#125;
-        int len = s.length();
-        int longest = 0;
-        Stack&lt;Integer&gt; stack = new Stack&lt;Integer&gt;();
-        int start = 0;
-        for (int i = 0; i &lt; len; i++) &#123;
-            char ch = s.charAt(i);
-            if (ch == &#39;(&#39;) &#123;
-                // well, no matter what, &#39;(&#39; is alway a valid part
-                // push the index to the stack
-                stack.push(i);
-            &#125; else if (ch == &#39;)&#39;) &#123;
-                if (stack.isEmpty()) &#123;
-                    // invalid &#39;)&#39;, update &#39;start&#39; variable
-                    start = i + 1;
-                &#125; else &#123;
-                    int pos = stack.pop();
-                    if (stack.isEmpty()) &#123;
-                        // this is why we need &#39;start&#39; variable
-                        longest = Math.max(longest, i - start + 1);
-                    &#125; else &#123;
-                        // important: must peek stack again.
-                        // eg. (()()  if don&#39;t peek again
-                        longest = Math.max(longest, i - stack.peek());
-                    &#125;
-                &#125;
-            &#125;
-        &#125;
-        return longest;
-    &#125;
-&#125;
-</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">public class Solution &#123;<br>    public int longestValidParentheses(String s) &#123;<br>        if (s == null || s.length() == 0) &#123;<br>            return 0;<br>        &#125;<br>        int len = s.length();<br>        int longest = 0;<br>        Stack&lt;Integer&gt; stack = new Stack&lt;Integer&gt;();<br>        int start = 0;<br>        for (int i = 0; i &lt; len; i++) &#123;<br>            char ch = s.charAt(i);<br>            if (ch == &#x27;(&#x27;) &#123;<br>                // well, no matter what, &#x27;(&#x27; is alway a valid part<br>                // push the index to the stack<br>                stack.push(i);<br>            &#125; else if (ch == &#x27;)&#x27;) &#123;<br>                if (stack.isEmpty()) &#123;<br>                    // invalid &#x27;)&#x27;, update &#x27;start&#x27; variable<br>                    start = i + 1;<br>                &#125; else &#123;<br>                    int pos = stack.pop();<br>                    if (stack.isEmpty()) &#123;<br>                        // this is why we need &#x27;start&#x27; variable<br>                        longest = Math.max(longest, i - start + 1);<br>                    &#125; else &#123;<br>                        // important: must peek stack again.<br>                        // eg. (()()  if don&#x27;t peek again<br>                        longest = Math.max(longest, i - stack.peek());<br>                    &#125;<br>                &#125;<br>            &#125;<br>        &#125;<br>        return longest;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
 <p>Stack method 2</p>
 <pre><code>public int longestValidParentheses(String s) &#123;
     int res = 0;
