@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <link rel="shortcut icon" href="/images/avatar.png" type="image/x-icon" />
+    <title>
+        
+            Hackerrank - DigitalWallet |
+         
+        Mar2ndx&#39;s Algorithmic and System Design Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/solid.min.css">
+
+     
+    
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXXXX"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-XXXXXXXXXXXX');
+        </script>
+    
+
+
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body>
+    <div class="body-container">
+        <div class="header-wrapper"><header>
+    <div class="header-container">
+        <div class="header-menu-list">
+            <ul>
+            
+                <li>
+                    <a href="/">主页</a>
+                </li>
+            
+            </ul>
+        </div>
+    </div>
+</header>
+</div>
+        <div class="main-wrapper"><main>
+    <div class="main-container">
+        <div class="post-details">
+            
+            <div class="post-title">
+                <h1>Hackerrank - DigitalWallet</h1>
+            </div>
+            <div class="post-meta">
+                <i class="fa-solid fa-clock"></i>&nbsp;<span class="post-date">2022/12/02</span>
+            </div>
+            
+            <div class="post-content">
+                <h1 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h1><p>Digital wallets have made sending and receiving money easier, but they require authentication. A user must have an access token to initiate transactions in this digital wallet system. There are two types of transactions:</p>
+<blockquote>
+<p>Adding money to the wallet.<br>Paying money from the wallet.</p>
+</blockquote>
+<p>Both the transactions are validated before being processed. For an invalid transaction the following error code and the error message are displayed:</p>
+<blockquote>
+<p>USER_NOT_AUTHORIZED: The error code reports the unauthorized transaction, i.e., if there is no access token for the digital wallet. The error message should be User not authorized.<br>INVALID_AMOUNT: The error code reports the attempt of adding or paying zero or negative amount. The error message should be Amount should be greater than zero.<br>INSUFFICIENT_BALANCE: The error code reports the attempt of making a payment greater than the available digital wallet balance. The error message should be Insufficient balance.</p>
+</blockquote>
+<p>In this challenge, you are building the digital wallet workflow by writing the complete implementation of the following three classes:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">The TransactionException class should implement:<br>    The constructor TransactionException(String errorMessage, String errorCode).<br>    The method String getErrorCode() to return the error code of the exception being thrown.<br>The DigitalWallet class should implement:<br>    The constructor DigitalWallet(String walletId, String userName).<br>    The constructor DigitalWallet(String walletId, String userName, String userAccessCode).<br>    The method String getWalletId() to return the wallet ID.<br>    The method String getUserName() to return the owner&#x27;s username.<br>    The method String getUserAccessToken() to return the access token.<br>    The method int getWalletBalance() to return the wallet balance.<br>    The method void setWalletBalance(int walletBalance) to update the wallet balance.<br>The DigitalWalletTransaction class should implement:<br>    The method void addMoney(DigitalWallet digitalWallet, int amount) to add money to the wallet. It should also throw the required exceptions for any invalid transactions.<br>    The method void payMoney(DigitalWallet digitalWallet, int amount) to make a payment from the wallet. It should also throw the required exceptions for any invalid transactions.<br></code></pre></td></tr></table></figure>
+
+<p>The locked stub code in the editor validates the correctness of the TransactionException, DigitalWallet, and DigitalWalletTransaction class implementations by first creating the authorized and unauthorized digital wallets and then processing the following two type of transactions:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">walletId add amount: This transaction is handled by the method DigitalWalletTransaction.addMoney(digitalWallet, amount).<br>walletId pay amount: This transaction is handled by the method DigitalWalletTransaction.payMoney(digitalWallet, amount).<br></code></pre></td></tr></table></figure>
+
+<p>After processing all the queries, the locked stub code prints the wallet ID, username, and the balance amount for each of the digital wallets.</p>
+<pre><code>Constraints
+1 ≤ numberOfWallets ≤ 100
+1 ≤ numberOfTransactions ≤ 2 × 103
+
+Input Format For Custom Testing
+The first line contains the value of numberOfWallets describing the total number of wallets.
+The next numberOfWallets lines contain the required information of the wallets.
+The next line contains the value of numberOfTransactions describing the total number of transactions.
+The next numberOfTransactions lines contains one of the above-mentioned two transactions.
+
+Sample Case
+Sample Input For Custom Testing
+</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">2<br>1 Julia bff834a2c117a76d9ceb782f98e428686ca3c4ea<br>2 Samantha<br>10<br>1 pay 50<br>1 add 100<br>1 add 0<br>1 pay 30<br>2 add 500<br>1 add -5<br>1 add 1000<br>1 pay -20<br>1 pay 100<br>1 add 720<br></code></pre></td></tr></table></figure>
+
+<pre><code>Sample Output
+</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">INSUFFICIENT_BALANCE: Insufficient balance.<br>Wallet successfully credited.<br>INVALID_AMOUNT: Amount should be greater than zero.<br>Wallet successfully debited.<br>USER_NOT_AUTHORIZED: User not authorized.<br>INVALID_AMOUNT: Amount should be greater than zero.<br>Wallet successfully credited.<br>INVALID_AMOUNT: Amount should be greater than zero.<br>Wallet successfully debited.<br>Wallet successfully credited.<br>1 Julia 1690<br>2 Samantha 0<br></code></pre></td></tr></table></figure>
+
+<p>Explanation</p>
+<blockquote>
+<p>For each of the invalid transactions made by Julia, required exceptions are thrown. The invalid transactions are: 1 pay 50, 1 add 0, 1 add -5, and 1 pay -20. After processing all the transactions the balance amount is 1690.<br>Samantha did not provide an access token, so she cannot initiate any transactions in the digital wallet. No transactions occur in her wallet, and the USER_NOT_AUTHORIZED exception was thrown as required for the transaction 2 add 500.</p>
+</blockquote>
+<h1 id="解法"><a href="#解法" class="headerlink" title="解法"></a>解法</h1><p>以下是需要实现的3个class：</p>
+<ol>
+<li>TransactionException</li>
+<li>DigitalWallet</li>
+<li>DigitalWalletTransaction</li>
+</ol>
+<p>The below answer is provided by <a target="_blank" rel="noopener" href="https://gist.github.com/andersonmo/7dfe346ae2b24cfbc6783219e08caded">this gist</a>.</p>
+<h1 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h1><p>Exception class:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">class TransactionException extends Exception &#123;<br><br>    String errorCode;<br><br>    TransactionException(String errorMessage, String errorCode) &#123;<br>        super(errorMessage);<br>        this.errorCode = errorCode;<br>    &#125;<br><br>    public String getErrorCode() &#123;<br>        return errorCode;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>Wallet class:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">class DigitalWallet &#123;<br><br>    String walletId, userName, userAccessCode;<br>    int walletBalance;<br><br>    public DigitalWallet(String walletId, String userName) &#123;<br>        this.walletId = walletId;<br>        this.userName = userName;<br>    &#125;<br><br>    public DigitalWallet(String walletId, String userName, String userAccessCode) &#123;<br>        this.walletId = walletId;<br>        this.userName = userName;<br>        this.userAccessCode = userAccessCode;<br>    &#125;<br><br>    public String getWalletId() &#123;<br>        return walletId;<br>    &#125;<br><br>    public String getUsername() &#123;<br>        return userName;<br>    &#125;<br><br>    public String getUserAccessToken() &#123;<br>        return userAccessCode;<br>    &#125;<br><br>    public int getWalletBalance() &#123;<br>        return walletBalance;<br>    &#125;<br><br>    public void setWalletBalance(int walletBalance) &#123;<br>        this.walletBalance = walletBalance;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>Transaction class:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">class DigitalWalletTransaction &#123;<br><br>    public void addMoney(DigitalWallet digitalWallet, int amount) throws TransactionException &#123;<br>        if (digitalWallet.getUserAccessToken() == null) &#123;<br>            throw new TransactionException(&quot;User not authorized&quot;, &quot;USER_NOT_AUTHORIZED&quot;);<br>        &#125; else if (amount &lt;= 0) &#123;<br>            throw new TransactionException(&quot;Amount should be greater than zero&quot;, &quot;INVALID_AMOUNT&quot;);<br>        &#125; else &#123;<br>            digitalWallet.setWalletBalance(digitalWallet.getWalletBalance() + amount);<br>        &#125;<br>    &#125;<br><br>    public void payMoney(DigitalWallet digitalWallet, int amount) throws TransactionException &#123;<br>        if (digitalWallet.getWalletBalance() &lt; amount) &#123;<br>            throw new TransactionException(&quot;Insufficient balance&quot;, &quot;INSUFFICIENT_BALANCE&quot;);<br>        &#125; else if (digitalWallet.getUserAccessToken() == null) &#123;<br>            throw new TransactionException(&quot;User not authorized&quot;, &quot;USER_NOT_AUTHORIZED&quot;);<br>        &#125; else if (amount &lt;= 0) &#123;<br>            throw new TransactionException(&quot;Amount should be greater than zero&quot;, &quot;INVALID_AMOUNT&quot;);<br>        &#125; else &#123;<br>            digitalWallet.setWalletBalance(digitalWallet.getWalletBalance() - amount);<br>        &#125;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>最后，我们进行测试：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">package com.hackerrank;<br><br>import java.util.HashMap;<br>import java.util.Map;<br>import java.util.Scanner;<br><br>public class TestDigitalWallet &#123;<br><br>    private static final Scanner INPUT_READER = new Scanner(System.in);<br>    private static final DigitalWalletTransaction DIGITAL_WALLET_TRANSACTION = new DigitalWalletTransaction();<br><br>    private static final Map&lt;String, DigitalWallet&gt; DIGITAL_WALLETS = new HashMap&lt;&gt;();<br><br>    public static void main(String[] args) &#123;<br>        int numberOfWallets = Integer.parseInt(INPUT_READER.nextLine());<br>        while (numberOfWallets-- &gt; 0) &#123;<br>            String[] wallet = INPUT_READER.nextLine().split(&quot; &quot;);<br>            DigitalWallet digitalWallet;<br><br>            if (wallet.length == 2) &#123;<br>                digitalWallet = new DigitalWallet(wallet[0], wallet[1]);<br>            &#125; else &#123;<br>                digitalWallet = new DigitalWallet(wallet[0], wallet[1], wallet[2]);<br>            &#125;<br>            DIGITAL_WALLETS.put(wallet[0], digitalWallet);<br>        &#125;<br><br>        System.out.println(&quot;=========================================&quot;);<br>        System.out.println(&quot;START printing transactions...&quot;);<br>        int numberOfTransactions = Integer.parseInt(INPUT_READER.nextLine());<br>        while (numberOfTransactions-- &gt; 0) &#123;<br>            String[] transaction = INPUT_READER.nextLine().split(&quot; &quot;);<br>            DigitalWallet digitalWallet = DIGITAL_WALLETS.get(transaction[0]);<br><br>            if (transaction[1].equals(&quot;add&quot;)) &#123;<br>                try &#123;<br>                    DIGITAL_WALLET_TRANSACTION.addMoney(digitalWallet, Integer.parseInt(transaction[2]));<br>                    System.out.println(&quot;Wallet successfully credited.&quot;);<br>                &#125; catch (TransactionException ex) &#123;<br>                    System.out.println(ex.getErrorCode() + &quot;: &quot; + ex.getMessage() + &quot;.&quot;);<br>                &#125;<br>            &#125; else &#123;<br>                try &#123;<br>                    DIGITAL_WALLET_TRANSACTION.payMoney(digitalWallet, Integer.parseInt(transaction[2]));<br>                    System.out.println(&quot;Wallet successfully debited.&quot;);<br>                &#125; catch (TransactionException ex) &#123;<br>                    System.out.println(ex.getErrorCode() + &quot;: &quot; + ex.getMessage() + &quot;.&quot;);<br>                &#125;<br>            &#125;<br>        &#125;<br><br>        System.out.println(&quot;END of transactions&quot;);<br>        System.out.println(&quot;=========================================&quot;);<br>        System.out.println(&quot;Wallet details as follows&quot;);<br><br>        DIGITAL_WALLETS.keySet()<br>            .stream()<br>            .sorted()<br>            .map((digitalWalletId) -&gt; DIGITAL_WALLETS.get(digitalWalletId))<br>            .forEachOrdered((digitalWallet) -&gt; &#123;<br>                System.out.println(digitalWallet.getWalletId()<br>                    + &quot; &quot; + digitalWallet.getUsername()<br>                    + &quot; &quot; + digitalWallet.getWalletBalance());<br>            &#125;);<br>        System.out.println(&quot;=========================================&quot;);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+            </div>
+        </div>
+    </div>
+</main>
+
+<script src="https://utteranc.es/client.js"
+    repo="owner/repo"
+    issue-term="pathname"
+    theme="github-light"
+    crossorigin="anonymous"
+    async>
+</script>
+
+  
+
+</div>
+        <div class="footer-wrapper"><footer>
+    <div class="footer-container">
+        <div class="footer-meta">
+            
+                <div class="footer-meta-copyright">
+                    &copy; 2022 mar2ndx.
+                </div>
+            
+            
+                <div class="footer-meta-licenese">
+                    Licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC-BY-NC-SA 4.0</a>
+                </div>
+            
+            
+        </div>
+    </div>
+</footer>
+</div>
+    </div>
+</body>
+</html>
