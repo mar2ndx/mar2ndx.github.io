@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <link rel="shortcut icon" href="/images/avatar.png" type="image/x-icon" />
+    <title>
+        
+            981. Time Based Key-Value Store |
+         
+        Mar2ndx&#39;s Algorithmic and System Design Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/solid.min.css">
+
+     
+    
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXXXX"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-XXXXXXXXXXXX');
+        </script>
+    
+
+
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body>
+    <div class="body-container">
+        <div class="header-wrapper"><header>
+    <div class="header-container">
+        <div class="header-menu-list">
+            <ul>
+            
+                <li>
+                    <a href="/">主页</a>
+                </li>
+            
+            </ul>
+        </div>
+    </div>
+</header>
+</div>
+        <div class="main-wrapper"><main>
+    <div class="main-container">
+        <div class="post-details">
+            
+            <div class="post-title">
+                <h1>981. Time Based Key-Value Store</h1>
+            </div>
+            <div class="post-meta">
+                <i class="fa-solid fa-clock"></i>&nbsp;<span class="post-date">2022/10/15</span>
+            </div>
+            
+            <div class="post-content">
+                <p>Link: <a target="_blank" rel="noopener" href="https://leetcode.cn/problems/time-based-key-value-store/">https://leetcode.cn/problems/time-based-key-value-store/</a></p>
+<h1 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h1><p>difficulty: mid<br>adj diff: 2</p>
+<pre><code>Design a time-based key-value data structure that can store multiple values for the same key at different time stamps and retrieve the key&#39;s value at a certain timestamp.
+
+Implement the TimeMap class:
+
+    TimeMap() Initializes the object of the data structure.
+    void set(String key, String value, int timestamp) Stores the key key with the value value at the given time timestamp.
+    String get(String key, int timestamp) Returns a value such that set was called previously, with timestamp_prev &lt;= timestamp. If there are multiple such values, it returns the value associated with the largest timestamp_prev. If there are no values, it returns &quot;&quot;.
+
+Example 1:
+
+Input
+[&quot;TimeMap&quot;, &quot;set&quot;, &quot;get&quot;, &quot;get&quot;, &quot;set&quot;, &quot;get&quot;, &quot;get&quot;]
+[[], [&quot;foo&quot;, &quot;bar&quot;, 1], [&quot;foo&quot;, 1], [&quot;foo&quot;, 3], [&quot;foo&quot;, &quot;bar2&quot;, 4], [&quot;foo&quot;, 4], [&quot;foo&quot;, 5]]
+Output
+[null, null, &quot;bar&quot;, &quot;bar&quot;, null, &quot;bar2&quot;, &quot;bar2&quot;]
+
+Explanation
+TimeMap timeMap = new TimeMap();
+timeMap.set(&quot;foo&quot;, &quot;bar&quot;, 1);  // store the key &quot;foo&quot; and value &quot;bar&quot; along with timestamp = 1.
+timeMap.get(&quot;foo&quot;, 1);         // return &quot;bar&quot;
+timeMap.get(&quot;foo&quot;, 3);         // return &quot;bar&quot;, since there is no value corresponding to foo at timestamp 3 and timestamp 2, then the only value is at timestamp 1 is &quot;bar&quot;.
+timeMap.set(&quot;foo&quot;, &quot;bar2&quot;, 4); // store the key &quot;foo&quot; and value &quot;bar2&quot; along with timestamp = 4.
+timeMap.get(&quot;foo&quot;, 4);         // return &quot;bar2&quot;
+timeMap.get(&quot;foo&quot;, 5);         // return &quot;bar2&quot;
+
+Constraints:
+
+    1 &lt;= key.length, value.length &lt;= 100
+    key and value consist of lowercase English letters and digits.
+    1 &lt;= timestamp &lt;= 107
+    All the timestamps timestamp of set are strictly increasing.
+    At most 2 * 105 calls will be made to set and get.
+</code></pre>
+<p>这题不难。</p>
+<p>唯一的 tricky 就是二分法，搜索。</p>
+<h1 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h1><p>以下代码，参考了：<a target="_blank" rel="noopener" href="https://leetcode.cn/problems/time-based-key-value-store/solution/gong-shui-san-xie-yi-ti-shuang-jie-ha-xi-h5et/">https://leetcode.cn/problems/time-based-key-value-store/solution/gong-shui-san-xie-yi-ti-shuang-jie-ha-xi-h5et/</a></p>
+<pre><code class="hljs plaintext">class Pair &#123;
+    String key;
+    String value;
+    int timestamp;
+
+    public Pair (String a, String b, int c) &#123;
+        key = a;
+        value = b;
+        timestamp = c;
+    &#125;
+&#125;
+
+Map&lt;String, List&lt;Pair&gt;&gt; map;
+
+public TimeMap() &#123;
+    map = new HashMap&lt;String, List&lt;Pair&gt;&gt;();
+&#125;
+
+public void set(String key, String value, int timestamp) &#123;
+    if (!map.containsKey(key)) &#123;
+        List&lt;Pair&gt; list = new ArrayList&lt;Pair&gt;();
+        map.put(key, list);
+    &#125;
+    map.get(key).add(new Pair(key, value, timestamp));
+&#125;
+
+public String get(String key, int timestamp) &#123;
+    List&lt;Pair&gt; list = map.getOrDefault(key, new ArrayList&lt;&gt;());
+    if (list.isEmpty()) return &quot;&quot;;
+
+    int n = list.size();
+    int l = 0, r = n - 1;
+    while (l &lt; r) &#123;
+        int mid = l + r + 1 &gt;&gt; 1;
+        if (list.get(mid).timestamp &lt;= timestamp) &#123;
+            l = mid;
+        &#125; else &#123;
+            r = mid - 1;
+        &#125;
+    &#125;
+    return list.get(r).timestamp &lt;= timestamp ? list.get(r).value : &quot;&quot;;
+&#125;</code></pre>
+
+            </div>
+        </div>
+    </div>
+</main>
+
+<script src="https://utteranc.es/client.js"
+    repo="owner/repo"
+    issue-term="pathname"
+    theme="github-light"
+    crossorigin="anonymous"
+    async>
+</script>
+
+  
+
+</div>
+        <div class="footer-wrapper"><footer>
+    <div class="footer-container">
+        <div class="footer-meta">
+            
+                <div class="footer-meta-copyright">
+                    &copy; 2022 mar2ndx.
+                </div>
+            
+            
+                <div class="footer-meta-licenese">
+                    Licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC-BY-NC-SA 4.0</a>
+                </div>
+            
+            
+        </div>
+    </div>
+</footer>
+</div>
+    </div>
+</body>
+</html>

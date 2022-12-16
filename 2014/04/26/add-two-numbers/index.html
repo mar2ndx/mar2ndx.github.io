@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <link rel="shortcut icon" href="/images/avatar.png" type="image/x-icon" />
+    <title>
+        
+            [LeetCode 2] Add Two Numbers |
+         
+        Mar2ndx&#39;s Algorithmic and System Design Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/solid.min.css">
+
+     
+    
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXXXX"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-XXXXXXXXXXXX');
+        </script>
+    
+
+
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body>
+    <div class="body-container">
+        <div class="header-wrapper"><header>
+    <div class="header-container">
+        <div class="header-menu-list">
+            <ul>
+            
+                <li>
+                    <a href="/">主页</a>
+                </li>
+            
+            </ul>
+        </div>
+    </div>
+</header>
+</div>
+        <div class="main-wrapper"><main>
+    <div class="main-container">
+        <div class="post-details">
+            
+            <div class="post-title">
+                <h1>[LeetCode 2] Add Two Numbers</h1>
+            </div>
+            <div class="post-meta">
+                <i class="fa-solid fa-clock"></i>&nbsp;<span class="post-date">2014/04/26</span>
+            </div>
+            
+            <div class="post-content">
+                <h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><p><a target="_blank" rel="noopener" href="http://oj.leetcode.com/problems/add-two-numbers/">link</a></p>
+<div class="question-content">
+    <p></p>
+    <p>You are given two linked lists representing two non-negative numbers. The digits are stored in reverse order and each of their nodes contain a single digit. Add the two numbers and return it as a linked list.</p>
+    <p style="font-family:monospace">
+    <b>Input:</b> (2 -&gt; 4 -&gt; 3) + (5 -&gt; 6 -&gt; 4)<br>
+    <b>Output:</b> 7 -&gt; 0 -&gt; 8</p>
+    <p></p>
+</div>
+
+<h3 id="Stats"><a href="#Stats" class="headerlink" title="Stats"></a>Stats</h3><table border="2">
+    <tr>
+        <td>Frequency</td>
+        <td bgcolor="red">4</td>
+    </tr>
+    <tr>
+        <td>Diffficulty</td>
+        <td bgcolor="yellow">3</td>
+    </tr>
+    <tr>
+        <td>Adjusted Difficulty</td>
+        <td bgcolor="lime">2</td>
+    </tr>
+    <tr>
+        <td>Time to use</td>
+        <td bgcolor="lime">----------</td>
+    </tr>
+</table>
+
+<p>Ratings/Color = 1(white) 2(lime) 3(yellow) 4/5(red)</p>
+<h3 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h3><p>This question is straight-forward. Just add one by one with a carry bit.</p>
+<h3 id="My-code"><a href="#My-code" class="headerlink" title="My code"></a>My code</h3><pre><code>/**
+ * Definition for singly-linked list.
+ * public class ListNode &#123;
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) &#123;
+ *         val = x;
+ *         next = null;
+ *     &#125;
+ * &#125;
+ */
+public class Solution &#123;
+    public ListNode addTwoNumbers(ListNode l1, ListNode l2) &#123;
+        return helper(l1, l2, 0);
+    &#125;
+
+    private ListNode helper(ListNode l1, ListNode l2, int carry) &#123;
+        if (l1 == null &amp;&amp; l2 == null) &#123;
+            if (carry == 0) &#123;
+                return null;
+            &#125; else &#123;
+                return new ListNode(1);
+            &#125;
+        &#125; else if (l1 == null) &#123;
+            return helper(new ListNode(0), l2, carry);
+        &#125; else if (l2 == null) &#123;
+            return helper(l1, new ListNode(0), carry);
+        &#125; else &#123;
+            // both l1 and l2 have value
+            int sum = l1.val + l2.val + carry;
+            int resultNumber = sum % 10;
+            int newCarry = sum / 10;
+            ListNode ans = new ListNode(resultNumber);
+            ans.next = helper(l1.next, l2.next, newCarry);
+            return ans;
+        &#125;
+    &#125;
+&#125;
+</code></pre>
+<p>Instead of doing it recursively, someone write a nice code for an iterative <a target="_blank" rel="noopener" href="http://gongxuns.blogspot.sg/2012/12/leetcodeadd-two-numbers.html">solution</a></p>
+<pre><code>/**
+ * Definition for singly-linked list.
+ * public class ListNode &#123;
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) &#123;
+ *         val = x;
+ *         next = null;
+ *     &#125;
+ * &#125;
+ */
+public class Solution &#123;
+    public ListNode addTwoNumbers(ListNode l1, ListNode l2) &#123;
+        int carry = 0;
+        ListNode res = new ListNode(0);
+        ListNode cur1 = l1, cur2 = l2, head = res;
+        while (cur1 != null || cur2 != null) &#123;
+            if (cur1 != null) &#123;
+                carry += cur1.val;
+                cur1 = cur1.next;
+            &#125;
+            if (cur2 != null) &#123;
+                carry += cur2.val;
+                cur2 = cur2.next;
+            &#125;
+            head.next = new ListNode(carry % 10);
+            head = head.next;
+            carry /= 10;
+        &#125;
+        if (carry == 1)
+            head.next = new ListNode(1);
+        return res.next;
+    &#125;
+&#125;
+</code></pre>
+
+            </div>
+        </div>
+    </div>
+</main>
+
+<script src="https://utteranc.es/client.js"
+    repo="owner/repo"
+    issue-term="pathname"
+    theme="github-light"
+    crossorigin="anonymous"
+    async>
+</script>
+
+  
+
+</div>
+        <div class="footer-wrapper"><footer>
+    <div class="footer-container">
+        <div class="footer-meta">
+            
+                <div class="footer-meta-copyright">
+                    &copy; 2022 mar2ndx.
+                </div>
+            
+            
+                <div class="footer-meta-licenese">
+                    Licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC-BY-NC-SA 4.0</a>
+                </div>
+            
+            
+        </div>
+    </div>
+</footer>
+</div>
+    </div>
+</body>
+</html>

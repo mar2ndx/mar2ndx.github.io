@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <link rel="shortcut icon" href="/images/avatar.png" type="image/x-icon" />
+    <title>
+        
+            [Question] Peripheral Of A Complete Tree |
+         
+        Mar2ndx&#39;s Algorithmic and System Design Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/solid.min.css">
+
+     
+    
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXXXX"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-XXXXXXXXXXXX');
+        </script>
+    
+
+
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body>
+    <div class="body-container">
+        <div class="header-wrapper"><header>
+    <div class="header-container">
+        <div class="header-menu-list">
+            <ul>
+            
+                <li>
+                    <a href="/">主页</a>
+                </li>
+            
+            </ul>
+        </div>
+    </div>
+</header>
+</div>
+        <div class="main-wrapper"><main>
+    <div class="main-container">
+        <div class="post-details">
+            
+            <div class="post-title">
+                <h1>[Question] Peripheral Of A Complete Tree</h1>
+            </div>
+            <div class="post-meta">
+                <i class="fa-solid fa-clock"></i>&nbsp;<span class="post-date">2014/07/29</span>
+            </div>
+            
+            <div class="post-content">
+                <h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><p><a target="_blank" rel="noopener" href="http://tech-queries.blogspot.sg/2010/09/peripheral-boundary-of-complete-tree.html">link</a></p>
+<blockquote>
+<p>Write a program to find the anti-clock-wise peripheral (boundary) of a complete tree.</p>
+</blockquote>
+<blockquote>
+<p>For a complete tree peripheral (boundary) is defined as</p>
+</blockquote>
+<pre><code>1. First the root
+1. Then nodes on left edge
+1. Then leaf nodes
+1. Then nodes on right edge
+</code></pre>
+<p><img src="/images/peripheral-of-tree.png"></p>
+<blockquote>
+<p>For the above tree, peripheral will be: 0 1 3 7 8 9 10 11 12 13 14 6 2</p>
+</blockquote>
+<h3 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h3><p><strong>It’s a very tricky solution</strong>. Very clever I would say.</p>
+<ol>
+<li>print root node</li>
+<li>print left nodes and leafs of left subtree in same order</li>
+<li>print leafs and right nodes of right subtree in same order</li>
+</ol>
+<p>Do practise this question again in the future!</p>
+<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><p><strong>written by me</strong></p>
+<p>I used an Enum in the code.</p>
+<pre><code>public enum PeriType &#123;
+    LEFT, RIGHT, LEAF
+&#125;
+
+private void peripheral(TreeNode root) &#123;
+    printNode(root);
+    helper(root.left, PeriType.LEFT);
+    helper(root.right, PeriType.RIGHT);
+    System.out.println();
+&#125;
+
+private void helper(TreeNode node, PeriType type) &#123;
+    if (node == null) &#123;
+        return;
+    &#125;
+    switch (type) &#123;
+    case LEFT:
+        printNode(node);
+        helper(node.left, PeriType.LEFT);
+        helper(node.right, PeriType.LEAF);
+        break;
+    case RIGHT:
+        helper(node.left, PeriType.LEAF);
+        helper(node.right, PeriType.RIGHT);
+        printNode(node);
+        break;
+    case LEAF:
+        if (node.left == null &amp;&amp; node.right == null) &#123;
+            printNode(node);
+        &#125; else &#123;
+            helper(node.left, PeriType.LEAF);
+            helper(node.right, PeriType.LEAF);
+        &#125;
+        break;
+    &#125;
+&#125;
+
+private void printNode(TreeNode root) &#123;
+    System.out.print(root.val + &quot; &quot;);
+&#125;
+</code></pre>
+
+            </div>
+        </div>
+    </div>
+</main>
+
+<script src="https://utteranc.es/client.js"
+    repo="owner/repo"
+    issue-term="pathname"
+    theme="github-light"
+    crossorigin="anonymous"
+    async>
+</script>
+
+  
+
+</div>
+        <div class="footer-wrapper"><footer>
+    <div class="footer-container">
+        <div class="footer-meta">
+            
+                <div class="footer-meta-copyright">
+                    &copy; 2022 mar2ndx.
+                </div>
+            
+            
+                <div class="footer-meta-licenese">
+                    Licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC-BY-NC-SA 4.0</a>
+                </div>
+            
+            
+        </div>
+    </div>
+</footer>
+</div>
+    </div>
+</body>
+</html>

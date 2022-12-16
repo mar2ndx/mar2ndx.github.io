@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <link rel="shortcut icon" href="/images/avatar.png" type="image/x-icon" />
+    <title>
+        
+            987. Vertical Order Traversal of a Binary Tree |
+         
+        Mar2ndx&#39;s Algorithmic and System Design Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/solid.min.css">
+
+     
+    
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXXXX"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-XXXXXXXXXXXX');
+        </script>
+    
+
+
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body>
+    <div class="body-container">
+        <div class="header-wrapper"><header>
+    <div class="header-container">
+        <div class="header-menu-list">
+            <ul>
+            
+                <li>
+                    <a href="/">主页</a>
+                </li>
+            
+            </ul>
+        </div>
+    </div>
+</header>
+</div>
+        <div class="main-wrapper"><main>
+    <div class="main-container">
+        <div class="post-details">
+            
+            <div class="post-title">
+                <h1>987. Vertical Order Traversal of a Binary Tree</h1>
+            </div>
+            <div class="post-meta">
+                <i class="fa-solid fa-clock"></i>&nbsp;<span class="post-date">2022/11/14</span>
+            </div>
+            
+            <div class="post-content">
+                <p>Link: <a target="_blank" rel="noopener" href="https://leetcode.cn/problems/vertical-order-traversal-of-a-binary-tree/">https://leetcode.cn/problems/vertical-order-traversal-of-a-binary-tree/</a></p>
+<h1 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h1><p>difficulty: hard<br>adj diff: 3</p>
+<pre><code>Given the root of a binary tree, calculate the vertical order traversal of the binary tree.
+
+For each node at position (row, col), its left and right children will be at positions (row + 1, col - 1) and (row + 1, col + 1) respectively. The root of the tree is at (0, 0).
+
+The vertical order traversal of a binary tree is a list of top-to-bottom orderings for each column index starting from the leftmost column and ending on the rightmost column. There may be multiple nodes in the same row and same column. In such a case, sort these nodes by their values.
+
+Return the vertical order traversal of the binary tree.
+
+ 
+
+Example 1:
+
+Input: root = [3,9,20,null,null,15,7]
+Output: [[9],[3,15],[20],[7]]
+Explanation:
+Column -1: Only node 9 is in this column.
+Column 0: Nodes 3 and 15 are in this column in that order from top to bottom.
+Column 1: Only node 20 is in this column.
+Column 2: Only node 7 is in this column.
+
+Example 2:
+
+Input: root = [1,2,3,4,5,6,7]
+Output: [[4],[2],[1,5,6],[3],[7]]
+Explanation:
+Column -2: Only node 4 is in this column.
+Column -1: Only node 2 is in this column.
+Column 0: Nodes 1, 5, and 6 are in this column.
+          1 is at the top, so it comes first.
+          5 and 6 are at the same position (2, 0), so we order them by their value, 5 before 6.
+Column 1: Only node 3 is in this column.
+Column 2: Only node 7 is in this column.
+
+Example 3:
+
+Input: root = [1,2,3,4,6,5,7]
+Output: [[4],[2],[1,5,6],[3],[7]]
+Explanation:
+This case is the exact same as example 2, but with nodes 5 and 6 swapped.
+Note that the solution remains the same since 5 and 6 are in the same location and should be ordered by their values.
+
+ 
+
+Constraints:
+
+    The number of nodes in the tree is in the range [1, 1000].
+    0 &lt;= Node.val &lt;= 1000
+</code></pre>
+<p>这题不难。其实以前做过。</p>
+<p>那就是 <a target="_blank" rel="noopener" href="https://mar2ndx.github.io/2014/12/17/Print-Binary-Tree-Vertically/">https://mar2ndx.github.io/2014/12/17/Print-Binary-Tree-Vertically/</a></p>
+<p>不过这道题不能 DFS写，我改成 BFS了，修改不大，如下。</p>
+<h1 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">class Solution &#123;<br>    public List&lt;List&lt;Integer&gt;&gt; verticalTraversal(TreeNode root) &#123;<br>        List&lt;List&lt;Integer&gt;&gt; ans = new ArrayList&lt;List&lt;Integer&gt;&gt;();<br><br>        // 1. find the range of left bound and right bound<br>        int[] range = new int[2];<br>        findRange(root, range, 0);<br><br>        // 2. calculate number of columns in the result<br>        int rootIndex = 0 - range[0];<br>        int columns = range[1] - range[0] + 1;<br>        for (int i = 0; i &lt; columns; i++) &#123;<br>            ans.add(new ArrayList&lt;Integer&gt;());<br>        &#125;<br>        <br>        // 3. fill in vertically in a recursive manner<br>        List&lt;TreeNode&gt; list1 = new LinkedList&lt;TreeNode&gt;();<br>        List&lt;Integer&gt; list2 = new LinkedList&lt;Integer&gt;();<br>        list1.add(root);<br>        list2.add(rootIndex);<br>        while (!list1.isEmpty()) &#123;<br>            for (int i = list1.size() - 1; i &gt;= 0; i--) &#123;<br>                TreeNode node = list1.remove(0);<br>                int curIndex = list2.remove(0);<br>                ans.get(curIndex).add(node.val);<br>                if (node.left != null) &#123;<br>                    list1.add(node.left);<br>                    list2.add(curIndex - 1);<br>                &#125;<br>                if (node.right != null) &#123;<br>                    list1.add(node.right);<br>                    list2.add(curIndex + 1);<br>                &#125;<br>            &#125;<br>        &#125;<br>        return ans;<br>    &#125;<br><br>    private void findRange(TreeNode node, int[] range, int position) &#123;<br>        if (node == null) return;<br>        if (position &lt; range[0]) &#123;<br>            range[0] = position;<br>        &#125; else if (position &gt; range[1]) &#123;<br>            range[1] = position;<br>        &#125;<br>        findRange(node.left, range, position - 1);<br>        findRange(node.right, range, position + 1);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+            </div>
+        </div>
+    </div>
+</main>
+
+<script src="https://utteranc.es/client.js"
+    repo="owner/repo"
+    issue-term="pathname"
+    theme="github-light"
+    crossorigin="anonymous"
+    async>
+</script>
+
+  
+
+</div>
+        <div class="footer-wrapper"><footer>
+    <div class="footer-container">
+        <div class="footer-meta">
+            
+                <div class="footer-meta-copyright">
+                    &copy; 2022 mar2ndx.
+                </div>
+            
+            
+                <div class="footer-meta-licenese">
+                    Licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC-BY-NC-SA 4.0</a>
+                </div>
+            
+            
+        </div>
+    </div>
+</footer>
+</div>
+    </div>
+</body>
+</html>

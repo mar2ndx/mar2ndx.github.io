@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <link rel="shortcut icon" href="/images/avatar.png" type="image/x-icon" />
+    <title>
+        
+            [Facebook] Scheduling Jobs with Max Cost  |
+         
+        Mar2ndx&#39;s Algorithmic and System Design Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/solid.min.css">
+
+     
+    
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXXXX"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-XXXXXXXXXXXX');
+        </script>
+    
+
+
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body>
+    <div class="body-container">
+        <div class="header-wrapper"><header>
+    <div class="header-container">
+        <div class="header-menu-list">
+            <ul>
+            
+                <li>
+                    <a href="/">主页</a>
+                </li>
+            
+            </ul>
+        </div>
+    </div>
+</header>
+</div>
+        <div class="main-wrapper"><main>
+    <div class="main-container">
+        <div class="post-details">
+            
+            <div class="post-title">
+                <h1>[Facebook] Scheduling Jobs with Max Cost </h1>
+            </div>
+            <div class="post-meta">
+                <i class="fa-solid fa-clock"></i>&nbsp;<span class="post-date">2015/01/06</span>
+            </div>
+            
+            <div class="post-content">
+                <h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><p><a target="_blank" rel="noopener" href="http://www.glassdoor.com/Interview/Given-a-set-of-n-jobs-with-start-time-end-time-cost-find-a-subset-so-that-no-2-jobs-overlap-and-the-cost-is-maximum-QTN_440168.htm">link</a></p>
+<blockquote>
+<p>Given a set of n jobs with [start time, end time, cost], find a subset so that no 2 jobs overlap and the cost is maximum.</p>
+</blockquote>
+<blockquote>
+<p>Let’s assume the input is already sorted by start_time. </p>
+</blockquote>
+<h3 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h3><p><a target="_blank" rel="noopener" href="http://cs.stackexchange.com/a/14237">Somebody</a> mentioned <strong>Interval Graph</strong>, so check it out if you interested! </p>
+<p>I am going to discuss both DP and recursive solution. </p>
+<p>This question reminds me of <strong>[Question] 0-1 Knapsack Problem</strong> and <strong>[Question] Coin Change Problem</strong>, cuz the basic idea is to compare 2 conditions: </p>
+<ol>
+<li>include current element</li>
+<li>or, not include current element</li>
+</ol>
+<p>A very good DP solution is presented in <a target="_blank" rel="noopener" href="http://cs.stackexchange.com/a/16842">here</a>. The code below is written by me and it’s very intuitive to read. </p>
+<p>Leave me a comment if you have questions. And one more thing~ Happy new year! </p>
+<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><p>Dp</p>
+<pre><code>private int dpSolution(Job[] jobs, int size) &#123;
+    int[] dp = new int[size];
+    dp[size - 1] = jobs[size - 1].cost;
+    // cost of last job equals to just itself
+    for (int k = size - 2; k &gt;= 0; k--) &#123;
+        int next = findNextJob(jobs, k);
+        int includeK = jobs[k].cost;
+        if (next &lt; size) &#123;
+            includeK += dp[next];
+        &#125;
+        int excludeK = dp[k + 1];
+        dp[k] = Math.max(includeK, excludeK);
+    &#125;
+    return dp[0];
+&#125;
+
+private int findNextJob(Job[] jobs, int k) &#123;
+    int finishTime = jobs[k].finish;
+    int next = k + 1;
+    while (next &lt; jobs.length) &#123;
+        if (jobs[next].start &lt; finishTime) &#123;
+            next++;
+        &#125; else &#123;
+            break;
+        &#125;
+    &#125;
+    return next;
+&#125;
+</code></pre>
+<p>Recursion</p>
+<pre><code>public int recursiveSolution(Job[] jobs, int size, int k) &#123;
+    // max cost from (k)th job and onwards
+    if (k == size) &#123;
+        return 0;
+    &#125;
+    // (k)th job must not conflict with any previous job
+    int next = findNextJob(jobs, k);
+    int includeK = jobs[k].cost + recursiveSolution(jobs, size, next);
+    int excludeK = recursiveSolution(jobs, size, k + 1);
+    return Math.max(includeK, excludeK);
+&#125;
+
+private int findNextJob(Job[] jobs, int k) &#123;
+    int finishTime = jobs[k].finish;
+    int next = k + 1;
+    while (next &lt; jobs.length) &#123;
+        if (jobs[next].start &lt; finishTime) &#123;
+            next++;
+        &#125; else &#123;
+            break;
+        &#125;
+    &#125;
+    return next;
+&#125;
+</code></pre>
+
+            </div>
+        </div>
+    </div>
+</main>
+
+<script src="https://utteranc.es/client.js"
+    repo="owner/repo"
+    issue-term="pathname"
+    theme="github-light"
+    crossorigin="anonymous"
+    async>
+</script>
+
+  
+
+</div>
+        <div class="footer-wrapper"><footer>
+    <div class="footer-container">
+        <div class="footer-meta">
+            
+                <div class="footer-meta-copyright">
+                    &copy; 2022 mar2ndx.
+                </div>
+            
+            
+                <div class="footer-meta-licenese">
+                    Licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC-BY-NC-SA 4.0</a>
+                </div>
+            
+            
+        </div>
+    </div>
+</footer>
+</div>
+    </div>
+</body>
+</html>

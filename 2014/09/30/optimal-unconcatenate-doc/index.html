@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <link rel="shortcut icon" href="/images/avatar.png" type="image/x-icon" />
+    <title>
+        
+            [CC150v5] 17.14 Optimal Way to Unconcatenate Doc  |
+         
+        Mar2ndx&#39;s Algorithmic and System Design Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/solid.min.css">
+
+     
+    
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXXXX"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-XXXXXXXXXXXX');
+        </script>
+    
+
+
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body>
+    <div class="body-container">
+        <div class="header-wrapper"><header>
+    <div class="header-container">
+        <div class="header-menu-list">
+            <ul>
+            
+                <li>
+                    <a href="/">主页</a>
+                </li>
+            
+            </ul>
+        </div>
+    </div>
+</header>
+</div>
+        <div class="main-wrapper"><main>
+    <div class="main-container">
+        <div class="post-details">
+            
+            <div class="post-title">
+                <h1>[CC150v5] 17.14 Optimal Way to Unconcatenate Doc </h1>
+            </div>
+            <div class="post-meta">
+                <i class="fa-solid fa-clock"></i>&nbsp;<span class="post-date">2014/09/30</span>
+            </div>
+            
+            <div class="post-content">
+                <h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><blockquote>
+<p>Given a lengthy document without spaces, punctuation, and capitalization:</p>
+</blockquote>
+<blockquote>
+<p>eg: iresetthecomputeritstilldidntboot</p>
+</blockquote>
+<blockquote>
+<p>Now add back in the punctation and capitalization. </p>
+</blockquote>
+<blockquote>
+<p>Most of the words will be in a dictionary, but some strings, like proper names, will not. Given a dictionary (a list of words), design an algorithm to find the optimal way of “unconcatenating” a sequence of words (by minimizing unrecognized sequences of characters).</p>
+</blockquote>
+<blockquote>
+<p>For example, the string “jesslookedjustliketimherbrother” would be optimally parsed as “JESS looked just like TIM her brother”. This parsing has seven unrecognized characters, which we have capitalized for clarity. </p>
+</blockquote>
+<h3 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h3><p>The solution given in the book is very hard to understand. It uses HashMap to memorize the previous result. </p>
+<p>After long time of struggle, I finally solved it with traditional DP approach. The key idea is to consider: “<strong>whether I insert a space after this char, or not</strong>“. </p>
+<p>The code is concise and easy to read. </p>
+<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><pre><code>public static int parse(String doc, Trie dict) &#123;
+    int len = doc.length();
+    int[] dp = new int[len + 1];
+    // dp[i] denotes the number of special chars in first i chars of docs
+    for (int i = 1; i &lt;= len; i++) &#123;
+        dp[i] =  Integer.MAX_VALUE;
+        for (int j = 0; j &lt; i; j++) &#123;
+            String str = doc.substring(j, i);
+            if (dict.contains(str, true)) &#123;
+                // consider (i to j) a valid word
+                dp[i] = Math.min(dp[i], dp[j]);
+            &#125; else &#123;
+                // consider (i to j) special chars
+                dp[i] = Math.min(dp[i], dp[j] + i - j);
+            &#125;
+        &#125;
+    &#125;
+    return dp[len];
+&#125;
+</code></pre>
+
+            </div>
+        </div>
+    </div>
+</main>
+
+<script src="https://utteranc.es/client.js"
+    repo="owner/repo"
+    issue-term="pathname"
+    theme="github-light"
+    crossorigin="anonymous"
+    async>
+</script>
+
+  
+
+</div>
+        <div class="footer-wrapper"><footer>
+    <div class="footer-container">
+        <div class="footer-meta">
+            
+                <div class="footer-meta-copyright">
+                    &copy; 2022 mar2ndx.
+                </div>
+            
+            
+                <div class="footer-meta-licenese">
+                    Licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC-BY-NC-SA 4.0</a>
+                </div>
+            
+            
+        </div>
+    </div>
+</footer>
+</div>
+    </div>
+</body>
+</html>

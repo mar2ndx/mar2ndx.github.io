@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <link rel="shortcut icon" href="/images/avatar.png" type="image/x-icon" />
+    <title>
+        
+            622. Design Circular Queue |
+         
+        Mar2ndx&#39;s Algorithmic and System Design Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/solid.min.css">
+
+     
+    
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXXXX"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-XXXXXXXXXXXX');
+        </script>
+    
+
+
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body>
+    <div class="body-container">
+        <div class="header-wrapper"><header>
+    <div class="header-container">
+        <div class="header-menu-list">
+            <ul>
+            
+                <li>
+                    <a href="/">主页</a>
+                </li>
+            
+            </ul>
+        </div>
+    </div>
+</header>
+</div>
+        <div class="main-wrapper"><main>
+    <div class="main-container">
+        <div class="post-details">
+            
+            <div class="post-title">
+                <h1>622. Design Circular Queue</h1>
+            </div>
+            <div class="post-meta">
+                <i class="fa-solid fa-clock"></i>&nbsp;<span class="post-date">2022/10/17</span>
+            </div>
+            
+            <div class="post-content">
+                <p>Link: <a target="_blank" rel="noopener" href="https://leetcode.cn/problems/design-circular-queue/">https://leetcode.cn/problems/design-circular-queue/</a></p>
+<h1 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h1><p>difficulty: mid<br>adj diff: 2</p>
+<pre><code>Design your implementation of the circular queue. The circular queue is a linear data structure in which the operations are performed based on FIFO (First In First Out) principle, and the last position is connected back to the first position to make a circle. It is also called &quot;Ring Buffer&quot;.
+
+One of the benefits of the circular queue is that we can make use of the spaces in front of the queue. In a normal queue, once the queue becomes full, we cannot insert the next element even if there is a space in front of the queue. But using the circular queue, we can use the space to store new values.
+
+Implement the MyCircularQueue class:
+
+    MyCircularQueue(k) Initializes the object with the size of the queue to be k.
+    int Front() Gets the front item from the queue. If the queue is empty, return -1.
+    int Rear() Gets the last item from the queue. If the queue is empty, return -1.
+    boolean enQueue(int value) Inserts an element into the circular queue. Return true if the operation is successful.
+    boolean deQueue() Deletes an element from the circular queue. Return true if the operation is successful.
+    boolean isEmpty() Checks whether the circular queue is empty or not.
+    boolean isFull() Checks whether the circular queue is full or not.
+
+You must solve the problem without using the built-in queue data structure in your programming language.
+
+Example 1:
+
+Input
+[&quot;MyCircularQueue&quot;, &quot;enQueue&quot;, &quot;enQueue&quot;, &quot;enQueue&quot;, &quot;enQueue&quot;, &quot;Rear&quot;, &quot;isFull&quot;, &quot;deQueue&quot;, &quot;enQueue&quot;, &quot;Rear&quot;]
+[[3], [1], [2], [3], [4], [], [], [], [4], []]
+Output
+[null, true, true, true, false, 3, true, true, true, 4]
+
+Explanation
+MyCircularQueue myCircularQueue = new MyCircularQueue(3);
+myCircularQueue.enQueue(1); // return True
+myCircularQueue.enQueue(2); // return True
+myCircularQueue.enQueue(3); // return True
+myCircularQueue.enQueue(4); // return False
+myCircularQueue.Rear();     // return 3
+myCircularQueue.isFull();   // return True
+myCircularQueue.deQueue();  // return True
+myCircularQueue.enQueue(4); // return True
+myCircularQueue.Rear();     // return 4
+
+Constraints:
+
+    1 &lt;= k &lt;= 1000
+    0 &lt;= value &lt;= 1000
+    At most 3000 calls will be made to enQueue, deQueue, Front, Rear, isEmpty, and isFull.
+</code></pre>
+<h1 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h1><pre><code class="hljs plaintext">int size;
+int[] list;
+int start;
+
+public MyCircularQueue(int k) &#123;
+    size = 0;
+    list = new int[k];
+    start = 0;
+&#125;
+
+public boolean enQueue(int value) &#123;
+    if (size == list.length) &#123;
+        return false;
+    &#125;
+    list[(start + size) % list.length] = value;
+    size++;
+    return true;
+&#125;
+
+public boolean deQueue() &#123;
+    if (size == 0) &#123;
+        return false;
+    &#125;
+    size--;
+    start = (start + 1) % list.length;
+    return true;
+&#125;
+
+public int Front() &#123;
+    if (size == 0) &#123;
+        return -1;
+    &#125; else &#123;
+        return list[start];
+    &#125;
+&#125;
+
+public int Rear() &#123;
+    if (size == 0) &#123;
+        return -1;
+    &#125; else &#123;
+        return list[(start + size - 1) % list.length];
+    &#125;
+&#125;
+
+public boolean isEmpty() &#123;
+    return size == 0;
+&#125;
+
+public boolean isFull() &#123;
+    return size == list.length;
+&#125;</code></pre>
+
+            </div>
+        </div>
+    </div>
+</main>
+
+<script src="https://utteranc.es/client.js"
+    repo="owner/repo"
+    issue-term="pathname"
+    theme="github-light"
+    crossorigin="anonymous"
+    async>
+</script>
+
+  
+
+</div>
+        <div class="footer-wrapper"><footer>
+    <div class="footer-container">
+        <div class="footer-meta">
+            
+                <div class="footer-meta-copyright">
+                    &copy; 2022 mar2ndx.
+                </div>
+            
+            
+                <div class="footer-meta-licenese">
+                    Licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC-BY-NC-SA 4.0</a>
+                </div>
+            
+            
+        </div>
+    </div>
+</footer>
+</div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <link rel="shortcut icon" href="/images/avatar.png" type="image/x-icon" />
+    <title>
+        
+            [CC150v5] 9.3 Find Magic Index  |
+         
+        Mar2ndx&#39;s Algorithmic and System Design Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/solid.min.css">
+
+     
+    
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXXXX"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-XXXXXXXXXXXX');
+        </script>
+    
+
+
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body>
+    <div class="body-container">
+        <div class="header-wrapper"><header>
+    <div class="header-container">
+        <div class="header-menu-list">
+            <ul>
+            
+                <li>
+                    <a href="/">主页</a>
+                </li>
+            
+            </ul>
+        </div>
+    </div>
+</header>
+</div>
+        <div class="main-wrapper"><main>
+    <div class="main-container">
+        <div class="post-details">
+            
+            <div class="post-title">
+                <h1>[CC150v5] 9.3 Find Magic Index </h1>
+            </div>
+            <div class="post-meta">
+                <i class="fa-solid fa-clock"></i>&nbsp;<span class="post-date">2014/09/16</span>
+            </div>
+            
+            <div class="post-content">
+                <h3 id="Question-1"><a href="#Question-1" class="headerlink" title="Question 1"></a>Question 1</h3><blockquote>
+<p>A magic index in an array A[l.. .n-l] is defined to be an index such that A[i] = i. </p>
+</blockquote>
+<blockquote>
+<p>Given a sorted array of distinct integers, write a method to find a magic index, if one exists, in array A. </p>
+</blockquote>
+<h3 id="Question-2"><a href="#Question-2" class="headerlink" title="Question 2"></a>Question 2</h3><blockquote>
+<p>FOLLOW UP: What if the values are not distinct? </p>
+</blockquote>
+<h3 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h3><p><strong>This is a difficult binary search question</strong>! </p>
+<p><strong>Question 1 is slightly easier</strong>: we simplyl use binary search, and we are able to discard half of the array each time. </p>
+<ol>
+<li>if (array[mid] &gt; mid), then we discard the right half.</li>
+<li>if (array[mid] &lt; mid), then we discard the left half.</li>
+</ol>
+<p><strong>Question 2 is difficult</strong>. We cannot discard half of the input any more. Instead, we discard a range between (mid) and (array[mid]). Then check left and right part seperately. </p>
+<p>So, I wrote the following code:</p>
+<pre><code>int mid = left + (right - left) / 2;
+if (array[mid] == mid) &#123;
+    return mid;
+&#125; else &#123;
+    int smaller = Math.min(array[mid], mid);
+    int larger = Math.max(array[mid], mid);
+    int leftResult = helper(array, left, smaller);
+    if (leftResult != -1) &#123;
+        return leftResult;
+    &#125; else &#123;
+        return helper(array, larger, right);
+    &#125;
+&#125;
+</code></pre>
+<p>This becomes an endless loop. We did not discard point ‘mid’ in the code above. The correct code is posted below. </p>
+<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><p><strong>code for non-duplicate input</strong></p>
+<pre><code>public static int myAnswerNonDup(int[] array) &#123;
+    int len = array.length;
+    return helper(array, 0, len - 1);
+&#125;
+
+public static int helper(int[] array, int left, int right) &#123;
+    if (right &lt; left) &#123;
+        return -1;
+    &#125;
+    int mid = left + (right - left) / 2;
+    if (array[mid] == mid) &#123;
+        return mid;
+    &#125; else if (array[mid] &lt; mid) &#123;
+        // discard all element to the left of array[mid]
+        return helper(array, mid + 1, right);
+    &#125; else &#123;
+        return helper(array, left, mid - 1);
+    &#125;
+&#125;
+</code></pre>
+<p><strong>code for have-duplicate input</strong></p>
+<pre><code>public static int myAnswerWithDup(int[] array) &#123;
+    int len = array.length;
+    return helper(array, 0, len - 1);
+&#125;
+
+public static int helper(int[] array, int left, int right) &#123;
+    if (right &lt; left) &#123;
+        return -1;
+    &#125;
+    int mid = left + (right - left) / 2;
+    if (array[mid] == mid) &#123;
+        return mid;
+    &#125; else &#123;
+        int smaller = 0;
+        int larger = 0;
+        if (array[mid] &lt; mid) &#123;
+            smaller = array[mid];
+            larger = mid + 1;
+        &#125; else if (array[mid] &gt; mid) &#123;
+            smaller = mid - 1;
+            larger = array[mid];
+        &#125;
+        int leftResult = helper(array, left, smaller);
+        if (leftResult != -1) &#123;
+            return leftResult;
+        &#125; else &#123;
+            return helper(array, larger, right);
+        &#125;
+    &#125;
+&#125;
+</code></pre>
+
+            </div>
+        </div>
+    </div>
+</main>
+
+<script src="https://utteranc.es/client.js"
+    repo="owner/repo"
+    issue-term="pathname"
+    theme="github-light"
+    crossorigin="anonymous"
+    async>
+</script>
+
+  
+
+</div>
+        <div class="footer-wrapper"><footer>
+    <div class="footer-container">
+        <div class="footer-meta">
+            
+                <div class="footer-meta-copyright">
+                    &copy; 2022 mar2ndx.
+                </div>
+            
+            
+                <div class="footer-meta-licenese">
+                    Licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC-BY-NC-SA 4.0</a>
+                </div>
+            
+            
+        </div>
+    </div>
+</footer>
+</div>
+    </div>
+</body>
+</html>

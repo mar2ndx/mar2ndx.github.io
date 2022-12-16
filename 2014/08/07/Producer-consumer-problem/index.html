@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <link rel="shortcut icon" href="/images/avatar.png" type="image/x-icon" />
+    <title>
+        
+            [Design] Producer Consumer Problem |
+         
+        Mar2ndx&#39;s Algorithmic and System Design Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/solid.min.css">
+
+     
+    
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXXXX"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-XXXXXXXXXXXX');
+        </script>
+    
+
+
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body>
+    <div class="body-container">
+        <div class="header-wrapper"><header>
+    <div class="header-container">
+        <div class="header-menu-list">
+            <ul>
+            
+                <li>
+                    <a href="/">主页</a>
+                </li>
+            
+            </ul>
+        </div>
+    </div>
+</header>
+</div>
+        <div class="main-wrapper"><main>
+    <div class="main-container">
+        <div class="post-details">
+            
+            <div class="post-title">
+                <h1>[Design] Producer Consumer Problem</h1>
+            </div>
+            <div class="post-meta">
+                <i class="fa-solid fa-clock"></i>&nbsp;<span class="post-date">2014/08/07</span>
+            </div>
+            
+            <div class="post-content">
+                <h3 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h3><p>Producer-consumer problem illustrates the need for <strong>synchronization</strong> in systems where <strong>many processes share a resource</strong>.</p>
+<p><a target="_blank" rel="noopener" href="http://cs.gmu.edu/cne/modules/ipc/aqua/producer.html">In the problem</a>, two processes share a fixed-size buffer. One process produces information and puts it in the buffer, while the other process consumes information from the buffer. These processes do not take turns accessing the buffer, they both work concurrently.</p>
+<h3 id="Inadequate-Solution"><a href="#Inadequate-Solution" class="headerlink" title="Inadequate Solution"></a>Inadequate Solution</h3><p><img src="/images/producer-workflow.gif"></p>
+<p><img src="/images/consumer-workflow.gif"></p>
+<p><strong>The code might look like this</strong>:</p>
+<pre><code>BufferSize = 3;
+count = 0;
+
+Producer()
+&#123;
+    int widget;
+    WHILE (true) &#123;                     // loop forever
+       make_new(widget);               // create a new widget to put in the buffer
+       IF(count==BufferSize)
+           Sleep();                    // if the buffer is full, sleep
+       put_item(widget);               // put the item in the buffer
+       count = count + 1;              // increment count of items
+       IF (count==1)
+           Wakeup(Consumer);           // if the buffer was previously empty, wake
+    &#125;                                  //  the consumer
+&#125;
+
+Consumer()
+&#123;
+    int widget;
+    WHILE(true) &#123;                    // loop forever
+      IF(count==0)
+           Sleep();                  // if the buffer is empty, sleep
+      remove_item(widget);           // take an item from the buffer
+      count = count + 1;             // decrement count of items
+      IF(count==N-1)
+            Wakeup(Producer);        // if buffer was previously full, wake
+                                     //  the producer
+      Consume_item(widget);          // consume the item
+    &#125;
+&#125;
+</code></pre>
+<p>This <a target="_blank" rel="noopener" href="http://en.wikipedia.org/wiki/Producer%E2%80%93consumer_problem#Inadequate_implementation">will cause problems</a>, because <strong>it contains a race condition</strong> that can lead to a deadlock. Or in simply words, it has the potential of <a target="_blank" rel="noopener" href="http://cs.gmu.edu/cne/modules/ipc/purple/prodsem.html">losing wakeups</a>.</p>
+<p>An alternative analysis is that if the programming language does not define the semantics of <strong>concurrent accesses to shared variables (in this case itemCount)</strong> without use of synchronization, then the solution is unsatisfactory for that reason, without needing to explicitly demonstrate a race condition.</p>
+<p>Solutions are: <strong>semaphores or monitors</strong>.</p>
+<h3 id="Semaphore"><a href="#Semaphore" class="headerlink" title="Semaphore"></a>Semaphore</h3><pre><code>semaphore mutex = 1;
+semaphore fillCount = 0;
+semaphore emptyCount = BUFFER_SIZE;
+
+procedure producer() &#123;
+    while (true) &#123;
+        item = produceItem();
+        down(emptyCount);
+            down(mutex);
+                putItemIntoBuffer(item);
+            up(mutex);
+        up(fillCount);
+    &#125;
+&#125;
+
+procedure consumer() &#123;
+    while (true) &#123;
+        down(fillCount);
+            down(mutex);
+                item = removeItemFromBuffer();
+            up(mutex);
+        up(emptyCount);
+        consumeItem(item);
+    &#125;
+&#125;
+</code></pre>
+<h3 id="Monitor"><a href="#Monitor" class="headerlink" title="Monitor"></a>Monitor</h3><pre><code>monitor ProducerConsumer &#123;
+    int itemCount;
+    condition full;
+    condition empty;
+
+    procedure add(item) &#123;
+        while (itemCount == BUFFER_SIZE) &#123;
+            wait(full);
+        &#125;
+
+        putItemIntoBuffer(item);
+        itemCount = itemCount + 1;
+
+        if (itemCount == BUFFER_SIZE -1) &#123;
+            notify(full);
+        &#125;
+    &#125;
+    procedure remove() &#123;
+        while (itemCount == 0) &#123;
+            wait(empty);
+        &#125;
+
+        item = removeItemFromBuffer();
+        itemCount = itemCount - 1;
+
+        if (itemCount == 1) &#123;
+            notify(empty);
+        &#125;
+
+
+        return item;
+    &#125;
+&#125;
+
+procedure producer() &#123;
+    while (true) &#123;
+        item = produceItem();
+        ProducerConsumer.add(item);
+    &#125;
+&#125;
+
+procedure consumer() &#123;
+    while (true) &#123;
+        item = ProducerConsumer.remove();
+        consumeItem(item);
+    &#125;
+&#125;
+</code></pre>
+
+            </div>
+        </div>
+    </div>
+</main>
+
+<script src="https://utteranc.es/client.js"
+    repo="owner/repo"
+    issue-term="pathname"
+    theme="github-light"
+    crossorigin="anonymous"
+    async>
+</script>
+
+  
+
+</div>
+        <div class="footer-wrapper"><footer>
+    <div class="footer-container">
+        <div class="footer-meta">
+            
+                <div class="footer-meta-copyright">
+                    &copy; 2022 mar2ndx.
+                </div>
+            
+            
+                <div class="footer-meta-licenese">
+                    Licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC-BY-NC-SA 4.0</a>
+                </div>
+            
+            
+        </div>
+    </div>
+</footer>
+</div>
+    </div>
+</body>
+</html>

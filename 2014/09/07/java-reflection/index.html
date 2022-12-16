@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <link rel="shortcut icon" href="/images/avatar.png" type="image/x-icon" />
+    <title>
+        
+            [CC150v4] 14.5 Java Reflection  |
+         
+        Mar2ndx&#39;s Algorithmic and System Design Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/solid.min.css">
+
+     
+    
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXXXX"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-XXXXXXXXXXXX');
+        </script>
+    
+
+
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body>
+    <div class="body-container">
+        <div class="header-wrapper"><header>
+    <div class="header-container">
+        <div class="header-menu-list">
+            <ul>
+            
+                <li>
+                    <a href="/">主页</a>
+                </li>
+            
+            </ul>
+        </div>
+    </div>
+</header>
+</div>
+        <div class="main-wrapper"><main>
+    <div class="main-container">
+        <div class="post-details">
+            
+            <div class="post-title">
+                <h1>[CC150v4] 14.5 Java Reflection </h1>
+            </div>
+            <div class="post-meta">
+                <i class="fa-solid fa-clock"></i>&nbsp;<span class="post-date">2014/09/07</span>
+            </div>
+            
+            <div class="post-content">
+                <h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><blockquote>
+<p>Explain what object reflection is in Java and why it is useful. </p>
+</blockquote>
+<h3 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h3><p><strong><a target="_blank" rel="noopener" href="http://tutorials.jenkov.com/java-reflection/index.html">Java Reflection</a> makes it possible to inspect classes, interfaces, fields and methods at runtime</strong>, without knowing the names of the classes, methods etc. at compile time. It is also possible to instantiate new objects, invoke methods and get/set field values using reflection.</p>
+<p>For example, say you have an object of <a target="_blank" rel="noopener" href="http://stackoverflow.com/a/37632">an unknown type in Java</a>, and <strong>you would like to call a ‘doSomething’ method on it if one exists</strong>. Java’s static typing system isn’t really designed to support this unless the object conforms to a known interface, <strong>but using reflection</strong>, your code can look at the object and find out if it has a method called ‘doSomething’ and then call it if you want to. Like this:</p>
+<pre><code>Method method = foo.getClass().getMethod(&quot;doSomething&quot;, null);
+method.invoke(foo, null);
+</code></pre>
+<h4 id="Usage-in-Junit"><a href="#Usage-in-Junit" class="headerlink" title="Usage in Junit"></a>Usage in Junit</h4><p>One very common use case in Java is the usage with annotations. JUnit 4, for example, will use reflection to <strong>look through your classes for methods tagged with the @Test annotation</strong>, and will then call them when running the unit test. </p>
+<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><p>The following example code is covered in <a target="_blank" rel="noopener" href="http://tutorials.jenkov.com/java-reflection/index.html">this post</a>: </p>
+<pre><code>public class JavaReflection &#123;
+
+    public static void main(String[] args) &#123;
+        Method[] methods;
+
+        methods = ListNode.class.getMethods();
+
+        for (Method method : methods) &#123;
+            System.out.println(formatMethodName(method.getName() + &quot;()&quot;)
+                    + method.getDeclaringClass());
+        &#125;
+    &#125;
+
+    private static String formatMethodName(String methodName) &#123;
+        for (int i = methodName.length(); i &lt; 30; i++) &#123;
+            methodName += &quot;.&quot;;
+        &#125;
+        return methodName;
+    &#125;
+&#125;
+</code></pre>
+
+            </div>
+        </div>
+    </div>
+</main>
+
+<script src="https://utteranc.es/client.js"
+    repo="owner/repo"
+    issue-term="pathname"
+    theme="github-light"
+    crossorigin="anonymous"
+    async>
+</script>
+
+  
+
+</div>
+        <div class="footer-wrapper"><footer>
+    <div class="footer-container">
+        <div class="footer-meta">
+            
+                <div class="footer-meta-copyright">
+                    &copy; 2022 mar2ndx.
+                </div>
+            
+            
+                <div class="footer-meta-licenese">
+                    Licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC-BY-NC-SA 4.0</a>
+                </div>
+            
+            
+        </div>
+    </div>
+</footer>
+</div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <link rel="shortcut icon" href="/images/avatar.png" type="image/x-icon" />
+    <title>
+        
+            [Google] Number of subtrees with even nodes  |
+         
+        Mar2ndx&#39;s Algorithmic and System Design Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/solid.min.css">
+
+     
+    
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXXXX"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-XXXXXXXXXXXX');
+        </script>
+    
+
+
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body>
+    <div class="body-container">
+        <div class="header-wrapper"><header>
+    <div class="header-container">
+        <div class="header-menu-list">
+            <ul>
+            
+                <li>
+                    <a href="/">主页</a>
+                </li>
+            
+            </ul>
+        </div>
+    </div>
+</header>
+</div>
+        <div class="main-wrapper"><main>
+    <div class="main-container">
+        <div class="post-details">
+            
+            <div class="post-title">
+                <h1>[Google] Number of subtrees with even nodes </h1>
+            </div>
+            <div class="post-meta">
+                <i class="fa-solid fa-clock"></i>&nbsp;<span class="post-date">2015/02/03</span>
+            </div>
+            
+            <div class="post-content">
+                <h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><p><a target="_blank" rel="noopener" href="http://www.mitbbs.com/article_t0/JobHunting/32348573.html">link</a></p>
+<blockquote>
+<p>an arbitrary tree. split it into as many subtrees as you can. the<br>number of nodes of the subtree must be even.</p>
+</blockquote>
+<h3 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h3><p><strong>This is a difficult question</strong>. The idea is recursive solution, but be cautious deadling with NULL.</p>
+<p><strong>NULL can be regarded as a child branch of even node (0)</strong>, but NULL could not be seen as a subtreee.</p>
+<ol>
+<li>traverse each and every node in the tree</li>
+<li>for each node, take it as root, and find left and right branch with total sum of odd count of nodes.</li>
+<li>we do above step recursively</li>
+<li>include NULL as a subtree of EVEN number of nodes.</li>
+</ol>
+<p>The code below is my code and I haven’t seen any reference to this question. If you read this, please comment and discuss with me!</p>
+<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><pre><code>public void traverseAndFindEvenSubstrees(List&lt;TreeNode&gt; ans, TreeNode node) &#123;
+    if (node == null) &#123;
+        return;
+    &#125;
+    List&lt;TreeNode&gt; evenSubtrees = this.getSubtrees(node, true);
+    evenSubtrees.remove(null);
+    ans.addAll(evenSubtrees);
+
+    traverseAndFindEvenSubstrees(ans, node.left);
+    traverseAndFindEvenSubstrees(ans, node.right);
+&#125;
+
+private List&lt;TreeNode&gt; getSubtrees(TreeNode root, boolean isEven) &#123;
+    List&lt;TreeNode&gt; ans = new ArrayList&lt;TreeNode&gt;();
+    if (root == null) &#123;
+        if (isEven) &#123;
+            // NULL is considered as a subtree with even number (0) of nodes
+            ans.add(null);
+        &#125;
+        return ans;
+    &#125;
+    if (isEven) &#123;
+        // we need 2 subtrees to have a combined nodes of odd numbers
+        for (int i = 0; i &lt;= 1; i++) &#123;
+            List&lt;TreeNode&gt; leftGroup = getSubtrees(root.left, i == 0);
+            List&lt;TreeNode&gt; rightGroup = getSubtrees(root.right, i != 0);
+            // what we do here, is to make leftGroup and rightGroup have
+            // different boolean parameter, thus a total of odd count
+            for (TreeNode ln : leftGroup) &#123;
+                for (TreeNode rn : rightGroup) &#123;
+                    // note that NULL is included in either leftGroup or
+                    // rightGroup. we&#39;ll use that
+                    TreeNode newSubtree = new TreeNode(root.val);
+                    newSubtree.left = ln;
+                    newSubtree.right = rn;
+                    ans.add(newSubtree);
+                &#125;
+            &#125;
+        &#125;
+        // now we&#39;ve added all subtrees into ans, whose head is the root
+        // this means we does not inlcude NULL
+    &#125; else &#123;
+        for (int i = 0; i &lt;= 1; i++) &#123;
+            List&lt;TreeNode&gt; leftGroup = getSubtrees(root.left, i == 0);
+            List&lt;TreeNode&gt; rightGroup = getSubtrees(root.right, i == 0);
+            for (TreeNode ln : leftGroup) &#123;
+                for (TreeNode rn : rightGroup) &#123;
+                    TreeNode newSubtree = new TreeNode(root.val);
+                    newSubtree.left = ln;
+                    newSubtree.right = rn;
+                    ans.add(newSubtree);
+                &#125;
+            &#125;
+        &#125;
+    &#125;
+    // now last step, add NULL (important)
+    if (isEven) &#123;
+        ans.add(null);
+    &#125;
+    return ans;
+&#125;
+</code></pre>
+<p>Test data:</p>
+<pre><code>Test start
+Input is a BST with this structure:
+4
+2 6
+1 3 5 7
+
+Total subtree count = 16
+They are:
+Tree 1:
+4
+2 6
+3
+Tree 2:
+4
+2 6
+3 5 7
+Tree 3:
+4
+2 6
+1
+Tree 4:
+4
+2 6
+1 5 7
+Tree 5:
+4
+6
+Tree 6:
+4
+6
+5 7
+Tree 7:
+4
+2 6
+7
+Tree 8:
+4
+2 6
+5
+Tree 9:
+4
+2
+Tree 10:
+4
+2 6
+1 3 7
+Tree 11:
+4
+2 6
+1 3 5
+Tree 12:
+4
+2
+1 3
+Tree 13:
+2
+3
+Tree 14:
+2
+1
+Tree 15:
+6
+7
+Tree 16:
+6
+5
+Total time = 0.006
+</code></pre>
+
+            </div>
+        </div>
+    </div>
+</main>
+
+<script src="https://utteranc.es/client.js"
+    repo="owner/repo"
+    issue-term="pathname"
+    theme="github-light"
+    crossorigin="anonymous"
+    async>
+</script>
+
+  
+
+</div>
+        <div class="footer-wrapper"><footer>
+    <div class="footer-container">
+        <div class="footer-meta">
+            
+                <div class="footer-meta-copyright">
+                    &copy; 2022 mar2ndx.
+                </div>
+            
+            
+                <div class="footer-meta-licenese">
+                    Licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC-BY-NC-SA 4.0</a>
+                </div>
+            
+            
+        </div>
+    </div>
+</footer>
+</div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <link rel="shortcut icon" href="/images/avatar.png" type="image/x-icon" />
+    <title>
+        
+            [LinkedIn] Sum of integer weighted by depth  |
+         
+        Mar2ndx&#39;s Algorithmic and System Design Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/solid.min.css">
+
+     
+    
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXXXX"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-XXXXXXXXXXXX');
+        </script>
+    
+
+
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body>
+    <div class="body-container">
+        <div class="header-wrapper"><header>
+    <div class="header-container">
+        <div class="header-menu-list">
+            <ul>
+            
+                <li>
+                    <a href="/">主页</a>
+                </li>
+            
+            </ul>
+        </div>
+    </div>
+</header>
+</div>
+        <div class="main-wrapper"><main>
+    <div class="main-container">
+        <div class="post-details">
+            
+            <div class="post-title">
+                <h1>[LinkedIn] Sum of integer weighted by depth </h1>
+            </div>
+            <div class="post-meta">
+                <i class="fa-solid fa-clock"></i>&nbsp;<span class="post-date">2015/02/12</span>
+            </div>
+            
+            <div class="post-content">
+                <h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><p><a target="_blank" rel="noopener" href="http://www.careercup.com/question?id=5139875124740096">link</a></p>
+<pre><code>/**
+* Given a nested list of integers, returns the sum of all integers in the list weighted by their depth
+* For example, given the list &#123;(1,1),2,(1,10)&#125; the function should return 10 (four 1&#39;s at depth 2, one 2 at depth 1)
+* Given the list &#123;1,&#123;4,&#123;6&#125;&#125;&#125; the function should return 27 (one 1 at depth 1, one 4 at depth 2, and one 6 at depth 3)
+*/
+public int depthSum (List&lt;NestedInteger&gt; input)
+&#123; // ur implementation here&#125;
+
+
+**
+* This is the interface that represents nested lists.
+* You should not implement it, or speculate about its implementation.
+*/
+public interface NestedInteger
+&#123;
+/** @return true if this NestedInteger holds a single integer, rather than a nested list */
+boolean isInteger();
+
+/** @return the single integer that this NestedInteger holds, if it holds a single integer
+* Return null if this NestedInteger holds a nested list */
+Integer getInteger();
+
+/** @return the nested list that this NestedInteger holds, if it holds a nested list
+* Return null if this NestedInteger holds a single integer */
+List&lt;NestedInteger&gt; getList();
+&#125;
+</code></pre>
+<h3 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h3><p>DFS recurse.</p>
+<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><p>The algo:</p>
+<pre><code>public int depthSum(List&lt;NestedInteger&gt; input, int weight) &#123;
+    // ur implementation here
+    int sum = 0;
+    for (NestedInteger ni : input) &#123;
+        if (ni.isInteger()) &#123;
+            sum += ni.getInteger() * weight;
+        &#125; else &#123;
+            sum += depthSum(ni.getList(), weight + 1);
+        &#125;
+    &#125;
+    return sum;
+&#125;
+</code></pre>
+<p>Interface and Impl:</p>
+<pre><code>/*
+ * This is the interface that represents nested lists. You should not implement
+ * it, or speculate about its implementation.
+ */
+interface NestedInteger &#123;
+    /**
+     * @return true if this NestedInteger holds a single integer, rather than a
+     *         nested list
+     */
+    boolean isInteger();
+
+    /**
+     * @return the single integer that this NestedInteger holds, if it holds a
+     *         single integer Return null if this NestedInteger holds a nested
+     *         list
+     */
+    Integer getInteger();
+
+    /**
+     * @return the nested list that this NestedInteger holds, if it holds a
+     *         nested list Return null if this NestedInteger holds a single
+     *         integer
+     */
+    List&lt;NestedInteger&gt; getList();
+&#125;
+
+class NestedIntegerImpl implements NestedInteger &#123;
+
+    int num;
+    List&lt;NestedInteger&gt; list = new ArrayList&lt;NestedInteger&gt;();
+
+    public NestedIntegerImpl(int number) &#123;
+        num = number;
+        list = null;
+    &#125;
+
+    public NestedIntegerImpl(List&lt;NestedInteger&gt; inputList) &#123;
+        num = -1;
+        list = inputList;
+    &#125;
+
+    @Override
+    public boolean isInteger() &#123;
+        return list == null;
+    &#125;
+
+    @Override
+    public Integer getInteger() &#123;
+        if (isInteger()) &#123;
+            return num;
+        &#125;
+        return -1;
+    &#125;
+
+    @Override
+    public List&lt;NestedInteger&gt; getList() &#123;
+        return list;
+    &#125;
+&#125;
+</code></pre>
+
+            </div>
+        </div>
+    </div>
+</main>
+
+<script src="https://utteranc.es/client.js"
+    repo="owner/repo"
+    issue-term="pathname"
+    theme="github-light"
+    crossorigin="anonymous"
+    async>
+</script>
+
+  
+
+</div>
+        <div class="footer-wrapper"><footer>
+    <div class="footer-container">
+        <div class="footer-meta">
+            
+                <div class="footer-meta-copyright">
+                    &copy; 2022 mar2ndx.
+                </div>
+            
+            
+                <div class="footer-meta-licenese">
+                    Licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC-BY-NC-SA 4.0</a>
+                </div>
+            
+            
+        </div>
+    </div>
+</footer>
+</div>
+    </div>
+</body>
+</html>

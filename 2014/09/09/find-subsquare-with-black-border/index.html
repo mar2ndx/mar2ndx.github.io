@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <link rel="shortcut icon" href="/images/avatar.png" type="image/x-icon" />
+    <title>
+        
+            [CC150v4] 20.11 Find Subsquare with Black Border  |
+         
+        Mar2ndx&#39;s Algorithmic and System Design Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/solid.min.css">
+
+     
+    
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXXXX"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-XXXXXXXXXXXX');
+        </script>
+    
+
+
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body>
+    <div class="body-container">
+        <div class="header-wrapper"><header>
+    <div class="header-container">
+        <div class="header-menu-list">
+            <ul>
+            
+                <li>
+                    <a href="/">主页</a>
+                </li>
+            
+            </ul>
+        </div>
+    </div>
+</header>
+</div>
+        <div class="main-wrapper"><main>
+    <div class="main-container">
+        <div class="post-details">
+            
+            <div class="post-title">
+                <h1>[CC150v4] 20.11 Find Subsquare with Black Border </h1>
+            </div>
+            <div class="post-meta">
+                <i class="fa-solid fa-clock"></i>&nbsp;<span class="post-date">2014/09/09</span>
+            </div>
+            
+            <div class="post-content">
+                <h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><blockquote>
+<p>Imagine you have a square matrix, where each cell is filled with either black or white.</p>
+</blockquote>
+<blockquote>
+<p>Design an algorithm to find the maximum subsquare such that all four borders are filled with black pixels.</p>
+</blockquote>
+<h3 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h3><p>There is no better way to solve this except Brute Force. First find a point (as the top-left corner), and then test square size from large to small.</p>
+<p>The code below is from the book.</p>
+<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><pre><code>public static Subsquare findMaxSquareInMatrix(int[][] matrix) &#123;
+    assert (matrix.length &gt; 0);
+    for (int row = 0; row &lt; matrix.length; row++) &#123;
+        assert (matrix[row].length == matrix.length);
+    &#125;
+
+    int N = matrix.length;
+    int currentMaxSize = 0;
+    Subsquare sq = null;
+    int col = 0;
+
+    // Iterate through each column from left to right
+    while (N - col &gt; currentMaxSize) &#123; // See step 4 above
+        for (int row = 0; row &lt; matrix.length; row++) &#123;
+            // starting from the biggest
+            int size = N - Math.max(row, col);
+            while (size &gt; currentMaxSize) &#123;
+                if (checkSquareBorders(matrix, row, col, size)) &#123;
+                    currentMaxSize = size;
+                    sq = new Subsquare(row, col, size);
+                    break; // go to next (full) column
+                &#125;
+                size--;
+            &#125;
+        &#125;
+        col++;
+    &#125;
+    return sq;
+&#125;
+
+private static boolean checkSquareBorders(int[][] matrix, int row, int col,
+        int size) &#123;
+    // Check top and bottom border.
+    for (int j = 0; j &lt; size; j++) &#123;
+        if (matrix[row][col + j] == 1) &#123;
+            return false;
+        &#125;
+        if (matrix[row + size - 1][col + j] == 1) &#123;
+            return false;
+        &#125;
+    &#125;
+
+    // Check left and right border.
+    for (int i = 1; i &lt; size - 1; i++) &#123;
+        if (matrix[row + i][col] == 1) &#123;
+            return false;
+        &#125;
+        if (matrix[row + i][col + size - 1] == 1) &#123;
+            return false;
+        &#125;
+    &#125;
+    return true;
+&#125;
+</code></pre>
+
+            </div>
+        </div>
+    </div>
+</main>
+
+<script src="https://utteranc.es/client.js"
+    repo="owner/repo"
+    issue-term="pathname"
+    theme="github-light"
+    crossorigin="anonymous"
+    async>
+</script>
+
+  
+
+</div>
+        <div class="footer-wrapper"><footer>
+    <div class="footer-container">
+        <div class="footer-meta">
+            
+                <div class="footer-meta-copyright">
+                    &copy; 2022 mar2ndx.
+                </div>
+            
+            
+                <div class="footer-meta-licenese">
+                    Licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC-BY-NC-SA 4.0</a>
+                </div>
+            
+            
+        </div>
+    </div>
+</footer>
+</div>
+    </div>
+</body>
+</html>

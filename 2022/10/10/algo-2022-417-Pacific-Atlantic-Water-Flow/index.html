@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <link rel="shortcut icon" href="/images/avatar.png" type="image/x-icon" />
+    <title>
+        
+            417. Pacific Atlantic Water Flow |
+         
+        Mar2ndx&#39;s Algorithmic and System Design Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/solid.min.css">
+
+     
+    
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXXXX"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-XXXXXXXXXXXX');
+        </script>
+    
+
+
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body>
+    <div class="body-container">
+        <div class="header-wrapper"><header>
+    <div class="header-container">
+        <div class="header-menu-list">
+            <ul>
+            
+                <li>
+                    <a href="/">主页</a>
+                </li>
+            
+            </ul>
+        </div>
+    </div>
+</header>
+</div>
+        <div class="main-wrapper"><main>
+    <div class="main-container">
+        <div class="post-details">
+            
+            <div class="post-title">
+                <h1>417. Pacific Atlantic Water Flow</h1>
+            </div>
+            <div class="post-meta">
+                <i class="fa-solid fa-clock"></i>&nbsp;<span class="post-date">2022/10/10</span>
+            </div>
+            
+            <div class="post-content">
+                <p>Link: <a target="_blank" rel="noopener" href="https://leetcode.cn/problems/pacific-atlantic-water-flow/">https://leetcode.cn/problems/pacific-atlantic-water-flow/</a></p>
+<h1 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h1><p>difficulty: mid<br>adj diff: 4</p>
+<pre><code>There is an m x n rectangular island that borders both the Pacific Ocean and Atlantic Ocean. The Pacific Ocean touches the island&#39;s left and top edges, and the Atlantic Ocean touches the island&#39;s right and bottom edges.
+
+The island is partitioned into a grid of square cells. You are given an m x n integer matrix heights where heights[r][c] represents the height above sea level of the cell at coordinate (r, c).
+
+The island receives a lot of rain, and the rain water can flow to neighboring cells directly north, south, east, and west if the neighboring cell&#39;s height is less than or equal to the current cell&#39;s height. Water can flow from any cell adjacent to an ocean into the ocean.
+
+Return a 2D list of grid coordinates result where result[i] = [ri, ci] denotes that rain water can flow from cell (ri, ci) to both the Pacific and Atlantic oceans.
+
+Example 1:
+
+Input: heights = [[1,2,2,3,5],[3,2,3,4,4],[2,4,5,3,1],[6,7,1,4,5],[5,1,1,2,4]]
+Output: [[0,4],[1,3],[1,4],[2,2],[3,0],[3,1],[4,0]]
+Explanation: The following cells can flow to the Pacific and Atlantic oceans, as shown below:
+[0,4]: [0,4] -&gt; Pacific Ocean
+       [0,4] -&gt; Atlantic Ocean
+[1,3]: [1,3] -&gt; [0,3] -&gt; Pacific Ocean
+       [1,3] -&gt; [1,4] -&gt; Atlantic Ocean
+[1,4]: [1,4] -&gt; [1,3] -&gt; [0,3] -&gt; Pacific Ocean
+       [1,4] -&gt; Atlantic Ocean
+[2,2]: [2,2] -&gt; [1,2] -&gt; [0,2] -&gt; Pacific Ocean
+       [2,2] -&gt; [2,3] -&gt; [2,4] -&gt; Atlantic Ocean
+[3,0]: [3,0] -&gt; Pacific Ocean
+       [3,0] -&gt; [4,0] -&gt; Atlantic Ocean
+[3,1]: [3,1] -&gt; [3,0] -&gt; Pacific Ocean
+       [3,1] -&gt; [4,1] -&gt; Atlantic Ocean
+[4,0]: [4,0] -&gt; Pacific Ocean
+       [4,0] -&gt; Atlantic Ocean
+Note that there are other possible paths for these cells to flow to the Pacific and Atlantic oceans.
+
+Example 2:
+
+Input: heights = [[1]]
+Output: [[0,0]]
+Explanation: The water can flow from the only cell to the Pacific and Atlantic oceans.
+
+Constraints:
+
+    m == heights.length
+    n == heights[r].length
+    1 &lt;= m, n &lt;= 200
+    0 &lt;= heights[r][c] &lt;= 105
+</code></pre>
+<p>标准的 dfs，比 bfs 代码要简洁一些。</p>
+<p>用了两个 visited mask，最后 merge 成一个结果。很巧妙。</p>
+<h1 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h1><pre><code class="hljs plaintext">public List&lt;List&lt;Integer&gt;&gt; pacificAtlantic(int[][] heights) &#123;
+    int m = heights.length;
+    int n = heights[0].length;
+    boolean[][] pacific = new boolean[m][n];
+    boolean[][] atlantic = new boolean[m][n];
+    for (int i = 0; i &lt; m; i++) &#123;
+        dfs(pacific, m, n, heights, i, 0, 0); // first column
+    &#125;
+    for (int i = 1; i &lt; n; i++) &#123;
+        dfs(pacific, m, n, heights, 0, i, 0); // first row
+    &#125;
+    for (int i = 0; i &lt; m; i++) &#123;
+        dfs(atlantic, m, n, heights, i, n - 1, 0); // last column
+    &#125;
+    for (int i = 0; i + 1 &lt; n; i++) &#123;
+        dfs(atlantic, m, n, heights, m - 1, i, 0); // last row
+    &#125;
+
+    List&lt;List&lt;Integer&gt;&gt; ans = new LinkedList&lt;List&lt;Integer&gt;&gt;();
+    for (int i = 0; i &lt; m; i++) &#123;
+        for (int j = 0; j &lt; n; j++) &#123;
+            if (pacific[i][j] &amp;&amp; atlantic[i][j]) &#123;
+                List&lt;Integer&gt; coordinate = new LinkedList&lt;Integer&gt;();
+                coordinate.add(i);
+                coordinate.add(j);
+                ans.add(coordinate);
+            &#125;
+        &#125;
+    &#125;
+    return ans;
+&#125;
+
+private void dfs(boolean[][] ocean, int m, int n, int[][] heights, int x, int y, int lastAltitude) &#123;
+    if (x &lt; 0 || x &gt;= m || y &lt; 0 || y &gt;= n) &#123;
+        return;
+    &#125; else if (heights[x][y] &lt; lastAltitude) &#123;
+        return;
+    &#125; else if (ocean[x][y] == true) &#123;
+        return;
+    &#125;
+    ocean[x][y] = true;
+    int newAltitude = heights[x][y];
+    dfs(ocean, m, n, heights, x + 1, y, newAltitude);
+    dfs(ocean, m, n, heights, x - 1, y, newAltitude);
+    dfs(ocean, m, n, heights, x, y - 1, newAltitude);
+    dfs(ocean, m, n, heights, x, y + 1, newAltitude);
+&#125;</code></pre>
+
+            </div>
+        </div>
+    </div>
+</main>
+
+<script src="https://utteranc.es/client.js"
+    repo="owner/repo"
+    issue-term="pathname"
+    theme="github-light"
+    crossorigin="anonymous"
+    async>
+</script>
+
+  
+
+</div>
+        <div class="footer-wrapper"><footer>
+    <div class="footer-container">
+        <div class="footer-meta">
+            
+                <div class="footer-meta-copyright">
+                    &copy; 2022 mar2ndx.
+                </div>
+            
+            
+                <div class="footer-meta-licenese">
+                    Licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC-BY-NC-SA 4.0</a>
+                </div>
+            
+            
+        </div>
+    </div>
+</footer>
+</div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <link rel="shortcut icon" href="/images/avatar.png" type="image/x-icon" />
+    <title>
+        
+            [Design] MapReduce Common Friends Example |
+         
+        Mar2ndx&#39;s Algorithmic and System Design Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/solid.min.css">
+
+     
+    
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXXXX"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-XXXXXXXXXXXX');
+        </script>
+    
+
+
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body>
+    <div class="body-container">
+        <div class="header-wrapper"><header>
+    <div class="header-container">
+        <div class="header-menu-list">
+            <ul>
+            
+                <li>
+                    <a href="/">主页</a>
+                </li>
+            
+            </ul>
+        </div>
+    </div>
+</header>
+</div>
+        <div class="main-wrapper"><main>
+    <div class="main-container">
+        <div class="post-details">
+            
+            <div class="post-title">
+                <h1>[Design] MapReduce Common Friends Example</h1>
+            </div>
+            <div class="post-meta">
+                <i class="fa-solid fa-clock"></i>&nbsp;<span class="post-date">2014/08/04</span>
+            </div>
+            
+            <div class="post-content">
+                <h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><p><a target="_blank" rel="noopener" href="http://stackoverflow.com/a/12375878">link</a></p>
+<blockquote>
+<p>Facebook’s “You and Joe have 230 friends in common” feature. Sure you could use a decent caching strategy, but for now, use MapReduce.</p>
+</blockquote>
+<h3 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h3><p>This list doesn’t change frequently so it’d be wasteful to recalculate it every time. We’re going to use mapreduce to calculate everyone’s common friends once a day and store those results.</p>
+<p>Note that friends are <strong>bi-directional</strong>. If I’m your friend, you’re mine. (follow-up: how to do it for follower system?)</p>
+<h4 id="Input"><a href="#Input" class="headerlink" title="Input"></a>Input</h4><p>Assume the friends are stored as Person-&gt;[List of Friends], our friends list is then:</p>
+<pre><code>A -&gt; B C D
+B -&gt; A C D E
+C -&gt; A B D E
+D -&gt; A B C E
+E -&gt; B C D
+</code></pre>
+<h4 id="Map"><a href="#Map" class="headerlink" title="Map"></a>Map</h4><p>The mapper will output a key-value pair. The key will be a friend along with the person. The value will be the list of friends. The key will be sorted so that the friends are in order, causing all pairs of friends to go to the same reducer.</p>
+<p>For map(A -&gt; B C D) :</p>
+<pre><code>(A B) -&gt; B C D
+(A C) -&gt; B C D
+(A D) -&gt; B C D
+</code></pre>
+<p>For map(B -&gt; A C D E) : (Note that A comes before B in the key)</p>
+<pre><code>(A B) -&gt; A C D E
+(B C) -&gt; A C D E
+(B D) -&gt; A C D E
+(B E) -&gt; A C D E
+</code></pre>
+<p>For map(C -&gt; A B D E) :</p>
+<pre><code>(A C) -&gt; A B D E
+(B C) -&gt; A B D E
+(C D) -&gt; A B D E
+(C E) -&gt; A B D E
+</code></pre>
+<p>For map(D -&gt; A B C E) :</p>
+<pre><code>(A D) -&gt; A B C E
+(B D) -&gt; A B C E
+(C D) -&gt; A B C E
+(D E) -&gt; A B C E
+</code></pre>
+<p>And finally for map(E -&gt; B C D):</p>
+<pre><code>(B E) -&gt; B C D
+(C E) -&gt; B C D
+(D E) -&gt; B C D
+</code></pre>
+<p>Before we send these key-value pairs to the reducers, we group them by their keys and get:</p>
+<pre><code>(A B) -&gt; (A C D E) (B C D)
+(A C) -&gt; (A B D E) (B C D)
+(A D) -&gt; (A B C E) (B C D)
+(B C) -&gt; (A B D E) (A C D E)
+(B D) -&gt; (A B C E) (A C D E)
+(B E) -&gt; (A C D E) (B C D)
+(C D) -&gt; (A B C E) (A B D E)
+(C E) -&gt; (A B D E) (B C D)
+(D E) -&gt; (A B C E) (B C D)
+</code></pre>
+<p>Each line will be passed as an argument to a reducer.</p>
+<h4 id="Reduce"><a href="#Reduce" class="headerlink" title="Reduce"></a>Reduce</h4><p>The reduce function will simply intersect the lists of values and output the same key with the result of the intersection. After reduction:</p>
+<pre><code>(A B) -&gt; (C D)
+(A C) -&gt; (B D)
+(A D) -&gt; (B C)
+(B C) -&gt; (A D E)
+(B D) -&gt; (A C E)
+(B E) -&gt; (C D)
+(C D) -&gt; (A B E)
+(C E) -&gt; (B D)
+(D E) -&gt; (B C)
+</code></pre>
+<h4 id="Result"><a href="#Result" class="headerlink" title="Result"></a>Result</h4><p>Now when D visits B’s profile, we can quickly look up (B D) and see that they have three friends in common, (A C E).</p>
+
+            </div>
+        </div>
+    </div>
+</main>
+
+<script src="https://utteranc.es/client.js"
+    repo="owner/repo"
+    issue-term="pathname"
+    theme="github-light"
+    crossorigin="anonymous"
+    async>
+</script>
+
+  
+
+</div>
+        <div class="footer-wrapper"><footer>
+    <div class="footer-container">
+        <div class="footer-meta">
+            
+                <div class="footer-meta-copyright">
+                    &copy; 2022 mar2ndx.
+                </div>
+            
+            
+                <div class="footer-meta-licenese">
+                    Licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC-BY-NC-SA 4.0</a>
+                </div>
+            
+            
+        </div>
+    </div>
+</footer>
+</div>
+    </div>
+</body>
+</html>

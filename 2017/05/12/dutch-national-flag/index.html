@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <link rel="shortcut icon" href="/images/avatar.png" type="image/x-icon" />
+    <title>
+        
+            [Question] Dutch national flag problem  |
+         
+        Mar2ndx&#39;s Algorithmic and System Design Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/solid.min.css">
+
+     
+    
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXXXX"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-XXXXXXXXXXXX');
+        </script>
+    
+
+
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body>
+    <div class="body-container">
+        <div class="header-wrapper"><header>
+    <div class="header-container">
+        <div class="header-menu-list">
+            <ul>
+            
+                <li>
+                    <a href="/">主页</a>
+                </li>
+            
+            </ul>
+        </div>
+    </div>
+</header>
+</div>
+        <div class="main-wrapper"><main>
+    <div class="main-container">
+        <div class="post-details">
+            
+            <div class="post-title">
+                <h1>[Question] Dutch national flag problem </h1>
+            </div>
+            <div class="post-meta">
+                <i class="fa-solid fa-clock"></i>&nbsp;<span class="post-date">2017/05/12</span>
+            </div>
+            
+            <div class="post-content">
+                <h1 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h1><p><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Dutch_national_flag_problem">link</a></p>
+<blockquote>
+<p>Given an array A[] consisting 0s, 1s and 2s, write a function that sorts A[]. The functions should put all 0s first, then all 1s and all 2s in last.</p>
+</blockquote>
+<pre><code>Example
+Input = &#123;0, 1, 1, 0, 1, 2, 1, 2, 0, 0, 0, 1&#125;;
+Output = &#123;0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 2, 2&#125;
+</code></pre>
+<h1 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h1><p>3-way sort: <a target="_blank" rel="noopener" href="http://www.geeksforgeeks.org/3-way-quicksort-dutch-national-flag/">http://www.geeksforgeeks.org/3-way-quicksort-dutch-national-flag/</a></p>
+<h1 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h1><pre><code>public int[] threePointerSort(int[] input) &#123;
+    if (input == null || input.length &lt;= 1) &#123;
+        return input;
+    &#125;
+
+    // left is at the leftmost non-0 position
+    // right is at rightmost non-2
+    // mid is currently being evaluated (before mid, it&#39;s sorted)
+    int left = 0, right = input.length - 1;
+    int mid = left;
+    
+    while (mid &lt;= right) &#123;
+        if (input[mid] &gt; 1) &#123;
+            Common.swap(input, mid, right);
+            right--;
+        &#125; else if (input[mid] &lt; 1) &#123;
+            Common.swap(input, left, mid);
+            left++;
+            mid++;
+        &#125; else &#123;
+            mid++;
+        &#125;
+    &#125;
+
+    return input;
+&#125;
+</code></pre>
+
+            </div>
+        </div>
+    </div>
+</main>
+
+<script src="https://utteranc.es/client.js"
+    repo="owner/repo"
+    issue-term="pathname"
+    theme="github-light"
+    crossorigin="anonymous"
+    async>
+</script>
+
+  
+
+</div>
+        <div class="footer-wrapper"><footer>
+    <div class="footer-container">
+        <div class="footer-meta">
+            
+                <div class="footer-meta-copyright">
+                    &copy; 2022 mar2ndx.
+                </div>
+            
+            
+                <div class="footer-meta-licenese">
+                    Licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC-BY-NC-SA 4.0</a>
+                </div>
+            
+            
+        </div>
+    </div>
+</footer>
+</div>
+    </div>
+</body>
+</html>

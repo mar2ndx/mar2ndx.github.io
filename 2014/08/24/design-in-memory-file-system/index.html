@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <link rel="shortcut icon" href="/images/avatar.png" type="image/x-icon" />
+    <title>
+        
+            [CC150v5] 8.9 Design a in-memory File System |
+         
+        Mar2ndx&#39;s Algorithmic and System Design Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/solid.min.css">
+
+     
+    
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXXXX"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-XXXXXXXXXXXX');
+        </script>
+    
+
+
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body>
+    <div class="body-container">
+        <div class="header-wrapper"><header>
+    <div class="header-container">
+        <div class="header-menu-list">
+            <ul>
+            
+                <li>
+                    <a href="/">主页</a>
+                </li>
+            
+            </ul>
+        </div>
+    </div>
+</header>
+</div>
+        <div class="main-wrapper"><main>
+    <div class="main-container">
+        <div class="post-details">
+            
+            <div class="post-title">
+                <h1>[CC150v5] 8.9 Design a in-memory File System</h1>
+            </div>
+            <div class="post-meta">
+                <i class="fa-solid fa-clock"></i>&nbsp;<span class="post-date">2014/08/24</span>
+            </div>
+            
+            <div class="post-content">
+                <h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><blockquote>
+<p>Explain the data structures and algorithms that you would use to design an in-memory file system. Illustrate with an example in code where possible.</p>
+</blockquote>
+<h3 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h3><p><strong>A file system consists of Files and Directories</strong>. Each Directory contains a set of Files and Directories.</p>
+<p>Since Files and Directories share so many characteristics, we’ve implemented them such that they <strong>inherit from the same class</strong> – Entry.</p>
+<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><p>Entry.java</p>
+<pre><code>public abstract class Entry &#123;
+    protected Directory parent;
+    protected long created;
+    protected long lastUpdated;
+    protected long lastAccessed;
+    protected String name;
+
+    public Entry(String n, Directory p) &#123;
+        name = n;
+        parent = p;
+        created = System.currentTimeMillis();
+    &#125;
+
+    public boolean delete() &#123;
+        if (parent == null) &#123;
+            return false;
+        &#125;
+        return parent.deleteEntry(this);
+    &#125;
+
+    public abstract int size();
+
+    public String getFullPath() &#123;
+        if (parent == null) &#123;
+            return name;
+        &#125; else &#123;
+            return parent.getFullPath() + &quot;/&quot; + name;
+        &#125;
+    &#125;
+
+    public long getCreationTime() &#123;
+        return created;
+    &#125;
+
+    public long getLastUpdatedTime() &#123;
+        return lastUpdated;
+    &#125;
+
+    public long getLastAccessedTime() &#123;
+        return lastAccessed;
+    &#125;
+
+    public void changeName(String n) &#123;
+        name = n;
+    &#125;
+
+    public String getName() &#123;
+        return name;
+    &#125;
+&#125;
+</code></pre>
+<p>Directory.java</p>
+<pre><code>public class Directory extends Entry &#123;
+    protected ArrayList&lt;Entry&gt; contents;
+
+    public Directory(String n, Directory p) &#123;
+        super(n, p);
+        contents = new ArrayList&lt;Entry&gt;();
+    &#125;
+
+    protected ArrayList&lt;Entry&gt; getContents() &#123;
+        return contents;
+    &#125;
+
+    public int size() &#123;
+        int size = 0;
+        for (Entry e : contents) &#123;
+            size += e.size();
+        &#125;
+        return size;
+    &#125;
+
+    public int numberOfFiles() &#123;
+        int count = 0;
+        for (Entry e : contents) &#123;
+            if (e instanceof Directory) &#123;
+                count++; // Directory counts as a file
+                Directory d = (Directory) e;
+                count += d.numberOfFiles();
+            &#125; else if (e instanceof File) &#123;
+                count++;
+            &#125;
+        &#125;
+        return count;
+    &#125;
+
+    public boolean deleteEntry(Entry entry) &#123;
+        return contents.remove(entry);
+    &#125;
+
+    public void addEntry(Entry entry) &#123;
+        contents.add(entry);
+    &#125;
+&#125;
+</code></pre>
+<p>File.java</p>
+<pre><code>public class File extends Entry &#123;
+    private String content;
+    private int size;
+
+    public File(String n, Directory p, int sz) &#123;
+        super(n, p);
+        size = sz;
+    &#125;
+
+    public int size() &#123;
+        return size;
+    &#125;
+
+    public String getContents() &#123;
+        return content;
+    &#125;
+
+    public void setContents(String c) &#123;
+        content = c;
+    &#125;
+&#125;
+</code></pre>
+
+            </div>
+        </div>
+    </div>
+</main>
+
+<script src="https://utteranc.es/client.js"
+    repo="owner/repo"
+    issue-term="pathname"
+    theme="github-light"
+    crossorigin="anonymous"
+    async>
+</script>
+
+  
+
+</div>
+        <div class="footer-wrapper"><footer>
+    <div class="footer-container">
+        <div class="footer-meta">
+            
+                <div class="footer-meta-copyright">
+                    &copy; 2022 mar2ndx.
+                </div>
+            
+            
+                <div class="footer-meta-licenese">
+                    Licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC-BY-NC-SA 4.0</a>
+                </div>
+            
+            
+        </div>
+    </div>
+</footer>
+</div>
+    </div>
+</body>
+</html>

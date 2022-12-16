@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <link rel="shortcut icon" href="/images/avatar.png" type="image/x-icon" />
+    <title>
+        
+            [LintCode] Segment Tree Build II  |
+         
+        Mar2ndx&#39;s Algorithmic and System Design Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/solid.min.css">
+
+     
+    
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXXXX"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-XXXXXXXXXXXX');
+        </script>
+    
+
+
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body>
+    <div class="body-container">
+        <div class="header-wrapper"><header>
+    <div class="header-container">
+        <div class="header-menu-list">
+            <ul>
+            
+                <li>
+                    <a href="/">主页</a>
+                </li>
+            
+            </ul>
+        </div>
+    </div>
+</header>
+</div>
+        <div class="main-wrapper"><main>
+    <div class="main-container">
+        <div class="post-details">
+            
+            <div class="post-title">
+                <h1>[LintCode] Segment Tree Build II </h1>
+            </div>
+            <div class="post-meta">
+                <i class="fa-solid fa-clock"></i>&nbsp;<span class="post-date">2015/10/12</span>
+            </div>
+            
+            <div class="post-content">
+                <h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><p><a target="_blank" rel="noopener" href="http://www.lintcode.com/en/problem/segmemt-tree-build-ii/">link</a></p>
+<blockquote>
+<p>The structure of Segment Tree is a binary tree which each node has two attributes start and end denote an segment / interval.</p>
+</blockquote>
+<blockquote>
+<p>start and end are both integers, they should be assigned in following rules:</p>
+</blockquote>
+<blockquote>
+<p>The root’s start and end is given by build method.<br>The left child of node A has start=A.left, end=(A.left + A.right) / 2.<br>The right child of node A has start=(A.left + A.right) / 2 + 1, end=A.right.<br>if start equals to end, there will be no children for this node.</p>
+</blockquote>
+<blockquote>
+<p>Implement a build method with a given array, so that we can create a corresponding segment tree with every node value represent the corresponding interval max value in the array, return the root of this segment tree.</p>
+</blockquote>
+<h3 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h3><p>Similar.</p>
+<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><pre><code>/**
+ * Definition of SegmentTreeNode:
+ * public class SegmentTreeNode &#123;
+ *     public int start, end, max;
+ *     public SegmentTreeNode left, right;
+ *     public SegmentTreeNode(int start, int end, int max) &#123;
+ *         this.start = start;
+ *         this.end = end;
+ *         this.max = max
+ *         this.left = this.right = null;
+ *     &#125;
+ * &#125;
+ */
+public class Solution &#123;
+    /**
+     *@param A: a list of integer
+     *@return: The root of Segment Tree
+     */
+    public SegmentTreeNode build(int[] A) &#123;
+        if (A == null || A.length == 0) &#123;
+            return null;
+        &#125;
+        return helper(A, 0, A.length - 1);
+    &#125;
+
+    private SegmentTreeNode helper(int[] A, int start, int end) &#123;
+        if (start &gt; end) &#123;
+            return null;
+        &#125;
+        SegmentTreeNode node = new SegmentTreeNode(start, end);
+        if (start == end) &#123;
+            node.max = A[start];
+            return node;
+        &#125; else &#123;
+            node.left = helper(A, start, (start + end) / 2);
+            node.right = helper(A, (start + end) / 2 + 1, end);
+            if (node.right != null) &#123;
+                node.max = Math.max(node.left.max, node.right.max);
+            &#125; else &#123;
+                node.max = node.left.max;
+            &#125;
+        &#125;
+        return node;
+    &#125;
+&#125;
+</code></pre>
+
+            </div>
+        </div>
+    </div>
+</main>
+
+<script src="https://utteranc.es/client.js"
+    repo="owner/repo"
+    issue-term="pathname"
+    theme="github-light"
+    crossorigin="anonymous"
+    async>
+</script>
+
+  
+
+</div>
+        <div class="footer-wrapper"><footer>
+    <div class="footer-container">
+        <div class="footer-meta">
+            
+                <div class="footer-meta-copyright">
+                    &copy; 2022 mar2ndx.
+                </div>
+            
+            
+                <div class="footer-meta-licenese">
+                    Licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC-BY-NC-SA 4.0</a>
+                </div>
+            
+            
+        </div>
+    </div>
+</footer>
+</div>
+    </div>
+</body>
+</html>

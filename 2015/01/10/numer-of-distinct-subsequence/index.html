@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <link rel="shortcut icon" href="/images/avatar.png" type="image/x-icon" />
+    <title>
+        
+            [Question] Number of distinct sub-sequence  |
+         
+        Mar2ndx&#39;s Algorithmic and System Design Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/solid.min.css">
+
+     
+    
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXXXX"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-XXXXXXXXXXXX');
+        </script>
+    
+
+
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body>
+    <div class="body-container">
+        <div class="header-wrapper"><header>
+    <div class="header-container">
+        <div class="header-menu-list">
+            <ul>
+            
+                <li>
+                    <a href="/">主页</a>
+                </li>
+            
+            </ul>
+        </div>
+    </div>
+</header>
+</div>
+        <div class="main-wrapper"><main>
+    <div class="main-container">
+        <div class="post-details">
+            
+            <div class="post-title">
+                <h1>[Question] Number of distinct sub-sequence </h1>
+            </div>
+            <div class="post-meta">
+                <i class="fa-solid fa-clock"></i>&nbsp;<span class="post-date">2015/01/10</span>
+            </div>
+            
+            <div class="post-content">
+                <h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><p><a target="_blank" rel="noopener" href="http://stackoverflow.com/questions/5151483/how-to-find-the-number-of-distinct-subsequences-of-a-string">link</a></p>
+<blockquote>
+<p>Find the number of distinct subsequences of a string (include “” as a subsequence). </p>
+</blockquote>
+<blockquote>
+<p>For example, Input </p>
+</blockquote>
+<pre><code>AAA 
+ABCDEFG 
+CODECRAFT 
+</code></pre>
+<blockquote>
+<p>Output </p>
+</blockquote>
+<pre><code>4 
+128 
+496 
+</code></pre>
+<h3 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h3><p>In <strong>[LeetCode 115] Distinct Subsequences</strong>, we discuss finding occurence of a given subsequence. </p>
+<p>Now if we do not specify a subsequence, <strong>we want the total number of distinct subsequence</strong>. </p>
+<p>The solution is DP, with the following equation: </p>
+<pre><code>Let, 
+
+dp[i] = number of distinct subsequences ending with a[i]
+
+last[i] = last position of character i in the given string.
+</code></pre>
+<p><strong>Equation</strong>: </p>
+<pre><code>dp[i] = dp[last[i] - 1] + ... + dp[i - 1]
+</code></pre>
+<p>The final result is: </p>
+<pre><code>Distinct Subsequences = dp[1] + ... dp[len - 1]
+</code></pre>
+<p>Example 1: </p>
+<pre><code>Input   : - A B C
+dp array: 1 1 2 4
+Total = 8
+</code></pre>
+<p>Example 2: </p>
+<pre><code>Input   : - A A C
+dp array: 1 1 1 3
+Total = 6
+</code></pre>
+<p>The code is posted below. </p>
+<h3 id="Optimize-Solution"><a href="#Optimize-Solution" class="headerlink" title="Optimize Solution"></a>Optimize Solution</h3><p>There is a good optimization of this DP solution, which is to <strong>keep another dp array ‘sum’</strong>, which sum[i] = dp[1] + dp[2] + … + dp[i]. The final answer would be sum[len - 1]. </p>
+<p>This nice idea is from <a target="_blank" rel="noopener" href="http://stackoverflow.com/a/5152203">this post</a>. Credit goes to <strong>IVlad</strong>. </p>
+<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><p>un-optimized code. calculate dp[0] … dp[n], then sum to final result. </p>
+<pre><code>public int countDistinctSubseq(String input) &#123;
+    int len = input.length();
+    int[] dp = new int[len + 1];
+    // dp[i] denotes the number of distinct subseq within first &#39;i&#39; chars
+    dp[0] = 1;
+    // the first 0 chars is &quot;&quot; - we consider it as 1 subseq
+
+    for (int i = 1; i &lt;= len; i++) &#123;
+        // set dp[i]
+        // dp[i] = dp[i-1] + ... + dp[k] where input&#123;k&#125; == input&#123;i&#125;
+        int p = i - 1;
+        while (p &gt;= 0) &#123;
+            dp[i] += dp[p];
+            if (p &gt; 0 &amp;&amp; input.charAt(p - 1) == input.charAt(i - 1)) &#123;
+                // when meeting a same char ahead of position i, stop
+                // adding to dp[i]
+                break;
+            &#125;
+            p--;
+        &#125;
+    &#125;
+    int sum = 0;
+    for (int i : dp) &#123;
+        sum += i;
+    &#125;
+    return sum;
+&#125;
+</code></pre>
+
+            </div>
+        </div>
+    </div>
+</main>
+
+<script src="https://utteranc.es/client.js"
+    repo="owner/repo"
+    issue-term="pathname"
+    theme="github-light"
+    crossorigin="anonymous"
+    async>
+</script>
+
+  
+
+</div>
+        <div class="footer-wrapper"><footer>
+    <div class="footer-container">
+        <div class="footer-meta">
+            
+                <div class="footer-meta-copyright">
+                    &copy; 2022 mar2ndx.
+                </div>
+            
+            
+                <div class="footer-meta-licenese">
+                    Licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC-BY-NC-SA 4.0</a>
+                </div>
+            
+            
+        </div>
+    </div>
+</footer>
+</div>
+    </div>
+</body>
+</html>

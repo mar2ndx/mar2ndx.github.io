@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <link rel="shortcut icon" href="/images/avatar.png" type="image/x-icon" />
+    <title>
+        
+            [Java OOP] Common Root of Java Classes  |
+         
+        Mar2ndx&#39;s Algorithmic and System Design Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/solid.min.css">
+
+     
+    
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXXXX"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-XXXXXXXXXXXX');
+        </script>
+    
+
+
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body>
+    <div class="body-container">
+        <div class="header-wrapper"><header>
+    <div class="header-container">
+        <div class="header-menu-list">
+            <ul>
+            
+                <li>
+                    <a href="/">主页</a>
+                </li>
+            
+            </ul>
+        </div>
+    </div>
+</header>
+</div>
+        <div class="main-wrapper"><main>
+    <div class="main-container">
+        <div class="post-details">
+            
+            <div class="post-title">
+                <h1>[Java OOP] Common Root of Java Classes </h1>
+            </div>
+            <div class="post-meta">
+                <i class="fa-solid fa-clock"></i>&nbsp;<span class="post-date">2014/12/21</span>
+            </div>
+            
+            <div class="post-content">
+                <h3 id="Common-Root-Class"><a href="#Common-Root-Class" class="headerlink" title="Common Root Class"></a>Common Root Class</h3><p><strong>java.lang.Object</strong>, <a target="_blank" rel="noopener" href="http://docs.oracle.com/javase/7/docs/api/java/lang/Object.html">link</a></p>
+<p>All Java classes are derived from this <a target="_blank" rel="noopener" href="http://www.ntu.edu.sg/home/ehchua/programming/java/J3b_OOPInheritancePolymorphism.html">common root class</a>, that defines common behaviors.</p>
+<p>Common behaviors include multi-threading and garbage collector etc.</p>
+<h4 id="Some-methods"><a href="#Some-methods" class="headerlink" title="Some methods"></a>Some methods</h4><p><a target="_blank" rel="noopener" href="http://docs.oracle.com/javase/tutorial/java/IandI/objectclass.html">ref</a></p>
+<p>protected Object clone() throws CloneNotSupportedException</p>
+<blockquote>
+<p>Creates and returns a copy of this object.</p>
+</blockquote>
+<p>public boolean equals(Object obj)</p>
+<blockquote>
+<p>Indicates whether some other object is “equal to” this one.</p>
+</blockquote>
+<p>protected void finalize() throws Throwable</p>
+<blockquote>
+<p>Called by the garbage collector on an object when garbage collection determines that there are no more references to the object</p>
+</blockquote>
+<p>public final Class getClass()</p>
+<blockquote>
+<p>Returns the runtime class of an object.</p>
+</blockquote>
+<p>public int hashCode()</p>
+<blockquote>
+<p>Returns a hash code value for the object.</p>
+</blockquote>
+<p>public String toString()</p>
+<blockquote>
+<p>Returns a string representation of the object.</p>
+</blockquote>
+<h3 id="Sync-related-methods"><a href="#Sync-related-methods" class="headerlink" title="Sync-related methods"></a>Sync-related methods</h3><p>The notify, notifyAll, and wait methods of Object all play a part in synchronizing the activities of independently running threads in a program.</p>
+<pre><code>public final void notify()
+public final void notifyAll()
+public final void wait()
+public final void wait(long timeout)
+public final void wait(long timeout, int nanos)
+</code></pre>
+
+            </div>
+        </div>
+    </div>
+</main>
+
+<script src="https://utteranc.es/client.js"
+    repo="owner/repo"
+    issue-term="pathname"
+    theme="github-light"
+    crossorigin="anonymous"
+    async>
+</script>
+
+  
+
+</div>
+        <div class="footer-wrapper"><footer>
+    <div class="footer-container">
+        <div class="footer-meta">
+            
+                <div class="footer-meta-copyright">
+                    &copy; 2022 mar2ndx.
+                </div>
+            
+            
+                <div class="footer-meta-licenese">
+                    Licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC-BY-NC-SA 4.0</a>
+                </div>
+            
+            
+        </div>
+    </div>
+</footer>
+</div>
+    </div>
+</body>
+</html>

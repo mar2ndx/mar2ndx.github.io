@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <link rel="shortcut icon" href="/images/avatar.png" type="image/x-icon" />
+    <title>
+        
+            [LeetCode 147] Insertion Sort List |
+         
+        Mar2ndx&#39;s Algorithmic and System Design Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/solid.min.css">
+
+     
+    
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXXXX"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-XXXXXXXXXXXX');
+        </script>
+    
+
+
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body>
+    <div class="body-container">
+        <div class="header-wrapper"><header>
+    <div class="header-container">
+        <div class="header-menu-list">
+            <ul>
+            
+                <li>
+                    <a href="/">主页</a>
+                </li>
+            
+            </ul>
+        </div>
+    </div>
+</header>
+</div>
+        <div class="main-wrapper"><main>
+    <div class="main-container">
+        <div class="post-details">
+            
+            <div class="post-title">
+                <h1>[LeetCode 147] Insertion Sort List</h1>
+            </div>
+            <div class="post-meta">
+                <i class="fa-solid fa-clock"></i>&nbsp;<span class="post-date">2014/05/29</span>
+            </div>
+            
+            <div class="post-content">
+                <h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><p><a target="_blank" rel="noopener" href="http://oj.leetcode.com/problems/insertion-sort-list/">link</a></p>
+<div class="question-content">
+            <p></p><p>Sort a linked list using insertion sort.</p><p></p>
+          </div>
+
+<h3 id="Stats"><a href="#Stats" class="headerlink" title="Stats"></a>Stats</h3><table border="2">
+    <tr>
+        <td>Adjusted Difficulty</td>
+        <td bgcolor="yellow">3</td>
+    </tr>
+    <tr>
+        <td>Time to use</td>
+        <td bgcolor="yellow">--------</td>
+    </tr>
+</table>
+
+<p>Ratings/Color = 1(white) 2(lime) 3(yellow) 4/5(red)</p>
+<h3 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h3><p><strong>This question is a little tricky, but not difficult</strong>. First important thing is to konw what is <a target="_blank" rel="noopener" href="http://en.wikipedia.org/wiki/Insertion_sort">insertion sort</a>. It is always keeping a sorted list, and then get next unsorted element and insert into correct position of the sorted list.</p>
+<h3 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h3><p><strong>Almost all solutions on internet is same, so I will just explain my code</strong>. My code can be optimized a little bit by studying <a target="_blank" rel="noopener" href="http://blog.csdn.net/linhuanmars/article/details/21144553">this blog</a>, but I guess it’s just refactoring 1 or 2 variables and execution time would not be affected.</p>
+<p>My solution is dividing the list into 2 parts: sorted part and unsorted part. <strong>I keep getting next node from unsorted and insert into sorted</strong>.</p>
+<h3 id="My-code"><a href="#My-code" class="headerlink" title="My code"></a>My code</h3><p>Recursion:</p>
+<pre><code>public ListNode insertionSortList(ListNode head) &#123;
+    if (head == null || head.next == null) return head;
+    ListNode sorted = new ListNode(Integer.MIN_VALUE);
+    sorted.next = head;
+    ListNode unsort = head.next;
+    head.next = null;
+    // the sorted and unsort both are not null at this point
+    while (unsort != null) &#123;
+        ListNode pos = sorted;
+        ListNode cur = unsort;
+        unsort = unsort.next;
+        while (pos.next != null &amp;&amp; pos.val &lt; cur.val
+            &amp;&amp; pos.next.val &lt; cur.val) pos = pos.next;
+        // now insert (cur) to (pos.next)
+        cur.next = pos.next;
+        pos.next = cur;
+    &#125;
+    return sorted.next;
+&#125;
+</code></pre>
+<p><strong>Updated on June 17th, rewrote the code with dummy head</strong>. This is different solution, with better readability.</p>
+<pre><code>public ListNode insertionSortList(ListNode head) &#123;
+    if (head == null) &#123;
+        return null;
+    &#125;
+    ListNode dummy = new ListNode(0);
+    ListNode cur = head;
+    while (cur != null) &#123;
+        // insert cur into correct pos
+        ListNode pos = dummy;
+        while (pos.next != null &amp;&amp; pos.next.val &lt; cur.val) &#123;
+            pos = pos.next;
+        &#125;
+        ListNode temp = cur.next;
+        cur.next = pos.next;
+        pos.next = cur;
+        cur = temp;
+    &#125;
+    return dummy.next;
+&#125;
+</code></pre>
+
+            </div>
+        </div>
+    </div>
+</main>
+
+<script src="https://utteranc.es/client.js"
+    repo="owner/repo"
+    issue-term="pathname"
+    theme="github-light"
+    crossorigin="anonymous"
+    async>
+</script>
+
+  
+
+</div>
+        <div class="footer-wrapper"><footer>
+    <div class="footer-container">
+        <div class="footer-meta">
+            
+                <div class="footer-meta-copyright">
+                    &copy; 2022 mar2ndx.
+                </div>
+            
+            
+                <div class="footer-meta-licenese">
+                    Licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC-BY-NC-SA 4.0</a>
+                </div>
+            
+            
+        </div>
+    </div>
+</footer>
+</div>
+    </div>
+</body>
+</html>

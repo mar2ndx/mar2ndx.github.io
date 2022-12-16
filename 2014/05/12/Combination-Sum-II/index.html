@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <link rel="shortcut icon" href="/images/avatar.png" type="image/x-icon" />
+    <title>
+        
+            [LeetCode 40] Combination Sum II |
+         
+        Mar2ndx&#39;s Algorithmic and System Design Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/solid.min.css">
+
+     
+    
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXXXX"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-XXXXXXXXXXXX');
+        </script>
+    
+
+
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body>
+    <div class="body-container">
+        <div class="header-wrapper"><header>
+    <div class="header-container">
+        <div class="header-menu-list">
+            <ul>
+            
+                <li>
+                    <a href="/">主页</a>
+                </li>
+            
+            </ul>
+        </div>
+    </div>
+</header>
+</div>
+        <div class="main-wrapper"><main>
+    <div class="main-container">
+        <div class="post-details">
+            
+            <div class="post-title">
+                <h1>[LeetCode 40] Combination Sum II</h1>
+            </div>
+            <div class="post-meta">
+                <i class="fa-solid fa-clock"></i>&nbsp;<span class="post-date">2014/05/12</span>
+            </div>
+            
+            <div class="post-content">
+                <h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><p><a target="_blank" rel="noopener" href="http://oj.leetcode.com/problems/combination-sum-ii/">link</a></p>
+<div class="question-content">
+            <p></p><p>
+Given a collection of candidate numbers (<b><i>C</i></b>) and a target number (<b><i>T</i></b>), find all unique combinations in <b><i>C</i></b> where the candidate numbers sums to <b><i>T</i></b>.
+</p>
+
+<p>Each number in <b><i>C</i></b> may only be used <b>once</b> in the combination.
+</p>
+<p><b>Note:</b><br>
+</p><ul>
+<li>All numbers (including target) will be positive integers.</li>
+<li>Elements in a combination (<i>a</i><sub>1</sub>, <i>a</i><sub>2</sub>, … , <i>a</i><sub>k</sub>) must be in non-descending order. (ie, <i>a</i><sub>1</sub> ≤ <i>a</i><sub>2</sub> ≤ … ≤ <i>a</i><sub>k</sub>).</li>
+<li>The solution set must not contain duplicate combinations.</li>
+</ul>
+<p></p>
+
+<p>
+For example, given candidate set <code>10,1,2,7,6,1,5</code> and target <code>8</code>, <br>
+A solution set is: <br>
+<code>[1, 7]</code> <br>
+<code>[1, 2, 5]</code> <br>
+<code>[2, 6]</code> <br>
+<code>[1, 1, 6]</code> <br>
+</p><p></p>
+          </div>
+
+<h3 id="Stats"><a href="#Stats" class="headerlink" title="Stats"></a>Stats</h3><table border="2">
+    <tr>
+        <td>Frequency</td>
+        <td bgcolor="lime">2</td>
+    </tr>
+    <tr>
+        <td>Difficulty</td>
+        <td bgcolor="red">4</td>
+    </tr>
+    <tr>
+        <td>Adjusted Difficulty</td>
+        <td bgcolor="yellow">3</td>
+    </tr>
+    <tr>
+        <td>Time to use</td>
+        <td bgcolor="yellow">--------</td>
+    </tr>
+</table>
+
+<p>Ratings/Color = 1(white) 2(lime) 3(yellow) 4/5(red)</p>
+<h3 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h3><p><strong>This problem is derived from the “Combination Sum” problem</strong>.</p>
+<p>The solution is the “Combination Sum” solution plus some duplication avoidance technique.</p>
+<h3 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h3><p><strong>Main part of this solution is same as “Combination Sum”</strong>. There is only 2 lines of code that needs to be added/modified.</p>
+<p><strong>First change</strong>, When go into the next recursive call, instead of:</p>
+<pre><code>helper(ans, cand, path, i, len, target - cand[i]);
+</code></pre>
+<p>Change it to</p>
+<pre><code>helper(ans, cand, path, i + 1, len, target - cand[i]);
+</code></pre>
+<p><strong>Second change</strong>, inside the for-loop, instead of getting next element right away, we get the element with different value. The additional code is:</p>
+<pre><code>if (i &gt; pos &amp;&amp; candidates[i] == candidates[i - 1]) &#123;
+    continue;
+&#125;
+</code></pre>
+<h3 id="My-code"><a href="#My-code" class="headerlink" title="My code"></a>My code</h3><pre><code>public class Solution &#123;
+    public List&lt;List&lt;Integer&gt;&gt; combinationSum2(int[] candidates, int target) &#123;
+        List&lt;List&lt;Integer&gt;&gt; ans = new ArrayList&lt;List&lt;Integer&gt;&gt;();
+        if (candidates == null || candidates.length == 0) &#123;
+            return ans;
+        &#125;
+        Arrays.sort(candidates);
+        int len = candidates.length;
+        helper(ans, candidates, new ArrayList&lt;Integer&gt;(), 0, len, target);
+        return ans;
+    &#125;
+
+    private void helper(List&lt;List&lt;Integer&gt;&gt; ans, int[] cand, List&lt;Integer&gt; path, int pos, int len, int target) &#123;
+        if (target == 0) &#123;
+            ans.add(new ArrayList&lt;Integer&gt;(path));
+            return;
+        &#125; else if (target &lt; 0) &#123;
+            return;
+        &#125;
+        for (int i = pos; i &lt; len; i++) &#123;
+            // if &#39;i&#39; points to a repeated number, skip.
+            if (i &gt; pos &amp;&amp; cand[i] == cand[i - 1]) &#123;
+                continue;
+            &#125;
+            // insert cand[i] into path list, and continue search dfs
+            path.add(cand[i]);
+            helper(ans, cand, path, i + 1, len, target - cand[i]);
+            path.remove(path.size() - 1);
+        &#125;
+    &#125;
+&#125;
+</code></pre>
+
+            </div>
+        </div>
+    </div>
+</main>
+
+<script src="https://utteranc.es/client.js"
+    repo="owner/repo"
+    issue-term="pathname"
+    theme="github-light"
+    crossorigin="anonymous"
+    async>
+</script>
+
+  
+
+</div>
+        <div class="footer-wrapper"><footer>
+    <div class="footer-container">
+        <div class="footer-meta">
+            
+                <div class="footer-meta-copyright">
+                    &copy; 2022 mar2ndx.
+                </div>
+            
+            
+                <div class="footer-meta-licenese">
+                    Licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC-BY-NC-SA 4.0</a>
+                </div>
+            
+            
+        </div>
+    </div>
+</footer>
+</div>
+    </div>
+</body>
+</html>

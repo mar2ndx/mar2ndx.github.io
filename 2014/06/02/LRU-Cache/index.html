@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <link rel="shortcut icon" href="/images/avatar.png" type="image/x-icon" />
+    <title>
+        
+            [LeetCode 146] LRU Cache |
+         
+        Mar2ndx&#39;s Algorithmic and System Design Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/solid.min.css">
+
+     
+    
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXXXX"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-XXXXXXXXXXXX');
+        </script>
+    
+
+
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body>
+    <div class="body-container">
+        <div class="header-wrapper"><header>
+    <div class="header-container">
+        <div class="header-menu-list">
+            <ul>
+            
+                <li>
+                    <a href="/">主页</a>
+                </li>
+            
+            </ul>
+        </div>
+    </div>
+</header>
+</div>
+        <div class="main-wrapper"><main>
+    <div class="main-container">
+        <div class="post-details">
+            
+            <div class="post-title">
+                <h1>[LeetCode 146] LRU Cache</h1>
+            </div>
+            <div class="post-meta">
+                <i class="fa-solid fa-clock"></i>&nbsp;<span class="post-date">2014/06/02</span>
+            </div>
+            
+            <div class="post-content">
+                <h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><p><a target="_blank" rel="noopener" href="https://oj.leetcode.com/problems/lru-cache/">link</a></p>
+<div class="question-content bg-color bg-img font-color">
+            <p class="font-color"></p><p class="font-color">
+Design and implement a data structure for Least Recently Used (LRU) cache. It should support the following operations: <code>get</code> and <code>set</code>.
+</p>
+
+<p class="font-color">
+<code>get(key)</code> - Get the value (will always be positive) of the key if the key exists in the cache, otherwise return -1.<br>
+<code>set(key, value)</code> - Set or insert the value if the key is not already present. When the cache reached its capacity, it should invalidate the least recently used item before inserting a new item.
+</p><p class="font-color"></p>
+          </div>
+
+<h3 id="Stats"><a href="#Stats" class="headerlink" title="Stats"></a>Stats</h3><table border="2">
+    <tr>
+        <td>Adjusted Difficulty</td>
+        <td bgcolor="red">4</td>
+    </tr>
+    <tr>
+        <td>Time to use</td>
+        <td bgcolor="red">Very difficult</td>
+    </tr>
+</table>
+
+<p>Ratings/Color = 1(white) 2(lime) 3(yellow) 4/5(red)</p>
+<h3 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h3><p><strong>This is a difficult question</strong>, I can’t write the solution easily even after a month.</p>
+<h3 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h3><p>The solution is to use a Doubly-linked-list and a HashMap. Doing this allows O(1) search, remove and insert. A very nice and sophisticated data structure example, and very high frequency in interviews.</p>
+<p><strong>2 important things to note while coding</strong>:</p>
+<ol>
+<li><p>We need 2 helper methods: removeNode() and setNodeAsHead().</p>
+<p>Because we reuse both methods for get() and set() methods.</p>
+</li>
+<li><p>Initialization of LRU</p>
+<p>We need 5 variables: capacity, current size(optional but good to have), hashmap, head, tail.</p>
+</li>
+<li><p>Initialization of DoubleLinkedListNode</p>
+<p>This is easy, but <strong>do not forget about both key and value variable</strong>. We must use DoubleLinkedListNode.key when we want to delete tail.</p>
+</li>
+</ol>
+<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><p>Write your own DS: DoubleLinkedList.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">public class LRUCache &#123;<br><br>    int size;<br>    int capacity;<br><br>    DoubleLinkedList head;<br>    DoubleLinkedList tail;<br>    HashMap&lt;Integer, DoubleLinkedList&gt; map;<br><br>    public LRUCache(int capacity) &#123;<br>        this.size = 0;<br>        this.capacity = capacity;<br>        head = null;<br>        tail = null;<br>        map = new HashMap&lt;Integer, DoubleLinkedList&gt;();<br>    &#125;<br><br>    public void remove(DoubleLinkedList node) &#123;<br>        if (node == head &amp;&amp; node == tail) &#123;<br>            head = null;<br>            tail = null;<br>        &#125; else if (node == head) &#123;<br>            head.next.prev = null;<br>            head = head.next;<br>        &#125; else if (node == tail) &#123;<br>            tail.prev.next = null;<br>            tail = tail.prev;<br>        &#125; else &#123;<br>            node.prev.next = node.next;<br>            node.next.prev = node.prev;<br>        &#125;<br>        node.prev = null;<br>        node.next = null;<br>    &#125;<br><br>    public void setHead(DoubleLinkedList node) &#123;<br>        node.next = head;<br>        node.prev = null;<br>        if (head != null) &#123;<br>            head.prev = node;<br>        &#125;<br><br>        head = node;<br>        if (tail == null) &#123;<br>            tail = node;<br>        &#125;<br>    &#125;<br><br>    public int get(int key) &#123;<br>        if (!map.containsKey(key)) &#123;<br>            // if key is not found<br>            return -1;<br>        &#125; else &#123;<br>            // if key is found<br>            DoubleLinkedList target = map.get(key);<br>            remove(target);<br>            setHead(target);<br>            return head.val;<br>        &#125;<br>    &#125;<br><br>    public void set(int key, int value) &#123;<br>        if (this.get(key) != -1) &#123;<br>            // key exist before, just replace the old value<br>            DoubleLinkedList old = map.get(key);<br>            old.val = value;<br>        &#125; else &#123;<br>            // this is a new key-value pair, insert it<br>            DoubleLinkedList newHead = new DoubleLinkedList(key, value);<br>            map.put(key, newHead);<br>            setHead(newHead);<br>            if (size == capacity) &#123;<br>                // delete tail<br>                map.remove(tail.key);<br>                remove(tail);<br>            &#125; else &#123;<br>                size++;<br>            &#125;<br>        &#125;<br>    &#125;<br><br>    class DoubleLinkedList &#123;<br>        int key;<br>        int val;<br>        DoubleLinkedList prev;<br>        DoubleLinkedList next;<br>        public DoubleLinkedList(int k, int v) &#123;<br>            this.key = k;<br>            this.val = v;<br>        &#125;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>Updated Nov 17th, 2022</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">class LRUCache &#123;<br><br>    int capacity;<br>    DoublyLinkedNode head;<br>    DoublyLinkedNode tail;<br>    HashMap&lt;Integer, DoublyLinkedNode&gt; map;<br><br>    public LRUCache(int capacity) &#123;<br>        this.capacity = capacity;<br>        head = null;<br>        tail = null;<br>        map = new HashMap&lt;Integer, DoublyLinkedNode&gt;();<br>    &#125;<br><br>    public int get(int key) &#123;<br>        if (!map.containsKey(key)) &#123;<br>            return -1;<br>        &#125; else &#123;<br>            DoublyLinkedNode target = map.get(key);<br>            removeNode(target);<br>            setHead(target);<br>            return head.val;<br>        &#125;<br>    &#125;<br><br>    public void put(int key, int value) &#123;<br>        if (this.get(key) != -1) &#123;<br>            DoublyLinkedNode curNode = map.get(key);<br>            curNode.val = value;<br>        &#125; else &#123;<br>            // this is a new key-value pair, insert it<br>            DoublyLinkedNode newHead = new DoublyLinkedNode(key, value);<br>            map.put(key, newHead);<br>            setHead(newHead);<br>            if (map.size() &gt; capacity) &#123;<br>                map.remove(tail.key);<br>                removeNode(tail);<br>            &#125;<br>        &#125;<br>    &#125;<br><br>    private void removeNode(DoublyLinkedNode node) &#123;<br>        if (node == head &amp;&amp; node == tail) &#123;<br>            head = null;<br>            tail = null;<br>        &#125; else if (node == head) &#123;<br>            head.next.prev = null;<br>            head = head.next;<br>        &#125; else if (node == tail) &#123;<br>            tail.prev.next = null;<br>            tail = tail.prev;<br>        &#125; else &#123;<br>            node.prev.next = node.next;<br>            node.next.prev = node.prev;<br>        &#125;<br>        node.prev = null;<br>        node.next = null;<br>    &#125;<br><br>    private void setHead(DoublyLinkedNode node) &#123;<br>        node.next = head;<br>        node.prev = null;<br>        if (head != null) &#123;<br>            head.prev = node;<br>        &#125;<br><br>        head = node;<br>        if (tail == null) &#123;<br>            tail = node;<br>        &#125;<br>    &#125;<br><br>    class DoublyLinkedNode &#123;<br>        int key;<br>        int val;<br>        DoublyLinkedNode prev;<br>        DoublyLinkedNode next;<br><br>        public DoublyLinkedNode(int k, int v) &#123;<br>            this.key = k;<br>            this.val = v;<br>        &#125;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+            </div>
+        </div>
+    </div>
+</main>
+
+<script src="https://utteranc.es/client.js"
+    repo="owner/repo"
+    issue-term="pathname"
+    theme="github-light"
+    crossorigin="anonymous"
+    async>
+</script>
+
+  
+
+</div>
+        <div class="footer-wrapper"><footer>
+    <div class="footer-container">
+        <div class="footer-meta">
+            
+                <div class="footer-meta-copyright">
+                    &copy; 2022 mar2ndx.
+                </div>
+            
+            
+                <div class="footer-meta-licenese">
+                    Licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC-BY-NC-SA 4.0</a>
+                </div>
+            
+            
+        </div>
+    </div>
+</footer>
+</div>
+    </div>
+</body>
+</html>

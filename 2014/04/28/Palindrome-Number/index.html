@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <link rel="shortcut icon" href="/images/avatar.png" type="image/x-icon" />
+    <title>
+        
+            [LeetCode 9] Palindrome Number  |
+         
+        Mar2ndx&#39;s Algorithmic and System Design Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/solid.min.css">
+
+     
+    
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXXXX"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-XXXXXXXXXXXX');
+        </script>
+    
+
+
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body>
+    <div class="body-container">
+        <div class="header-wrapper"><header>
+    <div class="header-container">
+        <div class="header-menu-list">
+            <ul>
+            
+                <li>
+                    <a href="/">主页</a>
+                </li>
+            
+            </ul>
+        </div>
+    </div>
+</header>
+</div>
+        <div class="main-wrapper"><main>
+    <div class="main-container">
+        <div class="post-details">
+            
+            <div class="post-title">
+                <h1>[LeetCode 9] Palindrome Number </h1>
+            </div>
+            <div class="post-meta">
+                <i class="fa-solid fa-clock"></i>&nbsp;<span class="post-date">2014/04/28</span>
+            </div>
+            
+            <div class="post-content">
+                <h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><p><a target="_blank" rel="noopener" href="http://oj.leetcode.com/problems/palindrome-number/">link</a></p>
+<div class="question-content">
+<p></p><p>Determine whether an integer is a palindrome. Do this without extra space.</p>
+
+<div class="spoilers" style="display: block;"><b>Some hints:</b>
+
+<p>Could negative integers be palindromes? (ie, -1)</p>
+
+<p>If you are thinking of converting the integer to string, note the restriction of using extra space.</p>
+
+<p>You could also try reversing an integer. However, if you have solved the problem "Reverse Integer", you know that the reversed integer might overflow. How would you handle such case?</p>
+
+<p>There is a more generic way of solving this problem.</p>
+
+</div><p></p>
+</div>
+
+<h3 id="Stats"><a href="#Stats" class="headerlink" title="Stats"></a>Stats</h3><table border="2">
+    <tr>
+        <td>Frequency</td>
+        <td bgcolor="lime">2</td>
+    </tr>
+    <tr>
+        <td>Diffficulty</td>
+        <td bgcolor="lime">2</td>
+    </tr>
+    <tr>
+        <td>Adjusted Difficulty</td>
+        <td bgcolor="lime">2</td>
+    </tr>
+    <tr>
+        <td>Time to use</td>
+        <td bgcolor="white">----------</td>
+    </tr>
+</table>
+
+<p>Ratings/Color = 1(white) 2(lime) 3(yellow) 4/5(red)</p>
+<h3 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h3><p>This question is easy, and very similar to the “Reverse Integer” question. <strong>Simpliest solution is to just reverse the integer</strong> and compare with original number.</p>
+<p>But again, reversing the integer have chances of <strong>overflow</strong>. How do we work this out?</p>
+<h3 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h3><p>First, same as previous post <strong>[LeetCode 7] Reverse Integer</strong>, we can use Long type to handle the overflow issues.</p>
+<p>Second, <strong>we can also do direct compare</strong> to always compare the head and tail of the number. No numerical type conversion is needed. I came up with idea previously, and code is posted below.</p>
+<h3 id="My-code"><a href="#My-code" class="headerlink" title="My code"></a>My code</h3><p>Use Long type:</p>
+<pre><code>public class Solution &#123;
+    public boolean isPalindrome(int x) &#123;
+        if (x &lt; 0) &#123;
+            return false;
+        &#125;
+        long rev = 0;
+        long original = x;
+        while (x != 0) &#123;
+            rev = rev * 10 + (x % 10);
+            x = x / 10;
+        &#125;
+        return original == rev;
+    &#125;
+&#125;
+</code></pre>
+<p>Compare head and tail:</p>
+<pre><code>public boolean isPalindrome(int x) &#123;
+    if (x &lt; 0) &#123;
+        return false;
+    &#125;
+    int divide = 1;
+    while (x / divide &gt;= 10) &#123;
+        divide *= 10;
+    &#125;
+    int head = 0, tail = 0;
+    while (divide &gt; 0) &#123;
+        head = x / divide;
+        tail = x % 10;
+        if (head != tail) &#123;
+            return false;
+        &#125;
+        x = x % divide / 10;
+        divide /= 100;
+    &#125;
+    return true;
+&#125;
+</code></pre>
+
+            </div>
+        </div>
+    </div>
+</main>
+
+<script src="https://utteranc.es/client.js"
+    repo="owner/repo"
+    issue-term="pathname"
+    theme="github-light"
+    crossorigin="anonymous"
+    async>
+</script>
+
+  
+
+</div>
+        <div class="footer-wrapper"><footer>
+    <div class="footer-container">
+        <div class="footer-meta">
+            
+                <div class="footer-meta-copyright">
+                    &copy; 2022 mar2ndx.
+                </div>
+            
+            
+                <div class="footer-meta-licenese">
+                    Licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC-BY-NC-SA 4.0</a>
+                </div>
+            
+            
+        </div>
+    </div>
+</footer>
+</div>
+    </div>
+</body>
+</html>

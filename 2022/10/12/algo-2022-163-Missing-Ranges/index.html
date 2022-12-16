@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <link rel="shortcut icon" href="/images/avatar.png" type="image/x-icon" />
+    <title>
+        
+            163. Missing Ranges |
+         
+        Mar2ndx&#39;s Algorithmic and System Design Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/solid.min.css">
+
+     
+    
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXXXX"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-XXXXXXXXXXXX');
+        </script>
+    
+
+
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body>
+    <div class="body-container">
+        <div class="header-wrapper"><header>
+    <div class="header-container">
+        <div class="header-menu-list">
+            <ul>
+            
+                <li>
+                    <a href="/">主页</a>
+                </li>
+            
+            </ul>
+        </div>
+    </div>
+</header>
+</div>
+        <div class="main-wrapper"><main>
+    <div class="main-container">
+        <div class="post-details">
+            
+            <div class="post-title">
+                <h1>163. Missing Ranges</h1>
+            </div>
+            <div class="post-meta">
+                <i class="fa-solid fa-clock"></i>&nbsp;<span class="post-date">2022/10/12</span>
+            </div>
+            
+            <div class="post-content">
+                <p>Link: <a target="_blank" rel="noopener" href="https://leetcode.cn/problems/missing-ranges/">https://leetcode.cn/problems/missing-ranges/</a></p>
+<h1 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h1><p>difficulty: easy<br>adj diff: 2</p>
+<pre><code>You are given an inclusive range [lower, upper] and a sorted unique integer array nums, where all elements are in the inclusive range.
+
+A number x is considered missing if x is in the range [lower, upper] and x is not in nums.
+
+Return the smallest sorted list of ranges that cover every missing number exactly. That is, no element of nums is in any of the ranges, and each missing number is in one of the ranges.
+
+Each range [a,b] in the list should be output as:
+
+&quot;a-&gt;b&quot; if a != b
+&quot;a&quot; if a == b
+
+Example 1:
+
+Input: nums = [0,1,3,50,75], lower = 0, upper = 99
+Output: [&quot;2&quot;,&quot;4-&gt;49&quot;,&quot;51-&gt;74&quot;,&quot;76-&gt;99&quot;]
+Explanation: The ranges are:
+[2,2] --&gt; &quot;2&quot;
+[4,49] --&gt; &quot;4-&gt;49&quot;
+[51,74] --&gt; &quot;51-&gt;74&quot;
+[76,99] --&gt; &quot;76-&gt;99&quot;
+Example 2:
+
+Input: nums = [-1], lower = -1, upper = -1
+Output: []
+Explanation: There are no missing ranges since there are no missing numbers.
+
+Constraints:
+
+-109 &lt;= lower &lt;= upper &lt;= 109
+0 &lt;= nums.length &lt;= 100
+lower &lt;= nums[i] &lt;= upper
+All the values of nums are unique.
+</code></pre>
+<p>注意：lower 和 upper 都在 range 之外，不在之内。</p>
+<p>单纯的代码实现问题。</p>
+<h1 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h1><pre><code class="hljs plaintext">public List&lt;String&gt; findMissingRanges(int[] nums, int lower, int upper) &#123;
+    List&lt;String&gt; ans = new ArrayList&lt;&gt;();
+    int len = nums.length;
+    if (len == 0) &#123;
+        ans.add(helper(lower - 1, upper + 1));
+        return ans;
+    &#125;
+
+	// first range
+    if (lower &lt; nums[0]) &#123;
+		ans.add(helper(lower - 1, nums[0]));
+	&#125;
+
+	// middle ranges
+    for (int i = 0; i &lt; len - 1; i++) &#123;
+        if (nums[i+1] - nums[i] == 1) &#123;
+			continue;
+		&#125; else &#123;
+			ans.add(helper(nums[i], nums[i + 1]));
+		&#125;
+    &#125;
+
+	// last range
+    if (upper &gt; nums[len - 1]) &#123;
+		ans.add(helper(nums[len - 1], upper + 1));
+	&#125;
+
+    return ans;
+&#125;
+
+private String helper(int left, int right) &#123;
+    StringBuilder builder = new StringBuilder();
+    if (left + 2 == right) &#123;
+		builder.append(left + 1);
+	&#125; else &#123;
+		builder.append(left + 1).append(&quot;-&gt;&quot;).append(right - 1);
+	&#125;
+    return builder.toString();
+&#125;</code></pre>
+
+            </div>
+        </div>
+    </div>
+</main>
+
+<script src="https://utteranc.es/client.js"
+    repo="owner/repo"
+    issue-term="pathname"
+    theme="github-light"
+    crossorigin="anonymous"
+    async>
+</script>
+
+  
+
+</div>
+        <div class="footer-wrapper"><footer>
+    <div class="footer-container">
+        <div class="footer-meta">
+            
+                <div class="footer-meta-copyright">
+                    &copy; 2022 mar2ndx.
+                </div>
+            
+            
+                <div class="footer-meta-licenese">
+                    Licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC-BY-NC-SA 4.0</a>
+                </div>
+            
+            
+        </div>
+    </div>
+</footer>
+</div>
+    </div>
+</body>
+</html>

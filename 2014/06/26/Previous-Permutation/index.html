@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <link rel="shortcut icon" href="/images/avatar.png" type="image/x-icon" />
+    <title>
+        
+            [LintCode] Previous Permutation |
+         
+        Mar2ndx&#39;s Algorithmic and System Design Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/solid.min.css">
+
+     
+    
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXXXX"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-XXXXXXXXXXXX');
+        </script>
+    
+
+
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body>
+    <div class="body-container">
+        <div class="header-wrapper"><header>
+    <div class="header-container">
+        <div class="header-menu-list">
+            <ul>
+            
+                <li>
+                    <a href="/">主页</a>
+                </li>
+            
+            </ul>
+        </div>
+    </div>
+</header>
+</div>
+        <div class="main-wrapper"><main>
+    <div class="main-container">
+        <div class="post-details">
+            
+            <div class="post-title">
+                <h1>[LintCode] Previous Permutation</h1>
+            </div>
+            <div class="post-meta">
+                <i class="fa-solid fa-clock"></i>&nbsp;<span class="post-date">2014/06/26</span>
+            </div>
+            
+            <div class="post-content">
+                <h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><p><a target="_blank" rel="noopener" href="http://www.lintcode.com/en/problem/previous-permuation/">link</a></p>
+<div style="min-height:100px">
+<p>Given a list of integers, which denote a permutation.</p>
+
+<p>Find the previous permutation in ascending order.</p>
+    
+<div class="m-t-lg m-b-lg">
+      <b>Note</b>
+      <div><p>The list may contains duplicate integers.</p>
+      </div>
+</div>
+    
+<div class="m-t-lg m-b-lg">
+      <b>Example</b>
+      <div><p>For <strong><span style="color:#B22222;">[1,3,2,3]</span></strong>, the previous permutation is <span style="color:#B22222;"><strong>[1,2,3,3]</strong></span></p>
+
+<p>For <span style="color:#B22222;"><strong>[1,2,3,4]</strong></span>, the previous permutation is <span style="color:#B22222;"><strong>[4,3,2,1]</strong></span></p>
+    </div>
+</div>
+</div>
+
+<h3 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h3><p>This is almost the same question as “Next Permutation”.</p>
+<ol>
+<li>Find</li>
+<li>Swap</li>
+<li>Replace</li>
+</ol>
+<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><pre><code>public ArrayList&lt;Integer&gt; previousPermuation(ArrayList&lt;Integer&gt; nums) &#123;
+    // write your code
+    if (nums == null || nums.size() == 0) &#123;
+        return null;
+    &#125;
+    int len = nums.size();
+    int p = len - 2;
+    // 1. find 1st increasing position from the back
+    while (p &gt;= 0 &amp;&amp; nums.get(p) &lt;= nums.get(p + 1)) &#123;
+        p--;
+    &#125;
+    // 2. swap p with the first smaller value from the back
+    if (p != -1) &#123;
+        int q = len - 1;
+        while (nums.get(q) &gt;= nums.get(p)) &#123;
+            q--;
+        &#125;
+        swap(nums, p, q);
+    &#125;
+    // swap array in range of (p+1, end)
+    int left = p + 1;
+    int right = len - 1;
+    while (left &lt; right) &#123;
+        swap(nums, left++, right--);
+    &#125;
+    return nums;
+&#125;
+
+private void swap(ArrayList&lt;Integer&gt; num, int p, int q) &#123;
+    int temp = num.get(p);
+    num.set(p, num.get(q));
+    num.set(q, temp);
+&#125;
+</code></pre>
+
+            </div>
+        </div>
+    </div>
+</main>
+
+<script src="https://utteranc.es/client.js"
+    repo="owner/repo"
+    issue-term="pathname"
+    theme="github-light"
+    crossorigin="anonymous"
+    async>
+</script>
+
+  
+
+</div>
+        <div class="footer-wrapper"><footer>
+    <div class="footer-container">
+        <div class="footer-meta">
+            
+                <div class="footer-meta-copyright">
+                    &copy; 2022 mar2ndx.
+                </div>
+            
+            
+                <div class="footer-meta-licenese">
+                    Licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC-BY-NC-SA 4.0</a>
+                </div>
+            
+            
+        </div>
+    </div>
+</footer>
+</div>
+    </div>
+</body>
+</html>

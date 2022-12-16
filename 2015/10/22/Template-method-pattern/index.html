@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <link rel="shortcut icon" href="/images/avatar.png" type="image/x-icon" />
+    <title>
+        
+            [Java OOP] Template method pattern (abstract class)  |
+         
+        Mar2ndx&#39;s Algorithmic and System Design Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/solid.min.css">
+
+     
+    
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXXXX"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-XXXXXXXXXXXX');
+        </script>
+    
+
+
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body>
+    <div class="body-container">
+        <div class="header-wrapper"><header>
+    <div class="header-container">
+        <div class="header-menu-list">
+            <ul>
+            
+                <li>
+                    <a href="/">主页</a>
+                </li>
+            
+            </ul>
+        </div>
+    </div>
+</header>
+</div>
+        <div class="main-wrapper"><main>
+    <div class="main-container">
+        <div class="post-details">
+            
+            <div class="post-title">
+                <h1>[Java OOP] Template method pattern (abstract class) </h1>
+            </div>
+            <div class="post-meta">
+                <i class="fa-solid fa-clock"></i>&nbsp;<span class="post-date">2015/10/22</span>
+            </div>
+            
+            <div class="post-content">
+                <h1 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h1><p><strong><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Template_method_pattern">Template method pattern</a> is a behavioral design pattern</strong> that defines the program skeleton of an algorithm in a method, called template method, which <strong>defers some steps to subclasses</strong>.</p>
+<p>It lets one <strong>redefine</strong> certain steps of an algorithm without changing the algorithm’s structure.</p>
+<h2 id="Usage"><a href="#Usage" class="headerlink" title="Usage"></a>Usage</h2><p>The template method is used in frameworks, where each implements the invariant parts of a domain’s architecture.</p>
+<h2 id="Example-in-Java"><a href="#Example-in-Java" class="headerlink" title="Example in Java"></a>Example in Java</h2><p>Refer to <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Template_method_pattern#Example_in_Java">code from WIKI</a>:</p>
+<pre><code>/**
+ * An abstract class that is common to several games in
+ * which players play against the others, but only one is
+ * playing at a given time.
+ */
+
+abstract class Game &#123;
+ /* Hook methods. Concrete implementation may differ in each subclass*/
+    protected int playersCount;
+    abstract void initializeGame();
+    abstract void makePlay(int player);
+    abstract boolean endOfGame();
+    abstract void printWinner();
+
+    /* A template method : */
+    public final void playOneGame(int playersCount) &#123;
+        this.playersCount = playersCount;
+        initializeGame();
+        int j = 0;
+        while (!endOfGame()) &#123;
+            makePlay(j);
+            j = (j + 1) % playersCount;
+        &#125;
+        printWinner();
+    &#125;
+&#125;
+
+//Now we can extend this class in order
+//to implement actual games:
+
+class Monopoly extends Game &#123;
+
+    /* Implementation of necessary concrete methods */
+    void initializeGame() &#123;
+        // Initialize players
+        // Initialize money
+    &#125;
+    void makePlay(int player) &#123;
+        // Process one turn of player
+    &#125;
+    boolean endOfGame() &#123;
+        // Return true if game is over
+        // according to Monopoly rules
+    &#125;
+    void printWinner() &#123;
+        // Display who won
+    &#125;
+    /* Specific declarations for the Monopoly game. */
+
+    // ...
+&#125;
+
+class Chess extends Game &#123;
+
+    /* Implementation of necessary concrete methods */
+    void initializeGame() &#123;
+        // Initialize players
+        // Put the pieces on the board
+    &#125;
+    void makePlay(int player) &#123;
+        // Process a turn for the player
+    &#125;
+    boolean endOfGame() &#123;
+        // Return true if in Checkmate or
+        // Stalemate has been reached
+    &#125;
+    void printWinner() &#123;
+        // Display the winning player
+    &#125;
+    /* Specific declarations for the chess game. */
+
+    // ...
+&#125;
+</code></pre>
+
+            </div>
+        </div>
+    </div>
+</main>
+
+<script src="https://utteranc.es/client.js"
+    repo="owner/repo"
+    issue-term="pathname"
+    theme="github-light"
+    crossorigin="anonymous"
+    async>
+</script>
+
+  
+
+</div>
+        <div class="footer-wrapper"><footer>
+    <div class="footer-container">
+        <div class="footer-meta">
+            
+                <div class="footer-meta-copyright">
+                    &copy; 2022 mar2ndx.
+                </div>
+            
+            
+                <div class="footer-meta-licenese">
+                    Licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC-BY-NC-SA 4.0</a>
+                </div>
+            
+            
+        </div>
+    </div>
+</footer>
+</div>
+    </div>
+</body>
+</html>

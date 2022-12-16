@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <link rel="shortcut icon" href="/images/avatar.png" type="image/x-icon" />
+    <title>
+        
+            652. Find Duplicate Subtrees |
+         
+        Mar2ndx&#39;s Algorithmic and System Design Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/solid.min.css">
+
+     
+    
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXXXX"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-XXXXXXXXXXXX');
+        </script>
+    
+
+
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body>
+    <div class="body-container">
+        <div class="header-wrapper"><header>
+    <div class="header-container">
+        <div class="header-menu-list">
+            <ul>
+            
+                <li>
+                    <a href="/">主页</a>
+                </li>
+            
+            </ul>
+        </div>
+    </div>
+</header>
+</div>
+        <div class="main-wrapper"><main>
+    <div class="main-container">
+        <div class="post-details">
+            
+            <div class="post-title">
+                <h1>652. Find Duplicate Subtrees</h1>
+            </div>
+            <div class="post-meta">
+                <i class="fa-solid fa-clock"></i>&nbsp;<span class="post-date">2022/10/10</span>
+            </div>
+            
+            <div class="post-content">
+                <p>Link: <a target="_blank" rel="noopener" href="https://leetcode.cn/problems/find-duplicate-subtrees/">https://leetcode.cn/problems/find-duplicate-subtrees/</a></p>
+<h1 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h1><p>difficulty: mid<br>adj diff: 4</p>
+<pre><code>Given the root of a binary tree, return all duplicate subtrees.
+
+For each kind of duplicate subtrees, you only need to return the root node of any one of them.
+
+Two trees are duplicate if they have the same structure with the same node values.
+
+Example 1:
+
+Input: root = [1,2,3,4,null,2,4,null,null,4]
+Output: [[2,4],[4]]
+
+Example 2:
+
+Input: root = [2,1,1]
+Output: [[1]]
+
+Example 3:
+
+Input: root = [2,2,2,3,null,3,null]
+Output: [[2,3],[3]]
+
+Constraints:
+
+    The number of the nodes in the tree will be in the range [1, 5000]
+    -200 &lt;= Node.val &lt;= 200
+</code></pre>
+<h1 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h1><pre><code class="hljs plaintext">public List&lt;TreeNode&gt; findDuplicateSubtrees(TreeNode root) &#123;
+    Set&lt;TreeNode&gt; ans = new HashSet&lt;TreeNode&gt;(); // to avoid duplicated
+    Map&lt;String, TreeNode&gt; memory = new HashMap&lt;String, TreeNode&gt;();
+    helper(ans, root, memory);
+    return new LinkedList&lt;TreeNode&gt;(ans); // construct a new list for return
+&#125;
+
+private String helper(Set&lt;TreeNode&gt; ans, TreeNode node, Map&lt;String, TreeNode&gt; memory) &#123;
+    if (node == null) &#123;
+        return &quot;&quot;;
+    &#125;
+    StringBuilder sb = new StringBuilder();
+    sb.append(&quot;(&quot;);
+    sb.append(helper(ans, node.left, memory));
+    sb.append(&quot;)&quot;);
+    sb.append(node.val);
+    sb.append(&quot;(&quot;);
+    sb.append(helper(ans, node.right, memory));
+    sb.append(&quot;)&quot;);
+    String serializedTree = sb.toString();
+    if (memory.containsKey(serializedTree)) &#123;
+        ans.add(memory.get(serializedTree));
+    &#125; else &#123;
+        memory.put(serializedTree, node);
+    &#125;
+    return serializedTree;
+&#125;</code></pre>
+
+            </div>
+        </div>
+    </div>
+</main>
+
+<script src="https://utteranc.es/client.js"
+    repo="owner/repo"
+    issue-term="pathname"
+    theme="github-light"
+    crossorigin="anonymous"
+    async>
+</script>
+
+  
+
+</div>
+        <div class="footer-wrapper"><footer>
+    <div class="footer-container">
+        <div class="footer-meta">
+            
+                <div class="footer-meta-copyright">
+                    &copy; 2022 mar2ndx.
+                </div>
+            
+            
+                <div class="footer-meta-licenese">
+                    Licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC-BY-NC-SA 4.0</a>
+                </div>
+            
+            
+        </div>
+    </div>
+</footer>
+</div>
+    </div>
+</body>
+</html>

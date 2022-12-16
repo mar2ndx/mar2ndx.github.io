@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <link rel="shortcut icon" href="/images/avatar.png" type="image/x-icon" />
+    <title>
+        
+            [Google] Count Complete Binary Tree |
+         
+        Mar2ndx&#39;s Algorithmic and System Design Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/solid.min.css">
+
+     
+    
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXXXX"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-XXXXXXXXXXXX');
+        </script>
+    
+
+
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body>
+    <div class="body-container">
+        <div class="header-wrapper"><header>
+    <div class="header-container">
+        <div class="header-menu-list">
+            <ul>
+            
+                <li>
+                    <a href="/">主页</a>
+                </li>
+            
+            </ul>
+        </div>
+    </div>
+</header>
+</div>
+        <div class="main-wrapper"><main>
+    <div class="main-container">
+        <div class="post-details">
+            
+            <div class="post-title">
+                <h1>[Google] Count Complete Binary Tree</h1>
+            </div>
+            <div class="post-meta">
+                <i class="fa-solid fa-clock"></i>&nbsp;<span class="post-date">2014/08/10</span>
+            </div>
+            
+            <div class="post-content">
+                <h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><p><a target="_blank" rel="noopener" href="http://www.itint5.com/oj/#4">link</a></p>
+<blockquote>
+<p>给定一棵<a target="_blank" rel="noopener" href="http://baike.baidu.com/view/427107.htm">完全二叉树</a>（complete binary tree）的根结点，统计该树的结点总数。</p>
+</blockquote>
+<blockquote>
+<p>提示：使用O(n)的递归算法统计二叉树的结点数是一种显而易见的方法，此题中请利用完全二叉树的性质，想出效率更高的算法。</p>
+</blockquote>
+<h3 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h3><p>Similar to binary search, O(lgn) complexity. </p>
+<p>The idea is, sum up 1 branch of nodes at a time. Do it recursively. The following code is refactored and written by me. </p>
+<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><p><strong>read it from <a target="_blank" rel="noopener" href="http://www.itint5.com/discuss/125/%E5%A4%A7%E7%89%9B%E8%AF%B7%E6%8C%87%E7%82%B9%EF%BC%8C%E6%95%B0%E6%8D%AE37%E8%BF%90%E8%A1%8C%E8%B6%85%E6%97%B6%EF%BC%88%E9%99%84%E4%BB%A3%E7%A0%81%EF%BC%89">here</a></strong></p>
+<pre><code>//使用TreeNodeUtil.getLeftChildNode(TreeNode)获得左儿子结点
+//使用TreeNodeUtil.getRightChildNode(TreeNode)获得右儿子结点
+//使用TreeNodeUtil.isNullNode(TreeNode)判断结点是否为空
+public class CountCompleteBinayTreeNodes &#123;
+    public int countNodes(TreeNode root) &#123;
+        if (TreeNodeUtil.isNullNode(root)) &#123;
+            return 0;
+        &#125;
+        int hl = height(TreeNodeUtil.getLeftChildNode(root));
+        int hr = height(TreeNodeUtil.getRightChildNode(root));
+        if (hl == hr) &#123;
+            return (int) Math.pow(2, hl) + countNodes(TreeNodeUtil.getRightChildNode(root));
+        &#125; else &#123;
+            return (int) Math.pow(2, hr) + countNodes(TreeNodeUtil.getLeftChildNode(root));
+        &#125;
+    &#125;
+    
+    private int height(TreeNode root) &#123;
+        int count = 0;
+        while (!TreeNodeUtil.isNullNode(root)) &#123;
+            root = TreeNodeUtil.getLeftChildNode(root);
+            count++;
+        &#125;
+        return count;
+    &#125;
+&#125;
+</code></pre>
+
+            </div>
+        </div>
+    </div>
+</main>
+
+<script src="https://utteranc.es/client.js"
+    repo="owner/repo"
+    issue-term="pathname"
+    theme="github-light"
+    crossorigin="anonymous"
+    async>
+</script>
+
+  
+
+</div>
+        <div class="footer-wrapper"><footer>
+    <div class="footer-container">
+        <div class="footer-meta">
+            
+                <div class="footer-meta-copyright">
+                    &copy; 2022 mar2ndx.
+                </div>
+            
+            
+                <div class="footer-meta-licenese">
+                    Licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC-BY-NC-SA 4.0</a>
+                </div>
+            
+            
+        </div>
+    </div>
+</footer>
+</div>
+    </div>
+</body>
+</html>

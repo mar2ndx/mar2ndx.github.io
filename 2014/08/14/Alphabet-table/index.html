@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <link rel="shortcut icon" href="/images/avatar.png" type="image/x-icon" />
+    <title>
+        
+            [Google] Alphabet Table (`) |
+         
+        Mar2ndx&#39;s Algorithmic and System Design Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/solid.min.css">
+
+     
+    
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXXXX"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-XXXXXXXXXXXX');
+        </script>
+    
+
+
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body>
+    <div class="body-container">
+        <div class="header-wrapper"><header>
+    <div class="header-container">
+        <div class="header-menu-list">
+            <ul>
+            
+                <li>
+                    <a href="/">主页</a>
+                </li>
+            
+            </ul>
+        </div>
+    </div>
+</header>
+</div>
+        <div class="main-wrapper"><main>
+    <div class="main-container">
+        <div class="post-details">
+            
+            <div class="post-title">
+                <h1>[Google] Alphabet Table (`)</h1>
+            </div>
+            <div class="post-meta">
+                <i class="fa-solid fa-clock"></i>&nbsp;<span class="post-date">2014/08/14</span>
+            </div>
+            
+            <div class="post-content">
+                <h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><p><a target="_blank" rel="noopener" href="http://blog.sina.com.cn/s/blog_979956cc0101i67x.html">link</a></p>
+<blockquote>
+<p>每一种语言，都有自己的字母表，类似英文的 a-z，但是顺序不相同。例如，有的语言可能是 z 是第一个之类的。现在给定这个语言的字典，请分析这个字典，得到这个语言的字母表的顺序。</p>
+</blockquote>
+<blockquote>
+<p>例如：有如下的字母：C CAC CB BCC BA。 经过分析，得到字母表为 C-&gt;A-&gt;B。</p>
+</blockquote>
+<h3 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h3><p><a target="_blank" rel="noopener" href="http://page.renren.com/601882592/channel-noteshow-927705419">http://page.renren.com/601882592/channel-noteshow-927705419</a></p>
+<ol>
+<li>C 2. CAC 3. CB 4. BCC 5. BA 经过分析，得到字母表为 C-&gt;A-&gt;B。</li>
+</ol>
+<p>分析 字典序相邻的位置的字符串，只会有如下两种情况：</p>
+<p>（1）排在前面的字符串是下一个串的子串，如 C 与 CAC</p>
+<p>（2）两个字符串具有第一对不相同的字符对，如 CAC 和 CBB，第一个不相同的字符对为（A，B），这是就要求 A 在字母表中的顺序在 B 前面。对于后面字符并没有要求，如并不要求第二个不相同的字符对（C，B）中的 C 在字母表中的顺序在 B 前面。</p>
+<p>所以按照第（2）种情况建图，然后对该有向无环图求拓扑排序即可。</p>
+<p>So this becomes a Topology Sorting question.</p>
+<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><p><strong>not written by me</strong></p>
+<pre><code>pair&lt;char,char&gt;  constructEdge(const string &amp; src1, const string &amp; src2)
+&#123;
+     int min_len = min(src1.length(), src2.length());
+     int i = 0;
+     while(i &lt; min_len &amp;&amp; src1[i] == src2[i])&#123;
+           i++;
+     &#125;
+     if(i &lt; min_len)&#123;
+           return  make_pair(src1[i], src2[i]);
+     &#125;else&#123;
+           return  make_pair(&#39;\0&#39;,&#39;\0&#39;);
+     &#125;
+&#125;
+//-1, 0, 1
+int  alphaTable(const vector&lt;string&gt; &amp;  dict, vector&lt;char&gt; &amp; alpha_table)
+&#123;
+     unordered_map&lt;char,set&lt;char&gt; &gt;  edges;
+     set&lt;char&gt; nodes;
+     for(const string &amp; word : dict)&#123;
+          for(char c : word)&#123;
+              nodes.insert(c);
+          &#125;
+     &#125;
+     unordered_map&lt;char,int&gt;  in_degree;
+     for(int i = 1; i &lt; dict.length(); i++)&#123;
+          pair edge = constructEdge(dict[i-1],dict[i]);
+          if(edge.first != &#39;\0&#39;)&#123;
+              edges[edge.first].insert(edge.second);
+              in_degree[edge.second]++;
+          &#125;
+     &#125;
+     queue&lt;char&gt;  q;
+     for(char node : nodes)&#123;
+         if(in_degree[node] == 0)&#123;
+              q.push(node);
+         &#125;
+     &#125;
+     alpha_table.clear();
+     int result = 0;
+     while(!q.empty())&#123;
+        if(q.size() &gt; 1)&#123;
+            result = 1;
+        &#125;
+        char  c = q.front();
+        q.pop();
+        alpha_table.push_back(c);
+        for(char node : edges[c])&#123;
+             in_degree[node] --;
+             if(in_degree[node] == 0)&#123;
+                  q.push(node);
+             &#125;
+         &#125;
+     &#125;//while
+     if(alpha_table.size() &lt; nodes.size())&#123;
+         result = -1;
+     &#125;
+     return result;
+&#125;
+</code></pre>
+
+            </div>
+        </div>
+    </div>
+</main>
+
+<script src="https://utteranc.es/client.js"
+    repo="owner/repo"
+    issue-term="pathname"
+    theme="github-light"
+    crossorigin="anonymous"
+    async>
+</script>
+
+  
+
+</div>
+        <div class="footer-wrapper"><footer>
+    <div class="footer-container">
+        <div class="footer-meta">
+            
+                <div class="footer-meta-copyright">
+                    &copy; 2022 mar2ndx.
+                </div>
+            
+            
+                <div class="footer-meta-licenese">
+                    Licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC-BY-NC-SA 4.0</a>
+                </div>
+            
+            
+        </div>
+    </div>
+</footer>
+</div>
+    </div>
+</body>
+</html>

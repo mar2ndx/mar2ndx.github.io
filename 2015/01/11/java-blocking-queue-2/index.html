@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <link rel="shortcut icon" href="/images/avatar.png" type="image/x-icon" />
+    <title>
+        
+            [Java OOP] Java BlockingQueue (2)  |
+         
+        Mar2ndx&#39;s Algorithmic and System Design Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/solid.min.css">
+
+     
+    
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXXXX"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-XXXXXXXXXXXX');
+        </script>
+    
+
+
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body>
+    <div class="body-container">
+        <div class="header-wrapper"><header>
+    <div class="header-container">
+        <div class="header-menu-list">
+            <ul>
+            
+                <li>
+                    <a href="/">主页</a>
+                </li>
+            
+            </ul>
+        </div>
+    </div>
+</header>
+</div>
+        <div class="main-wrapper"><main>
+    <div class="main-container">
+        <div class="post-details">
+            
+            <div class="post-title">
+                <h1>[Java OOP] Java BlockingQueue (2) </h1>
+            </div>
+            <div class="post-meta">
+                <i class="fa-solid fa-clock"></i>&nbsp;<span class="post-date">2015/01/11</span>
+            </div>
+            
+            <div class="post-content">
+                <h3 id="Blocking-Queue-Implementation"><a href="#Blocking-Queue-Implementation" class="headerlink" title="Blocking Queue Implementation"></a>Blocking Queue Implementation</h3><p><img src="/images/blocking-queue.png"></p>
+<p><a target="_blank" rel="noopener" href="http://tutorials.jenkov.com/java-concurrency/blocking-queues.html">source</a></p>
+<ol>
+<li><p>A blocking queue is a queue, so we init a queue with a pre-defined size.</p>
+</li>
+<li><p>BlockingQueue Class comes with Java 5, in java.util.concurrent.BlockingQueue. This example is only used to help you understand what’s happening behind the scene.</p>
+</li>
+<li><p>Both <strong>enqueue(Object o){}</strong> and <strong>dequeue(){}</strong> are <strong>synchronized</strong> method.</p>
+</li>
+<li><p>Both methods do <strong>while { wait(); }</strong> and then <strong>notifyAll()</strong>.</p>
+</li>
+</ol>
+<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><pre><code>public class MyBlockingQueue &#123;
+
+    private List&lt;Object&gt; queue = new LinkedList&lt;Object&gt;();
+    private int size = 10;
+
+    public MyBlockingQueue(int size) &#123;
+        this.size = size;
+    &#125;
+
+    public synchronized void enqueue(Object item) throws InterruptedException &#123;
+        while (this.queue.size() == this.size) &#123;
+            wait();
+        &#125;
+        if (this.queue.size() == 0) &#123;
+            notifyAll();
+        &#125;
+        this.queue.add(item);
+    &#125;
+
+    public synchronized Object dequeue() throws InterruptedException &#123;
+        while (this.queue.size() == 0) &#123;
+            wait();
+        &#125;
+        if (this.queue.size() == this.size) &#123;
+            notifyAll();
+        &#125;
+
+        return this.queue.remove(0);
+    &#125;
+
+    public boolean isEmpty() &#123;
+        return this.queue.isEmpty();
+    &#125;
+&#125;
+</code></pre>
+<h3 id="Another-example"><a href="#Another-example" class="headerlink" title="Another example"></a>Another example</h3><p>This BlockingQueue example makes use MyBlockingQueue that we defined above.</p>
+<pre><code>public class Main &#123;
+
+    public static void main(String[] args) throws Exception &#123;
+
+        MyBlockingQueue queue = new MyBlockingQueue(1024);
+
+        Producer producer = new Producer(queue);
+        Consumer consumer = new Consumer(queue);
+
+        new Thread(producer).start();
+        new Thread(consumer).start();
+
+        Thread.sleep(4000);
+    &#125;
+&#125;
+</code></pre>
+<p>Producer</p>
+<pre><code>public class Producer implements Runnable &#123;
+
+    protected MyBlockingQueue queue = null;
+
+    public Producer(MyBlockingQueue queue) &#123;
+        this.queue = queue;
+    &#125;
+
+    public void run() &#123;
+        System.out.println(&quot;Producer starting... &quot;);
+        try &#123;
+            for (int i = 1; i &lt;= 5; i++) &#123;
+                queue.enqueue(&quot;&quot; + i);
+                Thread.sleep(500);
+            &#125;
+        &#125; catch (InterruptedException e) &#123;
+            e.printStackTrace();
+        &#125;
+    &#125;
+&#125;
+</code></pre>
+<p>Consumer</p>
+<pre><code>public class Consumer implements Runnable &#123;
+
+    protected MyBlockingQueue queue = null;
+
+    public Consumer(MyBlockingQueue queue) &#123;
+        this.queue = queue;
+    &#125;
+
+    public void run() &#123;
+        try &#123;
+            for (int i = 1; i &lt;= 5; i++) &#123;
+                System.out.println(queue.dequeue());
+            &#125;
+        &#125; catch (InterruptedException e) &#123;
+            e.printStackTrace();
+        &#125;
+        System.out.println(&quot;Consumer finished. &quot;);
+    &#125;
+&#125;
+</code></pre>
+<p>Output:</p>
+<pre><code>Producer starting...
+1
+2
+3
+4
+5
+Consumer finished.
+</code></pre>
+
+            </div>
+        </div>
+    </div>
+</main>
+
+<script src="https://utteranc.es/client.js"
+    repo="owner/repo"
+    issue-term="pathname"
+    theme="github-light"
+    crossorigin="anonymous"
+    async>
+</script>
+
+  
+
+</div>
+        <div class="footer-wrapper"><footer>
+    <div class="footer-container">
+        <div class="footer-meta">
+            
+                <div class="footer-meta-copyright">
+                    &copy; 2022 mar2ndx.
+                </div>
+            
+            
+                <div class="footer-meta-licenese">
+                    Licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC-BY-NC-SA 4.0</a>
+                </div>
+            
+            
+        </div>
+    </div>
+</footer>
+</div>
+    </div>
+</body>
+</html>

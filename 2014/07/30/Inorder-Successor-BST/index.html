@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <link rel="shortcut icon" href="/images/avatar.png" type="image/x-icon" />
+    <title>
+        
+            [Question] Inorder Successor in Binary Search Tree |
+         
+        Mar2ndx&#39;s Algorithmic and System Design Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/solid.min.css">
+
+     
+    
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXXXX"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-XXXXXXXXXXXX');
+        </script>
+    
+
+
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body>
+    <div class="body-container">
+        <div class="header-wrapper"><header>
+    <div class="header-container">
+        <div class="header-menu-list">
+            <ul>
+            
+                <li>
+                    <a href="/">主页</a>
+                </li>
+            
+            </ul>
+        </div>
+    </div>
+</header>
+</div>
+        <div class="main-wrapper"><main>
+    <div class="main-container">
+        <div class="post-details">
+            
+            <div class="post-title">
+                <h1>[Question] Inorder Successor in Binary Search Tree</h1>
+            </div>
+            <div class="post-meta">
+                <i class="fa-solid fa-clock"></i>&nbsp;<span class="post-date">2014/07/30</span>
+            </div>
+            
+            <div class="post-content">
+                <h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><p><a target="_blank" rel="noopener" href="http://www.geeksforgeeks.org/inorder-successor-in-binary-search-tree/">link</a></p>
+<blockquote>
+<p>In Binary Tree, Inorder successor of a node is the next node in Inorder traversal of the Binary Tree. Inorder Successor is NULL for the last node in Inoorder traversal.</p>
+</blockquote>
+<blockquote>
+<p>Write a program with: </p>
+</blockquote>
+<blockquote>
+<ol>
+<li>parent pointer provided</li>
+<li>parent pointer not provided</li>
+</ol>
+</blockquote>
+<h3 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h3><p><strong>If have parent pointer, it’s easy</strong>. Read solution <a target="_blank" rel="noopener" href="http://tech-queries.blogspot.sg/2010/04/inorder-succesor-in-binary-tree.html">here</a> or <strong>[CC150v4] 4.5 Find Next Node in BST</strong>. </p>
+<p><strong>If no parent pointer, then we make use of the property of BST, can get an O(h) solution</strong>. h is the height. </p>
+<p>A very good solution from <a target="_blank" rel="noopener" href="http://algorithmsandme.blogspot.sg/2013/08/binary-search-tree-inorder-successor.html">this blog</a>.</p>
+<ol>
+<li>Start with root.</li>
+<li>If the node is given has less than root, then search on left side <strong>and update successor</strong>.</li>
+<li>If the node is greater than root, then search in right part, <strong>don’t update successor</strong>.</li>
+<li>If we find the node<ol>
+<li>if the node has right sub tree, then the minimum node on the right sub tree of node is the in-order successor.</li>
+<li>otherwise, just return successor</li>
+</ol>
+</li>
+</ol>
+<p>The most important point is: we only update <strong>successor</strong> during left turn, and don’t update during right turn. </p>
+<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><p><strong>written by me</strong></p>
+<pre><code>public TreeNode inorderSuccessor(TreeNode root, TreeNode target) &#123;
+    if (target.right != null) &#123;
+        return this.findLeftMost(target.right);
+    &#125; else &#123;
+        return this.traverse(root, new TreeNode(-1), target);
+    &#125;
+&#125;
+
+private TreeNode traverse(TreeNode cur, TreeNode pre, TreeNode target) &#123;
+    if (cur.val == target.val) &#123;
+        return pre;
+    &#125; else if (cur.val &lt; target.val) &#123;
+        cur = cur.right;
+        return traverse(cur, pre, target);
+    &#125; else &#123;
+        pre = cur;
+        cur = cur.left;
+        return traverse(cur, pre, target);
+    &#125;
+&#125;
+
+private TreeNode findLeftMost(TreeNode node) &#123;
+    while (node.left != null) &#123;
+        node = node.left;
+    &#125;
+    return node;
+&#125;
+</code></pre>
+
+            </div>
+        </div>
+    </div>
+</main>
+
+<script src="https://utteranc.es/client.js"
+    repo="owner/repo"
+    issue-term="pathname"
+    theme="github-light"
+    crossorigin="anonymous"
+    async>
+</script>
+
+  
+
+</div>
+        <div class="footer-wrapper"><footer>
+    <div class="footer-container">
+        <div class="footer-meta">
+            
+                <div class="footer-meta-copyright">
+                    &copy; 2022 mar2ndx.
+                </div>
+            
+            
+                <div class="footer-meta-licenese">
+                    Licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC-BY-NC-SA 4.0</a>
+                </div>
+            
+            
+        </div>
+    </div>
+</footer>
+</div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <link rel="shortcut icon" href="/images/avatar.png" type="image/x-icon" />
+    <title>
+        
+            [LeetCode 46] Permutations |
+         
+        Mar2ndx&#39;s Algorithmic and System Design Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/solid.min.css">
+
+     
+    
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXXXX"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-XXXXXXXXXXXX');
+        </script>
+    
+
+
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body>
+    <div class="body-container">
+        <div class="header-wrapper"><header>
+    <div class="header-container">
+        <div class="header-menu-list">
+            <ul>
+            
+                <li>
+                    <a href="/">主页</a>
+                </li>
+            
+            </ul>
+        </div>
+    </div>
+</header>
+</div>
+        <div class="main-wrapper"><main>
+    <div class="main-container">
+        <div class="post-details">
+            
+            <div class="post-title">
+                <h1>[LeetCode 46] Permutations</h1>
+            </div>
+            <div class="post-meta">
+                <i class="fa-solid fa-clock"></i>&nbsp;<span class="post-date">2014/05/13</span>
+            </div>
+            
+            <div class="post-content">
+                <h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><p><a target="_blank" rel="noopener" href="http://oj.leetcode.com/problems/permutations/">link</a></p>
+<div class="question-content">
+            <p></p><p>
+Given a collection of numbers, return all possible permutations.
+</p>
+
+<p>
+For example,<br>
+<code>[1,2,3]</code> have the following permutations:<br>
+<code>[1,2,3]</code>, <code>[1,3,2]</code>, <code>[2,1,3]</code>, <code>[2,3,1]</code>, <code>[3,1,2]</code>, and <code>[3,2,1]</code>.
+</p><p></p>
+          </div>
+
+<h3 id="Stats"><a href="#Stats" class="headerlink" title="Stats"></a>Stats</h3><table border="2">
+    <tr>
+        <td>Frequency</td>
+        <td bgcolor="red">4</td>
+    </tr>
+    <tr>
+        <td>Difficulty</td>
+        <td bgcolor="yellow">3</td>
+    </tr>
+    <tr>
+        <td>Adjusted Difficulty</td>
+        <td bgcolor="red">4</td>
+    </tr>
+    <tr>
+        <td>Time to use</td>
+        <td bgcolor="yellow">--------</td>
+    </tr>
+</table>
+
+<p>Ratings/Color = 1(white) 2(lime) 3(yellow) 4/5(red)</p>
+<h3 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h3><p><strong>This is a very classic question</strong>.</p>
+<p><strong>One solution</strong> is to recursively push elements into a list, until all elements are pushed. Make use of a ‘visited’ array.</p>
+<p><strong>Another solution</strong> is using 2 nested for-loops to keep adding next elements. Read <a target="_blank" rel="noopener" href="http://www.programcreek.com/2013/02/leetcode-permutations-java/">this post</a>:</p>
+<blockquote>
+<p>Loop through the array, in each iteration, a new number is added to different locations of results of previous iteration. Start from an empty List.</p>
+</blockquote>
+<p>Keep in mind: this type of permutation questions always requires insert/delete before/after a recursion.</p>
+<p>In case you are interested, there is a <strong>third solution, swap element method</strong>. It is also explained in <a target="_blank" rel="noopener" href="http://www.programcreek.com/2013/02/leetcode-permutations-java/">the same post</a>:</p>
+<blockquote>
+<p>Swap each element with each element after it.</p>
+</blockquote>
+<h3 id="My-code"><a href="#My-code" class="headerlink" title="My code"></a>My code</h3><p><strong>Adding elements one by one</strong> (recommended)</p>
+<pre><code>public class Solution &#123;
+    public List&lt;List&lt;Integer&gt;&gt; permute(int[] num) &#123;
+        List&lt;List&lt;Integer&gt;&gt; ans = new ArrayList&lt;List&lt;Integer&gt;&gt;();
+        if (num == null || num.length == 0) &#123;
+            return ans;
+        &#125;
+        int len = num.length;
+        Arrays.sort(num);
+        helper(ans, new ArrayList&lt;Integer&gt;(), num, len, new boolean[len]);
+        return ans;
+    &#125;
+
+    private void helper(List&lt;List&lt;Integer&gt;&gt; ans, List&lt;Integer&gt; path, int[] num, int len, boolean[] visited) &#123;
+        if (path.size() == len) &#123;
+            ans.add(new ArrayList&lt;Integer&gt;(path));
+            return;
+        &#125;
+        for (int i = 0; i &lt; len; i++) &#123;
+            if (!visited[i]) &#123;
+                path.add(num[i]);
+                visited[i] = true;
+                helper(ans, path, num, len, visited);
+                path.remove(path.size() - 1);
+                visited[i] = false;
+            &#125;
+        &#125;
+    &#125;
+&#125;
+</code></pre>
+<p><strong>The double nested for-loop method</strong></p>
+<pre><code>public class Solution &#123;
+    public ArrayList&lt;ArrayList&lt;Integer&gt;&gt; permute(int[] num) &#123;
+        ArrayList&lt;ArrayList&lt;Integer&gt;&gt; result = new ArrayList&lt;ArrayList&lt;Integer&gt;&gt;();
+
+        //start from an empty list
+        result.add(new ArrayList&lt;Integer&gt;());
+
+        for (int i = 0; i &lt; num.length; i++) &#123;
+            //list of list in current iteration of the array num
+            ArrayList&lt;ArrayList&lt;Integer&gt;&gt; current = new ArrayList&lt;ArrayList&lt;Integer&gt;&gt;();
+
+            for (ArrayList&lt;Integer&gt; l : result) &#123;
+                // # of locations to insert is largest index + 1
+                for (int j = 0; j &lt; l.size()+1; j++) &#123;
+                    // + add num[i] to different locations
+                    l.add(j, num[i]);
+                    ArrayList&lt;Integer&gt; temp = new ArrayList&lt;Integer&gt;(l);
+                    current.add(temp);
+                    l.remove(j);
+                &#125;
+            &#125;
+            result = new ArrayList&lt;ArrayList&lt;Integer&gt;&gt;(current);
+        &#125;
+        return result;
+    &#125;
+&#125;
+</code></pre>
+<p><strong>The swap element method</strong></p>
+<pre><code>public class Solution &#123;
+    public ArrayList&lt;ArrayList&lt;Integer&gt;&gt; permute(int[] num) &#123;
+        ArrayList&lt;ArrayList&lt;Integer&gt;&gt; result = new ArrayList&lt;ArrayList&lt;Integer&gt;&gt;();
+        permute(num, 0, result);
+        return result;
+    &#125;
+
+    void permute(int[] num, int start, ArrayList&lt;ArrayList&lt;Integer&gt;&gt; result) &#123;
+
+        if (start &gt;= num.length) &#123;
+            ArrayList&lt;Integer&gt; item = convertArrayToList(num);
+            result.add(item);
+        &#125;
+
+        for (int j = start; j &lt;= num.length - 1; j++) &#123;
+            swap(num, start, j);
+            permute(num, start + 1, result);
+            swap(num, start, j);
+        &#125;
+    &#125;
+
+    private ArrayList&lt;Integer&gt; convertArrayToList(int[] num) &#123;
+        ArrayList&lt;Integer&gt; item = new ArrayList&lt;Integer&gt;();
+        for (int h = 0; h &lt; num.length; h++) &#123;
+            item.add(num[h]);
+        &#125;
+        return item;
+    &#125;
+
+    private void swap(int[] a, int i, int j) &#123;
+        int temp = a[i];
+        a[i] = a[j];
+        a[j] = temp;
+    &#125;
+&#125;
+</code></pre>
+
+            </div>
+        </div>
+    </div>
+</main>
+
+<script src="https://utteranc.es/client.js"
+    repo="owner/repo"
+    issue-term="pathname"
+    theme="github-light"
+    crossorigin="anonymous"
+    async>
+</script>
+
+  
+
+</div>
+        <div class="footer-wrapper"><footer>
+    <div class="footer-container">
+        <div class="footer-meta">
+            
+                <div class="footer-meta-copyright">
+                    &copy; 2022 mar2ndx.
+                </div>
+            
+            
+                <div class="footer-meta-licenese">
+                    Licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC-BY-NC-SA 4.0</a>
+                </div>
+            
+            
+        </div>
+    </div>
+</footer>
+</div>
+    </div>
+</body>
+</html>

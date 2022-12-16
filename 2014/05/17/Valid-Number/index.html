@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <link rel="shortcut icon" href="/images/avatar.png" type="image/x-icon" />
+    <title>
+        
+            [LeetCode 65] Valid Number (unsolvable) |
+         
+        Mar2ndx&#39;s Algorithmic and System Design Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/solid.min.css">
+
+     
+    
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXXXX"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-XXXXXXXXXXXX');
+        </script>
+    
+
+
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body>
+    <div class="body-container">
+        <div class="header-wrapper"><header>
+    <div class="header-container">
+        <div class="header-menu-list">
+            <ul>
+            
+                <li>
+                    <a href="/">主页</a>
+                </li>
+            
+            </ul>
+        </div>
+    </div>
+</header>
+</div>
+        <div class="main-wrapper"><main>
+    <div class="main-container">
+        <div class="post-details">
+            
+            <div class="post-title">
+                <h1>[LeetCode 65] Valid Number (unsolvable)</h1>
+            </div>
+            <div class="post-meta">
+                <i class="fa-solid fa-clock"></i>&nbsp;<span class="post-date">2014/05/17</span>
+            </div>
+            
+            <div class="post-content">
+                <h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><p><a target="_blank" rel="noopener" href="http://oj.leetcode.com/problems/valid-number/">link</a></p>
+<div class="question-content">
+            <p></p><p>Validate if a given string is numeric.</p>
+
+<p>
+Some examples:<br>
+<code>"0"</code> =&gt; <code>true</code><br>
+<code>"   0.1  "</code> =&gt; <code>true</code><br>
+<code>"abc"</code> =&gt; <code>false</code><br>
+<code>"1 a"</code> =&gt; <code>false</code><br>
+<code>"2e10"</code> =&gt; <code>true</code><br>
+</p>
+
+<p><b>Note:</b> It is intended for the problem statement to be ambiguous. You should gather all requirements up front before implementing one.
+</p><p></p>
+          </div>
+
+<h3 id="Stats"><a href="#Stats" class="headerlink" title="Stats"></a>Stats</h3><table border="2">
+    <tr>
+        <td>Frequency</td>
+        <td bgcolor="red">5</td>
+    </tr>
+    <tr>
+        <td>Difficulty</td>
+        <td bgcolor="lime">2</td>
+    </tr>
+    <tr>
+        <td>Adjusted Difficulty</td>
+        <td bgcolor="red">unsolvable</td>
+    </tr>
+    <tr>
+        <td>Time to use</td>
+        <td bgcolor="red">----------</td>
+    </tr>
+</table>
+
+<p>Ratings/Color = 1(white) 2(lime) 3(yellow) 4/5(red)</p>
+<h3 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h3><p>I am unable to solve this problem, but I found a <a target="_blank" rel="noopener" href="http://leetcodenotes.wordpress.com/2013/11/23/leetcode-valid-number/">quite good solution</a>. I post the code below. </p>
+<h3 id="My-code"><a href="#My-code" class="headerlink" title="My code"></a>My code</h3><pre><code>public boolean isNumber(String s) &#123;
+    s = s.trim(); 
+    if (s.length() &gt; 0 &amp;&amp; s.charAt(s.length() - 1) == &#39;e&#39;)
+        return false; //avoid &quot;3e&quot; which is false
+    String[] t = s.split(&quot;e&quot;);
+    if (t.length == 0 || t.length &gt; 2) return false;
+    boolean res = valid(t[0], false);
+    if (t.length &gt; 1) res = res &amp;&amp; valid(t[1], true);
+    return res;
+&#125;
+
+private boolean valid(String s, boolean hasDot) &#123;
+    if (s.length() &gt; 0 &amp;&amp; (s.charAt(0) == &#39;+&#39; || s.charAt(0) == &#39;-&#39;)) 
+        s = s.substring(1); //avoid &quot;1+&quot;, &quot;+&quot;, &quot;+.&quot;
+    char[] arr = s.toCharArray();
+    if (arr.length == 0 || s.equals(&quot;.&quot;)) return false;
+    for (int i = 0; i &lt; arr.length; i++) &#123;
+        if (arr[i] == &#39;.&#39;) &#123;
+            if (hasDot) return false;
+            hasDot = true;
+        &#125; else if (!(&#39;0&#39; &lt;= arr[i] &amp;&amp; arr[i] &lt;= &#39;9&#39;))
+            return false;
+    &#125;
+    return true;
+&#125;
+</code></pre>
+
+            </div>
+        </div>
+    </div>
+</main>
+
+<script src="https://utteranc.es/client.js"
+    repo="owner/repo"
+    issue-term="pathname"
+    theme="github-light"
+    crossorigin="anonymous"
+    async>
+</script>
+
+  
+
+</div>
+        <div class="footer-wrapper"><footer>
+    <div class="footer-container">
+        <div class="footer-meta">
+            
+                <div class="footer-meta-copyright">
+                    &copy; 2022 mar2ndx.
+                </div>
+            
+            
+                <div class="footer-meta-licenese">
+                    Licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC-BY-NC-SA 4.0</a>
+                </div>
+            
+            
+        </div>
+    </div>
+</footer>
+</div>
+    </div>
+</body>
+</html>

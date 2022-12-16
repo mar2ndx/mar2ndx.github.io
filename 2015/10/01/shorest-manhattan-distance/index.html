@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <link rel="shortcut icon" href="/images/avatar.png" type="image/x-icon" />
+    <title>
+        
+            [Google] Shortest Manhattan Distance  |
+         
+        Mar2ndx&#39;s Algorithmic and System Design Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/css/solid.min.css">
+
+     
+    
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXXXX"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-XXXXXXXXXXXX');
+        </script>
+    
+
+
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body>
+    <div class="body-container">
+        <div class="header-wrapper"><header>
+    <div class="header-container">
+        <div class="header-menu-list">
+            <ul>
+            
+                <li>
+                    <a href="/">主页</a>
+                </li>
+            
+            </ul>
+        </div>
+    </div>
+</header>
+</div>
+        <div class="main-wrapper"><main>
+    <div class="main-container">
+        <div class="post-details">
+            
+            <div class="post-title">
+                <h1>[Google] Shortest Manhattan Distance </h1>
+            </div>
+            <div class="post-meta">
+                <i class="fa-solid fa-clock"></i>&nbsp;<span class="post-date">2015/10/01</span>
+            </div>
+            
+            <div class="post-content">
+                <h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><p><a target="_blank" rel="noopener" href="http://www.mitbbs.com/article_t/JobHunting/33054861.html">link</a></p>
+<blockquote>
+<p>给一个 n*m 的房间，房间里存在各种可能的墙，房间的格子里已经放了 e 个器材，要<br>求新放一个器材，放置位置距其它 e 个器材的距离最近。Breadth-first search.</p>
+</blockquote>
+<h3 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h3><blockquote>
+<p>对 e 个设备 BFS, 求每个设备到每个可以放新器材的点的距离，然后叠加。</p>
+</blockquote>
+<blockquote>
+<p>最后 O（n^2）一遍找最小值。复杂度 O（e*n^2）</p>
+</blockquote>
+<p>As for whether we choose to check each equipment position, or check each vacant position, it’s decided by how many equipment is there. If very little equipments (e is small), then this solution should work.</p>
+<p>However, what is there is obstacles in the matrix?</p>
+<p>We have to use BFS then. It took more space usage, but the time complexity should be same.</p>
+<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><pre><code>public void findCenter(int[][] input, int numberOfEquip) &#123;
+    int m = input.length;
+    int n = input[0].length;
+
+    // there&#39;s gonna be m * n positions
+    // we gonna cumulate (numberOfEquip) distances for each position
+    int[] dis = new int[m * n];
+
+    // from the input map, find Equipments
+    for (int i = 0; i &lt; m; i++) &#123;
+        for (int j = 0; j &lt; n; j++) &#123;
+            if (input[i][j] == 1) &#123;
+                // 1 represents equipment
+                // when found, add the distance to every position
+                cumulateDistance(i, j, dis, m, n);
+            &#125;
+        &#125;
+    &#125;
+
+    // find the smallest cumulated distance from dis[].
+    int sIndex = 0;
+    int smallest = dis[0];
+    for (int i = 0; i &lt; m * n; i++) &#123;
+        if (dis[i] &lt; smallest) &#123;
+            smallest = dis[i];
+            sIndex = i;
+        &#125;
+    &#125;
+
+    // index sIndex is the final answer
+    System.out.println(&quot;Answer: &quot; + (sIndex / n) + &quot; &quot; + (sIndex % n));
+&#125;
+
+private void cumulateDistance(int x, int y, int[] dis, int m, int n) &#123;
+    for (int i = 0; i &lt; m * n; i++) &#123;
+        int a = i / n;
+        int b = i % n;
+        dis[i] += Math.abs(a - x) + Math.abs(b - y);
+    &#125;
+&#125;
+</code></pre>
+
+            </div>
+        </div>
+    </div>
+</main>
+
+<script src="https://utteranc.es/client.js"
+    repo="owner/repo"
+    issue-term="pathname"
+    theme="github-light"
+    crossorigin="anonymous"
+    async>
+</script>
+
+  
+
+</div>
+        <div class="footer-wrapper"><footer>
+    <div class="footer-container">
+        <div class="footer-meta">
+            
+                <div class="footer-meta-copyright">
+                    &copy; 2022 mar2ndx.
+                </div>
+            
+            
+                <div class="footer-meta-licenese">
+                    Licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC-BY-NC-SA 4.0</a>
+                </div>
+            
+            
+        </div>
+    </div>
+</footer>
+</div>
+    </div>
+</body>
+</html>
