@@ -1,4 +1,10 @@
 
+---
+title: Python environment management
+date: 2024-12-01
+tags:
+---
+
 ## TL;DR
 
 Want simplicity? Use venv.
