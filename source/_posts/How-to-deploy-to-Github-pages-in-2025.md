@@ -51,12 +51,11 @@ git push -u origin master
 
 Change config first:
 
-```
     deploy:
     type: git
     repo: https://github.com/mar2ndx/mar2ndx.github.io.git
     branch: gh-pages
-```
+
 
 Install [hexo-deployer-git](https://github.com/hexojs/hexo-deployer-git):
 
@@ -72,6 +71,8 @@ hexo g
 hexo d
 ```
 
+![](images/github-pages-2-hexo-deploy.png)
+
 Lastly, change the deploy branch at https://github.com/mar2ndx/mar2ndx.github.io/settings/pages
 
-![]()
+![](images/github-pages-3-pages-source-branch.png)
