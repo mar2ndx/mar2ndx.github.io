@@ -36,7 +36,7 @@ This would fail, you need to go to https://github.com/settings/personal-access-t
 
 You need to choose __Repository permissions__ and __Account permissions__.
 
-![]()
+![](images/github-pages-1-access-token-github.png)
 
 Choose "Contents" and "Pages" under __Repository permissions__. Nothing under __Account permissions__.
 
