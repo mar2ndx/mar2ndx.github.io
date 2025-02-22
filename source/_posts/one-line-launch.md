@@ -1,10 +1,8 @@
 ---
 title: One-line launch anything from Mac OS
-date: 2024-12-01
+date: 2024-11-30
 tags:
 ---
-
-# One-line Launch Next.js and FastAPI
 
 Consider you have a monorepo with Next.js frontend and FastAPI backend:
 
