@@ -26,8 +26,6 @@ adj diff: 3
     
     Return the pattern with the largest score. If there is more than one pattern with the same largest score, return the lexicographically smallest such pattern.
     
-     
-    
     Example 1:
     
     Input: username = ["joe","joe","joe","james","james","james","james","mary","mary","mary"], timestamp = [1,2,3,4,5,6,7,8,9,10], website = ["home","about","career","home","cart","maps","home","home","about","career"]
