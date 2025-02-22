@@ -1,3 +1,9 @@
+---
+title: Docker compose tutorial
+date: 2024-12-01
+tags:
+---
+
 # Docker Compose Tutorial
 
 Let's start with a simple example.

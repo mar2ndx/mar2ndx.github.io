@@ -1,4 +1,8 @@
-# Use pnpm globally
+---
+title: Node.js use pnpm globally
+date: 2024-12-01
+tags:
+---
 
 First thing after getting a new Mac:
 
