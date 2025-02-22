@@ -1,6 +1,6 @@
 ---
-title: Node.js use pnpm globally
-date: 2024-12-01
+title: Node.js - how to use pnpm globally
+date: 2024-12-08
 tags:
 ---
 
