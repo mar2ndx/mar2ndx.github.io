@@ -1,5 +1,5 @@
 ---
-title: async and await in Python
+title: Blocking/non-blocking in Python with async/await
 date: 2024-12-01
 tags:
 ---
