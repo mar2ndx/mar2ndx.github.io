@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+
+
+
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+
+
+
+
+<title>Java Design Pattern | Tech blog</title>
+
+
+
+<link rel="icon" href="/images/black-logo.png">
+
+
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/nprogress/nprogress.css">
+
+
+
+<script src="/lib/jquery.min.js"></script>
+
+
+<script src="/lib/iconify-icon.min.js"></script>
+
+
+<script src="https://cdn.tailwindcss.com?plugins=typography"></script>
+<script>
+  tailwind.config = {
+    darkMode: "class",
+  };
+</script>
+
+
+<script src="/lib/nprogress/nprogress.js"></script>
+
+<script>
+  $(document).ready(() => {
+    NProgress.configure({
+      showSpinner: false,
+    });
+    NProgress.start();
+    $("#nprogress .bar").css({
+      background: "#de7441",
+    });
+    $("#nprogress .peg").css({
+      "box-shadow": "0 0 2px #de7441, 0 0 4px #de7441",
+    });
+    $("#nprogress .spinner-icon").css({
+      "border-top-color": "#de7441",
+      "border-left-color": "#de7441",
+    });
+    setTimeout(function () {
+      NProgress.done();
+      $(".fade").removeClass("out");
+    }, 800);
+  });
+</script>
+
+<script>
+  (function () {
+    const prefersDark =
+      window.matchMedia &&
+      window.matchMedia("(prefers-color-scheme: dark)").matches;
+    const setting = localStorage.getItem("hexo-color-scheme") || "auto";
+    if (setting === "dark" || (prefersDark && setting !== "light"))
+      document.documentElement.classList.toggle("dark", true);
+    let isDark = document.documentElement.classList.contains("dark");
+  })();
+
+  $(document).ready(function () {
+    // init icon
+    const prefersDark =
+      window.matchMedia &&
+      window.matchMedia("(prefers-color-scheme: dark)").matches;
+    const isDark = document.documentElement.classList.contains("dark");
+    $("#theme-icon").attr("icon", isDark ? "ri:moon-line" : "ri:sun-line");
+
+    function toggleGiscusTheme() {
+      const isDark = document.documentElement.classList.contains("dark");
+      const giscusFrame = document.querySelector("iframe.giscus-frame");
+      if (giscusFrame) {
+        giscusFrame.contentWindow.postMessage(
+          {
+            giscus: {
+              setConfig: {
+                theme: isDark ? "dark" : "light",
+              },
+            },
+          },
+          "https://giscus.app"
+        );
+      }
+    }
+
+    // toggle dark mode
+    function toggleDark() {
+      let isDark = document.documentElement.classList.contains("dark");
+      const setting = localStorage.getItem("hexo-color-scheme") || "auto";
+      isDark = !isDark;
+      document.documentElement.classList.toggle("dark", isDark);
+      $("#theme-icon").attr("icon", isDark ? "ri:moon-line" : "ri:sun-line");
+      if (prefersDark === isDark) {
+        localStorage.setItem("hexo-color-scheme", "auto");
+      } else {
+        localStorage.setItem("hexo-color-scheme", isDark ? "dark" : "light");
+      }
+      toggleGiscusTheme();
+    }
+
+    // listen dark mode change
+    window
+      .matchMedia("(prefers-color-scheme: dark)")
+      .addEventListener("change", (e) => {
+        const setting = localStorage.getItem("hexo-color-scheme") || "auto";
+        if (setting === "auto") {
+          document.documentElement.classList.toggle("dark", e.matches);
+          $("#theme-icon").attr(
+            "icon",
+            e.matches ? "ri:moon-line" : "ri:sun-line"
+          );
+          toggleGiscusTheme();
+        }
+      });
+
+    $("#toggle-dark").click((event) => {
+      const isAppearanceTransition = document.startViewTransition && !window.matchMedia('(prefers-reduced-motion: reduce)').matches
+      if (!isAppearanceTransition) {
+        toggleDark()
+        return
+      }
+      const x = event.clientX
+      const y = event.clientY
+      const endRadius = Math.hypot(
+        Math.max(x, innerWidth - x),
+        Math.max(y, innerHeight - y),
+      )
+      const transition = document.startViewTransition(async () => {
+        toggleDark()
+      })
+
+      transition.ready
+        .then(() => {
+          const isDark = document.documentElement.classList.contains("dark")
+          const clipPath = [
+            `circle(0px at ${x}px ${y}px)`,
+            `circle(${endRadius}px at ${x}px ${y}px)`,
+          ]
+          document.documentElement.animate(
+            {
+              clipPath: isDark
+                ? [...clipPath].reverse()
+                : clipPath,
+            },
+            {
+              duration: 400,
+              easing: 'ease-out',
+              pseudoElement: isDark
+                ? '::view-transition-old(root)'
+                : '::view-transition-new(root)',
+            },
+          )
+        })
+    });
+  });
+</script>
+
+
+
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+<body class="font-sans bg-white dark:bg-zinc-900 text-gray-700 dark:text-gray-200 relative">
+  <header class="fixed w-full px-5 py-1 z-10 backdrop-blur-xl backdrop-saturate-150 border-b border-black/5">
+  <div class="max-auto">
+    <nav class="flex items-center text-base">
+      <a href="/" class="group">
+        <h2 class="font-medium tracking-tighterp text-l p-2">
+          <img class="w-5 mr-2 inline-block transition-transform group-hover:rotate-[30deg]" id="logo" src="/images/yellow-logo.png" alt="Tech blog" />
+          Tech blog
+        </h2>
+      </a>
+      <div id="header-title" class="opacity-0 md:ml-2 md:mt-[0.1rem] text-xs font-medium whitespace-nowrap overflow-hidden overflow-ellipsis">
+        Java Design Pattern
+      </div>
+      <div class="flex-1"></div>
+      <div class="flex items-center gap-3">
+        
+          <a class="hidden sm:flex" href="/archives">Posts</a>
+        
+        
+          
+            <a class="w-5 h-5 hidden sm:flex" title="Github" target="_blank" rel="noopener" href="https://github.com/mar2ndx/mar2ndx.github.io/">
+              <iconify-icon width="20" icon="ri:github-line"></iconify-icon>
+            </a>
+          
+        
+        <a class="w-5 h-5 hidden sm:flex" title="Github" href="rss2.xml">
+          <iconify-icon width="20" icon="ri:rss-line"></iconify-icon>
+        </a>
+        <a class="w-5 h-5" title="toggle theme" id="toggle-dark">
+          <iconify-icon width="20" icon="" id="theme-icon"></iconify-icon>
+        </a>
+      </div>
+      <div class="flex items-center justify-center gap-3 ml-3 sm:hidden">
+        <span class="w-5 h-5" aria-hidden="true" role="img" id="open-menu">
+          <iconify-icon width="20" icon="carbon:menu" ></iconify-icon>
+        </span>
+        <span class="w-5 h-5 hidden" aria-hidden="true" role="img" id="close-menu">
+          <iconify-icon  width="20" icon="carbon:close" ></iconify-icon>
+        </span>
+      </div>
+    </nav>
+  </div>
+</header>
+<div id="menu-panel" class="h-0 overflow-hidden sm:hidden fixed left-0 right-0 top-12 bottom-0 z-10">
+  <div id="menu-content" class="relative z-20 bg-white/80 px-6 sm:px-8 py-2 backdrop-blur-xl -translate-y-full transition-transform duration-300">
+    <ul class="nav flex flex-col sm:flex-row text-sm font-medium">
+      
+        <li class="nav-portfolio sm:mx-2 border-b sm:border-0 border-black/5 last:border-0 hover:text-main">
+          <a href="/archives" class="flex h-12 sm:h-auto items-center">Posts</a>
+        </li>
+      
+    </ul>
+  </div>
+  <div class="mask bg-black/20 absolute inset-0"></div>
+</div>
+
+  <main class="pt-14">
+    <!-- css -->
+
+<link rel="stylesheet" href="/lib/fancybox/fancybox.min.css">
+
+
+<link rel="stylesheet" href="/lib/tocbot/tocbot.min.css">
+
+<!-- toc -->
+
+  <!-- tocbot -->
+<nav class="post-toc toc text-sm w-48 relative top-32 right-0 opacity-70 hidden lg:block" style="position: fixed !important;"></nav>
+
+
+<section class="px-6 max-w-prose mx-auto md:px-0">
+  <!-- header -->
+  <header class="overflow-hidden pt-6 pb-6 md:pt-12">
+    <div class="pt-4 md:pt-6">
+      <h1 id="article-title" class="text-[2rem] font-bold leading-snug mb-4 md:mb-6 md:text-[2.6rem]">
+        Java Design Pattern
+      </h1>
+      <div>
+        <section class="flex items-center gap-3 text-sm">
+          <span class="flex items-center gap-1">
+            <iconify-icon width="18" icon="carbon-calendar" ></iconify-icon>
+            <time>2025-02-24</time>
+          </span>
+          <span class="text-gray-400">·</span>
+          <span class="flex items-center gap-1">
+            <iconify-icon width="18" icon="ic:round-access-alarm" ></iconify-icon>
+            <span>6 min</span>
+          </span>
+          <span class="text-gray-400">·</span>
+          <span class="flex items-center gap-1">
+            <iconify-icon width="18" icon="icon-park-outline:font-search" ></iconify-icon>
+            <span>1.6k words</span>
+          </span>
+          
+            <span class="text-gray-400">·</span>
+            <span class="flex items-center gap-1">
+              <iconify-icon width="16" icon="icon-park-outline:box" class="mr-2"></iconify-icon>
+              <a class="article-category-link" href="/categories/Design/">Design</a>
+            </span>
+          
+        </section>
+      </div>
+    </div>
+  </header>
+  <!-- content -->
+  <article class="post-content prose m-auto slide-enter-content dark:prose-invert">
+    <h1 id="开篇"><a href="#开篇" class="headerlink" title="开篇"></a>开篇</h1><p><strong>GoF</strong> - 23 种设计模式。</p>
+<blockquote>
+<p>The four authors <strong>Erich Gamma, Richard Helm, Ralph Johnson, and John Vlissides</strong> are collectively introduced the <strong>Gang of Four Design Patterns</strong> in Software development. </p>
+<p>In 1994, they published a book (Design Patterns: Elements of Reusable Object-Oriented Software) for explaining the concept of Design Patterns.</p>
+</blockquote>
+<p>设计模式是 __面向对象__的。</p>
+<h2 id="Why-设计模式？"><a href="#Why-设计模式？" class="headerlink" title="Why 设计模式？"></a>Why 设计模式？</h2><p>答：利用前人的经验，解决现在的问题。</p>
+<h1 id="设计原则"><a href="#设计原则" class="headerlink" title="设计原则"></a>设计原则</h1><p><strong>设计模式</strong>：是按照 <strong>设计原则</strong> 进行实践的方式和方法</p>
+<pre><code>eg. **one country** 是原则，不可改变。
+
+但是，**one country, two system** 是方式方法，是可以聊的。
+</code></pre>
+<h1 id="7种设计原理"><a href="#7种设计原理" class="headerlink" title="7种设计原理"></a>7种设计原理</h1><ol>
+<li>开闭原则<ul>
+<li>是总纲。</li>
+<li>对<strong>扩展开放</strong>，对<strong>修改关闭</strong></li>
+</ul>
+</li>
+<li>单一职责<ul>
+<li>对于class而言。</li>
+<li>一个类，不能太累。</li>
+<li>Class一定要功能单一。</li>
+<li>例如经典的 3 class MVC：DBUtil用于获取连接；CustomerDAO用于查询；CustomerDataChart用于打印报表。</li>
+</ul>
+</li>
+<li>接口隔离<ul>
+<li>对于interface而言。</li>
+<li>不要让一个接口有太多功能。</li>
+<li>这样压力太大了。</li>
+</ul>
+</li>
+<li>李氏代换<ul>
+<li>不用破坏继承体系。</li>
+<li>尽量不要改parent已经实现的方法。</li>
+<li>而是通过添加新方法，扩展父类的功能。</li>
+<li>例如父类：class parent {m1(){ print 父亲 }} </li>
+<li>子类：class child { m2(){ m1(); &#x2F;&#x2F; something else; }}</li>
+</ul>
+</li>
+<li>依赖倒置<ul>
+<li>面向接口&#x2F;抽象 去编程。</li>
+<li>不要面向实现&#x2F;细节 而编程。</li>
+<li>对于param，return value 等，都使用interface，abstract，而不是具体实现。</li>
+<li>eg. Dog 实现了Animal，但是返回type，依然是返回 Animal。</li>
+</ul>
+</li>
+<li>合成复用<ul>
+<li>优先使用组合 &#x2F; 聚合复用</li>
+<li>如果能用 组合&#x2F;聚合 关系，就不用 继承。</li>
+<li>例如：class A { B, C public void method2(){ B.method1(); &#x2F;&#x2F; 功能增强} }</li>
+<li>A 不需要 继承 B&#x2F;C</li>
+</ul>
+</li>
+<li>最少认知原则 （迪米特法则 Demeter &#x2F; LKP）<ul>
+<li>降低耦合度。</li>
+<li>不用和陌生人交流。</li>
+<li>不要这么写：class UserService { CustomerService service &#x3D; … }</li>
+<li>而是：class UserService { UserDao dao &#x3D; … } 然后通过第三者（中间人）来沟通</li>
+</ul>
+</li>
+</ol>
+<h1 id="Design-Pattern-的-3-类型"><a href="#Design-Pattern-的-3-类型" class="headerlink" title="Design Pattern 的 3 类型"></a>Design Pattern 的 3 类型</h1><p>一共23种类型：</p>
+<ol>
+<li>创建类：5种</li>
+<li>结构类：7种</li>
+<li>行为类：11种</li>
+</ol>
+<p>其中，最重要的只有10种：</p>
+<ol>
+<li>创建类 x5<ol>
+<li>工厂</li>
+<li>抽象工厂</li>
+<li>原型模式</li>
+<li>构建者</li>
+<li>单例</li>
+</ol>
+</li>
+<li>结构类 x3<ol>
+<li>适配器</li>
+<li>装饰模式</li>
+<li>代理</li>
+<li>（仅需要了解）组合模式</li>
+</ol>
+</li>
+<li>行为类 x2<ol>
+<li>模版方法</li>
+<li>策略模式</li>
+<li>（仅需要了解）责任链</li>
+</ol>
+</li>
+</ol>
+<p>其中，Singlton单例，最简单也最难。因为考的其实是 thread safety (线程安全)。</p>
+<h1 id="创建类-Design-Pattern"><a href="#创建类-Design-Pattern" class="headerlink" title="创建类 Design Pattern"></a>创建类 Design Pattern</h1><h2 id="区别"><a href="#区别" class="headerlink" title="区别"></a>区别</h2><ol>
+<li>工厂模式  ：批量生产（属性一致）</li>
+<li>构建者模式：私人订制（属性不一致）</li>
+<li>单例模式  ：只生产一个</li>
+<li>原型模式  ：给我一个object，我创建一个相同的（山寨版）</li>
+</ol>
+<h2 id="创建类-一二、Factory"><a href="#创建类-一二、Factory" class="headerlink" title="创建类 一二、Factory"></a>创建类 一二、Factory</h2><p>When to use？</p>
+<ol>
+<li>我对搞对象不感兴趣，我只想使用对象。</li>
+<li>当对象的构造需要many parameter，非常复杂。</li>
+<li>对象是3rd party jar包提供的，我不知道怎么传参。</li>
+</ol>
+<p>Factory 分为3种：</p>
+<ol>
+<li>简单工厂<ol>
+<li>上帝工厂：给我一个参数，我给你一个对象。</li>
+<li>静态方法工厂：跟上帝差不多，只不过避免了传参错误的问题。</li>
+<li>简单工厂模式，简单粗暴，可以实例化任何产品。但是：负担太重，不合符开闭原则。</li>
+</ol>
+</li>
+<li>工厂方法模式<ol>
+<li>并不构建，而是给你一个 factory instance。</li>
+<li>你拿到factory实例，再自己构建产品。</li>
+</ol>
+</li>
+<li>抽象方法<ol>
+<li>类似工厂方法</li>
+<li>需要一套实例（而不是一个），所以工厂需要抽象化。</li>
+<li>什么牌子的工厂，生产什么牌子的轮胎。</li>
+</ol>
+</li>
+</ol>
+<h2 id="创建类-三、原型模式"><a href="#创建类-三、原型模式" class="headerlink" title="创建类 三、原型模式"></a>创建类 三、原型模式</h2><p>给我一个原型，我给你一个对象。（copy）</p>
+<p>例如：BeanUtils.copy（）</p>
+<ol>
+<li>浅拷贝：只复制非引用类型的属性。</li>
+<li>深拷贝：对 reference type也拷贝。</li>
+</ol>
+<p>深浅拷贝，如何实现的？</p>
+<ol>
+<li>shallowCopy：实现 Clonable 接口，然后super.clone() 就行了。</li>
+<li>deepCopy：需要用到 Serializable 对 object 进行输出和读取。</li>
+</ol>
+<h2 id="创建类-四、构建者"><a href="#创建类-四、构建者" class="headerlink" title="创建类 四、构建者"></a>创建类 四、构建者</h2><p>根据客户的需求，创建指定对象。</p>
+<p>例如：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">// 构建者模式</span><br><span class="line">StudentBuilder.id(123).name(&quot;Jordan&quot;).age(25).build();</span><br></pre></td></tr></table></figure>
+
+<h2 id="创建类-五、Singleton"><a href="#创建类-五、Singleton" class="headerlink" title="创建类 五、Singleton"></a>创建类 五、Singleton</h2><p>全局之中，只构建一个实例。</p>
+<p>Spring大多数对象都是 Singleton，一般被spring管理的bean，都是业务对象，不是数据对象。</p>
+<p>分2种：</p>
+<ol>
+<li>饿汉式：线程安全的。但是会造成资源浪费。</li>
+<li>懒汉式（lazy loading）：不安全。</li>
+</ol>
+<p>实现方法：</p>
+<ol>
+<li>constructor（） 私有</li>
+<li>static成员变量 也是私有</li>
+<li>public static 方法：获取静态成员变量</li>
+</ol>
+<p>为什么饿汉式是thread-safe？因为JVM加载一个class的时候，过程默认加锁。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">public class SingletonDemo &#123;</span><br><span class="line">    private static SingletonDemo instance = null;</span><br><span class="line">    private SingletonDemo() &#123; &#125;</span><br><span class="line">    public static synchronized SingletonDemo getInstance() &#123;</span><br><span class="line">        if (instance == null) &#123;</span><br><span class="line">            instance = new SingletonDemo();</span><br><span class="line">        &#125;</span><br><span class="line">        return instance;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>但是，以上的“方法锁”，效率不高。所以：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">public class SingletonDemo &#123;</span><br><span class="line">    private static volatile SingletonDemo instance = null;</span><br><span class="line">    private SingletonDemo() &#123; &#125;</span><br><span class="line">    public static SingletonDemo getInstance() &#123;</span><br><span class="line">        if (instance == null) &#123;</span><br><span class="line">            synchronized (SingletonDemo.class) &#123;</span><br><span class="line">                if (instance == null) &#123;</span><br><span class="line">                    instance = new SingletonDemo();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return instance;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="关于-volatile"><a href="#关于-volatile" class="headerlink" title="关于 volatile"></a>关于 volatile</h3><p>并发编程的3大特性：（了解就行）</p>
+<p>1 原子性<br>2 有序性<br>3 可见性。</p>
+<p>Volatile的功能：</p>
+<ol>
+<li><p>禁止被它修饰的变量相关操作进行指令(Just-In-Time JIT compiler)重排序。</p>
+<pre><code> 理解一个对象在内存中的创建过程：Student student = new Student();
+ 底层字节码的执行过程（有序性）
+             
+ 1.new 会触发类加载机制（已经被加载过的类不需要再次加载）
+ 2.分配堆内存空间（相当于已经有内存地址）
+ 3.将对象进行初始化（将成员变量初始化为0）
+ 4.将对象引用地址赋值给栈空间中的变量
+ JVM的JIT即时编译器会对代码的执行过程进行优化，包含代码的执行顺序。
+ 也就是说以上对象的创建过程，可能被JIT即时编译器优化为1-2-4-3（指令重排序）。
+</code></pre>
+</li>
+<li><p>禁止CPU使用缓存（工作内存），直接操作内存。</p>
+<pre><code> eg. i++ 不是原子性操作。
+
+ 1.先从局部变量表中获取i的值
+ 2.将i的值加入到操作栈中
+ 3.将操作栈中的i进行自加
+ 4.将自加的i值放入操作栈
+ 5.将操作栈的栈顶元素取出并放入局部变量表
+ 
+ 如何保证原子性呢？
+ 答：使用锁机制（synchronized和lock锁）
+</code></pre>
+</li>
+</ol>
+<p>#结构类</p>
+<ol>
+<li>适配器</li>
+</ol>
+<p>TODO</p>
+<ol>
+<li>装饰模式</li>
+</ol>
+<p>TODO</p>
+<ol>
+<li>代理</li>
+</ol>
+<p>TODO</p>
+<h1 id="行为类"><a href="#行为类" class="headerlink" title="行为类"></a>行为类</h1><ol>
+<li>模版方法</li>
+</ol>
+<p>TODO</p>
+<ol>
+<li>策略模式</li>
+</ol>
+<p>TODO</p>
+
+  </article>
+  <!-- tag -->
+  <div class="mt-12 pt-6 border-t border-gray-200">
+    
+  </div>
+  <!-- prev and next -->
+  <div class="flex justify-between mt-12 pt-6 border-t border-gray-200">
+    <div>
+      
+        <a href="/2025/02/24/design-2022/MySql-1-basic/" class="text-sm text-gray-400 hover:text-gray-500 flex justify-center">
+          <iconify-icon width="20" icon="ri:arrow-left-s-line" data-inline="false"></iconify-icon>
+          MySql (1) - Indexing, Locking and Transaction
+        </a>
+      
+    </div>
+    <div>
+      
+        <a href="/2025/02/24/design-2022/Java-maven/" class="text-sm text-gray-400 hover:text-gray-500 flex justify-center">
+          Maven tutorial
+          <iconify-icon width="20" icon="ri:arrow-right-s-line" data-inline="false"></iconify-icon>
+        </a>
+      
+    </div>
+  </div>
+  <!-- comment -->
+  <div class="article-comments mt-12">
+    
+
+  </div>
+</section>
+<!-- js inspect -->
+
+<script src="/lib/clipboard.min.js"></script>
+
+
+<script async src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+        preferredFont: "TeX",
+        availableFonts: ["STIX","TeX"],
+        linebreaks: { automatic:true },
+        EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+        inlineMath: [ ["$", "$"], ["\\(","\\)"] ],
+        processEscapes: true,
+        ignoreClass: "tex2jax_ignore|dno",
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+        equationNumbers: { autoNumber: "AMS" },
+        noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } },
+        Macros: { href: "{}" }
+    },
+    messageStyle: "none"
+  });
+</script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+  });
+</script>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<script>
+  $(document).ready(() => {
+    const maraidConfig = {
+      theme: "default",
+      logLevel: 3,
+      flowchart: { curve: "linear" },
+      gantt: { axisFormat: "%m/%d/%Y" },
+      sequence: { actorMargin: 50 },
+    };
+    mermaid.initialize(maraidConfig);
+  });
+</script>
+
+
+
+<script src="/lib/fancybox/fancybox.umd.min.js"></script>
+
+<script>
+  $(document).ready(() => {
+    $('.post-content').each(function(i){
+      $(this).find('img').each(function(){
+        if ($(this).parent().hasClass('fancybox') || $(this).parent().is('a')) return;
+        var alt = this.alt;
+        if (alt) $(this).after('<span class="fancybox-alt">' + alt + '</span>');
+        $(this).wrap('<a class="fancybox-img" href="' + this.src + '" data-fancybox=\"gallery\" data-caption="' + alt + '"></a>')
+      });
+      $(this).find('.fancybox').each(function(){
+        $(this).attr('rel', 'article' + i);
+      });
+    });
+
+    Fancybox.bind('[data-fancybox="gallery"]', {
+        // options
+    })
+  })
+</script>
+
+<!-- tocbot begin -->
+
+<script src="/lib/tocbot/tocbot.min.js"></script>
+
+<script>
+  $(document).ready(() => {
+      tocbot.init({
+        // Where to render the table of contents.
+        tocSelector: '.post-toc',
+        // Where to grab the headings to build the table of contents.
+        contentSelector: '.post-content',
+        // Which headings to grab inside of the contentSelector element.
+        headingSelector: 'h1, h2, h3',
+        // For headings inside relative or absolute positioned containers within content.
+        hasInnerContainers: true,
+    });
+  })
+</script>
+<!-- tocbot end -->
+
+
+  </main>
+  <footer class="flex flex-col h-40 items-center justify-center text-gray-400 text-sm">
+  <!-- busuanzi -->
+  
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<!-- Busuanzi Analytics -->
+<div class="flex items-center gap-2">
+  <span>Visitors</span>
+  <span id="busuanzi_value_site_uv"></span>
+  <span>Page Views</span>
+  <span id="busuanzi_value_site_pv"></span>
+</div>
+<!-- End Busuanzi Analytics -->
+
+
+  <!-- copyright -->
+  <div class="flex items-center gap-2">
+    <a target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/" style="color: inherit;">CC BY-NC-SA 4.0</a>
+    <span>© 2022</span>
+    <iconify-icon width="18" icon="emojione-monotone:maple-leaf" ></iconify-icon>
+    <a href="https://github.com/xbmlz" target="_blank" rel="noopener noreferrer">xbmlz</a>
+  </div>
+  <!-- powered by -->
+  <div class="flex items-center gap-2">
+    <span>Powered by</span>
+    <a href="https://hexo.io/" target="_blank" rel="noopener noreferrer">Hexo</a>
+    <span>&</span>
+    <a href="https://github.com/xbmlz/hexo-theme-maple" target="_blank" rel="noopener noreferrer">Maple</a>
+  </div>
+
+</footer>
+
+  <div class="back-to-top box-border fixed right-6 z-1024 -bottom-20 rounded py-1 px-1 bg-slate-900 opacity-60 text-white cursor-pointer text-center dark:bg-slate-600">
+    <span class="flex justify-center items-center text-sm">
+      <iconify-icon width="18" icon="ion:arrow-up-c" id="go-top"></iconify-icon>
+      <span id="scrollpercent"><span>0</span> %</span>
+    </span>
+  </div>
+  
+<script src="/js/main.js"></script>
+
+
+  <script>
+    $(document).ready(function () {
+      const mapleCount = "10";
+      const speed = "0.5";
+      const mapleEl = document.getElementById("maple");
+      const maples = Array.from({ length: mapleCount }).map(() => {
+        const maple = document.createElement("div");
+        const scale = Math.random() * 0.5 + 0.5;
+        const offset = Math.random() * 2 - 1;
+        const x = Math.random() * mapleEl.clientWidth;
+        const y = -Math.random() * mapleEl.clientHeight;
+        const duration = 10 / speed;
+        const delay = -duration;
+        maple.className = "maple";
+        maple.style.width = `${24 * scale}px`;
+        maple.style.height = `${24 * scale}px`;
+        maple.style.left = `${x}px`;
+        maple.style.top = `${y}px`;
+        maple.style.setProperty("--maple-fall-offset", offset);
+        maple.style.setProperty("--maple-fall-height", `${Math.abs(y) + mapleEl.clientHeight}px`);
+        maple.style.animation = `fall ${duration}s linear infinite`;
+        maple.style.animationDelay = `${delay}s`;
+        mapleEl.appendChild(maple)
+        return maple
+      })
+    });
+  </script>
+  
+
+
+  <div class="fixed top-0 bottom-0 left-0 right-0 pointer-events-none print:hidden" id="maple"></div>
+</body>
+
+</html>

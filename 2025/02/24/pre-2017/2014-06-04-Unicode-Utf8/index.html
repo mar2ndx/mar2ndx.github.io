@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+
+
+
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+
+
+
+
+<title>[Question] ASCII, Utf-8, Utf-16 and Unicode | Tech blog</title>
+
+
+
+<link rel="icon" href="/images/black-logo.png">
+
+
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/nprogress/nprogress.css">
+
+
+
+<script src="/lib/jquery.min.js"></script>
+
+
+<script src="/lib/iconify-icon.min.js"></script>
+
+
+<script src="https://cdn.tailwindcss.com?plugins=typography"></script>
+<script>
+  tailwind.config = {
+    darkMode: "class",
+  };
+</script>
+
+
+<script src="/lib/nprogress/nprogress.js"></script>
+
+<script>
+  $(document).ready(() => {
+    NProgress.configure({
+      showSpinner: false,
+    });
+    NProgress.start();
+    $("#nprogress .bar").css({
+      background: "#de7441",
+    });
+    $("#nprogress .peg").css({
+      "box-shadow": "0 0 2px #de7441, 0 0 4px #de7441",
+    });
+    $("#nprogress .spinner-icon").css({
+      "border-top-color": "#de7441",
+      "border-left-color": "#de7441",
+    });
+    setTimeout(function () {
+      NProgress.done();
+      $(".fade").removeClass("out");
+    }, 800);
+  });
+</script>
+
+<script>
+  (function () {
+    const prefersDark =
+      window.matchMedia &&
+      window.matchMedia("(prefers-color-scheme: dark)").matches;
+    const setting = localStorage.getItem("hexo-color-scheme") || "auto";
+    if (setting === "dark" || (prefersDark && setting !== "light"))
+      document.documentElement.classList.toggle("dark", true);
+    let isDark = document.documentElement.classList.contains("dark");
+  })();
+
+  $(document).ready(function () {
+    // init icon
+    const prefersDark =
+      window.matchMedia &&
+      window.matchMedia("(prefers-color-scheme: dark)").matches;
+    const isDark = document.documentElement.classList.contains("dark");
+    $("#theme-icon").attr("icon", isDark ? "ri:moon-line" : "ri:sun-line");
+
+    function toggleGiscusTheme() {
+      const isDark = document.documentElement.classList.contains("dark");
+      const giscusFrame = document.querySelector("iframe.giscus-frame");
+      if (giscusFrame) {
+        giscusFrame.contentWindow.postMessage(
+          {
+            giscus: {
+              setConfig: {
+                theme: isDark ? "dark" : "light",
+              },
+            },
+          },
+          "https://giscus.app"
+        );
+      }
+    }
+
+    // toggle dark mode
+    function toggleDark() {
+      let isDark = document.documentElement.classList.contains("dark");
+      const setting = localStorage.getItem("hexo-color-scheme") || "auto";
+      isDark = !isDark;
+      document.documentElement.classList.toggle("dark", isDark);
+      $("#theme-icon").attr("icon", isDark ? "ri:moon-line" : "ri:sun-line");
+      if (prefersDark === isDark) {
+        localStorage.setItem("hexo-color-scheme", "auto");
+      } else {
+        localStorage.setItem("hexo-color-scheme", isDark ? "dark" : "light");
+      }
+      toggleGiscusTheme();
+    }
+
+    // listen dark mode change
+    window
+      .matchMedia("(prefers-color-scheme: dark)")
+      .addEventListener("change", (e) => {
+        const setting = localStorage.getItem("hexo-color-scheme") || "auto";
+        if (setting === "auto") {
+          document.documentElement.classList.toggle("dark", e.matches);
+          $("#theme-icon").attr(
+            "icon",
+            e.matches ? "ri:moon-line" : "ri:sun-line"
+          );
+          toggleGiscusTheme();
+        }
+      });
+
+    $("#toggle-dark").click((event) => {
+      const isAppearanceTransition = document.startViewTransition && !window.matchMedia('(prefers-reduced-motion: reduce)').matches
+      if (!isAppearanceTransition) {
+        toggleDark()
+        return
+      }
+      const x = event.clientX
+      const y = event.clientY
+      const endRadius = Math.hypot(
+        Math.max(x, innerWidth - x),
+        Math.max(y, innerHeight - y),
+      )
+      const transition = document.startViewTransition(async () => {
+        toggleDark()
+      })
+
+      transition.ready
+        .then(() => {
+          const isDark = document.documentElement.classList.contains("dark")
+          const clipPath = [
+            `circle(0px at ${x}px ${y}px)`,
+            `circle(${endRadius}px at ${x}px ${y}px)`,
+          ]
+          document.documentElement.animate(
+            {
+              clipPath: isDark
+                ? [...clipPath].reverse()
+                : clipPath,
+            },
+            {
+              duration: 400,
+              easing: 'ease-out',
+              pseudoElement: isDark
+                ? '::view-transition-old(root)'
+                : '::view-transition-new(root)',
+            },
+          )
+        })
+    });
+  });
+</script>
+
+
+
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+<body class="font-sans bg-white dark:bg-zinc-900 text-gray-700 dark:text-gray-200 relative">
+  <header class="fixed w-full px-5 py-1 z-10 backdrop-blur-xl backdrop-saturate-150 border-b border-black/5">
+  <div class="max-auto">
+    <nav class="flex items-center text-base">
+      <a href="/" class="group">
+        <h2 class="font-medium tracking-tighterp text-l p-2">
+          <img class="w-5 mr-2 inline-block transition-transform group-hover:rotate-[30deg]" id="logo" src="/images/yellow-logo.png" alt="Tech blog" />
+          Tech blog
+        </h2>
+      </a>
+      <div id="header-title" class="opacity-0 md:ml-2 md:mt-[0.1rem] text-xs font-medium whitespace-nowrap overflow-hidden overflow-ellipsis">
+        [Question] ASCII, Utf-8, Utf-16 and Unicode
+      </div>
+      <div class="flex-1"></div>
+      <div class="flex items-center gap-3">
+        
+          <a class="hidden sm:flex" href="/archives">Posts</a>
+        
+        
+          
+            <a class="w-5 h-5 hidden sm:flex" title="Github" target="_blank" rel="noopener" href="https://github.com/mar2ndx/mar2ndx.github.io/">
+              <iconify-icon width="20" icon="ri:github-line"></iconify-icon>
+            </a>
+          
+        
+        <a class="w-5 h-5 hidden sm:flex" title="Github" href="rss2.xml">
+          <iconify-icon width="20" icon="ri:rss-line"></iconify-icon>
+        </a>
+        <a class="w-5 h-5" title="toggle theme" id="toggle-dark">
+          <iconify-icon width="20" icon="" id="theme-icon"></iconify-icon>
+        </a>
+      </div>
+      <div class="flex items-center justify-center gap-3 ml-3 sm:hidden">
+        <span class="w-5 h-5" aria-hidden="true" role="img" id="open-menu">
+          <iconify-icon width="20" icon="carbon:menu" ></iconify-icon>
+        </span>
+        <span class="w-5 h-5 hidden" aria-hidden="true" role="img" id="close-menu">
+          <iconify-icon  width="20" icon="carbon:close" ></iconify-icon>
+        </span>
+      </div>
+    </nav>
+  </div>
+</header>
+<div id="menu-panel" class="h-0 overflow-hidden sm:hidden fixed left-0 right-0 top-12 bottom-0 z-10">
+  <div id="menu-content" class="relative z-20 bg-white/80 px-6 sm:px-8 py-2 backdrop-blur-xl -translate-y-full transition-transform duration-300">
+    <ul class="nav flex flex-col sm:flex-row text-sm font-medium">
+      
+        <li class="nav-portfolio sm:mx-2 border-b sm:border-0 border-black/5 last:border-0 hover:text-main">
+          <a href="/archives" class="flex h-12 sm:h-auto items-center">Posts</a>
+        </li>
+      
+    </ul>
+  </div>
+  <div class="mask bg-black/20 absolute inset-0"></div>
+</div>
+
+  <main class="pt-14">
+    <!-- css -->
+
+<link rel="stylesheet" href="/lib/fancybox/fancybox.min.css">
+
+
+<link rel="stylesheet" href="/lib/tocbot/tocbot.min.css">
+
+<!-- toc -->
+
+  <!-- tocbot -->
+<nav class="post-toc toc text-sm w-48 relative top-32 right-0 opacity-70 hidden lg:block" style="position: fixed !important;"></nav>
+
+
+<section class="px-6 max-w-prose mx-auto md:px-0">
+  <!-- header -->
+  <header class="overflow-hidden pt-6 pb-6 md:pt-12">
+    <div class="pt-4 md:pt-6">
+      <h1 id="article-title" class="text-[2rem] font-bold leading-snug mb-4 md:mb-6 md:text-[2.6rem]">
+        [Question] ASCII, Utf-8, Utf-16 and Unicode
+      </h1>
+      <div>
+        <section class="flex items-center gap-3 text-sm">
+          <span class="flex items-center gap-1">
+            <iconify-icon width="18" icon="carbon-calendar" ></iconify-icon>
+            <time>2025-02-24</time>
+          </span>
+          <span class="text-gray-400">·</span>
+          <span class="flex items-center gap-1">
+            <iconify-icon width="18" icon="ic:round-access-alarm" ></iconify-icon>
+            <span>3 min</span>
+          </span>
+          <span class="text-gray-400">·</span>
+          <span class="flex items-center gap-1">
+            <iconify-icon width="18" icon="icon-park-outline:font-search" ></iconify-icon>
+            <span>625 words</span>
+          </span>
+          
+            <span class="text-gray-400">·</span>
+            <span class="flex items-center gap-1">
+              <iconify-icon width="16" icon="icon-park-outline:box" class="mr-2"></iconify-icon>
+              <a class="article-category-link" href="/categories/Question/">Question</a>
+            </span>
+          
+        </section>
+      </div>
+    </div>
+  </header>
+  <!-- content -->
+  <article class="post-content prose m-auto slide-enter-content dark:prose-invert">
+    <h2 id="First-Word"><a href="#First-Word" class="headerlink" title="First Word"></a>First Word</h2><p><strong>ASCII, UTF-? are encoding schemes. Unicode is character set</strong>.</p>
+<p>Or in other words, UTF-8 is an encoding used to translate binary data into numbers. Unicode is a character set used to translate numbers into characters.</p>
+<h2 id="ASCII"><a href="#ASCII" class="headerlink" title="ASCII"></a>ASCII</h2><p><strong><a target="_blank" rel="noopener" href="http://en.wikipedia.org/wiki/ASCII">ASCII</a></strong> is a character-encoding scheme based on the English alphabet. It encodes 128 characters into 7-bit integers.</p>
+<p>ASCII was the most commonly used character encoding on the World Wide Web until December 2007, when it was surpassed by UTF-8, which includes ASCII as a subset.</p>
+<h2 id="UTF-8"><a href="#UTF-8" class="headerlink" title="UTF-8"></a>UTF-8</h2><p>UCS Transformation Format—8-bit</p>
+<p><strong><a target="_blank" rel="noopener" href="http://en.wikipedia.org/wiki/Utf_8">UTF-8</a></strong> is a variable-width encoding that can represent every character in the Unicode character set. It uses 1 byte for ASCII characters, and up to 4 bytes for others.</p>
+<p><strong>UTF-8 is the dominant character encoding for the World Wide Web</strong>, accounting for more than half of all Web pages.</p>
+<p>Utf-8 is good because:</p>
+<ol>
+<li><p>backward compatibility with ASCII</p>
+</li>
+<li><p>avoid the complications of endianness and byte order marks in UTF-16 and UTF-32</p>
+</li>
+</ol>
+<p>UTF-8 has become the dominant character encoding for the World Wide Web, accounting for more than half of all Web pages</p>
+<h2 id="UTF-16-and-UTF-32"><a href="#UTF-16-and-UTF-32" class="headerlink" title="UTF-16 and UTF-32"></a>UTF-16 and UTF-32</h2><p><strong>UTF-16 is used for text in the OS API in Microsoft Windows 2000&#x2F;XP&#x2F;2003&#x2F;Vista&#x2F;7&#x2F;8&#x2F;CE</strong>. The word “Unicode” means something else according to <a target="_blank" rel="noopener" href="http://stackoverflow.com/a/3951826">this person</a>:</p>
+<blockquote>
+<p>Windows uses UTF-16LE encoding internally as the memory storage format for Unicode strings, it considers this to be the natural encoding of Unicode text. In the Windows world, there are ANSI strings and there are Unicode strings (stored internally as UTF-16LE).</p>
+</blockquote>
+<blockquote>
+<p>This was all devised in the early days of Unicode, before UTF-8 was invented. This is why Windows’s support for UTF-8 is all-round poor.</p>
+</blockquote>
+<h4 id="UTF-8-“size-optimize”"><a href="#UTF-8-“size-optimize”" class="headerlink" title="UTF-8: “size optimize”:"></a>UTF-8: “size optimize”:</h4><p>Best suited for Latin character based data (or ASCII), it takes only 1 byte.</p>
+<h4 id="UTF-16-“balance”"><a href="#UTF-16-“balance”" class="headerlink" title="UTF-16: “balance”"></a>UTF-16: “balance”</h4><p>It takes minimum 2 bytes per character which is enough for existing set of the mainstream languages with having fixed size on it to ease character handling, but size is still variable and can grow up to 4 bytes per character.</p>
+<h4 id="UTF-32-“performance”"><a href="#UTF-32-“performance”" class="headerlink" title="UTF-32: “performance”"></a>UTF-32: “performance”</h4><p>Allows using of simple algorithms as result of fixed size characters (4 bytes) but with memory disadvantage</p>
+<h2 id="Unicode"><a href="#Unicode" class="headerlink" title="Unicode"></a>Unicode</h2><p><a target="_blank" rel="noopener" href="http://en.wikipedia.org/wiki/Unicode">Unicode</a> is a computing industry standard for the consistent encoding. It expresses most of world’s writing systems with more than 110,000 characters covering 100 scripts and symbols.</p>
+<p>Unicode can be implemented by Utf-8, Utf-16 and now-obsolete Ucs-2. When unicode is encoded with UTF-8, its code value is same as ASCII.</p>
+<h2 id="Table-of-the-scheme"><a href="#Table-of-the-scheme" class="headerlink" title="Table of the scheme"></a>Table of the scheme</h2><table class="wikitable">
+<tbody><tr>
+<th class="bg-color bg-img font-color">Bits of<br>
+code point</th>
+<th class="bg-color bg-img font-color">First<br>
+code point</th>
+<th class="bg-color bg-img font-color">Last<br>
+code point</th>
+<th class="bg-color bg-img font-color">Bytes in<br>
+sequence</th>
+<th class="bg-color bg-img font-color">Byte 1</th>
+<th class="bg-color bg-img font-color">Byte 2</th>
+<th class="bg-color bg-img font-color">Byte 3</th>
+<th class="bg-color bg-img font-color">Byte 4</th>
+<th class="bg-color bg-img font-color">Byte 5</th>
+<th class="bg-color bg-img font-color">Byte 6</th>
+</tr>
+<tr>
+<th class="bg-color bg-img font-color">&nbsp;&nbsp;7</th>
+<td class="bg-color bg-img font-color">U+0000</td>
+<td class="bg-color bg-img font-color">U+007F</td>
+<td style="text-align: center;" class="bg-color bg-img font-color">1</td>
+<td class="bg-color bg-img font-color"><code>0xxxxxxx</code></td>
+</tr>
+<tr>
+<th class="bg-color bg-img font-color">11</th>
+<td class="bg-color bg-img font-color">U+0080</td>
+<td class="bg-color bg-img font-color">U+07FF</td>
+<td style="text-align: center;" class="bg-color bg-img font-color">2</td>
+<td class="bg-color bg-img font-color"><code>110xxxxx</code></td>
+<td class="bg-color bg-img font-color"><code>10xxxxxx</code></td>
+</tr>
+<tr class="bg-color bg-img font-color">
+<th class="bg-color bg-img font-color">16</th>
+<td class="bg-color bg-img font-color">U+0800</td>
+<td class="bg-color bg-img font-color">U+FFFF</td>
+<td style="text-align: center;" class="bg-color bg-img font-color">3</td>
+<td class="bg-color bg-img font-color"><code class="bg-color bg-img font-color">1110xxxx</code></td>
+<td class="bg-color bg-img font-color"><code>10xxxxxx</code></td>
+<td class="bg-color bg-img font-color"><code>10xxxxxx</code></td>
+</tr>
+<tr>
+<th class="bg-color bg-img font-color">21</th>
+<td class="bg-color bg-img font-color">U+10000</td>
+<td class="bg-color bg-img font-color">U+1FFFFF</td>
+<td style="text-align: center;" class="bg-color bg-img font-color">4</td>
+<td class="bg-color bg-img font-color"><code>11110xxx</code></td>
+<td class="bg-color bg-img font-color"><code>10xxxxxx</code></td>
+<td class="bg-color bg-img font-color"><code>10xxxxxx</code></td>
+<td class="bg-color bg-img font-color"><code>10xxxxxx</code></td>
+</tr>
+<tr>
+<th class="bg-color bg-img font-color">26</th>
+<td class="bg-color bg-img font-color">U+200000</td>
+<td class="bg-color bg-img font-color">U+3FFFFFF</td>
+<td style="text-align: center;" class="bg-color bg-img font-color">5</td>
+<td class="bg-color bg-img font-color"><code>111110xx</code></td>
+<td class="bg-color bg-img font-color"><code>10xxxxxx</code></td>
+<td class="bg-color bg-img font-color"><code>10xxxxxx</code></td>
+<td class="bg-color bg-img font-color"><code>10xxxxxx</code></td>
+<td class="bg-color bg-img font-color"><code>10xxxxxx</code></td>
+</tr>
+<tr>
+<th class="bg-color bg-img font-color">31</th>
+<td class="bg-color bg-img font-color">U+4000000</td>
+<td class="bg-color bg-img font-color">U+7FFFFFFF</td>
+<td style="text-align: center;" class="bg-color bg-img font-color">6</td>
+<td class="bg-color bg-img font-color"><code>1111110x</code></td>
+<td class="bg-color bg-img font-color"><code>10xxxxxx</code></td>
+<td class="bg-color bg-img font-color"><code>10xxxxxx</code></td>
+<td class="bg-color bg-img font-color"><code>10xxxxxx</code></td>
+<td class="bg-color bg-img font-color"><code>10xxxxxx</code></td>
+<td class="bg-color bg-img font-color"><code>10xxxxxx</code></td>
+</tr>
+</tbody></table>
+
+<h2 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h2><p>Translate ‘€’ into binary Utf-8.</p>
+<ol>
+<li><p>The Unicode code point for “€” is U+20AC.</p>
+</li>
+<li><p>According to the scheme table above, this will take 3 bytes (16 bits).</p>
+</li>
+<li><p>Convert hexadecimal 20AC into a 16-bit binary 0010000010101100.</p>
+</li>
+<li><p>Fill in the 16 bits into: 1110xxxx 10xxxxxx 10xxxxxx, we got 11100010 10000010 10101100</p>
+</li>
+<li><p>Almost done. The result can be concisely written in hexadecimal, as E2 82 AC.</p>
+</li>
+</ol>
+<p>Note that the last byte of any encoding starts with ‘0’, in this way computer can easily identify the encoding length of every character. Also <strong>note that ASCII code is natively supported by Utf-8</strong>.</p>
+
+  </article>
+  <!-- tag -->
+  <div class="mt-12 pt-6 border-t border-gray-200">
+    
+  </div>
+  <!-- prev and next -->
+  <div class="flex justify-between mt-12 pt-6 border-t border-gray-200">
+    <div>
+      
+        <a href="/2025/02/24/pre-2017/2014-06-08-NineChap-Binary-Search/" class="text-sm text-gray-400 hover:text-gray-500 flex justify-center">
+          <iconify-icon width="20" icon="ri:arrow-left-s-line" data-inline="false"></iconify-icon>
+          [NineChap 2.1] Binary Search
+        </a>
+      
+    </div>
+    <div>
+      
+        <a href="/2025/02/24/pre-2017/2014-06-04-Junit-hands-on-notes/" class="text-sm text-gray-400 hover:text-gray-500 flex justify-center">
+          [Question] Junit Hand-on Notes
+          <iconify-icon width="20" icon="ri:arrow-right-s-line" data-inline="false"></iconify-icon>
+        </a>
+      
+    </div>
+  </div>
+  <!-- comment -->
+  <div class="article-comments mt-12">
+    
+
+  </div>
+</section>
+<!-- js inspect -->
+
+<script src="/lib/clipboard.min.js"></script>
+
+
+<script async src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+        preferredFont: "TeX",
+        availableFonts: ["STIX","TeX"],
+        linebreaks: { automatic:true },
+        EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+        inlineMath: [ ["$", "$"], ["\\(","\\)"] ],
+        processEscapes: true,
+        ignoreClass: "tex2jax_ignore|dno",
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+        equationNumbers: { autoNumber: "AMS" },
+        noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } },
+        Macros: { href: "{}" }
+    },
+    messageStyle: "none"
+  });
+</script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+  });
+</script>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<script>
+  $(document).ready(() => {
+    const maraidConfig = {
+      theme: "default",
+      logLevel: 3,
+      flowchart: { curve: "linear" },
+      gantt: { axisFormat: "%m/%d/%Y" },
+      sequence: { actorMargin: 50 },
+    };
+    mermaid.initialize(maraidConfig);
+  });
+</script>
+
+
+
+<script src="/lib/fancybox/fancybox.umd.min.js"></script>
+
+<script>
+  $(document).ready(() => {
+    $('.post-content').each(function(i){
+      $(this).find('img').each(function(){
+        if ($(this).parent().hasClass('fancybox') || $(this).parent().is('a')) return;
+        var alt = this.alt;
+        if (alt) $(this).after('<span class="fancybox-alt">' + alt + '</span>');
+        $(this).wrap('<a class="fancybox-img" href="' + this.src + '" data-fancybox=\"gallery\" data-caption="' + alt + '"></a>')
+      });
+      $(this).find('.fancybox').each(function(){
+        $(this).attr('rel', 'article' + i);
+      });
+    });
+
+    Fancybox.bind('[data-fancybox="gallery"]', {
+        // options
+    })
+  })
+</script>
+
+<!-- tocbot begin -->
+
+<script src="/lib/tocbot/tocbot.min.js"></script>
+
+<script>
+  $(document).ready(() => {
+      tocbot.init({
+        // Where to render the table of contents.
+        tocSelector: '.post-toc',
+        // Where to grab the headings to build the table of contents.
+        contentSelector: '.post-content',
+        // Which headings to grab inside of the contentSelector element.
+        headingSelector: 'h1, h2, h3',
+        // For headings inside relative or absolute positioned containers within content.
+        hasInnerContainers: true,
+    });
+  })
+</script>
+<!-- tocbot end -->
+
+
+  </main>
+  <footer class="flex flex-col h-40 items-center justify-center text-gray-400 text-sm">
+  <!-- busuanzi -->
+  
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<!-- Busuanzi Analytics -->
+<div class="flex items-center gap-2">
+  <span>Visitors</span>
+  <span id="busuanzi_value_site_uv"></span>
+  <span>Page Views</span>
+  <span id="busuanzi_value_site_pv"></span>
+</div>
+<!-- End Busuanzi Analytics -->
+
+
+  <!-- copyright -->
+  <div class="flex items-center gap-2">
+    <a target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/" style="color: inherit;">CC BY-NC-SA 4.0</a>
+    <span>© 2022</span>
+    <iconify-icon width="18" icon="emojione-monotone:maple-leaf" ></iconify-icon>
+    <a href="https://github.com/xbmlz" target="_blank" rel="noopener noreferrer">xbmlz</a>
+  </div>
+  <!-- powered by -->
+  <div class="flex items-center gap-2">
+    <span>Powered by</span>
+    <a href="https://hexo.io/" target="_blank" rel="noopener noreferrer">Hexo</a>
+    <span>&</span>
+    <a href="https://github.com/xbmlz/hexo-theme-maple" target="_blank" rel="noopener noreferrer">Maple</a>
+  </div>
+
+</footer>
+
+  <div class="back-to-top box-border fixed right-6 z-1024 -bottom-20 rounded py-1 px-1 bg-slate-900 opacity-60 text-white cursor-pointer text-center dark:bg-slate-600">
+    <span class="flex justify-center items-center text-sm">
+      <iconify-icon width="18" icon="ion:arrow-up-c" id="go-top"></iconify-icon>
+      <span id="scrollpercent"><span>0</span> %</span>
+    </span>
+  </div>
+  
+<script src="/js/main.js"></script>
+
+
+  <script>
+    $(document).ready(function () {
+      const mapleCount = "10";
+      const speed = "0.5";
+      const mapleEl = document.getElementById("maple");
+      const maples = Array.from({ length: mapleCount }).map(() => {
+        const maple = document.createElement("div");
+        const scale = Math.random() * 0.5 + 0.5;
+        const offset = Math.random() * 2 - 1;
+        const x = Math.random() * mapleEl.clientWidth;
+        const y = -Math.random() * mapleEl.clientHeight;
+        const duration = 10 / speed;
+        const delay = -duration;
+        maple.className = "maple";
+        maple.style.width = `${24 * scale}px`;
+        maple.style.height = `${24 * scale}px`;
+        maple.style.left = `${x}px`;
+        maple.style.top = `${y}px`;
+        maple.style.setProperty("--maple-fall-offset", offset);
+        maple.style.setProperty("--maple-fall-height", `${Math.abs(y) + mapleEl.clientHeight}px`);
+        maple.style.animation = `fall ${duration}s linear infinite`;
+        maple.style.animationDelay = `${delay}s`;
+        mapleEl.appendChild(maple)
+        return maple
+      })
+    });
+  </script>
+  
+
+
+  <div class="fixed top-0 bottom-0 left-0 right-0 pointer-events-none print:hidden" id="maple"></div>
+</body>
+
+</html>

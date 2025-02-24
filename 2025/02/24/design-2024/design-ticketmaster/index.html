@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+
+
+
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+
+
+
+
+<title>System Design 2024 - TicketMaster | Tech blog</title>
+
+
+
+<link rel="icon" href="/images/black-logo.png">
+
+
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/nprogress/nprogress.css">
+
+
+
+<script src="/lib/jquery.min.js"></script>
+
+
+<script src="/lib/iconify-icon.min.js"></script>
+
+
+<script src="https://cdn.tailwindcss.com?plugins=typography"></script>
+<script>
+  tailwind.config = {
+    darkMode: "class",
+  };
+</script>
+
+
+<script src="/lib/nprogress/nprogress.js"></script>
+
+<script>
+  $(document).ready(() => {
+    NProgress.configure({
+      showSpinner: false,
+    });
+    NProgress.start();
+    $("#nprogress .bar").css({
+      background: "#de7441",
+    });
+    $("#nprogress .peg").css({
+      "box-shadow": "0 0 2px #de7441, 0 0 4px #de7441",
+    });
+    $("#nprogress .spinner-icon").css({
+      "border-top-color": "#de7441",
+      "border-left-color": "#de7441",
+    });
+    setTimeout(function () {
+      NProgress.done();
+      $(".fade").removeClass("out");
+    }, 800);
+  });
+</script>
+
+<script>
+  (function () {
+    const prefersDark =
+      window.matchMedia &&
+      window.matchMedia("(prefers-color-scheme: dark)").matches;
+    const setting = localStorage.getItem("hexo-color-scheme") || "auto";
+    if (setting === "dark" || (prefersDark && setting !== "light"))
+      document.documentElement.classList.toggle("dark", true);
+    let isDark = document.documentElement.classList.contains("dark");
+  })();
+
+  $(document).ready(function () {
+    // init icon
+    const prefersDark =
+      window.matchMedia &&
+      window.matchMedia("(prefers-color-scheme: dark)").matches;
+    const isDark = document.documentElement.classList.contains("dark");
+    $("#theme-icon").attr("icon", isDark ? "ri:moon-line" : "ri:sun-line");
+
+    function toggleGiscusTheme() {
+      const isDark = document.documentElement.classList.contains("dark");
+      const giscusFrame = document.querySelector("iframe.giscus-frame");
+      if (giscusFrame) {
+        giscusFrame.contentWindow.postMessage(
+          {
+            giscus: {
+              setConfig: {
+                theme: isDark ? "dark" : "light",
+              },
+            },
+          },
+          "https://giscus.app"
+        );
+      }
+    }
+
+    // toggle dark mode
+    function toggleDark() {
+      let isDark = document.documentElement.classList.contains("dark");
+      const setting = localStorage.getItem("hexo-color-scheme") || "auto";
+      isDark = !isDark;
+      document.documentElement.classList.toggle("dark", isDark);
+      $("#theme-icon").attr("icon", isDark ? "ri:moon-line" : "ri:sun-line");
+      if (prefersDark === isDark) {
+        localStorage.setItem("hexo-color-scheme", "auto");
+      } else {
+        localStorage.setItem("hexo-color-scheme", isDark ? "dark" : "light");
+      }
+      toggleGiscusTheme();
+    }
+
+    // listen dark mode change
+    window
+      .matchMedia("(prefers-color-scheme: dark)")
+      .addEventListener("change", (e) => {
+        const setting = localStorage.getItem("hexo-color-scheme") || "auto";
+        if (setting === "auto") {
+          document.documentElement.classList.toggle("dark", e.matches);
+          $("#theme-icon").attr(
+            "icon",
+            e.matches ? "ri:moon-line" : "ri:sun-line"
+          );
+          toggleGiscusTheme();
+        }
+      });
+
+    $("#toggle-dark").click((event) => {
+      const isAppearanceTransition = document.startViewTransition && !window.matchMedia('(prefers-reduced-motion: reduce)').matches
+      if (!isAppearanceTransition) {
+        toggleDark()
+        return
+      }
+      const x = event.clientX
+      const y = event.clientY
+      const endRadius = Math.hypot(
+        Math.max(x, innerWidth - x),
+        Math.max(y, innerHeight - y),
+      )
+      const transition = document.startViewTransition(async () => {
+        toggleDark()
+      })
+
+      transition.ready
+        .then(() => {
+          const isDark = document.documentElement.classList.contains("dark")
+          const clipPath = [
+            `circle(0px at ${x}px ${y}px)`,
+            `circle(${endRadius}px at ${x}px ${y}px)`,
+          ]
+          document.documentElement.animate(
+            {
+              clipPath: isDark
+                ? [...clipPath].reverse()
+                : clipPath,
+            },
+            {
+              duration: 400,
+              easing: 'ease-out',
+              pseudoElement: isDark
+                ? '::view-transition-old(root)'
+                : '::view-transition-new(root)',
+            },
+          )
+        })
+    });
+  });
+</script>
+
+
+
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+<body class="font-sans bg-white dark:bg-zinc-900 text-gray-700 dark:text-gray-200 relative">
+  <header class="fixed w-full px-5 py-1 z-10 backdrop-blur-xl backdrop-saturate-150 border-b border-black/5">
+  <div class="max-auto">
+    <nav class="flex items-center text-base">
+      <a href="/" class="group">
+        <h2 class="font-medium tracking-tighterp text-l p-2">
+          <img class="w-5 mr-2 inline-block transition-transform group-hover:rotate-[30deg]" id="logo" src="/images/yellow-logo.png" alt="Tech blog" />
+          Tech blog
+        </h2>
+      </a>
+      <div id="header-title" class="opacity-0 md:ml-2 md:mt-[0.1rem] text-xs font-medium whitespace-nowrap overflow-hidden overflow-ellipsis">
+        System Design 2024 - TicketMaster
+      </div>
+      <div class="flex-1"></div>
+      <div class="flex items-center gap-3">
+        
+          <a class="hidden sm:flex" href="/archives">Posts</a>
+        
+        
+          
+            <a class="w-5 h-5 hidden sm:flex" title="Github" target="_blank" rel="noopener" href="https://github.com/mar2ndx/mar2ndx.github.io/">
+              <iconify-icon width="20" icon="ri:github-line"></iconify-icon>
+            </a>
+          
+        
+        <a class="w-5 h-5 hidden sm:flex" title="Github" href="rss2.xml">
+          <iconify-icon width="20" icon="ri:rss-line"></iconify-icon>
+        </a>
+        <a class="w-5 h-5" title="toggle theme" id="toggle-dark">
+          <iconify-icon width="20" icon="" id="theme-icon"></iconify-icon>
+        </a>
+      </div>
+      <div class="flex items-center justify-center gap-3 ml-3 sm:hidden">
+        <span class="w-5 h-5" aria-hidden="true" role="img" id="open-menu">
+          <iconify-icon width="20" icon="carbon:menu" ></iconify-icon>
+        </span>
+        <span class="w-5 h-5 hidden" aria-hidden="true" role="img" id="close-menu">
+          <iconify-icon  width="20" icon="carbon:close" ></iconify-icon>
+        </span>
+      </div>
+    </nav>
+  </div>
+</header>
+<div id="menu-panel" class="h-0 overflow-hidden sm:hidden fixed left-0 right-0 top-12 bottom-0 z-10">
+  <div id="menu-content" class="relative z-20 bg-white/80 px-6 sm:px-8 py-2 backdrop-blur-xl -translate-y-full transition-transform duration-300">
+    <ul class="nav flex flex-col sm:flex-row text-sm font-medium">
+      
+        <li class="nav-portfolio sm:mx-2 border-b sm:border-0 border-black/5 last:border-0 hover:text-main">
+          <a href="/archives" class="flex h-12 sm:h-auto items-center">Posts</a>
+        </li>
+      
+    </ul>
+  </div>
+  <div class="mask bg-black/20 absolute inset-0"></div>
+</div>
+
+  <main class="pt-14">
+    <!-- css -->
+
+<link rel="stylesheet" href="/lib/fancybox/fancybox.min.css">
+
+
+<link rel="stylesheet" href="/lib/tocbot/tocbot.min.css">
+
+<!-- toc -->
+
+  <!-- tocbot -->
+<nav class="post-toc toc text-sm w-48 relative top-32 right-0 opacity-70 hidden lg:block" style="position: fixed !important;"></nav>
+
+
+<section class="px-6 max-w-prose mx-auto md:px-0">
+  <!-- header -->
+  <header class="overflow-hidden pt-6 pb-6 md:pt-12">
+    <div class="pt-4 md:pt-6">
+      <h1 id="article-title" class="text-[2rem] font-bold leading-snug mb-4 md:mb-6 md:text-[2.6rem]">
+        System Design 2024 - TicketMaster
+      </h1>
+      <div>
+        <section class="flex items-center gap-3 text-sm">
+          <span class="flex items-center gap-1">
+            <iconify-icon width="18" icon="carbon-calendar" ></iconify-icon>
+            <time>2025-02-24</time>
+          </span>
+          <span class="text-gray-400">·</span>
+          <span class="flex items-center gap-1">
+            <iconify-icon width="18" icon="ic:round-access-alarm" ></iconify-icon>
+            <span>5 min</span>
+          </span>
+          <span class="text-gray-400">·</span>
+          <span class="flex items-center gap-1">
+            <iconify-icon width="18" icon="icon-park-outline:font-search" ></iconify-icon>
+            <span>922 words</span>
+          </span>
+          
+            <span class="text-gray-400">·</span>
+            <span class="flex items-center gap-1">
+              <iconify-icon width="16" icon="icon-park-outline:box" class="mr-2"></iconify-icon>
+              <a class="article-category-link" href="/categories/Design/">Design</a>
+            </span>
+          
+        </section>
+      </div>
+    </div>
+  </header>
+  <!-- content -->
+  <article class="post-content prose m-auto slide-enter-content dark:prose-invert">
+    <h1 id="Design-TicketMaster"><a href="#Design-TicketMaster" class="headerlink" title="Design TicketMaster"></a>Design TicketMaster</h1><p>We’ll follow the 5-step procedure:</p>
+<ul>
+<li><p>Scenario</p>
+</li>
+<li><p>Numbers</p>
+</li>
+<li><p>API and Database</p>
+<ul>
+<li>[Important] also include HLD schema!</li>
+</ul>
+</li>
+<li><p>Performance</p>
+<ul>
+<li>Sharding and caching.</li>
+</ul>
+</li>
+<li><p>Evolve</p>
+<ul>
+<li>Read some real-world knowledge.</li>
+</ul>
+</li>
+</ul>
+<h1 id="1-Scenario"><a href="#1-Scenario" class="headerlink" title="1. Scenario"></a>1. Scenario</h1><h2 id="Functional-requirement"><a href="#Functional-requirement" class="headerlink" title="Functional requirement"></a>Functional requirement</h2><ol>
+<li>Book a ticket</li>
+<li>View an event</li>
+<li>Event discovery (search)</li>
+</ol>
+<h2 id="Non-Functional-requirement"><a href="#Non-Functional-requirement" class="headerlink" title="Non-Functional requirement"></a>Non-Functional requirement</h2><ol>
+<li>For search and viewing: <strong>High availability</strong>.</li>
+<li>However for booking, <strong>favor consistency</strong> over availability (avoid double booking)</li>
+<li>Scalability: support surges from popular events</li>
+<li>Minimize latency</li>
+</ol>
+<h3 id="Out-of-scope"><a href="#Out-of-scope" class="headerlink" title="Out of scope:"></a>Out of scope:</h3><ol>
+<li>GDPR compliance</li>
+<li>Fault tolerance</li>
+</ol>
+<h1 id="2-Numbers"><a href="#2-Numbers" class="headerlink" title="2. Numbers"></a>2. Numbers</h1><p>Skip.</p>
+<h1 id="3-API-and-Database"><a href="#3-API-and-Database" class="headerlink" title="3. API and Database"></a>3. API and Database</h1><h2 id="Core-entities"><a href="#Core-entities" class="headerlink" title="Core entities"></a>Core entities</h2><ol>
+<li>Event</li>
+<li>Venue</li>
+<li>Performer</li>
+<li>Ticket</li>
+</ol>
+<h2 id="API-design"><a href="#API-design" class="headerlink" title="API design"></a>API design</h2><p>Create an API for each of the functional requirements, and in exchange return entities in your core entities section. </p>
+<ul>
+<li>GET <code>/event/:eventId</code> -&gt; Event &amp; Venue &amp; Performer &amp; Ticket[]</li>
+<li>Get <code>/search?term=&#123;text&#125;&amp;location=&#123;lat,long&#125;&amp;type=&#123;string&#125;&amp;date=&#123;date&#125;</code> -&gt; Partial<Events>[] <ul>
+<li>It’s inspired by TypeScript, it’s perfectly fine to return array of events</li>
+</ul>
+</li>
+<li>POST <code>/booking/reserve</code> -&gt; hold the ticket for 10 minutes<ul>
+<li>Note that booking is a 2-phase process. <ol>
+<li>choose a seat (reserve phase)</li>
+<li>a timer count-down starts (eg. 10 minutes)</li>
+<li>pay within 10 minutes</li>
+</ol>
+</li>
+<li>Request example:</li>
+</ul>
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">header: JWT | sessionToken # this includes user&#x27;s information.</span><br><span class="line">body: &#123;</span><br><span class="line">    ticketId</span><br><span class="line">    # Please do not include userId here for security reason, since hacker could alter it</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>POST <code>/booking/confirm</code>  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">header: JWT | sessionToken # Never put usre&#x27;s ID in the request body.</span><br><span class="line">body: &#123;</span><br><span class="line">    ticketId,</span><br><span class="line">    paymentDetails (eg. for Stripe, there is a PaymentIntents that can be setup in client library),</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="Data-Model"><a href="#Data-Model" class="headerlink" title="Data Model"></a>Data Model</h2><ol>
+<li>Event table</li>
+<li>Venue - seatMap</li>
+<li>Performer</li>
+<li>Ticket - seat, price</li>
+</ol>
+<h3 id="Postgres-or-NoSQL"><a href="#Postgres-or-NoSQL" class="headerlink" title="Postgres or NoSQL?"></a>Postgres or NoSQL?</h3><p>Postgres (a SQL database) is easy to use, since it supports Transactions, support SQL queries, supports asset properties on Tickets. </p>
+<p>Well, Amazon’s DynamoDB (noSQL) also works. It also supports <strong>asset property</strong>. </p>
+<h2 id="HLD"><a href="#HLD" class="headerlink" title="HLD"></a>HLD</h2><p><img src="/images/system-design-ticketmaster-1.png"></p>
+<h3 id="To-book-a-ticket"><a href="#To-book-a-ticket" class="headerlink" title="To book a ticket"></a>To book a ticket</h3><p>Option 1 : keep a status column in the ticket table, another column called statusUpdateTime. </p>
+<p>If the status is “available”, or status is “reverved” but the statusUpdateTime is &gt;10min ago, that means the ticket is supposed to be released, and can be booked again.</p>
+<p>This design is horrible. </p>
+<p>Option 2 : Setup a cron job</p>
+<p>This job will periodically update the ticket reserve&#x2F;book status. </p>
+<p>This is still, not very much real-time. </p>
+<p>Option 3 : Keep a seperate service called “TicketLock”, using Redis. </p>
+<p>This is a <em>Distributed Lock</em>_. </p>
+<p>Instead of modifying our Ticket table, use Redis to keep all reserved ticket, with value like this: {ticketId, true} ttl &#x3D; 600 seconds. </p>
+<p>After 10 minutes, this K-V pair is automatically deleted from Redis.</p>
+<p>Steps: </p>
+<ol>
+<li>User request tickets with status &#x3D; available</li>
+<li>backend check Redis and remove all tickets that exists in the Redis</li>
+<li>User request to book ticket 1234</li>
+<li>add {1234, true} to Redis with ttl&#x3D;600</li>
+<li>10 minutes later without payment confirmation, Redis removes {1234, true}</li>
+<li>User comes back after 15 minutes, ticket 1234 is still available for booking.</li>
+</ol>
+<p>Q: what if the lock goes down?</p>
+<ol>
+<li>Immediately bring on up</li>
+<li>Many user will be able to book the system ticket (double book problem).</li>
+<li>Whoever submitted payment first, will win the ticket.</li>
+</ol>
+<h1 id="4-Performance"><a href="#4-Performance" class="headerlink" title="4. Performance"></a>4. Performance</h1><p>For performance deep-dive, show off your skills, especially if you are senior&#x2F;staff level. </p>
+<p>Find 1~3 places where you can optimize. Find from your non-functional requirements section. </p>
+<h2 id="4-1-Search-with-low-latency"><a href="#4-1-Search-with-low-latency" class="headerlink" title="4.1 Search with low-latency"></a>4.1 Search with low-latency</h2><p>Currently: full-table scan. </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Select * from DB</span><br><span class="line">Where type in []</span><br><span class="line">AND name like &quot;%term%&quot;</span><br></pre></td></tr></table></figure>
+
+<p>This is bad, since the wildcard means I need to do DB-scan on the entire table. </p>
+<p>New solution: ElasticSearch.</p>
+<ol>
+<li>Build an inverted-index to make searching document by ‘terms’ really fast. </li>
+<li>Tokenize the sets of strings, eg. “Golden state warriors” is a term. </li>
+<li>Map this term to the events. like this: <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">playoff: [event1, event2, event3, event4]</span><br><span class="line">swift: [event45, event134, event93]</span><br></pre></td></tr></table></figure></li>
+<li>ElasticSearch supports Geo-spacial queries as well.</li>
+<li>You can search a combination of {locations, date, terms} at the same time.</li>
+</ol>
+<p>Note: don’t use ElasticSearch as primary DB, learnt it the hard way.</p>
+<h2 id="4-2-How-to-sync-data-between-Postgres-and-ElasticSearch"><a href="#4-2-How-to-sync-data-between-Postgres-and-ElasticSearch" class="headerlink" title="4.2 How to sync data between Postgres and ElasticSearch"></a>4.2 How to sync data between Postgres and ElasticSearch</h2><p>Option 1 : write to both primary data store, and also ElasticSearch</p>
+<p>Not good. Retries happen. </p>
+<p>Option 2 : Change data capture (CDC)</p>
+<p>For any updates to Posgres, create a stream of change events, and consumed by ElasticSearch.</p>
+<p>There’s a limit for number of writes per second. </p>
+<h2 id="4-3-Handle-popular-events"><a href="#4-3-Handle-popular-events" class="headerlink" title="4.3 Handle popular events?"></a>4.3 Handle popular events?</h2><p>Caching. </p>
+<p>Option 1 : OpenSearch. </p>
+<p>AWS OpenSearch is a fully-managed ElasticSearch. It supports ‘node query caching’. </p>
+<p>It will cache the top 10K queries for each shard on your ElasticSearch cluster, using the Least recently used (LRU) Cache. </p>
+<p>Option 2 : cache &lt;search term, result&gt; K-V into Redis. </p>
+<p>Option 3 : You already got a CDN, cache API called and response. </p>
+<p>eg. people search “taylor swift” a lot, put this result in CDN cache. </p>
+<h2 id="4-4-Event-Ranking-and-Reco"><a href="#4-4-Event-Ranking-and-Reco" class="headerlink" title="4.4 Event Ranking and Reco?"></a>4.4 Event Ranking and Reco?</h2><p>Not covered. </p>
+<h1 id="5-Evolve"><a href="#5-Evolve" class="headerlink" title="5. Evolve"></a>5. Evolve</h1><h2 id="SeatMap-user-experience"><a href="#SeatMap-user-experience" class="headerlink" title="SeatMap user experience"></a>SeatMap user experience</h2><p>Front-end need to keep a HTTP-based long-pull to update seat map in real-time. </p>
+<p>Also, can use bi-directional persistent connection like WebSocket. </p>
+<p>Similarly, open a connection of Server-sent events (SSE). </p>
+<p>Keep difference:</p>
+<ol>
+<li>WebSocket is bi-directional.</li>
+<li>SSE is uni-directional.</li>
+</ol>
+<h2 id="Everyone-sees-a-black-map"><a href="#Everyone-sees-a-black-map" class="headerlink" title="Everyone sees a black map"></a>Everyone sees a black map</h2><p>For super-popular events, every seat is reserved with 1 seconds. </p>
+<p>Introduce a choke-point (essentially, a virtual waiting queue), using Redis. K-V will be like &lt;userId, token&gt;</p>
+<p>Basically, before user enters an event page, tell users to “please wait to enter this page”. Each time, only allow 100 people book tickets for a single event. </p>
+<h2 id="How-to-achive-strong-consistency"><a href="#How-to-achive-strong-consistency" class="headerlink" title="How to achive strong consistency?"></a>How to achive strong consistency?</h2><p>TicketLock using Redis.</p>
+
+  </article>
+  <!-- tag -->
+  <div class="mt-12 pt-6 border-t border-gray-200">
+    
+  </div>
+  <!-- prev and next -->
+  <div class="flex justify-between mt-12 pt-6 border-t border-gray-200">
+    <div>
+      
+        <a href="/2025/02/24/design-2024/explain-llm/" class="text-sm text-gray-400 hover:text-gray-500 flex justify-center">
+          <iconify-icon width="20" icon="ri:arrow-left-s-line" data-inline="false"></iconify-icon>
+          Explain LLM in Simple Terms
+        </a>
+      
+    </div>
+    <div>
+      
+        <a href="/2025/02/24/design-2024/design-twitter/" class="text-sm text-gray-400 hover:text-gray-500 flex justify-center">
+          System Design 2024 - Twitter
+          <iconify-icon width="20" icon="ri:arrow-right-s-line" data-inline="false"></iconify-icon>
+        </a>
+      
+    </div>
+  </div>
+  <!-- comment -->
+  <div class="article-comments mt-12">
+    
+
+  </div>
+</section>
+<!-- js inspect -->
+
+<script src="/lib/clipboard.min.js"></script>
+
+
+<script async src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+        preferredFont: "TeX",
+        availableFonts: ["STIX","TeX"],
+        linebreaks: { automatic:true },
+        EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+        inlineMath: [ ["$", "$"], ["\\(","\\)"] ],
+        processEscapes: true,
+        ignoreClass: "tex2jax_ignore|dno",
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+        equationNumbers: { autoNumber: "AMS" },
+        noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } },
+        Macros: { href: "{}" }
+    },
+    messageStyle: "none"
+  });
+</script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+  });
+</script>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<script>
+  $(document).ready(() => {
+    const maraidConfig = {
+      theme: "default",
+      logLevel: 3,
+      flowchart: { curve: "linear" },
+      gantt: { axisFormat: "%m/%d/%Y" },
+      sequence: { actorMargin: 50 },
+    };
+    mermaid.initialize(maraidConfig);
+  });
+</script>
+
+
+
+<script src="/lib/fancybox/fancybox.umd.min.js"></script>
+
+<script>
+  $(document).ready(() => {
+    $('.post-content').each(function(i){
+      $(this).find('img').each(function(){
+        if ($(this).parent().hasClass('fancybox') || $(this).parent().is('a')) return;
+        var alt = this.alt;
+        if (alt) $(this).after('<span class="fancybox-alt">' + alt + '</span>');
+        $(this).wrap('<a class="fancybox-img" href="' + this.src + '" data-fancybox=\"gallery\" data-caption="' + alt + '"></a>')
+      });
+      $(this).find('.fancybox').each(function(){
+        $(this).attr('rel', 'article' + i);
+      });
+    });
+
+    Fancybox.bind('[data-fancybox="gallery"]', {
+        // options
+    })
+  })
+</script>
+
+<!-- tocbot begin -->
+
+<script src="/lib/tocbot/tocbot.min.js"></script>
+
+<script>
+  $(document).ready(() => {
+      tocbot.init({
+        // Where to render the table of contents.
+        tocSelector: '.post-toc',
+        // Where to grab the headings to build the table of contents.
+        contentSelector: '.post-content',
+        // Which headings to grab inside of the contentSelector element.
+        headingSelector: 'h1, h2, h3',
+        // For headings inside relative or absolute positioned containers within content.
+        hasInnerContainers: true,
+    });
+  })
+</script>
+<!-- tocbot end -->
+
+
+  </main>
+  <footer class="flex flex-col h-40 items-center justify-center text-gray-400 text-sm">
+  <!-- busuanzi -->
+  
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<!-- Busuanzi Analytics -->
+<div class="flex items-center gap-2">
+  <span>Visitors</span>
+  <span id="busuanzi_value_site_uv"></span>
+  <span>Page Views</span>
+  <span id="busuanzi_value_site_pv"></span>
+</div>
+<!-- End Busuanzi Analytics -->
+
+
+  <!-- copyright -->
+  <div class="flex items-center gap-2">
+    <a target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/" style="color: inherit;">CC BY-NC-SA 4.0</a>
+    <span>© 2022</span>
+    <iconify-icon width="18" icon="emojione-monotone:maple-leaf" ></iconify-icon>
+    <a href="https://github.com/xbmlz" target="_blank" rel="noopener noreferrer">xbmlz</a>
+  </div>
+  <!-- powered by -->
+  <div class="flex items-center gap-2">
+    <span>Powered by</span>
+    <a href="https://hexo.io/" target="_blank" rel="noopener noreferrer">Hexo</a>
+    <span>&</span>
+    <a href="https://github.com/xbmlz/hexo-theme-maple" target="_blank" rel="noopener noreferrer">Maple</a>
+  </div>
+
+</footer>
+
+  <div class="back-to-top box-border fixed right-6 z-1024 -bottom-20 rounded py-1 px-1 bg-slate-900 opacity-60 text-white cursor-pointer text-center dark:bg-slate-600">
+    <span class="flex justify-center items-center text-sm">
+      <iconify-icon width="18" icon="ion:arrow-up-c" id="go-top"></iconify-icon>
+      <span id="scrollpercent"><span>0</span> %</span>
+    </span>
+  </div>
+  
+<script src="/js/main.js"></script>
+
+
+  <script>
+    $(document).ready(function () {
+      const mapleCount = "10";
+      const speed = "0.5";
+      const mapleEl = document.getElementById("maple");
+      const maples = Array.from({ length: mapleCount }).map(() => {
+        const maple = document.createElement("div");
+        const scale = Math.random() * 0.5 + 0.5;
+        const offset = Math.random() * 2 - 1;
+        const x = Math.random() * mapleEl.clientWidth;
+        const y = -Math.random() * mapleEl.clientHeight;
+        const duration = 10 / speed;
+        const delay = -duration;
+        maple.className = "maple";
+        maple.style.width = `${24 * scale}px`;
+        maple.style.height = `${24 * scale}px`;
+        maple.style.left = `${x}px`;
+        maple.style.top = `${y}px`;
+        maple.style.setProperty("--maple-fall-offset", offset);
+        maple.style.setProperty("--maple-fall-height", `${Math.abs(y) + mapleEl.clientHeight}px`);
+        maple.style.animation = `fall ${duration}s linear infinite`;
+        maple.style.animationDelay = `${delay}s`;
+        mapleEl.appendChild(maple)
+        return maple
+      })
+    });
+  </script>
+  
+
+
+  <div class="fixed top-0 bottom-0 left-0 right-0 pointer-events-none print:hidden" id="maple"></div>
+</body>
+
+</html>
