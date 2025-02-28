@@ -1,9 +1,11 @@
 ---
 title: 2285. Maximum Total Importance of Roads
-comments: true
 category: Leetcode
 tags: []
+comments: true
+date: 2024-07-16 20:30
 ---
+
 
 Link: [2285. Maximum Total Importance of Roads](https://leetcode.cn/problems/maximum-total-importance-of-roads/solutions/1523886/by-endlesscheng-9p6y/)
 

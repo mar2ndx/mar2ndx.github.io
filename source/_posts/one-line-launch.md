@@ -1,8 +1,11 @@
 ---
 title: One-line launch anything from Mac OS
+category: unknown
+tags: []
+comments: true
 date: 2024-11-30
-tags:
 ---
+
 
 Consider you have a monorepo with Next.js frontend and FastAPI backend:
 

@@ -1,8 +1,11 @@
 ---
 title: Blocking/non-blocking in Python with async/await
+category: unknown
+tags: []
+comments: true
 date: 2024-12-01 00:00:00
-tags:
 ---
+
 
 When to use async/await in Python?
 

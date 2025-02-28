@@ -1,8 +1,11 @@
 ---
 title: Docker compose tutorial
+category: unknown
+tags: []
+comments: true
 date: 2024-12-03
-tags:
 ---
+
 
 Let's start with a simple example.
 

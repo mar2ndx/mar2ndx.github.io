@@ -1,8 +1,11 @@
 ---
 title: How to deploy to Github pages in Year 2025
+category: unknown
+tags: []
+comments: true
 date: 2025-02-23 01:35:43
-tags:
 ---
+
 
 I have a love-hate relationship with Github Pages. 
 

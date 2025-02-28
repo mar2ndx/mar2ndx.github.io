@@ -1,9 +1,11 @@
 ---
 title: 2341. Maximum Number of Pairs in Array
-comments: true
 category: Leetcode
 tags: []
+comments: true
+date: 2024-07-16 18:39
 ---
+
 
 Link: [2341. Maximum Number of Pairs in Array](https://leetcode.cn/problems/maximum-number-of-pairs-in-array/description/)
 
