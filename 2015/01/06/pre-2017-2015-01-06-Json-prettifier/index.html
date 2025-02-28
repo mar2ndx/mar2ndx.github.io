@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    [Facebook] Write a Json prettifier  丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">[Facebook] Write a Json prettifier </div>
+  <div class="post-meta">
+    <div class="date">2015 January 6th</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><p><a target="_blank" rel="noopener" href="http://www.glassdoor.com/Interview/Write-a-function-to-prettify-Json-objects-QTN_151361.htm">link</a></p>
+<p>Input:<br>	{“firstName”:”John”,”lastName”:”Smith”,”isAlive”:true,”age” :25,”height_cm”:167.6,”address”:{“streetAddress”:”212ndStre et”,”city”:”NewYork”,”state”:”NY”,”postalCode”:”10021-3100” },”phoneNumbers”:[{“type”:”home”,”number”:”212555-1234”},{“ type”:”office”,”number”:”646555-4567”}],”children”:[],”spou se”:null}</p>
+<p>Output:</p>
+<pre><code>&#123;
+  &quot;firstName&quot;: &quot;John&quot;,
+  &quot;lastName&quot;: &quot;Smith&quot;,
+  &quot;isAlive&quot;: true,
+  &quot;age&quot;: 25,
+  &quot;height_cm&quot;: 167.6,
+  &quot;address&quot;: &#123;
+    &quot;streetAddress&quot;: &quot;21 2nd Street&quot;,
+    &quot;city&quot;: &quot;New York&quot;,
+    &quot;state&quot;: &quot;NY&quot;,
+    &quot;postalCode&quot;: &quot;10021-3100&quot;
+  &#125;,
+  &quot;phoneNumbers&quot;: [
+    &#123;
+      &quot;type&quot;: &quot;home&quot;,
+      &quot;number&quot;: &quot;212 555-1234&quot;
+    &#125;,
+    &#123;
+      &quot;type&quot;: &quot;office&quot;,
+      &quot;number&quot;: &quot;646 555-4567&quot;
+    &#125;
+  ],
+  &quot;children&quot;: [],
+  &quot;spouse&quot;: null
+&#125;
+</code></pre>
+<h3 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h3><p>Since I did not find anything useful online, I spent an hour writing the following code. These are the things to take into consideration:</p>
+<ol>
+<li><p><strong>Line break</strong> after a comma, a left bracket, or prior to a right bracket. A special pattern is “},” - we only do line break once after the comma. </p>
+</li>
+<li><p><strong>Indentation</strong> is important. It’s a little complex cuz we reduce indentation <strong>BEFORE</strong> printing out a right bracket, but increase indentation <strong>AFTER the left bracket</strong>.</p>
+</li>
+</ol>
+<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><pre><code>public void prettify(String input) throws Exception &#123;
+
+	// observation the rules for Json format:
+	// 1. each line end with either a &#123; , or &#125;
+	// 2. indentation depends on number of brackets
+	int len = input.length();
+	int left = 0;
+	int right = 0;
+	int tab = 0;
+
+	while (left &lt; len) &#123;
+		// first, advance right pointer to the next line break point
+		while (right &lt; len) &#123;
+			if (input.charAt(right) == &#39;&#125;&#39; || input.charAt(right) == &#39;]&#39;) &#123;
+				// first case, if point to a closing bracket
+				tab--;
+				// indentation should change right away should we find a
+				// closing bracket
+				if (right + 1 &lt; len &amp;&amp; input.charAt(right + 1) != &#39;,&#39;) &#123;
+					break;
+				&#125;
+			&#125; else if (input.charAt(right) == &#39;,&#39;
+					|| input.charAt(right) == &#39;&#123;&#39;
+					|| input.charAt(right) == &#39;[&#39;) &#123;
+				// second case, break at , or &#123;
+				break;
+			&#125; else if (right + 1 &lt; len
+					&amp;&amp; (input.charAt(right + 1) == &#39;&#125;&#39; || input
+							.charAt(right + 1) == &#39;]&#39;)) &#123;
+				// third case, break prior to &#125;
+				// we need not swap the order of first and third case,
+				// because when we found a closing bracket, we need to
+				// change indentation right away
+				break;
+			&#125;
+			right++;
+		&#125;
+
+		// now print the chars from left pointer to right inclusively
+		if (right == len) &#123;
+			// end of input
+			if (tab != 0) &#123;
+				throw new Exception(&quot;Json format error!&quot;);
+			&#125;
+			right--;
+			// this is for the convenience of printing last line
+		&#125;
+		printIndentation(tab);
+		System.out.println(input.substring(left, right + 1));
+		if (input.charAt(right) == &#39;&#123;&#39; || input.charAt(right) == &#39;[&#39;) &#123;
+			tab++;
+		&#125;
+
+		// last, update pointers
+		left = ++right;
+	&#125;
+&#125;
+
+private void printIndentation(int tab) &#123;
+	for (int i = 0; i &lt; tab; i++) &#123;
+		System.out.print(&quot;    &quot;);
+	&#125;
+&#125;
+</code></pre>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

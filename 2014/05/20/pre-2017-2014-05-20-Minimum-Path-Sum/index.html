@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    [LeetCode 64] Minimum Path Sum 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">[LeetCode 64] Minimum Path Sum</div>
+  <div class="post-meta">
+    <div class="date">2014 May 20th</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><p><a target="_blank" rel="noopener" href="http://oj.leetcode.com/problems/minimum-path-sum/">link</a></p>
+<div class="question-content">
+            <p></p><p>Given a <i>m</i> x <i>n</i> grid filled with non-negative numbers, find a path from top left to bottom right which <i>minimizes</i> the sum of all numbers along its path.</p>
+
+<p><b>Note:</b> You can only move either down or right at any point in time.</p><p></p>
+          </div>
+
+<h3 id="Stats"><a href="#Stats" class="headerlink" title="Stats"></a>Stats</h3><table border="2">
+	<tr>
+		<td>Frequency</td>
+		<td bgcolor="yellow">3</td>
+	</tr>
+	<tr>
+		<td>Difficulty</td>
+		<td bgcolor="yellow">3</td>
+	</tr>
+	<tr>
+		<td>Adjusted Difficulty</td>
+		<td bgcolor="lime">2</td>
+	</tr>
+	<tr>
+		<td>Time to use</td>
+		<td bgcolor="lime">--------</td>
+	</tr>
+</table>
+
+<p>Ratings&#x2F;Color &#x3D; 1(white) 2(lime) 3(yellow) 4&#x2F;5(red)</p>
+<h3 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h3><p><strong>This is a very easy DP problem</strong>.</p>
+<p>But this is not a boring question because I found a few interesting solutions.</p>
+<h3 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h3><p><strong>Code 1 is 2-D DP</strong>.</p>
+<p><strong>2nd code is from <a target="_blank" rel="noopener" href="http://fisherlei.blogspot.sg/2012/12/leetcode-minimum-path-sum.html">this blog</a></strong>. Instead of 2-D array, it simply uses a “rotational array” (滚动数组), or 1-D array.</p>
+<p><strong>3rd code is using no extra space</strong>. It works in place.</p>
+<h3 id="My-code"><a href="#My-code" class="headerlink" title="My code"></a>My code</h3><p><strong>2D array</strong></p>
+<pre><code>public class Solution &#123;
+    public int minPathSum(int[][] grid) &#123;
+        if (grid == null || grid.length == 0) &#123;
+            return 0;
+        &#125;
+        int m = grid.length;
+        int n = grid[0].length;
+        int[][] dp = new int[m][n];
+        for (int i = 0; i &lt; m; i++) &#123;
+            for (int j = 0; j &lt; n; j++) &#123;
+                if (i == 0 &amp;&amp; j == 0) &#123;
+                    dp[i][j] = grid[i][j];
+                &#125; else if (i == 0) &#123;
+                    dp[i][j] = grid[i][j] + dp[i][j - 1];
+                &#125; else if (j == 0) &#123;
+                    dp[i][j] = grid[i][j] + dp[i - 1][j];
+                &#125; else &#123;
+                    dp[i][j] = grid[i][j] + Math.min(dp[i - 1][j], dp[i][j - 1]);
+                &#125;
+            &#125;
+        &#125;
+        return dp[m - 1][n - 1];
+    &#125;
+&#125;
+</code></pre>
+<p><strong>1-D array</strong></p>
+<pre><code>public int minPathSum(int[][] grid) &#123;
+    if (grid.length == 0) return 0;
+    if (grid[0].length == 0) return 0;
+    int[] dp = new int[grid[0].length];
+    for (int i = 0; i &lt; grid.length; i ++)
+        for (int j = 0; j &lt; grid[0].length; j ++)
+            if (i == 0 &amp;&amp; j == 0) dp[j] = grid[0][0];
+            else if (i == 0) dp[j] = dp[j-1] + grid[i][j];
+            else if (j == 0) dp[j] += grid[i][j];
+            else dp[j] = Math.min(dp[j-1], dp[j]) + grid[i][j];
+    return dp[dp.length-1];
+&#125;
+</code></pre>
+<p><strong>in-place</strong></p>
+<pre><code>public int minPathSum(int[][] grid) &#123;
+    if (grid.length == 0) return 0;
+    if (grid[0].length == 0) return 0;
+    for (int i = 0; i &lt; grid.length; i ++)
+        for (int j = 0; j &lt; grid[0].length; j ++)
+            if (i == 0 &amp;&amp; j == 0) continue;
+            else if (i == 0) grid[i][j] = grid[i][j] + grid[i][j-1];
+            else if (j == 0) grid[i][j] = grid[i][j] + grid[i-1][j];
+            else grid[i][j] = Math.min(grid[i-1][j], grid[i][j-1]) + grid[i][j];
+    return grid[grid.length-1][grid[0].length-1];
+&#125;
+</code></pre>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

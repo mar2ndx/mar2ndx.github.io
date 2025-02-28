@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    [LintCode] Partition Array 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">[LintCode] Partition Array</div>
+  <div class="post-meta">
+    <div class="date">2014 June 28th</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><p><a target="_blank" rel="noopener" href="http://www.lintcode.com/en/problem/partition-array/">link</a></p>
+<blockquote>
+<p>Given an array “nums” of integers and an int “k”, Partition the array (i.e move the elements in “nums”) such that,</p>
+</blockquote>
+<blockquote>
+<ol>
+<li>All elements &lt; k are moved to the left</li>
+<li>All elements &gt;&#x3D; k are moved to the right</li>
+</ol>
+</blockquote>
+<blockquote>
+<p>Return the partitioning Index, i.e the first index “i” nums[i] &gt;&#x3D; k.</p>
+</blockquote>
+<blockquote>
+<p>Example: If nums&#x3D;[3,2,2,1] and k&#x3D;2, a valid answer is 1.</p>
+</blockquote>
+<h3 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h3><p>The solution is to keep swapping elements. It confuses me for a while, until I realize the swapping mechanism is actually not difficult.</p>
+<p>There’s another question on leetcode “Sort Color”, which is similar to this question (just partition twice).</p>
+<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><pre><code>public int partitionArray(ArrayList&lt;Integer&gt; nums, int k) &#123;
+    //write your code here
+	ArrayList&lt;Integer&gt; ans = new ArrayList&lt;Integer&gt;();
+	if (nums == null || nums.size() == 0) &#123;
+		return ans;
+	&#125;
+	int len = nums.size();
+	int left = 0;
+	int right = len - 1;
+	while (left &lt; right) &#123;
+		while (left &lt; len &amp;&amp; nums.get(left) &lt; k) &#123;
+			left++;
+		&#125;
+		while (right &gt;= 0 &amp;&amp; nums.get(right) &gt;= k) &#123;
+			right--;
+		&#125;
+		if (left &gt; right) &#123;
+			break;
+		&#125; else &#123;
+			// swap 2 elements
+			int temp = nums.get(left);
+			nums.set(left, nums.get(right));
+			nums.set(right, temp);
+			left++;
+			right--;
+		&#125;
+	&#125;
+	// now return the correct value
+	if (left == len) &#123;
+		return len;
+	&#125; else &#123;
+		return left;
+	&#125;
+&#125;
+</code></pre>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    [Facebook] Print a Binary Tree in Vertical Order  丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">[Facebook] Print a Binary Tree in Vertical Order </div>
+  <div class="post-meta">
+    <div class="date">2014 December 17th</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><p><a target="_blank" rel="noopener" href="http://www.geeksforgeeks.org/print-binary-tree-vertical-order/">link</a></p>
+<blockquote>
+<p>Given a binary tree, print it vertically. The following example illustrates vertical order traversal.</p>
+</blockquote>
+<pre><code>           1
+        /    \
+       2      3
+      / \    / \
+     4   5  6   7
+             \   \
+              8   9 
+
+The output of print this tree vertically will be:
+4
+2
+1 5 6
+3 8
+7
+9 
+</code></pre>
+<h3 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h3><ol>
+<li><p>Traverse the tree once and get the minimum and maximum horizontal distance with respect to root. </p>
+</li>
+<li><p>Iterate the tree and for each vertical line, fill in the values.</p>
+</li>
+</ol>
+<p>Now, getting the width of tree requires O(n) time. And entire solution is O(n) using a <strong><a href="www.geeksforgeeks.org/print-binary-tree-vertical-order-set-2/">HashMap</a></strong>. </p>
+<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><pre><code>public List&lt;List&lt;Integer&gt;&gt; printVertically(TreeNode root) &#123;
+    List&lt;List&lt;Integer&gt;&gt; ans = new ArrayList&lt;List&lt;Integer&gt;&gt;();
+
+    // 1. find the range of left bound and right bound
+    int[] range = new int[2];
+    findRange(root, range, 0);
+
+    // 2. calculate number of columns in the result
+    int rootIndex = 0 - range[0];
+    int columns = range[1] - range[0] + 1;
+    for (int i = 0; i &lt; columns; i++) &#123;
+        ans.add(new ArrayList&lt;Integer&gt;());
+    &#125;
+    
+    // 3. fill in vertically in a recursive manner
+    fillNode(ans, root, rootIndex);
+
+    return ans;
+&#125;
+
+private void fillNode(List&lt;List&lt;Integer&gt;&gt; ans, TreeNode node, int index) &#123;
+    if (node == null) &#123;
+        return;
+    &#125;
+    ans.get(index).add(node.val);
+    fillNode(ans, node.left, index - 1);
+    fillNode(ans, node.right, index + 1);
+&#125;
+
+private void findRange(TreeNode node, int[] range, int position) &#123;
+    if (node == null) &#123;
+        return;
+    &#125;
+    if (position &lt; range[0]) &#123;
+        range[0] = position;
+    &#125;
+    if (position &gt; range[1]) &#123;
+        range[1] = position;
+    &#125;
+    findRange(node.left, range, position - 1);
+    findRange(node.right, range, position + 1);
+&#125;
+</code></pre>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

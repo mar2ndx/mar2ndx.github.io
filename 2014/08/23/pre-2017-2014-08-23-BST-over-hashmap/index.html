@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    [Design] Merits of BST over HashTables 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">[Design] Merits of BST over HashTables</div>
+  <div class="post-meta">
+    <div class="date">2014 August 23rd</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><p><a target="_blank" rel="noopener" href="http://stackoverflow.com/questions/4128546/advantages-of-binary-search-trees-over-hash-tables">What are the advantages</a> of binary search trees over hash tables?</p>
+<h3 id="Answer"><a href="#Answer" class="headerlink" title="Answer"></a>Answer</h3><ol>
+<li><p><strong>More memory-efficient</strong>. (They do not reserve more memory than they need to)</p>
+<p>For instance, if a hash function has a range R(h) &#x3D; 0…100, then you need to allocate an array of 100 (pointers-to) elements, even if you are just hashing 20 elements.</p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="http://stackoverflow.com/a/4128585">Inorder traverse</a>.</p>
+</li>
+<li><p>Collision might hamper HashMap’s performance.</p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="http://stackoverflow.com/a/4129272">Resizing issue</a></p>
+<p>When the hash table pressure grows too much, you often tend to enlargen and reallocate the hash table. The BST has simpler behavior here and does not tend to suddenly allocate a lot of data and do a rehashing operation.</p>
+</li>
+<li><p>Binary search tree do range searches efficiently.</p>
+</li>
+</ol>
+<h3 id="One-more-thing"><a href="#One-more-thing" class="headerlink" title="One more thing"></a>One more thing</h3><p><strong>Trees tend to be the <a target="_blank" rel="noopener" href="http://stackoverflow.com/a/19896875">ultimate average data structure</a></strong>. They can act as lists, can easily be split for parallel operation, have fast removal, insertion and lookup on the order of O(lgn). They do nothing particularly well, but they don’t have any excessively bad behavior either.</p>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

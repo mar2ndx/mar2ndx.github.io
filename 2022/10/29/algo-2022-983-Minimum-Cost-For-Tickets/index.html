@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    983. Minimum Cost For Tickets 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">983. Minimum Cost For Tickets</div>
+  <div class="post-meta">
+    <div class="date">2022 October 29th</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><p>Link: <a target="_blank" rel="noopener" href="https://leetcode.cn/problems/minimum-cost-for-tickets/">https://leetcode.cn/problems/minimum-cost-for-tickets/</a></p>
+<h1 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h1><p>difficulty: mid<br>adj diff: 4</p>
+<pre><code>You have planned some train traveling one year in advance. The days of the year in which you will travel are given as an integer array days. Each day is an integer from 1 to 365.
+
+Train tickets are sold in three different ways:
+
+	a 1-day pass is sold for costs[0] dollars,
+	a 7-day pass is sold for costs[1] dollars, and
+	a 30-day pass is sold for costs[2] dollars.
+
+The passes allow that many days of consecutive travel.
+
+	For example, if we get a 7-day pass on day 2, then we can travel for 7 days: 2, 3, 4, 5, 6, 7, and 8.
+
+Return the minimum number of dollars you need to travel every day in the given list of days.
+
+Example 1:
+
+Input: days = [1,4,6,7,8,20], costs = [2,7,15]
+Output: 11
+Explanation: For example, here is one way to buy passes that lets you travel your travel plan:
+On day 1, you bought a 1-day pass for costs[0] = $2, which covered day 1.
+On day 3, you bought a 7-day pass for costs[1] = $7, which covered days 3, 4, ..., 9.
+On day 20, you bought a 1-day pass for costs[0] = $2, which covered day 20.
+In total, you spent $11 and covered all the days of your travel.
+
+Example 2:
+
+Input: days = [1,2,3,4,5,6,7,8,9,10,30,31], costs = [2,7,15]
+Output: 17
+Explanation: For example, here is one way to buy passes that lets you travel your travel plan:
+On day 1, you bought a 30-day pass for costs[2] = $15 which covered days 1, 2, ..., 30.
+On day 31, you bought a 1-day pass for costs[0] = $2 which covered day 31.
+In total, you spent $17 and covered all the days of your travel.
+
+Constraints:
+
+	1 &lt;= days.length &lt;= 365
+	1 &lt;= days[i] &lt;= 365
+	days is in strictly increasing order.
+	costs.length == 3
+	1 &lt;= costs[i] &lt;= 1000
+</code></pre>
+<p>这道题的难点在于：动态规划不是从 1 到 n 这么简单，而是通过 days array 跳着来。</p>
+<p>中间跳过的天数，一律 fill with 之前的值。eg. dp[] &#x3D; {0, 2, 2, 2, 4, 4, 4, 4, 12, 12, 12, 12, 12, 12….}</p>
+<h1 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">public int mincostTickets(int[] days, int[] costs) &#123;</span><br><span class="line">    int len = days.length;</span><br><span class="line">    int duration = days[len - 1];</span><br><span class="line">    int[] dp = new int[duration + 1];</span><br><span class="line"></span><br><span class="line">    for (int i = 0; i &lt; len; i++) &#123;</span><br><span class="line">        // need to trave on day indexed at days[i]</span><br><span class="line">        int cur = days[i];</span><br><span class="line">        // dp[i] represents the cost till day i</span><br><span class="line">        // if need to travel day i, then check price, otherwise = last</span><br><span class="line">        // eg. dp[] = &#123;0, 2, 2, 2, 4....&#125;</span><br><span class="line">        dp[cur] = dp[cur - 1] + costs[0];</span><br><span class="line">        int pass7 = (cur - 7) &lt;= 0 ? costs[1] : costs[1] + dp[cur - 7];</span><br><span class="line">        int pass30 = (cur - 30) &lt;= 0 ? costs[2] : costs[2] + dp[cur - 30];</span><br><span class="line">        dp[cur] = Math.min(dp[cur], Math.min(pass30, pass7));</span><br><span class="line">        if (i != len - 1) &#123;</span><br><span class="line">            for (int j = days[i] + 1; j &lt; days[i + 1]; j++) &#123;</span><br><span class="line">                dp[j] = dp[j - 1];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    return dp[duration];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

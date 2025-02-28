@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    [Design] Limit the Request per Second  丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">[Design] Limit the Request per Second </div>
+  <div class="post-meta">
+    <div class="date">2015 February 1st</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><p><a target="_blank" rel="noopener" href="http://www.mitbbs.com/article_t/JobHunting/32841633.html">link</a></p>
+<blockquote>
+<p>有一个接口叫 void setRPS(int num);</p>
+</blockquote>
+<blockquote>
+<p>接下来不断有 request 过来，如何实现下面的接口，返回 accept 或者 deny，</p>
+</blockquote>
+<pre><code>bool process(int timestamp)&#123;
+
+&#125;
+</code></pre>
+<h3 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h3><p>Suggested by level 5 of <a target="_blank" rel="noopener" href="http://www.mitbbs.com/article_t/JobHunting/32841633.html">this post</a>:</p>
+<ol>
+<li>maintain a variable for the number of request processed&#x2F;rejected.<ol>
+<li>This variable must be atomic, thus a <strong>AtomicInteger</strong>.</li>
+<li>the variable is called ‘count’</li>
+</ol>
+</li>
+<li>have a method to process request<ol>
+<li>if count &lt; limit, do it</li>
+<li>otherwise, reject</li>
+</ol>
+</li>
+<li><strong>This is the most important</strong>: clear the count every 1 seconds!<ol>
+<li>eg. LIMIT &#x3D; 5r&#x2F;s, so:</li>
+<li>the <strong>first 5 number of requests in every second</strong> are getting fulfilled</li>
+<li>from 6th request onward, the request all rejected, until the next second.</li>
+</ol>
+</li>
+</ol>
+<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><pre><code>public class SetRps &#123;
+
+    AtomicInteger count = new AtomicInteger(0);
+    int limit = -1;
+    int printIndex = 1;
+    long startTimestamp = -1;
+
+    void setRPS(int num) &#123;
+        limit = num;
+    &#125;
+
+    boolean process(long timestamp) &#123;
+        // suppose timestamp is ms
+        synchronized (this) &#123;
+            // to process or not to process
+            if (count.get() &lt; limit) &#123;
+                // can process
+                count.incrementAndGet();
+                System.out.println(printIndex++ + &quot;. processing request &quot;
+                        + timestamp % 100000 / 1000 + &quot;,&quot; + timestamp % 1000);
+                return true;
+            &#125;
+            // to clear or not to clear
+            if (timestamp - startTimestamp &gt;= 1000) &#123;
+                // every 1 seconds, reset
+                count.set(0);
+                startTimestamp = timestamp;
+                System.out.println(&quot;clear!&quot;);
+                return true;
+            &#125;
+        &#125;
+        return false;
+    &#125;
+&#125;
+</code></pre>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

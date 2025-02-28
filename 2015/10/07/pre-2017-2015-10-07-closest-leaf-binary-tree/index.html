@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    [Question] Find Cloest Leaf in Binary Tree  丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">[Question] Find Cloest Leaf in Binary Tree </div>
+  <div class="post-meta">
+    <div class="date">2015 October 7th</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><p><a href="www.geeksforgeeks.org/find-closest-leaf-binary-tree/index.html">link</a></p>
+<blockquote>
+<p>Given a Binary Tree and a key, find distance of the closest leaf.</p>
+</blockquote>
+<blockquote>
+<p>Examples:</p>
+</blockquote>
+<pre><code>          1
+        /    \    
+       2       3
+             /   \  
+            5     6   
+           /       \
+          7         8
+         / \       /
+        9  10     11
+        
+Closest key to &#39;8&#39; is &#39;11&#39;, so distance is 1 for &#39;8&#39;
+Closest key to &#39;3&#39; is &#39;2&#39;, so distance is 2 for &#39;3&#39;
+Closest key to &#39;5&#39; is either &#39;9&#39; or &#39;10&#39;, so distance is 2 for &#39;5&#39;
+Closest key to &#39;2&#39; is &#39;2&#39; itself, so distance is 0 for &#39;2&#39; 
+</code></pre>
+<h3 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h3><blockquote>
+<p>traverse the given tree in preorder and keep track of ancestors (in a caching data struture, either it’s List or an array with a correct pointer)</p>
+</blockquote>
+<p>When we find our target, we do 2 things: </p>
+<ol>
+<li><p>find <strong>closest distance on lower subtrees of current node</strong>.</p>
+</li>
+<li><p>for every ancester, find the <strong>closest distance on lower subtrees</strong>, then add with <strong>distance to ancester</strong>.</p>
+</li>
+</ol>
+<p>Finally, return the smallest value seen above. </p>
+<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><p>Inspired by the code from <a href="www.geeksforgeeks.org/find-closest-leaf-binary-tree/index.html">G4G</a></p>
+<pre><code>int answer;
+
+public int findClosest(TreeNode root, int key) &#123;
+	answer = Integer.MAX_VALUE;
+	helper(root, key, new ArrayList&lt;TreeNode&gt;());
+	return answer;
+&#125;
+
+private void helper(TreeNode node, int key, List&lt;TreeNode&gt; path) &#123;
+	if (node == null) &#123;
+		return;
+	&#125; else if (node.val != key) &#123;
+		path.add(node);
+		helper(node.left, key, path);
+		helper(node.right, key, path);
+		path.remove(path.size() - 1);
+	&#125; else &#123;
+		// key matches with current node value
+		answer = lenToLowerLeaf(node);
+		// answer initially = cloest leaf from lower
+
+		int len = path.size();
+		for (int i = 0; i &lt; len; i++) &#123;
+			// for every ancestor, calculate distance and compare
+			int ithToLowerLeaf = lenToLowerLeaf(path.get(i));
+			answer = Math.min(answer, (len - i) + ithToLowerLeaf);
+		&#125;
+	&#125;
+&#125;
+
+private int lenToLowerLeaf(TreeNode node) &#123;
+	if (node == null) &#123;
+		return Integer.MAX_VALUE;
+	&#125; else if (node.left == null &amp;&amp; node.right == null) &#123;
+		return 0;
+	&#125; else &#123;
+		return 1 + Math.min(lenToLowerLeaf(node.left), lenToLowerLeaf(node.right));
+	&#125;
+&#125;
+</code></pre>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

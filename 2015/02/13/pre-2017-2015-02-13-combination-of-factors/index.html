@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    [LinkedIn] Unique combination of factors (因式分解)  丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">[LinkedIn] Unique combination of factors (因式分解) </div>
+  <div class="post-meta">
+    <div class="date">2015 February 13th</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><p><a target="_blank" rel="noopener" href="http://www.mitbbs.com/article_t1/JobHunting/32803907_0_1.html">link</a></p>
+<blockquote>
+<p>A question by dongfeiwww:</p>
+</blockquote>
+<blockquote>
+<p>打印一个数的所有乘数组合，从大到小，不要有重复</p>
+</blockquote>
+<blockquote>
+<p>Print all unique combinations of factors of a positive integer. For example given 24:</p>
+</blockquote>
+<pre><code>24*1
+12*2
+8*3
+6*4
+6*2*2
+4*3*2
+3*2*2*2
+</code></pre>
+<h3 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h3><p>Simple DFS.</p>
+<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><pre><code>public List&lt;List&lt;Integer&gt;&gt; factorCombinations(int n) &#123;
+	List&lt;List&lt;Integer&gt;&gt; ans = new ArrayList&lt;List&lt;Integer&gt;&gt;();
+	helper(ans, n, n / 2, new ArrayList&lt;Integer&gt;());
+	return ans;
+&#125;
+
+private void helper(List&lt;List&lt;Integer&gt;&gt; ans, int num, int largestFactor,
+		List&lt;Integer&gt; path) &#123;
+	if (num == 1) &#123;
+		ans.add(new ArrayList&lt;Integer&gt;(path));
+		return;
+	&#125;
+	for (int i = largestFactor; i &gt; 1; i--) &#123;
+		if (num % i == 0) &#123;
+			path.add(i);
+			helper(ans, num / i, i, path);
+			path.remove(path.size() - 1);
+		&#125;
+	&#125;
+&#125;
+</code></pre>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

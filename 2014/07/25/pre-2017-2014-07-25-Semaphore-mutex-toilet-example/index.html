@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    [Design] Semaphore Mutex Toilet Example 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">[Design] Semaphore Mutex Toilet Example</div>
+  <div class="post-meta">
+    <div class="date">2014 July 25th</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><h2 id="Mutex-vs-Semaphore"><a href="#Mutex-vs-Semaphore" class="headerlink" title="Mutex vs. Semaphore"></a>Mutex vs. Semaphore</h2><p><strong>Mutex is a <a target="_blank" rel="noopener" href="http://koti.mbnet.fi/niclasw/MutexSemaphore.html">key to a toilet</a></strong>. One person can have the key - occupy the toilet. When finished, the person gives (frees) the key to the next person in queue.</p>
+<p>A mutex is really a semaphore with value 1.</p>
+<p><strong>Semaphore is the number of free identical toilet keys</strong>. Example, say we have four toilets with identical locks and keys. The semaphore count is set to 4 at beginning, then the count decrease as people are coming in, etc.</p>
+<h3 id="A-mutex-is-not-a-binary-semaphore"><a href="#A-mutex-is-not-a-binary-semaphore" class="headerlink" title="A mutex is not a binary semaphore"></a>A mutex is not a binary semaphore</h3><p><strong>A mutex is <a target="_blank" rel="noopener" href="http://www.geeksforgeeks.org/mutex-vs-semaphore/">locking mechanism</a></strong> used to synchronize access to a resource. Only one task can acquire the mutex.</p>
+<p>It means there will be ownership associated with mutex, and only the owner can release the lock.</p>
+<p><strong>Semaphore is signaling mechanism</strong> (“I am done, you can carry on” kind of signal).</p>
+<p>For example, if you are listening songs (assume it as one task) on your mobile and at the same time your friend called you, an interrupt will be triggered upon which an interrupt service routine (ISR) will signal the call processing task to wakeup.</p>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

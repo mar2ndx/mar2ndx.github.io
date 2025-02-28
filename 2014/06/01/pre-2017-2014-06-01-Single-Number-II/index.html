@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    [LeetCode 137] Single Number II 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">[LeetCode 137] Single Number II</div>
+  <div class="post-meta">
+    <div class="date">2014 June 1st</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><p><a target="_blank" rel="noopener" href="https://oj.leetcode.com/problems/single-number-ii/">link</a></p>
+<div class="question-content bg-color bg-img font-color">
+            <p class="font-color"></p><p class="font-color">
+Given an array of integers, every element appears <i>three</i> times except for one. Find that single one.
+</p>
+
+<p class="font-color">
+<b>Note:</b><br>
+Your algorithm should have a linear runtime complexity. Could you implement it without using extra memory?
+</p><p class="font-color"></p>
+          </div>
+
+<h3 id="Stats"><a href="#Stats" class="headerlink" title="Stats"></a>Stats</h3><table border="2">
+	<tr>
+		<td>Adjusted Difficulty</td>
+		<td bgcolor="red">5</td>
+	</tr>
+	<tr>$
+		<td>Time to use</td>
+		<td bgcolor="red">--------</td>
+	</tr>
+</table>
+
+<p>Ratings&#x2F;Color &#x3D; 1(white) 2(lime) 3(yellow) 4&#x2F;5(red)</p>
+<h3 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h3><p><strong>This is an extremely difficult question</strong>. There are 2 solutions (both are bit manipulation).</p>
+<h3 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h3><p><strong>First solution comes from <a target="_blank" rel="noopener" href="https://oj.leetcode.com/discuss/857/constant-space-solution">this forum</a></strong>.</p>
+<blockquote>
+<p>A straightforward implementation is to use an array of size 32 to keep track of the total count of ith bit.</p>
+</blockquote>
+<p>A more detailed <a target="_blank" rel="noopener" href="http://leetcodesolutions.blogspot.sg/2013/10/single-number-ii.html">explanation</a>:</p>
+<blockquote cite="http://leetcodesolutions.blogspot.sg/2013/10/single-number-ii.html">
+    <div >
+        <span style="font-family: Times, Times New Roman, serif;" class="font-color">For eg : A = [ 2, 3, 3, 3]</span>
+    </div>
+    <div >
+        <span style="font-family: Times, Times New Roman, serif;" class="font-color">We count the number of 1s for each bit position. Then find <i>mod 3 </i>of each of them. The bit positions having <i>mod 3 </i>&nbsp;equal to one are the bits that are set due to the number occurring once.</span>
+    </div>
+    <div >
+        <span style="font-family: Times, Times New Roman, serif;" class="font-color">Writing the Binary Representation of the numbers.</span>
+    </div>
+    <div >
+        <span style="font-family: Times, Times New Roman, serif;" class="font-color">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 0 0 1 0</span>
+    </div>
+    <div >
+        <span style="font-family: Times, Times New Roman, serif;" class="font-color">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 0 0 1 1</span>
+    </div>
+    <div >
+        <span style="font-family: Times, Times New Roman, serif;" class="font-color">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 0 0 1 1</span>
+    </div>
+    <div >
+        <span style="font-family: Times, Times New Roman, serif;" class="font-color">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 0 0 1 1</span>
+    </div>
+    <div >
+        <span style="font-family: Times, Times New Roman, serif;" class="font-color">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ----------------</span>
+    </div>
+    <div >
+        <span style="font-family: Times, Times New Roman, serif;" class="font-color">We count the number of 1s for each bit -&gt; &nbsp;0 0 4 3</span>
+    </div>
+    <div >
+        <span style="font-family: Times, Times New Roman, serif;" class="font-color">Taking modulo 3 we get &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 0 0 1 0</span>
+    </div>
+    <div >
+        <span style="font-family: Times, Times New Roman, serif;" class="font-color">and that's our answer. -&gt; 2</span>
+    </div>
+
+</blockquote>
+
+<p><strong>Second solution is different, and very hard to read&#x2F;write</strong>. I will not cover this solution. An analysis is found <a target="_blank" rel="noopener" href="http://zhaohongze.com/wordpress/2013/12/04/leetcode-single-number-ii/">here</a>:</p>
+<blockquote>
+<p>The basic idea is use two integer, <strong>ones and twos</strong>. <strong>Ones</strong> is used to record the bits only exist once in current iterated number. <strong>Twos</strong> is used to record the bits only exist twice in all number. If a bit exists up to three times, we should clear it in both ones and twos.</p>
+</blockquote>
+<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><p><strong>my code</strong></p>
+<pre><code>public int singleNumber(int[] A) &#123;
+	int result = 0;
+    for (int i = 0; i &lt; 32; i++) &#123;
+		int count = 0;
+		for (Integer in: A) &#123;
+			count += (in &amp; (1 &lt;&lt; i)) == 0 ? 0 : 1;
+		&#125;
+		if (count % 3 != 0) &#123;
+			result = result | (1 &lt;&lt; i);
+		&#125;
+	&#125;
+	return result;
+&#125;
+</code></pre>
+<p><strong>a different solution</strong></p>
+<pre><code>public int singleNumber(int[] A) &#123;
+	int ones = 0, twos = 0;
+	for (int i = 0; i &lt; A.length; i++) &#123;
+		twos = twos | (ones &amp; A[i]);
+		ones = ones ^ A[i];
+
+		int common_mask = ~(ones &amp; twos);
+		ones &amp;= common_mask;
+		twos &amp;= common_mask;
+	&#125;
+	return ones;
+&#125;
+</code></pre>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

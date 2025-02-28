@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    [LeetCode 201] Bitwise AND of Numbers Range  丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">[LeetCode 201] Bitwise AND of Numbers Range </div>
+  <div class="post-meta">
+    <div class="date">2015 May 10th</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/bitwise-and-of-numbers-range/">link</a></p>
+<div class="question-content">
+              <p></p><p>Given a range [m, n] where 0 &lt;= m &lt;= n &lt;= 2147483647, return the bitwise AND of all numbers in this range, inclusive.</p>
+
+<p>
+For example, given the range [5, 7], you should return 4.
+</p>
+
+<p><b>Credits:</b><br>Special thanks to <a target="_blank" rel="noopener" href="https://leetcode.com/discuss/user/amrsaqr">@amrsaqr</a> for adding this problem and creating all test cases.</p><p></p>
+              
+<pre><code>            &lt;div id=&quot;tags&quot; class=&quot;btn btn-xs btn-warning&quot;&gt;Show Tags&lt;/div&gt;
+            &lt;span class=&quot;hide&quot;&gt;
+              
+              &lt;a class=&quot;btn btn-xs btn-primary&quot; href=&quot;/tag/bit-manipulation/&quot;&gt;Bit Manipulation&lt;/a&gt;
+              
+            &lt;/span&gt;
+          
+        &lt;/div&gt;
+</code></pre>
+<h3 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h3><p>This is a pretty interesting mathematics question. Now we take 2 numbers as example: </p>
+<blockquote>
+<p>Num1: 110010</p>
+<p>Num2: 110111</p>
+<p>Result: 110000</p>
+</blockquote>
+<p>And:</p>
+<blockquote>
+<p>Num1: 0110</p>
+<p>Num2: 1100</p>
+<p>Result: 0</p>
+</blockquote>
+<p>Note that: </p>
+<ol>
+<li><p>if the first ‘1’ bit of the 2 numbers are at different position, the answer should simply be 0.</p>
+</li>
+<li><p>if have same position, then the result would be the continous sequence of 1s, followed by all 0s.</p>
+</li>
+</ol>
+<h3 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h3><p>The 2 best solutions is very well presented by <a target="_blank" rel="noopener" href="http://www.cnblogs.com/grandyang/p/4431646.html">Grandyang</a> using bit shifting and masking. Please refer to code 1 and code 2 below. </p>
+<p>I found a third solution at <a target="_blank" rel="noopener" href="http://www.programcreek.com/2014/04/leetcode-bitwise-and-of-numbers-range-java/">programcreek</a>, which makes use of the fact that m is smaller than n. </p>
+<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><p>code 1</p>
+<pre><code>class Solution &#123;
+public:
+    int rangeBitwiseAnd(int m, int n) &#123;
+        int d = INT_MAX;
+        while ((m &amp; d) != (n &amp; d)) &#123;
+            d &lt;&lt;= 1;
+        &#125;
+        return m &amp; d;
+    &#125;
+&#125;;
+</code></pre>
+<p>code 2</p>
+<pre><code>class Solution &#123;
+public:
+    int rangeBitwiseAnd(int m, int n) &#123;
+        int i = 0;
+        while (m != n) &#123;
+            m &gt;&gt;= 1;
+            n &gt;&gt;= 1;
+            ++i;
+        &#125;
+        return (m &lt;&lt; i);
+    &#125;
+&#125;;
+</code></pre>
+<p>code 3</p>
+<pre><code>public int rangeBitwiseAnd(int m, int n) &#123;
+     while (n &gt; m) &#123;
+          n = n &amp; n - 1;
+     &#125;
+     return m &amp; n;
+&#125;
+</code></pre>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

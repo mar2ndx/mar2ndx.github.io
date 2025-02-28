@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    [Design] Networks and TCP/IP 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">[Design] Networks and TCP/IP</div>
+  <div class="post-meta">
+    <div class="date">2014 August 6th</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><h2 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h2><p><strong><a target="_blank" rel="noopener" href="http://en.wikipedia.org/wiki/Internet_protocol_suite">Internet protocol suite</a></strong> is a networking model and communications protocols used by the Internet. It is commonly known as <strong>TCP&#x2F;IP</strong>.</p>
+<p>Four abstraction layers:</p>
+<ol>
+<li>Application layer</li>
+<li>Transport layer</li>
+<li>Internet layer</li>
+<li>Link layer</li>
+</ol>
+<p><img src="/images/network-layers-connected.png"></p>
+<p>The protocols are maintained by the <strong>Internet Engineering Task Force</strong> (IETF).</p>
+<h3 id="A-summary-of-four-layer-model"><a href="#A-summary-of-four-layer-model" class="headerlink" title="A summary of four-layer model"></a>A summary of four-layer model</h3><ol>
+<li>Application: authentication, compression, and end user services</li>
+<li>Transport: handles the flow of data between systems and provides access to the network for applications via the BSD socket library</li>
+<li>Network: packet routing</li>
+<li>Link: Kernel OS&#x2F;device driver interface to the network interface on the computer.</li>
+</ol>
+<p><a target="_blank" rel="noopener" href="http://searchnetworking.techtarget.com/news/851291/TCP-Internet-Protocol-and-OSI">source</a></p>
+<h3 id="More-details"><a href="#More-details" class="headerlink" title="More details"></a>More details</h3><p><strong>The Application layer</strong>:</p>
+<ol>
+<li>where applications create user data and communicate with other applications on another host (make use of Transport Layer to provide reliable or unreliable pipes to other processes).</li>
+<li>different application architecture, such as the client-server model and peer-to-peer.</li>
+<li>SMTP, FTP, SSH, HTTP all operate above this layer.</li>
+<li>processes are addressed via ports.</li>
+</ol>
+<p><img src="/images/network-ports.gif"></p>
+<blockquote>
+<p>Well-known official port numbers are in the range of 0 - 255. Port 256 - 1023 are reserved for other well-known services. 1024 - 65535 are neither in-use nor reserved. They are used when TCP&#x2F;IP automatically assigns port numbers to client programs.</p>
+</blockquote>
+<p><strong>The Transport Layer</strong>:</p>
+<ol>
+<li>performs host-to-host communications.</li>
+<li>“UDP” provides unreliable datagram service.</li>
+<li>“<strong>Transmission Control Protocol</strong>“ provides flow-control, connection establishment, and reliable transmission of data.</li>
+</ol>
+<p><strong>The Internet layer</strong>:</p>
+<ol>
+<li>exchange datagrams across network boundaries.</li>
+<li>establishes internetworking thus establishes the Internet.</li>
+<li>“<strong>Internet Protocol</strong>“, defines IP addresses and the routing structures used for the TCP&#x2F;IP protocol suite.</li>
+<li>routing: transport datagrams to the next IP router that has the connectivity to a network closer to the final data destination.</li>
+</ol>
+<p><strong>The Link layer</strong>:</p>
+<ol>
+<li>defines the networking methods within local network link without intervening routers.</li>
+<li>describe local network topology and the interfaces needed to effect transmission of Internet layer datagrams to next-neighbor hosts.</li>
+</ol>
+<h3 id="Difference-from-OSI"><a href="#Difference-from-OSI" class="headerlink" title="Difference from OSI"></a>Difference from OSI</h3><p>The Internet protocol suite was in use <strong>before the OSI model</strong>, and is well established worldwide.</p>
+<p><a target="_blank" rel="noopener" href="http://electronicdesign.com/what-s-difference-between/what-s-difference-between-osi-seven-layer-network-model-and-tcpip">The OSI model</a>, however, is a proven concept that is used in all other data communications protocols. It will continue to be used as a guideline for all other communications applications.</p>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

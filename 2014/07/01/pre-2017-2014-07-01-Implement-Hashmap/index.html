@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    [Question] Implement a HashMap 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">[Question] Implement a HashMap</div>
+  <div class="post-meta">
+    <div class="date">2014 July 1st</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><p>Implement a HashMap</p>
+<p><strong>Hint</strong>:</p>
+<blockquote>
+<p>An instance of HashMap has two parameters that affect its performance: initial capacity and load factor. The capacity is the number of buckets in the hash table, and the initial capacity is simply the capacity at the time the hash table is created. The load factor is a measure of how full the hash table is allowed to get before its capacity is automatically increased. When the number of entries in the hash table exceeds the product of the load factor and the current capacity, the hash table is rehashed (that is, internal data structures are rebuilt) so that the hash table has approximately twice the number of buckets. <a target="_blank" rel="noopener" href="http://stackoverflow.com/a/10901821">source</a></p>
+<p>Load factor &#x3D; n&#x2F;k where n is the number of entries and k is the number of buckets.</p>
+</blockquote>
+<h3 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h3><p>Some points to take note:</p>
+<ol>
+<li><p>So first of all, we would need 2 important parameters in a Hashmap: <strong>initial capacity and load factor</strong>. In Java, it’s default 0.75.</p>
+<p>For example the product of capacity and load factor &#x3D; 16 * 0.75 &#x3D; 12. This represents that after storing the 12th key – value pair into the HashMap , its capacity will become 32.</p>
+</li>
+<li><p>Then we would need an Entry&lt;Obj, Obj&gt; Class to store <strong>key-value pairs</strong>. Important to note the Entry would have a ‘next’ pointer, in order to mimic a LinkedList.</p>
+</li>
+<li><p>Except key, value and next pointer, Entry class <strong>also need to store the ‘hash’ value</strong>, because it will be used during comparison.</p>
+</li>
+<li><p>The main bucket is an array of Entry objects. It should resize when it has to, and this is <strong>done in the addEntry() method</strong>. I skipped this part of code.</p>
+</li>
+<li><p>The code for put() and get() method are similar, because it’s bascially <strong>calculate hash</strong>, then <strong>get array index</strong>, using that index to <strong>locate the head Entry object</strong>, and then do a linear search for key. If found, put() will replace it, and get() will return it. Note than after replaced, the old value is returned (Java designed in this way, I personally wouldn’t do this).</p>
+</li>
+<li><p>Last important thing is the <strong>indexFor() method</strong>. It looks useless to me at first, then I realize that this method is mapping my hash value into the index in the array. Fine, but this bit operation still looks odd. Look at next section for more.</p>
+</li>
+</ol>
+<h3 id="The-Niubility-Operation-h-length-1"><a href="#The-Niubility-Operation-h-length-1" class="headerlink" title="The Niubility Operation: h &amp; (length - 1)"></a>The Niubility Operation: h &amp; (length - 1)</h3><p>This actually equals to the value of (h % length). It converts the hash value into array index.</p>
+<blockquote>
+<p>这个方法非常巧妙，它通过 h &amp; (length - 1) 来得到该对象的保存位，而 HashMap 底层数组的长度总是 2 的 n 次方，这是 HashMap 在速度上的优化。</p>
+<p>当 length 总是 2 的 n 次方时，h &amp; (length - 1)运算等价于对 length 取模，也就是 h % length，但是 &amp; 比 % 具有更高的效率。<a target="_blank" rel="noopener" href="http://www.cnblogs.com/-clq/archive/2012/01/11/2318870.html">source</a></p>
+</blockquote>
+<p>That’s all about implementing a HashMap. It’s difficult, but having a general idea definitely helps.</p>
+<p>What’s more, know the mod operation “h &amp; (length - 1)” would definitely help you grab some attentions!</p>
+<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><pre><code>public class MyHashMap &#123;
+
+    Pair[] table;
+    float loadFactor;
+    int size;
+
+    public MyHashMap(int initialCapacity, float loadFactor) &#123;
+        if (initialCapacity &lt; 0 || loadFactor &lt;= 0) &#123;
+            return;
+        &#125;
+        table = new Pair[initialCapacity];
+        this.size = 0;
+        this.loadFactor = loadFactor;
+    &#125;
+
+    public String get(int key) &#123;
+        int hash = hash(key);
+        int i = indexFor(hash, table.length);
+        Pair e = table[i];
+        for (; e != null; e = e.next) &#123;
+            if (e.hash == hash &amp;&amp; key == e.key) &#123;
+                return e.value;
+            &#125;
+        &#125;
+        return null;
+    &#125;
+
+    public String put(int key, String value) &#123;
+        int hash = hash(key);
+        int i = indexFor(hash, table.length);
+        Pair e = table[i];
+        for (; e != null; e = e.next) &#123;
+            if (e.hash == hash &amp;&amp; key == e.key) &#123;
+                String oldValue = e.value;
+                e.value = value;
+                return oldValue;
+            &#125;
+        &#125;
+        addEntry(hash, key, value, i);
+        return null;
+    &#125;
+
+    void addEntry(int hash, int key, String value, int i) &#123;
+        // in charge of resizing here (check the load factor)
+        // resizing code is not written here
+        Pair e = table[i];
+        table[i] = new Pair(hash, key, value, e);
+    &#125;
+
+    int indexFor(int h, int length) &#123;
+        return h &amp; (length - 1);
+    &#125;
+
+    final int hash(int code) &#123;
+        // this is the hash function from java 6 source code
+        code ^= (code &gt;&gt;&gt; 20) ^ (code &gt;&gt;&gt; 12);
+        return code ^ (code &gt;&gt;&gt; 7) ^ (code &gt;&gt;&gt; 4);
+    &#125;
+
+    public static void main(String[] args) &#123;
+        MyHashMap map = new MyHashMap(16, 0.5f);
+        map.put(1, &quot;a&quot;);
+        map.put(2, &quot;b&quot;);
+        map.put(3, &quot;c&quot;);
+        System.out.println(map.get(1));
+        System.out.println(map.get(2));
+        System.out.println(map.get(3));
+        map.put(1, &quot;Spider Man&quot;);
+        map.put(4, &quot;d&quot;);
+        map.put(3, &quot;Peter Parker&quot;);
+        System.out.println(map.get(1));
+        System.out.println(map.get(2));
+        System.out.println(map.get(3));
+        System.out.println(map.get(4));
+        System.out.println(map.get(5));
+    &#125;
+
+    class Pair &#123;
+        int hash;
+        int key;
+        String value;
+        Pair next;
+
+        Pair(int h, int k, String v, Pair n) &#123;
+            hash = h;
+            key = k;
+            value = v;
+            next = n;
+        &#125;
+    &#125;
+&#125;
+</code></pre>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

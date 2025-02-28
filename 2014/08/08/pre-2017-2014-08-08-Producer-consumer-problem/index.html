@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    [Design] Producer Consumer Problem 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">[Design] Producer Consumer Problem</div>
+  <div class="post-meta">
+    <div class="date">2014 August 8th</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><h3 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h3><p>Producer-consumer problem illustrates the need for <strong>synchronization</strong> in systems where <strong>many processes share a resource</strong>.</p>
+<p><a target="_blank" rel="noopener" href="http://cs.gmu.edu/cne/modules/ipc/aqua/producer.html">In the problem</a>, two processes share a fixed-size buffer. One process produces information and puts it in the buffer, while the other process consumes information from the buffer. These processes do not take turns accessing the buffer, they both work concurrently.</p>
+<h3 id="Inadequate-Solution"><a href="#Inadequate-Solution" class="headerlink" title="Inadequate Solution"></a>Inadequate Solution</h3><p><img src="/images/producer-workflow.gif"></p>
+<p><img src="/images/consumer-workflow.gif"></p>
+<p><strong>The code might look like this</strong>:</p>
+<pre><code>BufferSize = 3;
+count = 0;
+
+Producer()
+&#123;
+    int widget;
+    WHILE (true) &#123;                     // loop forever
+       make_new(widget);               // create a new widget to put in the buffer
+       IF(count==BufferSize)
+           Sleep();                    // if the buffer is full, sleep
+       put_item(widget);               // put the item in the buffer
+       count = count + 1;              // increment count of items
+       IF (count==1)
+           Wakeup(Consumer);           // if the buffer was previously empty, wake
+    &#125;                                  //  the consumer
+&#125;
+
+Consumer()
+&#123;
+    int widget;
+    WHILE(true) &#123;                    // loop forever
+      IF(count==0)
+           Sleep();                  // if the buffer is empty, sleep
+      remove_item(widget);           // take an item from the buffer
+      count = count + 1;             // decrement count of items
+      IF(count==N-1)
+            Wakeup(Producer);        // if buffer was previously full, wake
+                                     //  the producer
+      Consume_item(widget);          // consume the item
+    &#125;
+&#125;
+</code></pre>
+<p>This <a target="_blank" rel="noopener" href="http://en.wikipedia.org/wiki/Producer%E2%80%93consumer_problem#Inadequate_implementation">will cause problems</a>, because <strong>it contains a race condition</strong> that can lead to a deadlock. Or in simply words, it has the potential of <a target="_blank" rel="noopener" href="http://cs.gmu.edu/cne/modules/ipc/purple/prodsem.html">losing wakeups</a>.</p>
+<p>An alternative analysis is that if the programming language does not define the semantics of <strong>concurrent accesses to shared variables (in this case itemCount)</strong> without use of synchronization, then the solution is unsatisfactory for that reason, without needing to explicitly demonstrate a race condition.</p>
+<p>Solutions are: <strong>semaphores or monitors</strong>.</p>
+<h3 id="Semaphore"><a href="#Semaphore" class="headerlink" title="Semaphore"></a>Semaphore</h3><pre><code>semaphore mutex = 1;
+semaphore fillCount = 0;
+semaphore emptyCount = BUFFER_SIZE;
+
+procedure producer() &#123;
+    while (true) &#123;
+        item = produceItem();
+        down(emptyCount);
+            down(mutex);
+                putItemIntoBuffer(item);
+            up(mutex);
+        up(fillCount);
+    &#125;
+&#125;
+
+procedure consumer() &#123;
+    while (true) &#123;
+        down(fillCount);
+            down(mutex);
+                item = removeItemFromBuffer();
+            up(mutex);
+        up(emptyCount);
+        consumeItem(item);
+    &#125;
+&#125;
+</code></pre>
+<h3 id="Monitor"><a href="#Monitor" class="headerlink" title="Monitor"></a>Monitor</h3><pre><code>monitor ProducerConsumer &#123;
+    int itemCount;
+    condition full;
+    condition empty;
+
+    procedure add(item) &#123;
+        while (itemCount == BUFFER_SIZE) &#123;
+            wait(full);
+        &#125;
+
+        putItemIntoBuffer(item);
+        itemCount = itemCount + 1;
+
+        if (itemCount == BUFFER_SIZE -1) &#123;
+            notify(full);
+        &#125;
+    &#125;
+    procedure remove() &#123;
+        while (itemCount == 0) &#123;
+            wait(empty);
+        &#125;
+
+        item = removeItemFromBuffer();
+        itemCount = itemCount - 1;
+
+        if (itemCount == 1) &#123;
+            notify(empty);
+        &#125;
+
+
+        return item;
+    &#125;
+&#125;
+
+procedure producer() &#123;
+    while (true) &#123;
+        item = produceItem();
+        ProducerConsumer.add(item);
+    &#125;
+&#125;
+
+procedure consumer() &#123;
+    while (true) &#123;
+        item = ProducerConsumer.remove();
+        consumeItem(item);
+    &#125;
+&#125;
+</code></pre>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    [Amazon] Infix to Postfix conversion  丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">[Amazon] Infix to Postfix conversion </div>
+  <div class="post-meta">
+    <div class="date">2013 November 20th</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><h1 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h1><p><a target="_blank" rel="noopener" href="https://cs.nyu.edu/courses/Fall12/CSCI-GA.1133-002/notes/InfixToPostfixExamples.pdf">link</a>, <a target="_blank" rel="noopener" href="http://csis.pace.edu/~wolf/CS122/infix-postfix.htm">link</a>.</p>
+<blockquote>
+<p>example: A * B + C becomes A B * C +</p>
+</blockquote>
+<blockquote>
+<p>A * (B + C) becomes A B C + *</p>
+</blockquote>
+<h1 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h1><p>One of the main purpose of converting infix to postfix is to <strong>remove alll parentheses</strong> from the expression. </p>
+<p>This is a very difficult question. The solution is:</p>
+<ol>
+<li><p>Print operands as they arrive.</p>
+</li>
+<li><p>If the incoming symbol is ‘+’ or ‘-‘ or ‘(‘, push it on the stack. </p>
+</li>
+<li><p>If the incoming symbol is a ‘)’, pop the stack and print the operators until you see a ‘(‘. Discard the pair of parentheses.</p>
+</li>
+<li><p>If the incoming symbol is ‘*’ or ‘&#x2F;‘, pop until we sees ‘+’ or ‘-‘ or ‘(‘ at top of the stack, then push the symbol onto the stack. </p>
+</li>
+<li><p>At the end of the expression, pop and print all operators on the stack. (No parentheses should remain.)</p>
+</li>
+</ol>
+<h1 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h1><pre><code>public String solve(String infix) &#123;
+	StringBuilder sb = new StringBuilder();
+	// get next operand or non-operand
+	// notice that operand is &gt;=1 chars
+	int p = 0;
+	int len = infix.length();
+	Stack&lt;Character&gt; stack = new Stack&lt;Character&gt;();
+
+	while (p != len) &#123;
+		if (isDigit(infix.charAt(p))) &#123;
+			// if char at p is a digit
+			int q = p;
+			while (q != len &amp;&amp; isDigit(infix.charAt(q))) &#123;
+				q++;
+			&#125;
+			// it is a number in the range [p, q-1]
+			sb.append(infix.substring(p, q) + &quot; &quot;);
+			p = q;
+		&#125; else &#123;
+			// if char at p is + - * / or ( )
+			char op = infix.charAt(p++);
+			if (op == &#39;)&#39;) &#123;
+				// pop until sees a &#39;(&#39;
+				while (stack.peek() != &#39;(&#39;) &#123;
+					sb.append(stack.pop() + &quot; &quot;);
+				&#125;
+				stack.pop();
+			&#125; else if (op == &#39;(&#39; || op == &#39;+&#39; || op == &#39;-&#39;) &#123;
+				stack.push(op);
+			&#125; else &#123;
+				// if * or /
+				// pop until sees + or - or &#39;(&#39;
+				while (!stack.isEmpty()) &#123;
+					if (stack.peek() == &#39;+&#39; || stack.peek() == &#39;-&#39; || stack.peek() == &#39;(&#39;) &#123;
+						break;
+					&#125;
+					sb.append(stack.pop() + &quot; &quot;);
+				&#125;
+				stack.push(op);
+			&#125;
+		&#125;
+	&#125;
+	// reach Eof, pop everything
+	while (!stack.isEmpty()) &#123;
+		sb.append(stack.pop() + &quot; &quot;);
+	&#125;
+	return sb.toString();
+&#125;
+</code></pre>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    1740. Find Distance in a Binary Tree 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">1740. Find Distance in a Binary Tree</div>
+  <div class="post-meta">
+    <div class="date">2022 November 4th</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><p>Link: <a target="_blank" rel="noopener" href="https://leetcode.cn/problems/find-distance-in-a-binary-tree/">https://leetcode.cn/problems/find-distance-in-a-binary-tree/</a></p>
+<h1 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h1><p>difficulty: mid<br>adj diff: 2</p>
+<pre><code>Given the root of a binary tree and two integers p and q, return the distance between the nodes of value p and value q in the tree.
+
+The distance between two nodes is the number of edges on the path from one to the other.
+
+
+
+Example 1:
+
+Input: root = [3,5,1,6,2,0,8,null,null,7,4], p = 5, q = 0
+Output: 3
+Explanation: There are 3 edges between 5 and 0: 5-3-1-0.
+
+Example 2:
+
+Input: root = [3,5,1,6,2,0,8,null,null,7,4], p = 5, q = 7
+Output: 2
+Explanation: There are 2 edges between 5 and 7: 5-2-7.
+
+Example 3:
+
+Input: root = [3,5,1,6,2,0,8,null,null,7,4], p = 5, q = 5
+Output: 0
+Explanation: The distance between a node and itself is 0.
+
+
+
+Constraints:
+
+    The number of nodes in the tree is in the range [1, 104].
+    0 &lt;= Node.val &lt;= 109
+    All Node.val are unique.
+    p and q are values in the tree.
+</code></pre>
+<p>应该不难。LCA变体。</p>
+<h1 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h1><p>代码来自于：<a target="_blank" rel="noopener" href="https://leetcode.cn/problems/find-distance-in-a-binary-tree/solution/bi-ren-he-ren-du-hao-de-jie-ti-by-java08-dusc/">https://leetcode.cn/problems/find-distance-in-a-binary-tree/solution/bi-ren-he-ren-du-hao-de-jie-ti-by-java08-dusc/</a></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">    public int findDistance(TreeNode root, int p, int q) &#123;</span><br><span class="line">        if(p == q)&#123;</span><br><span class="line">            return 0;</span><br><span class="line">        &#125;</span><br><span class="line">        // 公共祖先</span><br><span class="line">        TreeNode parent = findCommonParent(root,p,q);</span><br><span class="line">        // 节点到公共祖先的距离</span><br><span class="line">        return getNodeDepth(parent,p) + getNodeDepth(parent,q);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // 首先寻找公共祖先</span><br><span class="line">    private TreeNode findCommonParent(TreeNode root, int p, int q)&#123;</span><br><span class="line">        if(root == null)&#123;</span><br><span class="line">            return null;</span><br><span class="line">        &#125;</span><br><span class="line">        if(root.val == p || root.val == q)&#123;</span><br><span class="line">            return root;</span><br><span class="line">        &#125;</span><br><span class="line">        TreeNode left = findCommonParent(root.left,p,q);</span><br><span class="line">        TreeNode right = findCommonParent(root.right,p,q);</span><br><span class="line">        if(left != null &amp;&amp; right != null)&#123;</span><br><span class="line">            return root;</span><br><span class="line">        &#125;</span><br><span class="line">        return left == null ? right : left;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // 到root节点的距离</span><br><span class="line">    private int getNodeDepth(TreeNode root,int p)&#123;</span><br><span class="line">        if(root == null)&#123;</span><br><span class="line">            // -1表示当前路径不是p的路径</span><br><span class="line">            return -1;</span><br><span class="line">        &#125;</span><br><span class="line">        if(root.val == p)&#123;</span><br><span class="line">            return 0;</span><br><span class="line">        &#125;</span><br><span class="line">        int left = getNodeDepth(root.left,p);</span><br><span class="line">        int right = getNodeDepth(root.right,p);</span><br><span class="line">        int ans = Math.max(left,right);</span><br><span class="line">        // 最大值是-1的话，表示不是p的路径，&gt;= 0则表示找到的p的路径，再加上自己本身的距离</span><br><span class="line">        return ans &gt;= 0 ? ans + 1 : -1;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

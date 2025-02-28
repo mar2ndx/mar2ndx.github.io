@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    346. Moving Average from Data Stream 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">346. Moving Average from Data Stream</div>
+  <div class="post-meta">
+    <div class="date">2022 November 8th</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><p>Link: <a target="_blank" rel="noopener" href="https://leetcode.cn/problems/moving-average-from-data-stream/">https://leetcode.cn/problems/moving-average-from-data-stream/</a></p>
+<h1 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h1><p>difficulty: low<br>adj diff: 2</p>
+<pre><code>Given a stream of integers and a window size, calculate the moving average of all integers in the sliding window.
+
+Implement the MovingAverage class:
+
+MovingAverage(int size) Initializes the object with the size of the window size.
+double next(int val) Returns the moving average of the last size values of the stream.
+
+Example 1:
+
+Input
+[&quot;MovingAverage&quot;, &quot;next&quot;, &quot;next&quot;, &quot;next&quot;, &quot;next&quot;]
+[[3], [1], [10], [3], [5]]
+Output
+[null, 1.0, 5.5, 4.66667, 6.0]
+
+Explanation
+MovingAverage movingAverage = new MovingAverage(3);
+movingAverage.next(1); // return 1.0 = 1 / 1
+movingAverage.next(10); // return 5.5 = (1 + 10) / 2
+movingAverage.next(3); // return 4.66667 = (1 + 10 + 3) / 3
+movingAverage.next(5); // return 6.0 = (10 + 3 + 5) / 3
+
+Constraints:
+
+1 &lt;= size &lt;= 1000
+-105 &lt;= val &lt;= 105
+At most 104 calls will be made to next.
+</code></pre>
+<p>Code</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">class MovingAverage &#123;</span><br><span class="line"></span><br><span class="line">	List&lt;Integer&gt; windowArray;</span><br><span class="line">	int numCount;</span><br><span class="line">	int windowSize;</span><br><span class="line">	double totalSum;</span><br><span class="line"></span><br><span class="line">	public MovingAverage(int size) &#123;</span><br><span class="line">		windowArray = new LinkedList&lt;Integer&gt;();</span><br><span class="line">		windowSize = size;</span><br><span class="line">		numCount = 0;</span><br><span class="line">		totalSum = 0.0;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	public double next(int val) &#123;</span><br><span class="line">		if (numCount == windowSize) &#123;</span><br><span class="line">			totalSum -= windowArray.remove(0);</span><br><span class="line">			numCount--;</span><br><span class="line">		&#125;</span><br><span class="line">		totalSum += val;</span><br><span class="line">		windowArray.add(val);</span><br><span class="line">		numCount++;</span><br><span class="line"></span><br><span class="line">		return totalSum / numCount;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * Your MovingAverage object will be instantiated and called as such:</span><br><span class="line"> * MovingAverage obj = new MovingAverage(size);</span><br><span class="line"> * double param_1 = obj.next(val);</span><br><span class="line"> */</span><br></pre></td></tr></table></figure>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    [LeetCode 133] Clone Graph 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">[LeetCode 133] Clone Graph</div>
+  <div class="post-meta">
+    <div class="date">2014 May 30th</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><p><a target="_blank" rel="noopener" href="https://oj.leetcode.com/problems/clone-graph/">link</a></p>
+<div class="question-content bg-color bg-img font-color">
+
+<p class="font-color"></p><p class="font-color">
+Clone an undirected graph. Each node in the graph contains a <code>label</code> and a list of its <code>neighbors</code>.
+</p>
+
+<div class="bg-color bg-img font-color">
+<br>
+<b>OJ's undirected graph serialization:</b>
+
+<p class="font-color">
+Nodes are labeled uniquely.
+</p>
+
+<p>We use <code>#</code> as a separator for each node, and <code>,</code> as a separator for node label and each neighbor of the node.</p>
+<p class="font-color"></p>
+
+<p class="font-color">
+As an example, consider the serialized graph <code><font color="red">&#123;<font color="black">0</font>,1,2#</font><font color="blue"><font color="black">1</font>,2#</font><font color="green"><font color="black">2</font>,2&#125;</font></code>.
+</p>
+
+<p class="font-color">
+The graph has a total of three nodes, and therefore contains three parts as separated by <code>#</code>.
+</p><ol>
+<li>First node is labeled as <code><font color="black">0</font></code>. Connect node <code><font color="black">0</font></code> to both nodes <code><font color="red">1</font></code> and <code><font color="red">2</font></code>.</li>
+<li>Second node is labeled as <code><font color="black">1</font></code>. Connect node <code><font color="black">1</font></code> to node <code><font color="blue">2</font></code>.</li>
+<li>Third node is labeled as <code><font color="black">2</font></code>. Connect node <code><font color="black">2</font></code> to node <code><font color="green">2</font></code> (itself), thus forming a self-cycle.</li>
+</ol>
+<p class="font-color"></p>
+
+<p class="font-color">
+Visually, the graph looks like the following:
+</p><pre class="bg-color bg-img font-color">       1
+      / \
+     /   \
+    0 --- 2
+         / \
+         \_/
+</pre>
+<p class="font-color"></p>
+
+</div><p class="font-color"></p>
+</div>
+
+<h3 id="Stats"><a href="#Stats" class="headerlink" title="Stats"></a>Stats</h3><table border="2">
+	<tr>
+		<td>Adjusted Difficulty</td>
+		<td bgcolor="yellow">3</td>
+	</tr>
+	<tr>
+		<td>Time to use</td>
+		<td bgcolor="red">thought for a while</td>
+	</tr>
+</table>
+
+<p>Ratings&#x2F;Color &#x3D; 1(white) 2(lime) 3(yellow) 4&#x2F;5(red)</p>
+<h3 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h3><p><strong>This is a difficult coding question, although the idea is simple</strong>.</p>
+<h3 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h3><p>Two solution: <strong>BFS (recommended) and DFS</strong>. <a target="_blank" rel="noopener" href="http://leetcode.com/2012/05/clone-graph-part-i.html">This</a> is a good analysis article.</p>
+<blockquote cite="http://leetcode.com/2012/05/clone-graph-part-i.html">
+<p>Let’s analyze this further by using the below example:</p>
+<div style="text-align: center; margin-bottom: 30px;"> <a target="_blank" rel="noopener" href="http://www.leetcode.com/wp-content/uploads/2012/05/graph.png"><img src="http://www.leetcode.com/wp-content/uploads/2012/05/graph.png" alt="" title="graph" width="211" height="84" class="aligncenter size-full wp-image-1365"></a><span style="font-size: x-small;">A simple graph</span></div>
+<p>Assume that the starting point of the graph is A. First, you make a copy of node A (A2), and found that A has only one neighbor B. You make a copy of B (B2) and connects A2-&gt;B2 by pushing B2 as A2′s neighbor. Next, you find that B has A as neighbor, which you have already made a copy of. Here, we have to be careful not to make a copy of A again, but to connect B2-&gt;A2 by pushing A2 as B2′s neighbor. But, how do we know if a node has already been copied?</p>
+</blockquote>
+
+<p><strong>Basic idea is to use HashMap to store the already-copied nodes</strong>.</p>
+<p>My first attempt is DFS by making use of a ‘visited’ Set to mark which node I have copied and which is not. This is a nice idea and it solved the problem neatly.</p>
+<p>But after reading <a target="_blank" rel="noopener" href="http://www.programcreek.com/2012/12/leetcode-clone-graph-java/">this article</a>, I realize that <strong>‘visited’ is not needed for BFS solution</strong>!</p>
+<p><strong>The trick is, whenever I do a ‘HashMap.put(curNode, newNode)’, I push ‘curNode’ to queue</strong>. This very well replaces the functionality of the ‘visited’ set. It also guarantees that when I pop a new element from the queue, <strong>I CAN ALWAYS FIND ITS CORRESPONDING COPY</strong> from the HashMap - always there.</p>
+<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><p><strong>First, my DFS code</strong></p>
+<pre><code>public UndirectedGraphNode cloneGraph(UndirectedGraphNode node) &#123;
+    if (node == null) return null;
+	UndirectedGraphNode newNode = new UndirectedGraphNode(node.label);
+	HashMap&lt;Integer, UndirectedGraphNode&gt; map =
+	    new HashMap&lt;Integer, UndirectedGraphNode&gt;();
+	map.put(node.label, newNode);
+	copy(node, newNode, map, new HashSet&lt;Integer&gt;());
+	return newNode;
+&#125;
+
+private void copy(UndirectedGraphNode orin, UndirectedGraphNode cp,
+		HashMap&lt;Integer, UndirectedGraphNode&gt; map,
+		HashSet&lt;Integer&gt; visited) &#123;
+	if (visited.contains(orin.label))
+		return;
+	else
+		visited.add(orin.label);
+	for (UndirectedGraphNode n : orin.neighbors) &#123;
+		if (map.containsKey(n.label)) &#123;
+			cp.neighbors.add(map.get(n.label));
+		&#125; else &#123;
+			UndirectedGraphNode newNode = new UndirectedGraphNode(n.label);
+			map.put(n.label, newNode);
+			cp.neighbors.add(map.get(n.label));
+		&#125;
+	&#125;
+	// do DFS recursively
+	for (int i = 0; i &lt; orin.neighbors.size(); i++) &#123;
+		copy(orin.neighbors.get(i), cp.neighbors.get(i), map, visited);
+	&#125;
+&#125;
+</code></pre>
+<p><strong>Second, my BFS code without using ‘visited’ HashSet</strong></p>
+<pre><code>public UndirectedGraphNode cloneGraph(UndirectedGraphNode node) &#123;
+	if (node == null) return null;
+	HashMap&lt;UndirectedGraphNode, UndirectedGraphNode&gt; map
+	        = new HashMap&lt;UndirectedGraphNode, UndirectedGraphNode&gt;();
+	map.put(node, new UndirectedGraphNode(node.label));
+	LinkedList&lt;UndirectedGraphNode&gt; queue = new LinkedList&lt;UndirectedGraphNode&gt;();
+	queue.add(node);
+	// queue is guaranteed to always have non-traversed nodes
+	while ( !queue.isEmpty() ) &#123;
+	    UndirectedGraphNode orin = queue.remove();
+	    UndirectedGraphNode cp = map.get(orin);
+	    for (UndirectedGraphNode n : orin.neighbors) &#123;
+			if ( !map.containsKey(n) ) &#123;
+				map.put(n, new UndirectedGraphNode(n.label));
+				queue.add(n);
+			&#125;
+			UndirectedGraphNode newNode = map.get(n);
+			cp.neighbors.add(newNode);
+		&#125;
+	&#125;
+	return map.get(node);
+&#125;
+</code></pre>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

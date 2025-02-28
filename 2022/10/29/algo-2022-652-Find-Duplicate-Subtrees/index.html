@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    652. Find Duplicate Subtrees 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">652. Find Duplicate Subtrees</div>
+  <div class="post-meta">
+    <div class="date">2022 October 29th</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><p>Link: <a target="_blank" rel="noopener" href="https://leetcode.cn/problems/find-duplicate-subtrees/">https://leetcode.cn/problems/find-duplicate-subtrees/</a></p>
+<h1 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h1><p>difficulty: mid<br>adj diff: 4</p>
+<pre><code>Given the root of a binary tree, return all duplicate subtrees.
+
+For each kind of duplicate subtrees, you only need to return the root node of any one of them.
+
+Two trees are duplicate if they have the same structure with the same node values.
+
+Example 1:
+
+Input: root = [1,2,3,4,null,2,4,null,null,4]
+Output: [[2,4],[4]]
+
+Example 2:
+
+Input: root = [2,1,1]
+Output: [[1]]
+
+Example 3:
+
+Input: root = [2,2,2,3,null,3,null]
+Output: [[2,3],[3]]
+
+Constraints:
+
+	The number of the nodes in the tree will be in the range [1, 5000]
+	-200 &lt;= Node.val &lt;= 200
+</code></pre>
+<h1 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">public List&lt;TreeNode&gt; findDuplicateSubtrees(TreeNode root) &#123;</span><br><span class="line">    Set&lt;TreeNode&gt; ans = new HashSet&lt;TreeNode&gt;(); // to avoid duplicated</span><br><span class="line">    Map&lt;String, TreeNode&gt; memory = new HashMap&lt;String, TreeNode&gt;();</span><br><span class="line">    helper(ans, root, memory);</span><br><span class="line">    return new LinkedList&lt;TreeNode&gt;(ans); // construct a new list for return</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">private String helper(Set&lt;TreeNode&gt; ans, TreeNode node, Map&lt;String, TreeNode&gt; memory) &#123;</span><br><span class="line">    if (node == null) &#123;</span><br><span class="line">        return &quot;&quot;;</span><br><span class="line">    &#125;</span><br><span class="line">    StringBuilder sb = new StringBuilder();</span><br><span class="line">    sb.append(&quot;(&quot;);</span><br><span class="line">    sb.append(helper(ans, node.left, memory));</span><br><span class="line">    sb.append(&quot;)&quot;);</span><br><span class="line">    sb.append(node.val);</span><br><span class="line">    sb.append(&quot;(&quot;);</span><br><span class="line">    sb.append(helper(ans, node.right, memory));</span><br><span class="line">    sb.append(&quot;)&quot;);</span><br><span class="line">    String serializedTree = sb.toString();</span><br><span class="line">    if (memory.containsKey(serializedTree)) &#123;</span><br><span class="line">        ans.add(memory.get(serializedTree));</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        memory.put(serializedTree, node);</span><br><span class="line">    &#125;</span><br><span class="line">    return serializedTree;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

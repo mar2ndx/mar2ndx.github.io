@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    [LeetCode Plus] Binary Tree Serialize and Deserialize 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">[LeetCode Plus] Binary Tree Serialize and Deserialize</div>
+  <div class="post-meta">
+    <div class="date">2014 June 16th</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><p><a target="_blank" rel="noopener" href="http://leetcode.com/2010/09/serializationdeserialization-of-binary.html">link1</a>, <a target="_blank" rel="noopener" href="http://leetcode.com/2010/09/saving-binary-search-tree-to-file.html">link2</a>.</p>
+<blockquote>
+<p>Variant 1: Given a Binary Search Tree, serialize and deserialize it.</p>
+</blockquote>
+<blockquote>
+<p>Variant 2: Given a Binary Tree, serialize and deserialize it.</p>
+</blockquote>
+<h3 id="Variant-1-Binary-search-tree"><a href="#Variant-1-Binary-search-tree" class="headerlink" title="Variant 1 - Binary search tree"></a>Variant 1 - Binary search tree</h3><p><strong>We must only use pre-order</strong>.</p>
+<p>Think about why, or read <a target="_blank" rel="noopener" href="http://leetcode.com/2010/09/serializationdeserialization-of-binary.html">link1</a>. So, serialization is simple - preorder traversal.</p>
+<p>The desecialization would make use of the first element, and range validation method. This is very similar to another question ‘validate BST’. Rmb the key is:</p>
+<blockquote>
+<p>Each time we add a number, we also pass the valid range within which the number can lie between.</p>
+</blockquote>
+<h4 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h4><p>The code is concise, but may not be easy to write:</p>
+<pre><code>void readBSTHelper(int min, int max, int &amp;insertVal,
+                   BinaryTree *&amp;p, ifstream &amp;fin) &#123;
+  if (insertVal &gt; min &amp;&amp; insertVal &lt; max) &#123;
+    int val = insertVal;
+    p = new BinaryTree(val);
+    if (fin &gt;&gt; insertVal) &#123;
+      readBSTHelper(min, val, insertVal, p-&gt;left, fin);
+      readBSTHelper(val, max, insertVal, p-&gt;right, fin);
+    &#125;
+  &#125;
+&#125;
+
+void readBST(BinaryTree *&amp;root, ifstream &amp;fin) &#123;
+  int val;
+  fin &gt;&gt; val;
+  readBSTHelper(INT_MIN, INT_MAX, val, root, fin);
+&#125;
+</code></pre>
+<h3 id="Variant-2-Binary-tree"><a href="#Variant-2-Binary-tree" class="headerlink" title="Variant 2 - Binary tree"></a>Variant 2 - Binary tree</h3><p>For binary tree, we could not use above solution any more. We must use some NULL pointers to fill in empty slots. For this variant, <strong>pre-order and level-order both would work</strong>.</p>
+<p>Then which of these 2 is a better choice?</p>
+<pre><code>   1
+  / \
+2    3
+</code></pre>
+<blockquote>
+<p>Given the tree above:</p>
+<p>The pre-order serialization is: {1, 2, #, #, 3, #, # }</p>
+<p>The level-order serialization is: {1, 2, 3}</p>
+<p>We can see that level-order is a better idea, because last level null pointers need not be handled.</p>
+</blockquote>
+<h4 id="Code-preorder"><a href="#Code-preorder" class="headerlink" title="Code (preorder)"></a>Code (preorder)</h4><p>The serializaion is a simple traversal.</p>
+<pre><code>void writeBinaryTree(BinaryTree *p, ostream &amp;out) &#123;
+  if (!p) &#123;
+    out &lt;&lt; &quot;# &quot;;
+  &#125; else &#123;
+    out &lt;&lt; p-&gt;data &lt;&lt; &quot; &quot;;
+    writeBinaryTree(p-&gt;left, out);
+    writeBinaryTree(p-&gt;right, out);
+  &#125;
+&#125;
+</code></pre>
+<p>The deserialization is a little bit like “convert linked list to balanced tree” (where we use first element of the list as root of the tree).</p>
+<pre><code>void readBinaryTree(BinaryTree *&amp;p, ifstream &amp;fin) &#123;
+  int token;
+  bool isNumber;
+  if (!readNextToken(token, fin, isNumber))
+    return;
+  if (isNumber) &#123;
+    p = new BinaryTree(token);
+    readBinaryTree(p-&gt;left, fin);
+    readBinaryTree(p-&gt;right, fin);
+  &#125;
+&#125;
+</code></pre>
+<p>I did not find any code for level-order, but it’s similar to ‘level-order traversal’.</p>
+<h3 id="One-more-thing"><a href="#One-more-thing" class="headerlink" title="One more thing"></a>One more thing</h3><p>A Binary Search Tree (BST) is useful for storing phone book records in a memory limited device, such as a cell phone. The records are always maintained in sorted order, inserting and deleting a record takes O(lg n) time (slower than linked list, but much better than array).</p>
+<h3 id="One-more-one-more-thing"><a href="#One-more-one-more-thing" class="headerlink" title="One more one-more-thing"></a>One more one-more-thing</h3><p><strong>This post we use # as a sentinel</strong>. There is also <strong><a target="_blank" rel="noopener" href="http://stackoverflow.com/a/15044868">another idea</a> of doing both Inorder and Preorder traversal</strong> to searialize the tree data, and use the solution to “Construct Binary Tree from Preorder and Inorder” to deserialize it.</p>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

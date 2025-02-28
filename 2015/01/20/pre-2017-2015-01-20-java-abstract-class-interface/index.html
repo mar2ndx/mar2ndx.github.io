@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    [Java OOP] Interface and Abstract classes  丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">[Java OOP] Interface and Abstract classes </div>
+  <div class="post-meta">
+    <div class="date">2015 January 20th</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><h1 id="Definition"><a href="#Definition" class="headerlink" title="Definition"></a>Definition</h1><p><a target="_blank" rel="noopener" href="http://www.programmerinterview.com/index.php/java-questions/interface-vs-abstract-class/">source</a></p>
+<p><strong>A abstract class</strong> is declared when it has one or more <strong>abstract methods</strong>.</p>
+<p><strong>An interface</strong> differs from an abstract class because an interface is not a class. An interface is essentially a type that <strong>can be satisfied by any class</strong> that implements the interface.</p>
+<h1 id="The-short-answer"><a href="#The-short-answer" class="headerlink" title="The short answer"></a>The short answer</h1><ol>
+<li><p>Abstract class is REAL parent.</p>
+</li>
+<li><p>Abstr can have data members and non-abstract methods<br>while interface only got constant variable and abstract methods (read below)</p>
+</li>
+<li><p>class can implement multiple interface<br>but only extend from 1 abstract class</p>
+</li>
+</ol>
+<h3 id="does-interface-got-‘abstract’-methods"><a href="#does-interface-got-‘abstract’-methods" class="headerlink" title="does interface got ‘abstract’ methods?"></a>does interface got ‘abstract’ methods?</h3><p>An interface is “purely” abstract class: every method is an abstract method. We do not use ‘abstract’ keyword. eg.</p>
+<pre><code>interface Bicycle &#123;
+    void changeCadence(int newValue);
+    void changeGear(int newValue);
+    void speedUp(int increment);
+    void applyBrakes(int decrement);
+&#125;
+</code></pre>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="http://stackoverflow.com/a/641549">According to the Java Language Specification</a>, the abstract keyword for interfaces is obsolete and should no longer be used. (Section 9.1.1.1)</p>
+</blockquote>
+<h1 id="The-long-answer"><a href="#The-long-answer" class="headerlink" title="The long answer"></a>The long answer</h1><h3 id="Abstract-classes-strong-relationship"><a href="#Abstract-classes-strong-relationship" class="headerlink" title="Abstract classes: strong relationship"></a>Abstract classes: strong relationship</h3><p><strong>Abstract classes</strong> are meant to be inherited from, and often <strong>indicates a strong relationship</strong>.</p>
+<p>For instance, if we have an abstract base class called “Canine”, any deriving class should be an animal that belongs to the Canine family (like a Dog or a Wolf).</p>
+<p><strong>With an interface on the other hand</strong>, the relationship is <strong>not necessarily strong</strong>.</p>
+<p>For example, if we have a class called “House”, that class could also implement an interface called “AirConditioning”. Having air conditioning not an essential part of a House.</p>
+<p><strong>A TownHouse</strong> is a type of House, that relationship is very strong, and would be more appropriately defined <strong>through inheritance</strong> instead of interfaces.</p>
+<h3 id="What’s-more"><a href="#What’s-more" class="headerlink" title="What’s more"></a>What’s more</h3><ol>
+<li><p>Multiple inheritance</p>
+<p>Java class can inherit from only one abstract class, but can implement multiple interfaces.</p>
+</li>
+<li><p>Abstract method</p>
+<p>Abstract class can have non-abstract methods with actual implementation details.</p>
+</li>
+</ol>
+<h3 id="When-to-use-which"><a href="#When-to-use-which" class="headerlink" title="When to use which"></a>When to use which</h3><p><strong>Use abstract class when</strong>:</p>
+<ol>
+<li><p>You want to <strong><a target="_blank" rel="noopener" href="http://docs.oracle.com/javase/tutorial/java/IandI/abstract.html">share code</a></strong> among several closely related classes.</p>
+</li>
+<li><p>you want to be able to declare <strong>non-public members</strong>. In an interface, all methods must be public.</p>
+</li>
+<li><p>you think you will need to <strong>add methods</strong> in the future.</p>
+<p>Because if you add new method headings to an interface, then all of the classes that already implement that interface will have to be changed to implement the new methods. That can be quite a hassle.</p>
+</li>
+</ol>
+<p><strong>Use interface when</strong>:</p>
+<ol>
+<li><p>You expect that <strong>unrelated classes</strong> would implement your interface. For example, the interfaces <strong>Comparable and Cloneable</strong> are implemented by many unrelated classes.</p>
+</li>
+<li><p>you think that the API will not change for a while.</p>
+</li>
+<li><p>you want to have something similar to multiple inheritance.</p>
+</li>
+</ol>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    [Question] Number Of Bus Stations (meeting rooms)  丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">[Question] Number Of Bus Stations (meeting rooms) </div>
+  <div class="post-meta">
+    <div class="date">2013 November 5th</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><p><a target="_blank" rel="noopener" href="http://tech-queries.blogspot.sg/2009/05/number-of-bus-stations.html">link</a></p>
+<blockquote>
+<p>At a bus-station, you have time-table for buses arrival and departure. You need to find the minimum number of platforms so that all the buses can be accommodated as per their schedule.</p>
+</blockquote>
+<blockquote>
+<p>Example: Time table is like below:</p>
+</blockquote>
+<pre><code>Bus         Arrival         Departure
+BusA        0900 hrs        0930 hrs
+BusB        0915 hrs        1300 hrs
+BusC        1030 hrs        1100 hrs
+BusD        1045 hrs        1145 hrs
+</code></pre>
+<blockquote>
+<p>The answer must be 3.</p>
+</blockquote>
+<p>This question can also be in other forms:</p>
+<blockquote>
+<p>Given a vector of Nodes, each of which contain the start and end time of a meeting, find the maximum number of rooms one would have to book for the day.</p>
+</blockquote>
+<h3 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h3><p>The answer is same as finding the maximum number of bus at the bus-station at the same time.</p>
+<p><strong>The suggestted solution</strong> from <a target="_blank" rel="noopener" href="http://tech-queries.blogspot.sg/2009/05/number-of-bus-stations.html">here</a>:</p>
+<blockquote>
+<p>So first sort all the arrival(A) and departure(D) time in an int array. Please save the corresponding arrival or departure in the array also.</p>
+</blockquote>
+<blockquote>
+<p>After sorting our array will look like this:</p>
+</blockquote>
+<pre><code>0900    0915    1930    1030    1045    1100    1145    1300
+A       A       D       A       A       D       D       D
+</code></pre>
+<p>Now use a counter. When sees an A, increment. When sees an D, decreament. In the end, return the largest counter value.</p>
+<p>Note: If you have a arriving and a departing at same time, put departure time first.</p>
+<h3 id="code"><a href="#code" class="headerlink" title="code"></a>code</h3><pre><code>public int solve(List&lt;Meeting&gt; input) &#123;
+	List&lt;Event&gt; events = new ArrayList&lt;Event&gt;();
+	for (Meeting i : input) &#123;
+		events.add(new Event(i.start, 1));
+		events.add(new Event(i.end, -1));
+	&#125;
+	Collections.sort(events);
+
+	int currentNeeds = 0;
+	int maxNeeds = 0;
+	for (Event e : events) &#123;
+		currentNeeds += e.diff;
+		maxNeeds = Math.max(maxNeeds, currentNeeds);
+	&#125;
+	return maxNeeds;
+&#125;
+</code></pre>
+<p>supporting classes:</p>
+<pre><code>class Event implements Comparable&lt;Event&gt; &#123;
+    int time;
+    int diff;
+    // variable diff have value of 1 or -1
+    // when = 1, it means starting a meeting and 1 more room needed
+    // when = -1, it means ending a meeting and 1 less room needed
+
+    public Event(int a, int b) &#123;
+        time = a;
+        diff = b;
+    &#125;
+
+    @Override
+    public int compareTo(Event o) &#123;
+        if (this.time == o.time) &#123;
+            return this.diff - o.diff;
+        &#125;
+        return this.time - o.time;
+    &#125;
+&#125;
+
+class Meeting &#123;
+    int start;
+    int end;
+
+    public Meeting(int a, int b) &#123;
+        start = a;
+        end = b;
+    &#125;
+&#125;
+</code></pre>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

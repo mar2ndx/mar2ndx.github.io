@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    [CC150v5] 2.7 Linked List Palindrome  丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">[CC150v5] 2.7 Linked List Palindrome </div>
+  <div class="post-meta">
+    <div class="date">2014 September 15th</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><blockquote>
+<p>Implement a function to check if a linked list is a palindrome. </p>
+</blockquote>
+<h3 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h3><p>There are multiple solutions for this question. </p>
+<p><strong>First, maybe the simplest solution of all</strong>, is to compare the list with the reversed list (compare first half would be enough). This is a very nice idea. </p>
+<p><strong>Second solution is iterative approach to use a Stack</strong>. Alternatively, we can also use <strong>fast&#x2F;slow pointer</strong> to find the mid point. </p>
+<p><strong>Third solution is recursive</strong>. We basically uses a public pointer to: </p>
+<ol>
+<li>get starting value</li>
+<li>check middle parts</li>
+<li>get ending value</li>
+<li>if starting &#x3D;&#x3D; ending and middle part is valid, then true.</li>
+</ol>
+<p>This code is pretty hard to think. Read it below. </p>
+<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><p>Recursive</p>
+<pre><code>private static LinkedListNode p;
+
+public static boolean isPalindromeRecursive(LinkedListNode head) &#123;
+	p = head;
+	int len = getListLength(head);
+	return recursiveHelper(0, len - 1);
+&#125;
+
+private static int getListLength(LinkedListNode node) &#123;
+	int count = 0;
+	while (node != null) &#123;
+		count++;
+		node = node.next;
+	&#125;
+	return count;
+&#125;
+
+public static boolean recursiveHelper(int from, int to) &#123;
+	if (from &gt; to) &#123;
+		return true;
+	&#125; else if (from == to) &#123;
+		p = p.next;
+		return true;
+	&#125; else &#123;
+		// first get fromVal, then check middle part, last, get toVal
+		int fromVal = p.data;
+		p = p.next;
+		if (!recursiveHelper(from + 1, to - 1)) &#123;
+			return false;
+		&#125;
+		int toVal = p.data;
+		p = p.next;
+		if (fromVal != toVal) &#123;
+			return false;
+		&#125;
+	&#125;
+	return true;
+&#125;
+</code></pre>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    [LeetCode 93] Restore IP Addresses 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">[LeetCode 93] Restore IP Addresses</div>
+  <div class="post-meta">
+    <div class="date">2014 May 24th</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><p><a target="_blank" rel="noopener" href="https://oj.leetcode.com/problems/restore-ip-addresses/">link</a></p>
+<div class="question-content">
+            <p></p><p>Given a string containing only digits, restore it by returning all possible valid IP address combinations.</p>
+
+<p>
+For example:<br>
+Given <code>"25525511135"</code>,
+</p>
+<p>
+return <code>["255.255.11.135", "255.255.111.35"]</code>. (Order does not matter)
+</p><p></p>
+          </div>
+
+<h3 id="Stats"><a href="#Stats" class="headerlink" title="Stats"></a>Stats</h3><table border="2">
+	<tr>
+		<td>Frequency</td>
+		<td bgcolor="yellow">3</td>
+	</tr>
+	<tr>
+		<td>Difficulty</td>
+		<td bgcolor="yellow">3</td>
+	</tr>
+	<tr>
+		<td>Adjusted Difficulty</td>
+		<td bgcolor="yellow">3</td>
+	</tr>
+	<tr>
+		<td>Time to use</td>
+		<td bgcolor="red">----------</td>
+	</tr>
+</table>
+
+<p>Ratings&#x2F;Color &#x3D; 1(white) 2(lime) 3(yellow) 4&#x2F;5(red)</p>
+<h3 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h3><p>This is question can be solved by <strong>either DFS or Brute Force</strong>, both are fine.</p>
+<h3 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h3><p><strong>The DFS solution is obvious, I have the code for it</strong>.</p>
+<p>However, there’s <a target="_blank" rel="noopener" href="http://blog.csdn.net/u011095253/article/details/9158449">another person</a> who wrote much less code while implementing the same solution as mine. I will post his code as a good example to learn.</p>
+<p><strong>The brute force solution in this case</strong> does not sound like a bad idea. This is the <strong>most top-rated idea on <a target="_blank" rel="noopener" href="https://oj.leetcode.com/discuss/77/restore-ip-addresses">official forum</a></strong> as well.</p>
+<blockquote>
+<p>You can get points’ positions by i, j, k. Using these positions, you can divide s into candidate ip-form. Then, you can judge whether the candidate fits ip. To improve the efficiency, you can narrow the scope of i, j, k.</p>
+</blockquote>
+<p>So, this BF code is also posted below.</p>
+<p>Just one more thing. I tested the <strong>exact same BF code written in C++</strong>. Compared to the <strong>420ms</strong> it took Java to pass OJ test, C++ takes <strong>8ms</strong> only! I was a bit shocked.</p>
+<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><p><strong>First, DFS, my code</strong></p>
+<p>Note: I could have just insert as string, so that convert() method would not be needed.</p>
+<pre><code>public ArrayList&lt;String&gt; restoreIpAddresses(String s) &#123;
+    ArrayList&lt;String&gt; ans = new ArrayList&lt;String&gt;();
+    helper(ans, new ArrayList&lt;String&gt;(), s, 0);
+    return ans;
+&#125;
+
+private void helper(ArrayList&lt;String&gt; ans, ArrayList&lt;String&gt; cur, String s, int from) &#123;
+    int len = s.length();
+    if (from &gt;= len) return;
+    if (cur.size() == 3) &#123;
+        String lastStr = s.substring(from);
+        if (isValidIpNumber(lastStr)) &#123;
+            ArrayList&lt;String&gt; oneAns = new ArrayList&lt;String&gt;(cur);
+            oneAns.add(lastStr);
+            ans.add(convert(oneAns));
+        &#125;
+    &#125;
+    else &#123;
+        // cur.size less than 3, so get next num (length = 1, 2 or 3)
+        for (int i = 1; i &lt;= 3 &amp;&amp; from + i &lt;= len; i ++) &#123;
+            String nextStr = s.substring(from, from + i);
+            if (isValidIpNumber(nextStr)) &#123;
+                cur.add(nextStr);
+                helper(ans, cur, s, from + i);
+                cur.remove(cur.size() - 1);
+            &#125;
+        &#125;
+    &#125;
+&#125;
+
+private boolean isValidIpNumber(String str) &#123;
+    if (str.length() == 0 || str.length() &gt; 3) return false;
+    if (str.charAt(0) == &#39;0&#39; &amp;&amp; str.length() != 1) return false;
+    int num = Integer.parseInt(str);
+    return (0 &lt;= num &amp;&amp; num &lt;= 255);
+&#125;
+
+private String convert(ArrayList&lt;String&gt; l) &#123;
+    String ans = &quot;&quot;;
+    for (String a: l)
+        ans += &quot;.&quot; + a;
+    return ans.substring(1);
+&#125;
+</code></pre>
+<p><strong>Second, DFS, shorter version code</strong></p>
+<pre><code>public ArrayList&lt;String&gt; restoreIpAddresses(String s) &#123;
+    ArrayList&lt;String&gt; res = new ArrayList&lt;String&gt;();
+    if (s.length()&lt;4||s.length()&gt;12) return res;
+    dfs(s,&quot;&quot;,res,0);
+    return res;
+&#125;
+
+public void dfs(String s, String tmp, ArrayList&lt;String&gt; res, int count)&#123;
+    if (count == 3 &amp;&amp; isValid(s)) &#123;
+        res.add(tmp + s);
+        return;
+    &#125;
+    for(int i=1; i&lt;4 &amp;&amp; i&lt;s.length(); i++)&#123;
+        String substr = s.substring(0,i);
+        if (isValid(substr))&#123;
+            dfs(s.substring(i), tmp + substr + &#39;.&#39;, res, count+1);
+        &#125;
+    &#125;
+&#125;
+
+public boolean isValid(String s)&#123;
+    if (s.charAt(0)==&#39;0&#39;) return s.equals(&quot;0&quot;);
+    int num = Integer.parseInt(s);
+    return num&lt;=255 &amp;&amp; num&gt;0;
+&#125;
+</code></pre>
+<p><strong>Third, BF code using triple nested loop (Java)</strong></p>
+<pre><code>public ArrayList&lt;String&gt; restoreIpAddresses(String s) &#123;
+    ArrayList&lt;String&gt; res = new ArrayList&lt;String&gt;();
+    if (s.length() &gt; 12 || s.length() &lt; 4) return res;
+    for (int i = 1; i &lt; 4; i ++) &#123;
+        String first = s.substring(0, i);
+        if (! isValid(first)) continue;
+        for (int j = 1; i + j &lt; s.length() &amp;&amp; j &lt; 4; j ++) &#123;
+            String second = s.substring(i, i + j);
+            if (! isValid(second)) continue;
+            for (int k = 1; i + j + k &lt; s.length() &amp;&amp; k &lt; 4; k ++) &#123;
+                String third = s.substring(i + j, i + j + k);
+                String fourth = s.substring(i + j + k);
+                if (isValid(third) &amp;&amp; isValid(fourth))
+                    res.add(first + &quot;.&quot; + second + &quot;.&quot; + third + &quot;.&quot; + fourth);
+            &#125;
+        &#125;
+    &#125;
+    return res;
+&#125;
+
+public boolean isValid(String s) &#123;
+    if (s.length() &gt; 1 &amp;&amp; s.charAt(0) == &#39;0&#39;) return false;
+    return 0 &lt;= Integer.parseInt(s) &amp;&amp; Integer.parseInt(s) &lt;= 255;
+&#125;
+</code></pre>
+<p><strong>Fourth, same BF code (C++)</strong></p>
+<pre><code>vector&lt;string&gt; restoreIpAddresses(string s) &#123;
+    vector&lt;string&gt; res;
+    if (s.size() &gt; 12 || s.size() &lt; 4) return res;
+    for (int i=1; i&lt;4; i++) &#123;
+        string first = s.substr(0, i);
+        if (!isValid(first)) continue;
+        for (int j=1; i+j &lt; s.size() &amp;&amp; j&lt;4; j++) &#123;
+            string second = s.substr(i, j);
+            if (!isValid(second)) continue;
+            for (int k=1; i+j+k &lt; s.size() &amp;&amp; k&lt;4; k++) &#123;
+                string third = s.substr(i+j, k);
+                string fourth = s.substr(i+j+k);
+                if (isValid(third) &amp;&amp; isValid(fourth)) &#123;
+                    string temp = first+&quot;.&quot;+second+&quot;.&quot;+third+&quot;.&quot;+fourth;
+                    res.push_back(temp);
+                &#125;
+            &#125;
+        &#125;
+    &#125;
+    return res;
+&#125;
+
+bool isValid(string s) &#123;
+    if (s.size() &gt; 1 &amp;&amp; s[0] == &#39;0&#39;) return false;
+    if (stoi(s) &lt;= 255 &amp;&amp; stoi(s) &gt;= 0) return true;
+    else return false;
+&#125;
+</code></pre>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

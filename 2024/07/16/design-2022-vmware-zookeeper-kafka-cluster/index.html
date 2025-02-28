@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    Setup Zookeeper + Kafka in VMware 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">Setup Zookeeper + Kafka in VMware</div>
+  <div class="post-meta">
+    <div class="date">2024 July 16th</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><p>今天，我们在 VMware 中，跑起来 4 台 Zookeeper + 3 台 Kafka 机器。</p>
+<h1 id="Conventions"><a href="#Conventions" class="headerlink" title="Conventions"></a>Conventions</h1><p>Downloaded packages: &#x2F;opt&#x2F;tools</p>
+<p>Installed apps: &#x2F;opt&#x2F;apps</p>
+<p>默认安装的软件：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">yum install tmux wget tree git</span><br><span class="line"></span><br><span class="line">rpm -ivh jdk-8u351-linux-x64.rpm</span><br><span class="line">java -version</span><br><span class="line">sudo curl -fsSL https://rpm.nodesource.com/setup_14.x | sudo bash -</span><br><span class="line">yum install -y nodejs</span><br><span class="line">npm --version</span><br><span class="line"></span><br><span class="line">systemctl status firewalld.service</span><br><span class="line">systemctl stop firewalld.service</span><br><span class="line">systemctl disable firewalld.service</span><br></pre></td></tr></table></figure>
+
+<h1 id="静态-IP-地址"><a href="#静态-IP-地址" class="headerlink" title="静态 IP 地址"></a>静态 IP 地址</h1><p>首先，IP 地址如下（在访问机器上，可以考虑直接更改 C:\Windows\System32\drivers\etc\hosts）：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">192.168.1.201 zookeeper-01</span><br><span class="line">192.168.1.202 zookeeper-02</span><br><span class="line">192.168.1.203 zookeeper-03</span><br><span class="line">192.168.1.204 zookeeper-04</span><br><span class="line">192.168.1.205 kafka-01</span><br><span class="line">192.168.1.206 kafka-02</span><br><span class="line">192.168.1.207 kafka-03</span><br></pre></td></tr></table></figure>
+
+<p>记住，每次 VMware clone 一台新的机器，要做如下两个更改：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">vi /etc/hostname</span><br><span class="line">vi /etc/sysconfig/network-scripts/ifcfg-ens33</span><br></pre></td></tr></table></figure>
+
+<p>其中，网络需要用 Bridge 桥链模式（这样相当于虚拟机跟实体机一样，拥有自己的独立 IP 地址，跟 host 机没关系）；不要用 NAT 模式。</p>
+<p>另外，ifcfg 配置如下（注意：BOOTPROTO 原值是 dhcp，改掉它）：</p>
+<pre><code>BOOTPROTO=&quot;static&quot;
+IPADDR=192.168.1.200
+NETMASK=255.255.255.0
+DNS1=192.168.1.1
+GATEWAY=192.168.1.1
+</code></pre>
+<p>重启，你就拥有了新的 hostname 和 ipv4 地址。</p>
+<h1 id="Zookeeper"><a href="#Zookeeper" class="headerlink" title="Zookeeper"></a>Zookeeper</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">wget  https://dlcdn.apache.org/zookeeper/zookeeper-3.7.1/apache-zookeeper-3.7.1-bin.tar.gz</span><br><span class="line">tar -zxvf apache-zookeeper-3.7.1-bin.tar.gz</span><br><span class="line">mkdir /opt/apps</span><br><span class="line">mv apache-zookeeper-3.7.1-bin /opt/apps/</span><br><span class="line">cd /opt/apps/</span><br><span class="line">ln -s ./apache-zookeeper-3.7.1-bin/ ./zookeeper</span><br><span class="line">cd /opt/apps/zookeeper/</span><br><span class="line">cp conf/zoo_sample.cfg conf/zoo.cfg</span><br><span class="line">vi conf/zoo.cfg</span><br></pre></td></tr></table></figure>
+
+<p>对于 leader&#x2F;follower 机器，添加以下配置：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">dataDir=/usr/data/zookeeper</span><br><span class="line"></span><br><span class="line">server.1=192.168.1.201:2888:3888</span><br><span class="line">server.2=192.168.1.202:2888:3888</span><br><span class="line">server.3=192.168.1.203:2888:3888</span><br><span class="line">server.4=192.168.1.204:2888:3888:observer</span><br></pre></td></tr></table></figure>
+
+<p>对于 observer，添加：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">dataDir=/usr/data/zookeeper</span><br><span class="line"></span><br><span class="line">peerType=observer</span><br><span class="line">server.1=192.168.1.201:2888:3888</span><br><span class="line">server.2=192.168.1.202:2888:3888</span><br><span class="line">server.3=192.168.1.203:2888:3888</span><br><span class="line">server.4=192.168.1.204:2888:3888:observer</span><br></pre></td></tr></table></figure>
+
+<p>【maybe optional】对于每一台机器：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">mkdir /usr/data/zookeeper</span><br><span class="line">echo 0 &gt; /usr/data/zookeeper/myid</span><br><span class="line">echo 1 &gt; /usr/data/zookeeper/myid # for zookeeper-02</span><br><span class="line">echo 2 &gt; /usr/data/zookeeper/myid # for zookeeper-03</span><br><span class="line">echo 3 &gt; /usr/data/zookeeper/myid # for zookeeper-04</span><br></pre></td></tr></table></figure>
+
+<p>好了。可以开始启动了。为了方便起见：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">vi /root/.bash_profile</span><br><span class="line">PATH=$PATH:$HOME/bin:/opt/apps/zookeeper/bin</span><br></pre></td></tr></table></figure>
+
+<p>这样，我们就可以随时随地的跑 zkServer.sh 了。</p>
+<p>启动：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">zkServer.sh status</span><br><span class="line">zkServer.sh start</span><br><span class="line">zkServer.sh status</span><br><span class="line">zkServer.sh stop</span><br><span class="line">zkServer.sh status</span><br></pre></td></tr></table></figure>
+
+<p>注意看每台机器的角色。</p>
+<p>zookeeper-02:</p>
+<p><img src="/images/zookeeper-status-leader.png"></p>
+<p>zookeeper-03:</p>
+<p><img src="/images/zookeeper-status-follower.png"></p>
+<p>zookeeper-04:</p>
+<p><img src="/images/zookeeper-status-observer.png"></p>
+<h1 id="Kafka"><a href="#Kafka" class="headerlink" title="Kafka"></a>Kafka</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">cd /opt/tools/</span><br><span class="line">tar -zxvf kafka_2.12-3.3.1.tgz</span><br><span class="line">mv kafka_2.12-3.3.1 ../apps/</span><br><span class="line">cd ../apps/</span><br><span class="line">ln -s kafka_2.12-3.3.1/ ./kafka</span><br><span class="line">cd /opt/apps/kafka</span><br><span class="line">vi config/server.properties</span><br></pre></td></tr></table></figure>
+
+<p>改以下几个地方：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">broker.id=0 # 分别是 0、1、2、3</span><br><span class="line">listeners=PLAINTEXT://192.168.1.205:9092 # 自己的IP地址</span><br><span class="line"># advertised.listeners 可以不配置，默认 = listeners</span><br><span class="line"></span><br><span class="line">zookeeper.connect=192.168.1.201:2181,192.168.1.202:2181,192.168.1.203:2181,192.168.1.204:2181</span><br><span class="line"># zookeeper 配置很重要。这里我用了4台机器的cluster。</span><br></pre></td></tr></table></figure>
+
+<p>注意看 log.dirs&#x3D;&#x2F;tmp&#x2F;kafka-logs 这个参数。因为这里的 broker_id 也要改，否则会报错 “Configured broker.id 1 doesn’t match stored broker.id Some(0) in meta.properties.”</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">vi /tmp/kafka-logs/meta.properties</span><br><span class="line">broker.id=0</span><br></pre></td></tr></table></figure>
+
+<p>好了，可以开始跑了：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bin/kafka-server-start.sh config/server.properties</span><br></pre></td></tr></table></figure>
+
+<p>如果想在后台跑：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">bin/kafka-server-start.sh -daemon config/server.properties</span><br><span class="line">ps aux | grep kafka</span><br><span class="line">bin/kafka-server-stop.sh</span><br><span class="line">ps aux | grep kafka</span><br><span class="line">bin/kafka-topics.sh --create --bootstrap-server kafka-01:9092 --topic cities</span><br><span class="line">bin/kafka-topics.sh --list --bootstrap-server kafka-01:9092</span><br></pre></td></tr></table></figure>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

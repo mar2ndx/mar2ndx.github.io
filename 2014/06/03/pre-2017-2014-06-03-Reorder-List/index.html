@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    [LeetCode 143] Reorder List 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">[LeetCode 143] Reorder List</div>
+  <div class="post-meta">
+    <div class="date">2014 June 3rd</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><p><a target="_blank" rel="noopener" href="https://oj.leetcode.com/problems/reorder-list/">link</a></p>
+<div class="question-content bg-color bg-img font-color">
+            <p class="font-color"></p><p class="font-color">
+Given a singly linked list <i>L</i>: <i>L</i><sub>0</sub>→<i>L</i><sub>1</sub>→…→<i>L</i><sub><i>n</i>-1</sub>→<i>L</i><sub>n</sub>,<br>
+reorder it to: <i>L</i><sub>0</sub>→<i>L</i><sub><i>n</i></sub>→<i>L</i><sub>1</sub>→<i>L</i><sub><i>n</i>-1</sub>→<i>L</i><sub>2</sub>→<i>L</i><sub><i>n</i>-2</sub>→…
+</p>
+
+<p class="font-color">You must do this in-place without altering the nodes' values.</p>
+
+<p class="font-color">
+For example,<br>
+Given <code>&#123;1,2,3,4&#125;</code>, reorder it to <code>&#123;1,4,2,3&#125;</code>.
+</p><p class="font-color"></p>
+          </div>
+
+<h3 id="Stats"><a href="#Stats" class="headerlink" title="Stats"></a>Stats</h3><table border="2">
+	<tr>
+		<td>Adjusted Difficulty</td>
+		<td bgcolor="red">4</td>
+	</tr>
+	<tr>
+		<td>Time to use</td>
+		<td bgcolor="red">--------</td>
+	</tr>
+</table>
+
+<p>Ratings&#x2F;Color &#x3D; 1(white) 2(lime) 3(yellow) 4&#x2F;5(red)</p>
+<h3 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h3><p><strong>This is a difficult question to think</strong>.</p>
+<p>I first solved it with an stack which stores the second half nodes. It works. However, IT IS NOT A IN-PLACE SOLUTION, thus it’s wrong.</p>
+<p>Eventually I did not solve it.</p>
+<p><strong>There is only one standard solution from the Internet</strong>. <a target="_blank" rel="noopener" href="http://www.programcreek.com/2013/12/in-place-reorder-a-singly-linked-list-in-java/">This blog</a> explains it.</p>
+<blockquote>
+<ol>
+<li>Break list in the middle to two lists (use fast &amp; slow pointers)</li>
+<li>Reverse the order of the second list</li>
+<li>Merge two list back together</li>
+</ol>
+</blockquote>
+<p>Simple, right? <strong>Because of the nature of linked list, a lot of things can be done in-place</strong>, so we need not use any other data strucutres.</p>
+<h3 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h3><p>The code is a bit lengthy and difficult to write. It took me a while, but passed in 1 go.</p>
+<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><p><strong>First, code written by me</strong></p>
+<pre><code>public void reorderList(ListNode head) &#123;
+    if (head == null || head.next == null) &#123;
+		return;
+	&#125;
+	ListNode slow = head, fast = head;
+	while (fast != null) &#123;
+		if (fast.next != null &amp;&amp; fast.next.next != null) &#123;
+			fast = fast.next.next;
+			slow = slow.next;
+		&#125;
+		else &#123;
+			fast = null;
+		&#125;
+	&#125;
+	// if length = 2, slow point to 1st
+	// if length = 3, slow point to 2nd
+	// if length = 4, slow point to 2nd
+	ListNode secondHalf = slow.next;
+	slow.next = null;
+	// now reverse secondHalf
+	ListNode p = secondHalf;
+	while (p.next != null) &#123;
+		ListNode tail = p.next.next;
+		p.next.next = secondHalf;
+		secondHalf = p.next;
+		p.next = tail;
+	&#125;
+	// now merge 2 list: head and secondHalf
+	ListNode a = head, b = secondHalf;
+	while (a != null &amp;&amp; b != null) &#123;
+		ListNode temp1 = a.next;
+		ListNode temp2 = b.next;
+		a.next = b;
+		b.next = temp1;
+		a = temp1;
+		b = temp2;
+	&#125;
+&#125;
+</code></pre>
+<p><strong>Second, code written by <a target="_blank" rel="noopener" href="https://oj.leetcode.com/discuss/236/does-this-problem-solution-time-complexity-space-comlexity">someone</a></strong></p>
+<pre><code>public void reorderList(ListNode head) &#123;
+    // IMPORTANT: Please reset any member data you declared, as
+    // the same Solution instance will be reused for each test case.
+    if (head == null || head.next == null) return;
+    ListNode fast = head;
+    ListNode slow = head;
+    while(fast != null &amp;&amp; fast.next != null) &#123;
+        fast = fast.next.next;
+        slow = slow.next;
+    &#125;
+    ListNode reverseHead = slow.next;           // find the second half of list
+    slow.next = null;                           // make first half end point to null
+    reverseHead = reverse(reverseHead);         // reverse second half
+    ListNode cur = head;
+    while(reverseHead != null) &#123;                // link together
+        ListNode tmp = reverseHead.next;
+        reverseHead.next = cur.next;
+        cur.next = reverseHead;
+        cur = cur.next.next;
+        reverseHead = tmp;
+    &#125;
+&#125;
+private ListNode reverse(ListNode head) &#123;
+    if (head == null || head.next == null) return head;
+    ListNode prev = new ListNode(0);
+    prev.next = head;
+    head = prev;
+    ListNode cur = prev.next;
+    while(cur.next != null) &#123;
+        ListNode tmp = cur.next;
+        cur.next = tmp.next;
+        tmp.next = prev.next;
+        prev.next = tmp;
+    &#125;
+    return prev.next;
+&#125;
+</code></pre>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

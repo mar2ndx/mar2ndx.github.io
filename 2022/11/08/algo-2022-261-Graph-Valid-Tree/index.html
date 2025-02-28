@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    261. Graph Valid Tree 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">261. Graph Valid Tree</div>
+  <div class="post-meta">
+    <div class="date">2022 November 8th</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><p>Link: <a target="_blank" rel="noopener" href="https://leetcode.cn/problems/graph-valid-tree/">https://leetcode.cn/problems/graph-valid-tree/</a></p>
+<h1 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h1><p>difficulty: hard<br>adj diff: 4</p>
+<pre><code>You have a graph of n nodes labeled from 0 to n - 1. You are given an integer n and a list of edges where edges[i] = [ai, bi] indicates that there is an undirected edge between nodes ai and bi in the graph.
+
+Return true if the edges of the given graph make up a valid tree, and false otherwise.	 
+Example 1:
+
+Input: n = 5, edges = [[0,1],[0,2],[0,3],[1,4]]
+Output: true
+
+Example 2:
+
+Input: n = 5, edges = [[0,1],[1,2],[2,3],[1,3],[1,4]]
+Output: false
+
+Constraints:
+
+1 &lt;= n &lt;= 2000
+0 &lt;= edges.length &lt;= 5000
+edges[i].length == 2
+0 &lt;= ai, bi &lt; n
+ai != bi
+There are no self-loops or repeated edges.
+</code></pre>
+<p>并查集问题。（参考另一篇帖子，这里先不讨论并查集）</p>
+<p>但是也可以用 dfs&#x2F;bfs 来做。</p>
+<p>只需要保证 3 点：</p>
+<ol>
+<li>n 个 node，一定是对应(n-1)个 edge</li>
+<li>无环</li>
+<li>无孤岛（所有的 node 都能通过 bfs&#x2F;dfs 访问一遍）</li>
+</ol>
+<p>代码如下：</p>
+<h1 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h1><p>BFS（注意这段代码，通过双向 directed edge 来判断 circle 的逻辑）</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">public boolean validTree(int n, int[][] edges) &#123;</span><br><span class="line">    //构建邻接矩阵</span><br><span class="line">    int[][] graph = new int[n][n];</span><br><span class="line">    //有边的元素设置为1，没有边的元素设置为0</span><br><span class="line">    for (int[] edge : edges) &#123;</span><br><span class="line">        graph[edge[0]][edge[1]] = 1;</span><br><span class="line">        graph[edge[1]][edge[0]] = 1;</span><br><span class="line">    &#125;</span><br><span class="line">    //进行BFS</span><br><span class="line">    Queue&lt;Integer&gt; queue = new LinkedList&lt;&gt;();</span><br><span class="line">    //从第一个节点开始搜索，这样就不会漏掉无边图的情况</span><br><span class="line">    queue.add(0);</span><br><span class="line">    boolean[] visited = new boolean[n];</span><br><span class="line">    while (!queue.isEmpty()) &#123;</span><br><span class="line">        Integer cur = queue.poll();</span><br><span class="line">        visited[cur] = true;</span><br><span class="line">        //获取邻接点</span><br><span class="line">        for (int i = 0; i &lt; n; i++) &#123;</span><br><span class="line">            //查看当前节点的邻接点</span><br><span class="line">            if (graph[cur][i] == 1) &#123;</span><br><span class="line">                //如果访问过，则返回false</span><br><span class="line">                if (visited[i])</span><br><span class="line">                    return false;</span><br><span class="line"></span><br><span class="line">                //标记邻接点，入队列</span><br><span class="line">                visited[i] = true;</span><br><span class="line">                //涂黑访问过的节点</span><br><span class="line">                graph[cur][i] = 0;</span><br><span class="line">                graph[i][cur] = 0;</span><br><span class="line">                queue.add(i);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    //判断是否为单连通分量</span><br><span class="line">    for (int i = 0; i &lt; n; i++) &#123;</span><br><span class="line">        if (!visited[i])</span><br><span class="line">            return false;</span><br><span class="line">    &#125;</span><br><span class="line">    return true;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>DFS（注意这段代码，只判断 n-1edges，以及孤岛，没有判断 circle。也是 work 的）</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">public boolean validTree(int n, int[][] edges) &#123;</span><br><span class="line">    if (edges.length != n - 1) return false;</span><br><span class="line">    int[] out = new int[n];</span><br><span class="line">    int cnt = 0;</span><br><span class="line">    ArrayList&lt;ArrayList&lt;Integer&gt;&gt; graph = new ArrayList&lt;&gt;();</span><br><span class="line">    for(int i = 0; i &lt; n; ++i)&#123;</span><br><span class="line">        graph.add(new ArrayList&lt;&gt;());</span><br><span class="line">    &#125;</span><br><span class="line">    for(int[] arr: edges)&#123;</span><br><span class="line">        out[arr[0]]++;</span><br><span class="line">        out[arr[1]]++;</span><br><span class="line">        graph.get(arr[0]).add(arr[1]);</span><br><span class="line">        graph.get(arr[1]).add(arr[0]);</span><br><span class="line">    &#125;</span><br><span class="line">    Queue&lt;Integer&gt; queue = new LinkedList&lt;&gt;();</span><br><span class="line">    for(int i = 0; i &lt; out.length; ++i)&#123;</span><br><span class="line">        if(out[i] == 1) queue.add(i);</span><br><span class="line">    &#125;</span><br><span class="line">    while(!queue.isEmpty())&#123;</span><br><span class="line">        int size = queue.size();</span><br><span class="line">        cnt += size;</span><br><span class="line">        for(int s = 0; s &lt; size; ++s)&#123;</span><br><span class="line">            int temp = queue.poll();</span><br><span class="line">            for(int num : graph.get(temp))&#123;</span><br><span class="line">                if(--out[num] == 1) queue.add(num);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    return cnt == n || (n == 1 &amp;&amp; edges.length == 0);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

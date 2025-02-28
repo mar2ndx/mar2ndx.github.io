@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    [Design] Virtual Memory, Page Fault and Thrashing 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">[Design] Virtual Memory, Page Fault and Thrashing</div>
+  <div class="post-meta">
+    <div class="date">2014 August 26th</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><h3 id="Terminologies"><a href="#Terminologies" class="headerlink" title="Terminologies"></a>Terminologies</h3><h4 id="Paging"><a href="#Paging" class="headerlink" title="Paging"></a>Paging</h4><p><a target="_blank" rel="noopener" href="http://whatis.techtarget.com/definition/paging">Paging</a> is a method of writing data to, and reading it from, <strong>secondary storage</strong> for use in <strong>primary storage</strong>, also known as main memory. Paging plays a role in memory management for a operating system.</p>
+<h4 id="Page-table"><a href="#Page-table" class="headerlink" title="Page table"></a>Page table</h4><p><a target="_blank" rel="noopener" href="http://en.wikipedia.org/wiki/Page_table">A page table</a> is the data structure used by a virtual memory system to store the mapping between <strong>virtual addresses</strong> and <strong>physical addresses</strong>.</p>
+<h4 id="Page-fault"><a href="#Page-fault" class="headerlink" title="Page fault"></a>Page fault</h4><p>A <a target="_blank" rel="noopener" href="http://en.wikipedia.org/wiki/Page_fault">page fault</a> is a trap to the software raised by the hardware when a program <strong>accesses a page that is mapped in the virtual address space</strong>, but <strong>not loaded in physical memory</strong>. In the typical case the operating system tries to handle the page fault by making the required page accessible at a location in physical memory or terminates the program in the case of an illegal access.</p>
+<p>An <strong>invalid page fault</strong> or <strong>page fault error</strong> occurs when the operating system cannot find the data in virtual memory. This usually happens when the virtual memory area, or the table that maps virtual addresses to real addresses, becomes corrupt.</p>
+<h4 id="Logical-address"><a href="#Logical-address" class="headerlink" title="Logical address"></a>Logical address</h4><p><a target="_blank" rel="noopener" href="http://en.wikipedia.org/wiki/Logical_address">Logical address</a> is the address at which an item (memory cell, storage element, network host) appears to reside from the perspective of an executing application program.</p>
+<h4 id="Physical-address"><a href="#Physical-address" class="headerlink" title="Physical address"></a>Physical address</h4><p><a target="_blank" rel="noopener" href="http://en.wikipedia.org/wiki/Physical_address">Physical address</a> (also real address, or binary address), is a memory address that is represented in the form of a binary number for accessing main memory.</p>
+<p><a target="_blank" rel="noopener" href="http://www.geekinterview.com/question_details/3186">In general</a>, Logical address is the address generated <strong>by the CPU</strong>. Where as physical address is the <strong>actual address of the process in the memory</strong>. The CPU generates the logical address that is added with the <strong>offset value</strong> to get the actual address of the process inthe memory.</p>
+<h4 id="Thrashing"><a href="#Thrashing" class="headerlink" title="Thrashing"></a>Thrashing</h4><p><a target="_blank" rel="noopener" href="http://www.computerhope.com/jargon/t/thrash.htm">Thrashing</a> or disk thrashing is a term used to describe when the hard drive is <strong>being overworked by moving information</strong> between the system memory and virtual memory excessively.</p>
+<h3 id="Demand-Paging"><a href="#Demand-Paging" class="headerlink" title="Demand Paging"></a>Demand Paging</h3><p>Virtual memory is implemented (mostly) using demand paging. <strong><a target="_blank" rel="noopener" href="http://www.webopedia.com/TERM/D/demand_paging.html">Demand Paging</a></strong> is a type of swapping in which pages of data are not copied from disk to RAM until they are needed. This is an example of a <a target="_blank" rel="noopener" href="http://en.wikipedia.org/wiki/Demand_paging">lazy loading technique</a>.</p>
+<p>Pros:</p>
+<ol>
+<li>less RAM needed</li>
+<li>more users</li>
+<li>less I&#x2F;O</li>
+</ol>
+<p>When a pages is needed, if <strong>invalid referernce</strong>, abort the process. else <strong>if valid</strong>, it’s called page fault.</p>
+<p>Page fault time:</p>
+<ol>
+<li>servicing the page fault interrupt</li>
+<li>read in new page (major part)</li>
+<li>restart the process</li>
+</ol>
+<h3 id="Page-Replacement"><a href="#Page-Replacement" class="headerlink" title="Page Replacement"></a>Page Replacement</h3><ol>
+<li>FIFO</li>
+<li>Optimal Algorithm</li>
+<li>LRU</li>
+<li>LRU Approximation<ol>
+<li>Additional-Reference-Bits algorithm</li>
+<li>Second-Chance (Clock) algorithm</li>
+</ol>
+</li>
+</ol>
+<p>Refer to another post <strong>“Cache and Page Replacement Algorithms”</strong>.</p>
+<h3 id="Solution-to-Thrashing"><a href="#Solution-to-Thrashing" class="headerlink" title="Solution to Thrashing"></a>Solution to Thrashing</h3><ol>
+<li>More RAM</li>
+<li>Less program running together</li>
+<li>Assign working priorities</li>
+<li>Improve <a target="_blank" rel="noopener" href="http://en.wikipedia.org/wiki/Thrashing_(computer_science)#Solutions">spatial locality</a> by replacing loops, i.e.</li>
+</ol>
+<p>Replace</p>
+<pre><code>// recall that in C, arrays use Row-major order
+int m[256][256];
+for (k=0; k&lt;256; k++) &#123;
+	for (i=0; i&lt;256; i++) &#123;
+		m[i][k] = something();
+	&#125;
+&#125;
+</code></pre>
+<p>with</p>
+<pre><code>int m[256][256];
+for (i=0; i&lt;256; i++) &#123;
+	for (k=0; k&lt;256; k++) &#123;
+		// consecutive values of k reside in adjacent memory locations
+		m[i][k] = something();
+	&#125;
+&#125;
+</code></pre>
+<p>So that the use of data elements is within relatively <a target="_blank" rel="noopener" href="http://en.wikipedia.org/wiki/Locality_of_reference">close storage locations</a>.</p>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

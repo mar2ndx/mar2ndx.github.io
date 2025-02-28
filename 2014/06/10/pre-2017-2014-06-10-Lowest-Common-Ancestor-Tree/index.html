@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    [LeetCode Plus] Lowest Common Ancestor of Binary Tree (I) 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">[LeetCode Plus] Lowest Common Ancestor of Binary Tree (I)</div>
+  <div class="post-meta">
+    <div class="date">2014 June 10th</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><p><a target="_blank" rel="noopener" href="http://leetcode.com/2011/07/lowest-common-ancestor-of-a-binary-tree-part-i.html">link</a></p>
+<div class="entry bg-color bg-img font-color">
+    <blockquote>
+        <p class="font-color bg-color bg-img">Given a binary tree, find the lowest common ancestor of two given nodes in the tree.</p>
+    </blockquote>
+    <p class="font-color bg-color bg-img"><span id="more-790" class="font-color"></span>
+        <br>
+    </p><pre class="bg-color bg-img font-color">        _______<span style="color: #990000;" class="font-color">3</span>______
+       /              \
+    ___<span style="color: #990000;" class="font-color">5</span>__          ___<span style="color: #990000;" class="font-color">1</span>__
+   /      \        /      \
+   <span style="color: #990000;" class="font-color">6</span>      _<span style="color: #990000;" class="font-color">2       0       8</span>
+         /  \
+         <span style="color: #990000;" class="font-color">7   4</span></pre>
+    <p class="font-color">If you are not so sure about the definition of lowest common ancestor (LCA), please refer to my previous post: <a target="_blank" rel="noopener" href="http://www.leetcode.com/2011/07/lowest-common-ancestor-of-a-binary-search-tree.html" class="font-color bg-color bg-img">Lowest Common Ancestor of a Binary Search Tree (BST)</a> or the definition of LCA <a target="_blank" rel="noopener" href="http://en.wikipedia.org/wiki/Lowest_common_ancestor" class="font-color">here</a>. Using the tree above as an example, the LCA of nodes <strong><span style="color: #990000;" class="font-color">5</span></strong> and <strong><span style="color: #990000;" class="font-color">1</span></strong> is <strong><span style="color: #990000;" class="font-color">3</span></strong>. Please note that LCA for nodes <strong><span style="color: #990000;" class="font-color">5</span> </strong>and <strong><span style="color: #990000;" class="font-color">4</span> </strong>is <strong><span style="color: #990000;" class="font-color">5</span></strong>.</p>
+    <p class="font-color bg-color bg-img"><strong>Hint:</strong>
+        <br>Top-down or bottom-up? Consider both approaches and see which one is more efficient.</p>
+</div>
+
+<p><strong>This question appears on CC150v5 Q4.7</strong>.</p>
+<h3 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h3><p>This tree is not BST, so it’s more difficult then previous. Top-down approach would take O(n^2) time due to duplicate traverse.</p>
+<p><strong>However, there is a very good bottom-up approach with O(n) time</strong>. This solution, though very tricky, is the most standard and common interview question that can be asked about Binary Tree.</p>
+<blockquote>
+<p>We traverse from the bottom, and once we reach a node which matches one of the two nodes, we pass it up to its parent. The parent would then test its left and right subtree if each contain one of the two nodes. If yes, then the parent must be the LCA and we pass its parent up to the root. If not, we pass the lower node which contains either one of the two nodes (if the left or right subtree contains either p or q), or NULL (if both the left and right subtree does not contain either p or q) up.</p>
+</blockquote>
+<p>The coding is very concise.</p>
+<blockquote cite="http://leetcode.com/2011/07/lowest-common-ancestor-of-a-binary-tree-part-i.html">
+<p class="font-color"><strong>Notes:<br> </strong>The LCA problem had been studied extensively by many computer scientists. There exists efficient algorithms for finding LCA in constant time after initial processing of the tree in linear time. For the adventurous reader, please read this article for more details: <a target="_blank" rel="noopener" href="http://www.topcoder.com/tc?module=Static&amp;d1=tutorials&amp;d2=lowestCommonAncestor" class="font-color">Range Minimum Query and Lowest Common Ancestor in Topcoder</a>.
+</p>
+</blockquote>
+
+<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><p><strong>updated on Sep 15th, 2014</strong>: code from CC150v5 Q4.7</p>
+<pre><code>public static TreeNode commonAncestor(TreeNode root, TreeNode p, TreeNode q) &#123;
+	if (root == null) &#123;
+		return null;
+	&#125; else if (root == p) &#123;
+		return p;
+	&#125; else if (root == q) &#123;
+		return q;
+	&#125;
+	if (commonAncestor(root.left, p, q) == null) &#123;
+		return commonAncestor(root.right, p, q);
+	&#125; else if (commonAncestor(root.right, p, q) == null) &#123;
+		return commonAncestor(root.left, p, q);
+	&#125; else &#123;
+		return root;
+	&#125;
+&#125;
+</code></pre>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

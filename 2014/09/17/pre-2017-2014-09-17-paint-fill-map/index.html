@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    [CC150v5] 9.7 Paint Fill in Map  丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">[CC150v5] 9.7 Paint Fill in Map </div>
+  <div class="post-meta">
+    <div class="date">2014 September 17th</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><blockquote>
+<p>Implement the “paint fill” function that one might see on many image editing programs. </p>
+</blockquote>
+<blockquote>
+<p>That is, given a screen (represented by a two-dimensional array of colors), a point, and a new color, <strong>fill in the surrounding area</strong> until the color changes from the original color. </p>
+</blockquote>
+<h3 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h3><p>This is a BFS&#x2F;DFS question, very similar to <strong>[LeetCode 130] Surrounded Regions</strong>. </p>
+<p><strong>However, this question is not same as surrounding region</strong>, because no temporary storage of state is needed, <strong>and we DO NOT NEED TO keep track of the visited positions</strong>! </p>
+<p>Why is this? </p>
+<ol>
+<li>This question, we simple change the color <strong>from A to B</strong>. </li>
+<li>Surrounding Region is <strong>change A to B, and B to A</strong>.</li>
+</ol>
+<p>That’s why, the nature of 2 questions are different. </p>
+<p>Code 1 is my first solution, and Code 2 is doing a BFS and set color directly to expected value. This type of questions is highly frequent and sometimes may cause confusions. </p>
+<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><p><strong>my code 1</strong>, with ‘temp’ state</p>
+<pre><code>public static void PaintFill1(Color[][] screen, int posX, int posY,
+		Color ncolor) &#123;
+	// the queue keeps the list of positions that I&#39;m going to visit
+	Queue&lt;Position&gt; q = new LinkedList&lt;Position&gt;();
+	int len = screen.length;
+	Color original = screen[posX][posY];
+	// visited origin node first
+	q.offer(new Position(posX, posY));
+	while (!q.isEmpty()) &#123;
+		// visit positions in q one by one (mark color as &#39;Temp&#39;)
+		Position p = q.poll();
+		if (p.x &lt; 0 || p.x &gt;= len || p.y &lt; 0 || p.y &gt;= len) &#123;
+			// invalid pos coordinate
+			continue;
+		&#125; else if (screen[p.x][p.y] == Color.Temp
+				|| screen[p.x][p.y] != original) &#123;
+			continue;
+		&#125;
+		screen[p.x][p.y] = Color.Temp;
+		q.offer(new Position(p.x - 1, p.y));
+		q.offer(new Position(p.x + 1, p.y));
+		q.offer(new Position(p.x, p.y - 1));
+		q.offer(new Position(p.x, p.y + 1));
+	&#125;
+	// finish visiting all positions that&#39;s original color
+	for (int i = 0; i &lt; len; i++) &#123;
+		for (int j = 0; j &lt; len; j++) &#123;
+			if (screen[i][j] == Color.Temp) &#123;
+				screen[i][j] = ncolor;
+			&#125;
+		&#125;
+	&#125;
+&#125;
+</code></pre>
+<p><strong>my code 2</strong>, without ‘temp’ state</p>
+<pre><code>public static void PaintFill2(Color[][] screen, int posX, int posY,
+		Color ncolor) &#123;
+	// the queue keeps the list of positions that I&#39;m going to visit
+	Queue&lt;Position&gt; q = new LinkedList&lt;Position&gt;();
+	int len = screen.length;
+	Color original = screen[posX][posY];
+	// visited origin node first
+	q.offer(new Position(posX, posY));
+	while (!q.isEmpty()) &#123;
+		// visit positions in q one by one (mark color as &#39;Temp&#39;)
+		Position p = q.poll();
+		if (p.x &lt; 0 || p.x &gt;= len || p.y &lt; 0 || p.y &gt;= len) &#123;
+			// invalid pos coordinate
+			continue;
+		&#125; else if (screen[p.x][p.y] != original) &#123;
+			continue;
+		&#125;
+		screen[p.x][p.y] = ncolor;
+		q.offer(new Position(p.x - 1, p.y));
+		q.offer(new Position(p.x + 1, p.y));
+		q.offer(new Position(p.x, p.y - 1));
+		q.offer(new Position(p.x, p.y + 1));
+	&#125;
+&#125;
+</code></pre>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

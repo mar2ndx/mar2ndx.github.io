@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    [Google] Google API read4096 (read4K) 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">[Google] Google API read4096 (read4K)</div>
+  <div class="post-meta">
+    <div class="date">2014 August 27th</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><p><a target="_blank" rel="noopener" href="http://www.careercup.com/question?id=14424684">link</a></p>
+<blockquote>
+<p>Given API: int Read4096(char* buf);</p>
+</blockquote>
+<blockquote>
+<p>It reads data from a file and records the position so that the next time when it is called it read the next 4k chars (or the rest of the file, whichever is smaller) from the file. The return is the number of chars read.</p>
+</blockquote>
+<blockquote>
+<p>Use above API to Implement API “int Read(char* buf, int n)” which reads any number of chars from the file.</p>
+</blockquote>
+<h3 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h3><p>Since the nature of C++ and Java is different, I changed the api to:</p>
+<pre><code>GoogleApi.read4096()&#123;&#125;
+GoogleRead4096.read(int n)&#123;&#125;
+</code></pre>
+<p>As <a target="_blank" rel="noopener" href="http://www.careercup.com/question?id=14424684">suggested</a>, the solution is to keep <strong>one local buffer</strong>, and 1 pointer within the buffer.</p>
+<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><pre><code>String buffer = null;
+int p = 0;
+
+public String read(int n) &#123;
+	if (n &lt; 0) &#123;
+		return null;
+	&#125; else if (n == 0) &#123;
+		return &quot;&quot;;
+	&#125;
+	StringBuilder sb = new StringBuilder();
+	while (n &gt; 0) &#123;
+		// there is (LENGTH - p) chars left in the local buffer
+		if (buffer == null || p == buffer.length()) &#123;
+			// no char left in buffer, update buffer
+			buffer = GoogleApi.read4096();
+			p = 0;
+			if (buffer.length() == 0) &#123;
+				// finish reading the file (no more input chars)
+				break;
+			&#125;
+		&#125; else &#123;
+			int numChars = buffer.length() - p;
+			if (numChars &gt;= n) &#123;
+				sb.append(buffer.substring(p, p + n));
+				p = p + n;
+				n = 0;
+			&#125; else &#123;
+				sb.append(buffer.substring(p));
+				p = buffer.length();
+				n -= numChars;
+			&#125;
+		&#125;
+	&#125;
+	return sb.toString();
+&#125;
+</code></pre>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

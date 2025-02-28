@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    [LeetCode 147] Insertion Sort List 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">[LeetCode 147] Insertion Sort List</div>
+  <div class="post-meta">
+    <div class="date">2014 May 30th</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><p><a target="_blank" rel="noopener" href="http://oj.leetcode.com/problems/insertion-sort-list/">link</a></p>
+<div class="question-content">
+            <p></p><p>Sort a linked list using insertion sort.</p><p></p>
+          </div>
+
+<h3 id="Stats"><a href="#Stats" class="headerlink" title="Stats"></a>Stats</h3><table border="2">
+	<tr>
+		<td>Adjusted Difficulty</td>
+		<td bgcolor="yellow">3</td>
+	</tr>
+	<tr>
+		<td>Time to use</td>
+		<td bgcolor="yellow">--------</td>
+	</tr>
+</table>
+
+<p>Ratings&#x2F;Color &#x3D; 1(white) 2(lime) 3(yellow) 4&#x2F;5(red)</p>
+<h3 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h3><p><strong>This question is a little tricky, but not difficult</strong>. First important thing is to konw what is <a target="_blank" rel="noopener" href="http://en.wikipedia.org/wiki/Insertion_sort">insertion sort</a>. It is always keeping a sorted list, and then get next unsorted element and insert into correct position of the sorted list.</p>
+<h3 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h3><p><strong>Almost all solutions on internet is same, so I will just explain my code</strong>. My code can be optimized a little bit by studying <a target="_blank" rel="noopener" href="http://blog.csdn.net/linhuanmars/article/details/21144553">this blog</a>, but I guess it’s just refactoring 1 or 2 variables and execution time would not be affected.</p>
+<p>My solution is dividing the list into 2 parts: sorted part and unsorted part. <strong>I keep getting next node from unsorted and insert into sorted</strong>.</p>
+<h3 id="My-code"><a href="#My-code" class="headerlink" title="My code"></a>My code</h3><p>Recursion:</p>
+<pre><code>public ListNode insertionSortList(ListNode head) &#123;
+    if (head == null || head.next == null) return head;
+    ListNode sorted = new ListNode(Integer.MIN_VALUE);
+    sorted.next = head;
+    ListNode unsort = head.next;
+    head.next = null;
+    // the sorted and unsort both are not null at this point
+    while (unsort != null) &#123;
+        ListNode pos = sorted;
+        ListNode cur = unsort;
+        unsort = unsort.next;
+        while (pos.next != null &amp;&amp; pos.val &lt; cur.val
+            &amp;&amp; pos.next.val &lt; cur.val) pos = pos.next;
+        // now insert (cur) to (pos.next)
+        cur.next = pos.next;
+        pos.next = cur;
+    &#125;
+    return sorted.next;
+&#125;
+</code></pre>
+<p><strong>Updated on June 17th, rewrote the code with dummy head</strong>. This is different solution, with better readability.</p>
+<pre><code>public ListNode insertionSortList(ListNode head) &#123;
+    if (head == null) &#123;
+        return null;
+    &#125;
+    ListNode dummy = new ListNode(0);
+    ListNode cur = head;
+    while (cur != null) &#123;
+        // insert cur into correct pos
+        ListNode pos = dummy;
+        while (pos.next != null &amp;&amp; pos.next.val &lt; cur.val) &#123;
+            pos = pos.next;
+        &#125;
+        ListNode temp = cur.next;
+        cur.next = pos.next;
+        pos.next = cur;
+        cur = temp;
+    &#125;
+    return dummy.next;
+&#125;
+</code></pre>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

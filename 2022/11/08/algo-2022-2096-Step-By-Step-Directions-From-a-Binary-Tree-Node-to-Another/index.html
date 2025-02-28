@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    2096. Step-By-Step Directions From a Binary Tree Node to Another 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">2096. Step-By-Step Directions From a Binary Tree Node to Another</div>
+  <div class="post-meta">
+    <div class="date">2022 November 8th</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><p>Link: <a target="_blank" rel="noopener" href="https://leetcode.cn/problems/step-by-step-directions-from-a-binary-tree-node-to-another/">https://leetcode.cn/problems/step-by-step-directions-from-a-binary-tree-node-to-another/</a></p>
+<h1 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h1><p>difficulty: mid<br>adj diff: 4</p>
+<pre><code>You are given the root of a binary tree with n nodes. Each node is uniquely assigned a value from 1 to n. You are also given an integer startValue representing the value of the start node s, and a different integer destValue representing the value of the destination node t.
+
+Find the shortest path starting from node s and ending at node t. Generate step-by-step directions of such path as a string consisting of only the uppercase letters &#39;L&#39;, &#39;R&#39;, and &#39;U&#39;. Each letter indicates a specific direction:
+
+	&#39;L&#39; means to go from a node to its left child node.
+	&#39;R&#39; means to go from a node to its right child node.
+	&#39;U&#39; means to go from a node to its parent node.
+
+Return the step-by-step directions of the shortest path from node s to node t.
+
+Example 1:
+
+Input: root = [5,1,2,3,null,6,4], startValue = 3, destValue = 6
+Output: &quot;UURL&quot;
+Explanation: The shortest path is: 3 → 1 → 5 → 2 → 6.
+
+Example 2:
+
+Input: root = [2,1], startValue = 2, destValue = 1
+Output: &quot;L&quot;
+Explanation: The shortest path is: 2 → 1.
+Constraints:
+
+	The number of nodes in the tree is n.
+	2 &lt;= n &lt;= 105
+	1 &lt;= Node.val &lt;= n
+	All the values in the tree are unique.
+	1 &lt;= startValue, destValue &lt;= n
+	startValue != destValue
+</code></pre>
+<p>这道题，难点在于怎么 2 次找 path，写了好久，终于写完了。</p>
+<p>很巧妙地用了复用了 printPath()方法。看代码。</p>
+<h1 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line">List&lt;Character&gt; finalPath = new LinkedList&lt;Character&gt;();</span><br><span class="line"></span><br><span class="line">public String getDirections(TreeNode root, int startValue, int destValue) &#123;</span><br><span class="line">    TreeNode lcaNode = lca(root, startValue, destValue);</span><br><span class="line">    List&lt;Character&gt; tmpPath = new LinkedList&lt;Character&gt;();</span><br><span class="line">    printPath(tmpPath, lcaNode, startValue, new char[]&#123;&#x27;U&#x27;, &#x27;U&#x27;&#125;);</span><br><span class="line">    printPath(tmpPath, lcaNode, destValue, new char[]&#123;&#x27;L&#x27;, &#x27;R&#x27;&#125;);</span><br><span class="line"></span><br><span class="line">    StringBuilder sb = new StringBuilder();</span><br><span class="line">    for (Character c: finalPath) &#123;</span><br><span class="line">        sb.append(c);</span><br><span class="line">    &#125;</span><br><span class="line">    return sb.toString();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">private boolean printPath(List&lt;Character&gt; path, TreeNode current, int val, char[] chars) &#123;</span><br><span class="line">    if (current == null) &#123;</span><br><span class="line">        return false;</span><br><span class="line">    &#125; else if (current.val == val) &#123;</span><br><span class="line">        finalPath.addAll(path);</span><br><span class="line">        return true;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    path.add(chars[0]);</span><br><span class="line">    boolean b = printPath(path, current.left, val, chars);</span><br><span class="line">    path.remove(path.size() - 1);</span><br><span class="line"></span><br><span class="line">    if (b == false) &#123;</span><br><span class="line">        path.add(chars[1]);</span><br><span class="line">        b = printPath(path, current.right, val, chars);</span><br><span class="line">        path.remove(path.size() - 1);</span><br><span class="line">    &#125;</span><br><span class="line">    return b;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">private TreeNode lca(TreeNode node, int p, int q) &#123;</span><br><span class="line">    if (node == null || node.val == p || node.val == q) &#123;</span><br><span class="line">        return node;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    TreeNode ll = lca(node.left, p, q);</span><br><span class="line">    TreeNode rr = lca(node.right, p, q);</span><br><span class="line">    if (ll == null) &#123;</span><br><span class="line">        return rr;</span><br><span class="line">    &#125; else if (rr == null) &#123;</span><br><span class="line">        return ll;</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        return node;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

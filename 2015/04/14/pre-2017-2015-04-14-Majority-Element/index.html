@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    [LeetCode 169] Majority Element  丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">[LeetCode 169] Majority Element </div>
+  <div class="post-meta">
+    <div class="date">2015 April 14th</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/majority-element/">link</a></p>
+<h3 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h3><div class="question-content">
+              <p></p><p>Given an array of size <i>n</i>, find the majority element. The majority element is the element that appears more than <code>? n/2 ?</code> times.</p>
+
+<p>You may assume that the array is non-empty and the majority element always exist in the array.</p>
+
+<p><b>Credits:</b><br>Special thanks to <a target="_blank" rel="noopener" href="https://oj.leetcode.com/discuss/user/ts">@ts</a> for adding this problem and creating all test cases.</p><p></p>
+              
+<pre><code>            &lt;div id=&quot;tags&quot; class=&quot;btn btn-xs btn-warning&quot;&gt;Show Tags&lt;/div&gt;
+            &lt;span class=&quot;hide&quot;&gt;
+              
+              &lt;a class=&quot;btn btn-xs btn-primary&quot; href=&quot;/tag/divide-and-conquer/&quot;&gt;Divide and Conquer&lt;/a&gt;
+              
+              &lt;a class=&quot;btn btn-xs btn-primary&quot; href=&quot;/tag/array/&quot;&gt;Array&lt;/a&gt;
+              
+              &lt;a class=&quot;btn btn-xs btn-primary&quot; href=&quot;/tag/bit-manipulation/&quot;&gt;Bit Manipulation&lt;/a&gt;
+              
+            &lt;/span&gt;
+          
+        &lt;/div&gt;
+</code></pre>
+<h3 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h3><p>I have already covered this question in [[LintCode] Majority Number]. However, I have also discovered <strong>a few other very interesting solution</strong>. Check below.</p>
+<h3 id="Solution-1"><a href="#Solution-1" class="headerlink" title="Solution"></a>Solution</h3><p>The best solution is of course the voting algorithm. Read code below.</p>
+<p>Second solution presented by offical answer, is to do sorting:</p>
+<pre><code>public int majorityElement(int[] num) &#123;
+    if (num.length == 1) &#123;
+        return num[0];
+    &#125;
+
+    Arrays.sort(num);
+    return num[num.length / 2];
+&#125;
+</code></pre>
+<p>Third interesting solution is doing bit manipulation. Read <a target="_blank" rel="noopener" href="http://www.yanyulin.info/pages/2014/12/851338983752.html">Yanyulin’s blog</a> for more.</p>
+<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><pre><code>public class Solution &#123;
+    public int majorityElement(int[] num) &#123;
+        if (num == null || num.length == 0) &#123;
+            return 0;
+        &#125;
+        int major = num[0];
+        long count = 1;
+
+        for (int i = 1; i &lt; num.length; i++) &#123;
+            if (major == num[i]) &#123;
+                count++;
+            &#125; else if (count == 0) &#123;
+                major = num[i];
+                count = 1;
+            &#125; else &#123;
+                count--;
+            &#125;
+        &#125;
+
+        return major;
+    &#125;
+&#125;
+</code></pre>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

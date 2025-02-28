@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    [Design] Median of array in Distributed Computers 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">[Design] Median of array in Distributed Computers</div>
+  <div class="post-meta">
+    <div class="date">2014 August 9th</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><p><a target="_blank" rel="noopener" href="http://www.quora.com/Distributed-Algorithms/What-is-the-distributed-algorithm-to-determine-the-median-of-arrays-of-integers-located-on-different-computers">link</a></p>
+<blockquote>
+<p>What is the <strong>distributed algorithm</strong> to determine the median of arrays of 1 billion integers located on different computers?</p>
+</blockquote>
+<h3 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h3><ol>
+<li><p>Suppose you have <strong>a master node</strong> (or are able to use a consensus protocol to elect a master from among your servers).</p>
+</li>
+<li><p>The master queries all servers for the size of their sets of data, so that it knows to look for the k &#x3D; n&#x2F;2 largest element.</p>
+</li>
+<li><p>The master then selects a random server and queries <strong>a random element</strong>.</p>
+</li>
+<li><p>The master broadcasts this element to each server.</p>
+</li>
+<li><p>Each server partitions its elements into those larger than or equal to the broadcasted element and those smaller than the broadcasted element.</p>
+</li>
+<li><p>Each server returns to the master the <strong>size of the larger-than partition</strong>, call this m.</p>
+<ol>
+<li><p>If the sum of these sizes is greater than k, the master indicates to each server to disregard the ‘less-than’ set.</p>
+</li>
+<li><p>If it is less than k, the master indicates to disregard the larger-than sets and updates k &#x3D; k - m.</p>
+</li>
+<li><p>If it is exactly k, the algorithm terminates and the value returned is the pivot selected at the beginning of the iteration.</p>
+</li>
+</ol>
+</li>
+<li><p>Recurse beginning with selecting a new random pivot from the remaining elements.</p>
+</li>
+</ol>
+<p><a target="_blank" rel="noopener" href="http://qr.ae/k2DcS">ref</a></p>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

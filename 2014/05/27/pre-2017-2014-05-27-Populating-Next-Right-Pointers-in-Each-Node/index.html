@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    [LeetCode 116] Populating Next Right Pointers in Each Node 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">[LeetCode 116] Populating Next Right Pointers in Each Node</div>
+  <div class="post-meta">
+    <div class="date">2014 May 27th</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><p><a target="_blank" rel="noopener" href="https://oj.leetcode.com/problems/populating-next-right-pointers-in-each-node/">link</a></p>
+<div class="question-content">
+            <p></p><p>
+Given a binary tree
+</p><pre>    struct TreeLinkNode {
+      TreeLinkNode *left;
+      TreeLinkNode *right;
+      TreeLinkNode *next;
+    }
+</pre>
+<p></p>
+
+<p>Populate each next pointer to point to its next right node. If there is no next right node, the next pointer should be set to <code>NULL</code>.</p>
+
+<p>Initially, all next pointers are set to <code>NULL</code>.</p>
+
+<p>
+<b>Note:</b>
+</p><ul>
+<li>You may only use constant extra space.</li>
+<li>You may assume that it is a perfect binary tree (ie, all leaves are at the same level, and every parent has two children).</li>
+</ul>
+<p></p>
+
+<p>
+For example,<br>
+Given the following perfect binary tree,<br>
+</p><pre>         1
+       /  \
+      2    3
+     / \  / \
+    4  5  6  7
+</pre>
+<p></p>
+<p>
+After calling your function, the tree should look like:<br>
+</p><pre>         1 -&gt; NULL
+       /  \
+      2 -&gt; 3 -&gt; NULL
+     / \  / \
+    4-&gt;5-&gt;6-&gt;7 -&gt; NULL
+</pre>
+<p></p><p></p>
+          </div>
+
+<h3 id="Stats"><a href="#Stats" class="headerlink" title="Stats"></a>Stats</h3><table border="2">
+	<tr>
+		<td>Frequency</td>
+		<td bgcolor="yellow">3</td>
+	</tr>
+	<tr>
+		<td>Difficulty</td>
+		<td bgcolor="yellow">3</td>
+	</tr>
+	<tr>
+		<td>Adjusted Difficulty</td>
+		<td bgcolor="lime">2</td>
+	</tr>
+	<tr>
+		<td>Time to use</td>
+		<td bgcolor="yellow">--------</td>
+	</tr>
+</table>
+
+<p>Ratings&#x2F;Color &#x3D; 1(white) 2(lime) 3(yellow) 4&#x2F;5(red)</p>
+<h3 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h3><p><strong>Although this question is not hard, it needs a bit thinking</strong>.</p>
+<p>The important point is, how to effectively make use of the ‘next link’ generated before, to help us solve this problem.</p>
+<h3 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h3><p><strong>My solution is actually very good</strong>. It pass current node and next node into a method, and then generate links for current node’s children.</p>
+<p><strong>There is a even <a target="_blank" rel="noopener" href="http://leetcode.com/2010/03/first-on-site-technical-interview.html">better solution</a></strong>, which directly make use of the ‘next link’ generated already. In fact, it’s same as my solution, except it uses one less variable. Great idea it is!</p>
+<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><p><strong>First, my solution</strong></p>
+<pre><code>public void connect(TreeLinkNode root) &#123;
+    link(root, null);
+&#125;
+
+private void link(TreeLinkNode node, TreeLinkNode rr)&#123;
+    if (node == null || node.left == null) return;
+    node.left.next = node.right;
+    if (rr == null) node.right.next = null;
+    else node.right.next = rr.left;
+
+    link(node.left, node.left.next);
+    link(node.right, node.right.next);
+&#125;
+</code></pre>
+<p><strong>Second, better solution</strong></p>
+<pre><code>public void connect(TreeLinkNode root) &#123;
+	if (root == null || root.left == null || root.right == null)
+	    return;
+	root.left.next = root.right;
+	root.right.next = root.next == null ? null : root.next.left;
+	connect(root.left);
+	connect(root.right);
+&#125;
+</code></pre>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

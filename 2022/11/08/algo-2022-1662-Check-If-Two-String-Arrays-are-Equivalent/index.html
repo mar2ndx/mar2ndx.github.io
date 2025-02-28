@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    1662. Check If Two String Arrays are Equivalent 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">1662. Check If Two String Arrays are Equivalent</div>
+  <div class="post-meta">
+    <div class="date">2022 November 8th</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><p>Link: <a target="_blank" rel="noopener" href="https://leetcode.cn/problems/check-if-two-string-arrays-are-equivalent/">https://leetcode.cn/problems/check-if-two-string-arrays-are-equivalent/</a></p>
+<h1 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h1><p>difficulty: easy<br>adj diff: 2</p>
+<pre><code>Given two string arrays word1 and word2, return true if the two arrays represent the same string, and false otherwise.
+
+A string is represented by an array if the array elements concatenated in order forms the string.
+
+Example 1:
+
+Input: word1 = [&quot;ab&quot;, &quot;c&quot;], word2 = [&quot;a&quot;, &quot;bc&quot;]
+Output: true
+Explanation:
+word1 represents string &quot;ab&quot; + &quot;c&quot; -&gt; &quot;abc&quot;
+word2 represents string &quot;a&quot; + &quot;bc&quot; -&gt; &quot;abc&quot;
+The strings are the same, so return true.
+
+Example 2:
+
+Input: word1 = [&quot;a&quot;, &quot;cb&quot;], word2 = [&quot;ab&quot;, &quot;c&quot;]
+Output: false
+
+Example 3:
+
+Input: word1  = [&quot;abc&quot;, &quot;d&quot;, &quot;defg&quot;], word2 = [&quot;abcddefg&quot;]
+Output: true
+
+Constraints:
+
+	1 &lt;= word1.length, word2.length &lt;= 103
+	1 &lt;= word1[i].length, word2[i].length &lt;= 103
+	1 &lt;= sum(word1[i].length), sum(word2[i].length) &lt;= 103
+	word1[i] and word2[i] consist of lowercase letters.
+</code></pre>
+<h1 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">public boolean arrayStringsAreEqual(String[] word1, String[] word2) &#123;</span><br><span class="line">    int len1 = word1.length;</span><br><span class="line">    int len2 = word2.length;</span><br><span class="line">    int[] indexes = new int[4];</span><br><span class="line"></span><br><span class="line">    while (indexes[0] &lt; len1 &amp;&amp; indexes[2] &lt; len2) &#123;</span><br><span class="line">        // check same char (or not)</span><br><span class="line">        if (word1[indexes[0]].charAt(indexes[1]) != word2[indexes[2]].charAt(indexes[3])) &#123;</span><br><span class="line">            return false;</span><br><span class="line">        &#125;</span><br><span class="line">        indexes[1]++;</span><br><span class="line">        indexes[3]++;</span><br><span class="line"></span><br><span class="line">        // fix indexes, point to valid char</span><br><span class="line">        if (indexes[1] == word1[indexes[0]].length()) &#123;</span><br><span class="line">            indexes[0]++;</span><br><span class="line">            indexes[1] = 0;</span><br><span class="line">        &#125;</span><br><span class="line">        if (indexes[3] == word2[indexes[2]].length()) &#123;</span><br><span class="line">            indexes[2]++;</span><br><span class="line">            indexes[3] = 0;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    return (indexes[0] == len1 &amp;&amp; indexes[2] == len2);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

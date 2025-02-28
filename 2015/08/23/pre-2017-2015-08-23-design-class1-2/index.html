@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    [NineChap System Design] Class 1.2: An Example  丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">[NineChap System Design] Class 1.2: An Example </div>
+  <div class="post-meta">
+    <div class="date">2015 August 23rd</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><h1 id="A-bottom-up-example"><a href="#A-bottom-up-example" class="headerlink" title="A bottom-up example"></a>A bottom-up example</h1><p>Example two: <strong>design a recommendation module</strong></p>
+<h2 id="A-simple-algo"><a href="#A-simple-algo" class="headerlink" title="A simple algo:"></a>A simple algo:</h2><pre><code>u1=&#123;m3,m5,m7,m11&#125;
+u2=&#123;m1,m2,m3,m4,m5,m6,m7,m8,m9&#125;
+Similarity( u1, u2 ) = 3
+</code></pre>
+<p>m - music</p>
+<p>u - user</p>
+<p>Similarity &#x3D; # of same music for different users</p>
+<h2 id="Adv-algo"><a href="#Adv-algo" class="headerlink" title="Adv algo:"></a>Adv algo:</h2><p>find his <strong>top-1 similar user</strong>. Stay tuned for future posts.</p>
+<h2 id="Use-the-5-Steps-SNAKE"><a href="#Use-the-5-Steps-SNAKE" class="headerlink" title="Use the 5 Steps (SNAKE)"></a>Use the 5 Steps (SNAKE)</h2><ol>
+<li>Step One, Scenario</li>
+<li>Step Two, Necessary</li>
+<li>Step Three, Application</li>
+<li>Step Four, Kilobit: data</li>
+<li>Last Step, Evolve</li>
+</ol>
+<p>Because this question is relatively easy, we will not do case-analysis (Macro).</p>
+<p><strong>Instead, we do micro design</strong> by starting at the interface.</p>
+<h2 id="Step-One-Scenario"><a href="#Step-One-Scenario" class="headerlink" title="Step One, Scenario"></a>Step One, Scenario</h2><p>Interface</p>
+<pre><code>class Recommender &#123;
+    public int findSimilarUser(int userId) &#123;
+        //
+    &#125;
+&#125;
+</code></pre>
+<h2 id="Step-Two-Necessary"><a href="#Step-Two-Necessary" class="headerlink" title="Step Two, Necessary"></a>Step Two, Necessary</h2><ol>
+<li><p>ask</p>
+<ol>
+<li>total users &#x3D; 100,000,000</li>
+<li>total music &#x3D; 10,000,000</li>
+<li>peak users in 3 month &#x3D; 6,000,000</li>
+</ol>
+<p>However, not everyone is logged in. Thus we won’t need to recommend for everybody. On average, the logged-in ratio is 1% - 30%. Let’s assume 5%.</p>
+<ol>
+<li>participation percentage &#x3D; 5%</li>
+</ol>
+<p>And user’s interest won’t change every minute. Let’s recalculate only after 10 minutes.</p>
+<ol>
+<li>calculation frequency &#x3D; 1 update&#x2F;10min&#x2F;user</li>
+</ol>
+</li>
+<li><p>predict</p>
+<ol>
+<li>user analysis (skip)</li>
+<li>Traffic analysis (skip)</li>
+<li>Memory analysis (skip)</li>
+<li>QPS</li>
+</ol>
+<p>Peak QPS &#x3D; 6,000,000 * 5% &#x2F; (10 * 60) &#x3D; 500&#x2F;s</p>
+</li>
+</ol>
+<h2 id="Step-Three-Application"><a href="#Step-Three-Application" class="headerlink" title="Step Three, Application"></a>Step Three, Application</h2><p><strong>The simpliest algorithm: BF compare</strong>. The complexity is O(m n) for each user, where m is # of music a person likes, and n is # of total users. For k users, it takes O(k m n) time (k can be &#x3D; peak concurrent users).</p>
+<p>This is roughly 0.2s per user. Thus <strong>Max QPS &#x3D; 5</strong>.</p>
+<blockquote>
+<p>One word about complexity-to-seconds estimation.</p>
+<p>O(n ^ 3) -&gt; 1s</p>
+<p>O(n ^ 2) -&gt; 0.2s</p>
+<p>O(n) -&gt; 20ms</p>
+<p>O(k) -&gt; k ms</p>
+</blockquote>
+<h2 id="Step-Four-Kilobit-data"><a href="#Step-Four-Kilobit-data" class="headerlink" title="Step Four, Kilobit: data"></a>Step Four, Kilobit: data</h2><p>Very simple:</p>
+<p><img src="/images/design-class1-reco-1.png"></p>
+<h2 id="Last-Step-Evolve"><a href="#Last-Step-Evolve" class="headerlink" title="Last Step, Evolve"></a>Last Step, Evolve</h2><p>Read on.</p>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

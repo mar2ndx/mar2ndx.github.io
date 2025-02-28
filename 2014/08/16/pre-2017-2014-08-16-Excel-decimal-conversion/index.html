@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    [ItInt5] Excel Decimal Conversion  丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">[ItInt5] Excel Decimal Conversion </div>
+  <div class="post-meta">
+    <div class="date">2014 August 16th</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><p><a target="_blank" rel="noopener" href="http://www.itint5.com/oj/#23">link</a></p>
+<blockquote>
+<p>Excel中的行列数用A~Z 26个字母表示，A, B, C, D, …, Z, AA, AB, …, AZ, BA, BB, … 分别表示10进制数1, 2, 3, 4, …, 26, 27, 28, …, 52, 53, 54…。</p>
+</blockquote>
+<blockquote>
+<p>请实现2个函数decToExcel和excelToDec，将10进制数转换为Excel数，以及将Excel数转换为10进制数。</p>
+</blockquote>
+<h3 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h3><p>Note the indexing starts from 1, not from 0. This caused some trouble for me. </p>
+<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><p><strong>written by me</strong></p>
+<pre><code>public String decToExcel(int decNum) &#123;
+    decNum--;
+    int digits = 1;
+    int exponen = 26;
+    while (decNum &gt;= exponen) &#123;
+        decNum -= exponen;
+        exponen *= 26;
+        digits++;
+    &#125;
+    // now we know the total number of digits
+    int num = decNum;
+    int total = exponen / 26;
+    String ans = &quot;&quot;;
+    for (int i = 0; i &lt; digits; i++) &#123;
+        ans += (char) (num / total + &#39;A&#39;);
+        num %= total;
+        total /= 26;
+    &#125;
+    return ans;
+&#125;
+
+public int excelToDec(String excelNum) &#123;
+    int digits = excelNum.length();
+    int total = 1;
+    int sum = 1;
+    for (int i = 1; i &lt; digits; i++) &#123;
+        total *= 26;
+        sum += total;
+    &#125;
+    for (int i = 0; i &lt; digits; i++) &#123;
+        sum += (excelNum.charAt(i) - &#39;A&#39;) * total;
+        total /= 26;
+    &#125;
+    return sum;
+&#125;
+</code></pre>
+<p><strong>updated code</strong>: we can actually do it recursively. The code is much more concise. </p>
+<pre><code>//将十进制数转换为excel数
+public String decToExcel(int decNum) &#123;
+	if (decNum == 0) &#123;
+		return &quot;&quot;;
+	&#125;
+	decNum--;
+	char last = (char) (&#39;A&#39; + decNum % 26);
+	return decToExcel(decNum / 26) + last;
+&#125;
+
+//将excel数转换为十进制数
+public int excelToDec(String excelNum) &#123;
+	if (excelNum.equals(&quot;&quot;)) &#123;
+		return 0;
+	&#125;
+	int len = excelNum.length();
+	int last = 1 + excelNum.charAt(len - 1) - &#39;A&#39;;
+	return excelToDec(excelNum.substring(0, len - 1)) * 26 + last;
+&#125;
+</code></pre>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

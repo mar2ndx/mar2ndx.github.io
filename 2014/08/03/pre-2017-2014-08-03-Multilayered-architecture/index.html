@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    [Design] Multilayered architecture 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">[Design] Multilayered architecture</div>
+  <div class="post-meta">
+    <div class="date">2014 August 3rd</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><h3 id="First-Word"><a href="#First-Word" class="headerlink" title="First Word"></a>First Word</h3><p>A <a target="_blank" rel="noopener" href="http://en.wikipedia.org/wiki/Multilayered_architecture">multilayered software architecture</a> is a software architecture that uses many layers for allocating the different responsibilities of a software product.</p>
+<h3 id="Layers"><a href="#Layers" class="headerlink" title="Layers"></a>Layers</h3><ol>
+<li><strong>Presentation layer</strong><br>a. UI layer, view layer<br>a. presentation tier in multitier architecture</li>
+<li><strong>Application layer</strong><br>a. also called service layer&#x2F;GRASP Controller Layer</li>
+<li><strong>Business layer</strong><br>a. also called business logic layer&#x2F;domain layer</li>
+<li>Infrastructure layer<ol>
+<li>data access layer&#x2F;<strong>persistence layer</strong></li>
+<li>logging, networking, and other services which are required to support a particular business layer</li>
+</ol>
+</li>
+</ol>
+<h3 id="Conventions"><a href="#Conventions" class="headerlink" title="Conventions"></a>Conventions</h3><p><strong>Application layer</strong> (or service layer) is sometimes considered a sublayer of <strong>business layer</strong>.</p>
+<p>If there’s no explicit distinction between first 3 tiers, then it’s a <strong>traditional client-server(two-tier) model</strong>.</p>
+<p>The <strong>application&#x2F;business layers</strong> can, in fact, be further subdivided to emphasize distinct responsibility (eg. MVC).</p>
+<p>Sometimes there’s <strong>business infrastructure layer(BI)</strong>, located between the business layer and infrastructure layer.</p>
+<p>Infrastructure layer can be partitioned into different levels (high-level or low-level). <strong>Developers focus on only the persistence capabilities</strong>, therefore only talk about persistence layer or data access layer.</p>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

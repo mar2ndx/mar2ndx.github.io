@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    295. Find Median from Data Stream 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">295. Find Median from Data Stream</div>
+  <div class="post-meta">
+    <div class="date">2022 November 8th</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><p>Link: <a target="_blank" rel="noopener" href="https://leetcode.cn/problems/find-median-from-data-stream/">https://leetcode.cn/problems/find-median-from-data-stream/</a></p>
+<h1 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h1><p>difficulty: high<br>adj diff: 3</p>
+<pre><code>The median is the middle value in an ordered integer list. If the size of the list is even, there is no middle value and the median is the mean of the two middle values.
+
+	For example, for arr = [2,3,4], the median is 3.
+	For example, for arr = [2,3], the median is (2 + 3) / 2 = 2.5.
+
+Implement the MedianFinder class:
+
+	MedianFinder() initializes the MedianFinder object.
+	void addNum(int num) adds the integer num from the data stream to the data structure.
+	double findMedian() returns the median of all elements so far. Answers within 10-5 of the actual answer will be accepted.
+Example 1:
+
+Input
+[&quot;MedianFinder&quot;, &quot;addNum&quot;, &quot;addNum&quot;, &quot;findMedian&quot;, &quot;addNum&quot;, &quot;findMedian&quot;]
+[[], [1], [2], [], [3], []]
+Output
+[null, null, null, 1.5, null, 2.0]
+
+Explanation
+MedianFinder medianFinder = new MedianFinder();
+medianFinder.addNum(1);    // arr = [1]
+medianFinder.addNum(2);    // arr = [1, 2]
+medianFinder.findMedian(); // return 1.5 (i.e., (1 + 2) / 2)
+medianFinder.addNum(3);    // arr[1, 2, 3]
+medianFinder.findMedian(); // return 2.0
+Constraints:
+
+	-105 &lt;= num &lt;= 105
+	There will be at least one element in the data structure before calling findMedian.
+	At most 5 * 104 calls will be made to addNum and findMedian.
+Follow up:
+
+	If all integer numbers from the stream are in the range [0, 100], how would you optimize your solution?
+	If 99% of all integer numbers from the stream are in the range [0, 100], how would you optimize your solution?
+</code></pre>
+<p>主要是考察 PriorityQueue 的 comparator 写法。注意下列代码的第六行。</p>
+<h1 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">PriorityQueue&lt;Integer&gt; maxHeap;</span><br><span class="line">PriorityQueue&lt;Integer&gt; minHeap;</span><br><span class="line"></span><br><span class="line">public MedianFinder() &#123;</span><br><span class="line">    // maxHeap is the smaller half</span><br><span class="line">    maxHeap = new PriorityQueue&lt;Integer&gt;((a, b) -&gt; (b - a));</span><br><span class="line">    // minHeap is the larger half</span><br><span class="line">    minHeap = new PriorityQueue&lt;Integer&gt;((a, b) -&gt; (a - b));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">public void addNum(int num) &#123;</span><br><span class="line">    if (maxHeap.isEmpty() || num &lt;= maxHeap.peek()) &#123;</span><br><span class="line">        maxHeap.offer(num);</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        minHeap.offer(num);</span><br><span class="line">    &#125;</span><br><span class="line">    if (maxHeap.size() &gt; minHeap.size() + 1) &#123;</span><br><span class="line">        minHeap.offer(maxHeap.poll());</span><br><span class="line">    &#125; else if (maxHeap.size() &lt; minHeap.size()) &#123;</span><br><span class="line">        maxHeap.offer(minHeap.poll());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">public double findMedian() &#123;</span><br><span class="line">    if (maxHeap.size() == minHeap.size() + 1) &#123;</span><br><span class="line">        return (double) maxHeap.peek();</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        return 0.5 * (maxHeap.peek() + minHeap.peek());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

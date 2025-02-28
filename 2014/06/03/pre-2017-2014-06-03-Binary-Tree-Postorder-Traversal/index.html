@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    [LeetCode 145] Binary Tree Postorder Traversal 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">[LeetCode 145] Binary Tree Postorder Traversal</div>
+  <div class="post-meta">
+    <div class="date">2014 June 3rd</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><p><a target="_blank" rel="noopener" href="https://oj.leetcode.com/problems/binary-tree-postorder-traversal/">link</a></p>
+<div class="question-content bg-color bg-img font-color">
+            <p class="font-color"></p><p class="font-color">Given a binary tree, return the <i>postorder</i> traversal of its nodes' values.</p>
+
+<p class="font-color">
+For example:<br>
+Given binary tree <code>&#123;1,#,2,3&#125;</code>,<br>
+</p><pre>   1
+    \
+     2
+    /
+   3
+</pre>
+<p class="font-color"></p>
+<p class="font-color">
+return <code>[3,2,1]</code>.
+</p>
+
+<p class="font-color"><b>Note:</b> Recursive solution is trivial, could you do it iteratively?</p><p class="font-color"></p>
+          </div>
+
+<h3 id="Stats"><a href="#Stats" class="headerlink" title="Stats"></a>Stats</h3><table border="2">
+	<tr>
+		<td>Adjusted Difficulty</td>
+		<td bgcolor="red">4</td>
+	</tr>
+	<tr>
+		<td>Time to use</td>
+		<td bgcolor="yellow">--------</td>
+	</tr>
+</table>
+
+<p>Ratings&#x2F;Color &#x3D; 1(white) 2(lime) 3(yellow) 4&#x2F;5(red)</p>
+<h3 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h3><p>Unlike pre-order traversal, <strong>this is a very difficult question</strong>.</p>
+<h3 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h3><p><strong>First, I wrote the solution using a HashSet, and it works</strong>. However, this solution is not good because it uses some space.<br>For more generalized way to write DFS code, read another post <strong>Implement DFS using a Stack</strong>.</p>
+<p><strong>The best and most popular solution is proposed by <a target="_blank" rel="noopener" href="http://leetcode.com/2010/10/binary-tree-post-order-traversal.html">1337c0d3r</a></strong>. It basically uses 1 more pointer to track the current status (whether I’m traversing down, or up, and in which direction etc.). The extra pointer is called ‘prev’.</p>
+<blockquote>
+<p>We use a prev variable to keep track of the previously-traversed node. Let’s assume curr is the current node that’s on top of the stack. When prev is curr‘s parent, we are traversing down the tree. In this case, we try to traverse to curr‘s left child if available (ie, push left child to the stack). If it is not available, we look at curr‘s right child. If both left and right child do not exist (ie, curr is a leaf node), we print curr‘s value and pop it off the stack.</p>
+</blockquote>
+<blockquote>
+<p>If prev is curr‘s left child, we are traversing up the tree from the left. We look at curr‘s right child. If it is available, then traverse down the right child (ie, push right child to the stack), otherwise print curr‘s value and pop it off the stack.</p>
+</blockquote>
+<blockquote>
+<p>If prev is curr‘s right child, we are traversing up the tree from the right. In this case, we print curr‘s value and pop it off the stack.</p>
+</blockquote>
+<p>Referring to his code, I wrote the 2nd piece of code below and it works.</p>
+<p><strong>Amazingly, that code can be simplified, which becomes the 3rd code</strong> (I thought it won’t pass at first). The way that code got simplified is by keeping current pointer steady, so that the 2 pointers can meet. Altough program logic is exactly same, this interesting code is worth reading.</p>
+<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><p><strong>First, my solution using HashSet</strong></p>
+<pre><code>public List&lt;Integer&gt; postorderTraversal(TreeNode root) &#123;
+    List&lt;Integer&gt; ans = new LinkedList&lt;Integer&gt;();
+    Stack&lt;TreeNode&gt; stack = new Stack&lt;TreeNode&gt;();
+    if (root != null) stack.push(root);
+    HashSet&lt;TreeNode&gt; visited = new HashSet&lt;TreeNode&gt;();
+    while (!stack.isEmpty()) &#123;
+		TreeNode cur = stack.pop();
+		if (visited.contains(cur))
+			ans.add(cur.val);
+		else &#123;
+			stack.push(cur);
+			visited.add(cur);
+			if (cur.right != null) stack.push(cur.right);
+			if (cur.left != null) stack.push(cur.left);
+		&#125;
+    &#125;
+    return ans;
+&#125;
+</code></pre>
+<p><strong>Second, using 2 pointers</strong></p>
+<pre><code>public List&lt;Integer&gt; postorderTraversal(TreeNode root) &#123;
+    List&lt;Integer&gt; ans = new LinkedList&lt;Integer&gt;();
+    if (root == null) &#123;
+		return ans;
+	&#125;
+	Stack&lt;TreeNode&gt; stack = new Stack&lt;TreeNode&gt;();
+    stack.push(root);
+    TreeNode pre = null, cur = null;
+	while (!stack.isEmpty()) &#123;
+		cur = stack.peek();
+		if (pre == null || pre.left == cur || pre.right == cur) &#123;
+			if (cur.left == null &amp;&amp; cur.right == null) &#123;
+				ans.add(stack.pop().val);
+			&#125;
+			else if (cur.left != null) &#123;
+				stack.push(cur.left);
+			&#125;
+			else if (cur.right != null) &#123;
+				stack.push(cur.right);
+			&#125;
+		&#125;
+		else if (cur.left == pre) &#123;
+			if (cur.right != null) &#123;
+				stack.push(cur.right);
+			&#125;
+			else &#123;
+				ans.add(stack.pop().val);
+			&#125;
+		&#125;
+		else if (cur.right == pre) &#123;
+			ans.add(stack.pop().val);
+		&#125;
+		pre = cur;
+	&#125;
+    return ans;
+&#125;
+</code></pre>
+<p><strong>Third, simplified version of 2nd code</strong></p>
+<p><strong>Commented on June 10th</strong>: Note that ‘pre’ and ‘cur’ are never going to be apart for more then 1 edge (they can overlap)</p>
+<pre><code>public List&lt;Integer&gt; postorderTraversal(TreeNode root) &#123;
+	List&lt;Integer&gt; result = new ArrayList&lt;Integer&gt;();
+	Stack&lt;TreeNode&gt; stack = new Stack&lt;TreeNode&gt;();
+	TreeNode prev = null; // previously traversed node
+	TreeNode curr = root;
+	if (root == null) &#123;
+		return result;
+	&#125;
+	stack.push(root);
+	while (!stack.empty()) &#123;
+		curr = stack.peek();
+		if (prev == null || prev.left == curr || prev.right == curr) &#123;
+        // traverse down the tree
+			if (curr.left != null) &#123;
+				stack.push(curr.left);
+			&#125; else if (curr.right != null) &#123;
+				stack.push(curr.right);
+			&#125;
+		&#125; else if (curr.left == prev) &#123;
+        // traverse up the tree from the left
+			if (curr.right != null) &#123;
+				stack.push(curr.right);
+			&#125;
+		&#125; else if (curr.right == prev || curr == prev)&#123;
+        // traverse up the tree from the right
+        // or at a leaf point
+			result.add(curr.val);
+			stack.pop();
+		&#125;
+		prev = curr;
+	&#125;
+	return result;
+&#125;
+</code></pre>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

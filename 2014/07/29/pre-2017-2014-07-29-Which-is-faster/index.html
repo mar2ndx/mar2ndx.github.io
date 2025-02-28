@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    [Question] Which loop is faster 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">[Question] Which loop is faster</div>
+  <div class="post-meta">
+    <div class="date">2014 July 29th</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><p><a target="_blank" rel="noopener" href="http://tech-queries.blogspot.sg/2010/09/which-loop-is-faster.html">link</a></p>
+<blockquote>
+<p>A very basic programming puzzle is being asked in programming interviews since last few years. Which of the below two loops will run faster?</p>
+</blockquote>
+<pre><code>/* First */
+for(i=0;i&lt;100;i++)
+ for(j=0;j&lt;10;j++)
+     //do somthing
+
+/* Second */
+for(i=0;i&lt;10;i++)
+ for(j=0;j&lt;100;j++)
+     //do somthing
+</code></pre>
+<h3 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h3><ol>
+<li>The First executes assignment operations 101 times, while Second executes only 11 times.</li>
+<li>The First does 101 + 1100 &#x3D; 1201 comparisons, while the Second does 11 + 1010 &#x3D; 1021 comparisons.</li>
+<li>The First executes 1100 increments, while the Second executes 1010 increments.</li>
+</ol>
+<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><p>The following code proves why First is faster.</p>
+<pre><code>public static void solution() &#123;
+	int i, j, k, l;
+	k = 0;
+	l = 0;
+	/* FIRST */
+	for (i = 0, l++; i &lt; 10; i++, k++)
+		for (j = 0, l++; j &lt; 100; j++, k++)
+			;
+	// printf(&quot;First Loop: %d\t%d\n&quot;, k, l);
+	System.out.println(k);
+	System.out.println(l);
+
+	k = 0;
+	l = 0;
+	/* SECOND */
+	for (i = 0, l++; i &lt; 100; i++, k++)
+		for (j = 0, l++; j &lt; 10; j++, k++)
+			;
+	// printf(&quot;Second Loop: %d\t%d\n&quot;, k, l);
+	System.out.println(k);
+	System.out.println(l);
+&#125;
+</code></pre>
+<p>output is : 1010, 11, 1100, 101</p>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

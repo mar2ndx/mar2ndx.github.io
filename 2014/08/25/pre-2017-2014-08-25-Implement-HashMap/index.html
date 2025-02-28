@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    [CC150v5] 8.10 Implement a Hashmap 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">[CC150v5] 8.10 Implement a Hashmap</div>
+  <div class="post-meta">
+    <div class="date">2014 August 25th</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><blockquote>
+<p>Design and implement a hash table which uses chaining (linked lists) to handle collisions.</p>
+</blockquote>
+<h3 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h3><p>I wrote this topic before (using Java source code as a reference). This time, I would like to take another (easier) approach.</p>
+<p>The main part of this is to use an array of list structure like this:</p>
+<pre><code>LinkedList&lt;Cell&lt;K, V&gt;&gt;[] items;
+</code></pre>
+<p>And the Cell Class looks like this:</p>
+<pre><code>public class Cell&lt;K, V&gt; &#123;
+    private K key;
+    private V value;
+
+    public Cell(K k, V v) &#123;
+        key = k;
+        value = v;
+    &#125;
+
+    public boolean equivalent(Cell&lt;K, V&gt; c) &#123;
+        return equivalent(c.getKey());
+    &#125;
+
+    public boolean equivalent(K k) &#123;
+        return key.equals(k);
+    &#125;
+
+    public K getKey() &#123;
+        return key;
+    &#125;
+
+    public V getValue() &#123;
+        return value;
+    &#125;
+&#125;
+</code></pre>
+<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><p><strong>written by me</strong></p>
+<pre><code>public class HashMapCC150&lt;K, V&gt; &#123;
+
+    int size;
+    LinkedList&lt;Cell&lt;K, V&gt;&gt;[] items;
+
+    public HashMapCC150(int num) &#123;
+        this.size = num;
+        items = (LinkedList&lt;Cell&lt;K, V&gt;&gt;[]) new LinkedList[10];
+    &#125;
+
+    public V get(K k) &#123;
+        int hashValue = this.calculateHashCode(k);
+        if (items[hashValue] == null) &#123;
+            items[hashValue] = new LinkedList&lt;Cell&lt;K, V&gt;&gt;();
+            return null;
+        &#125;
+        for (Cell&lt;K, V&gt; cell : items[hashValue]) &#123;
+            if (k.equals(cell.getKey())) &#123;
+                return cell.getValue();
+            &#125;
+        &#125;
+        return null;
+    &#125;
+
+    public V put(K k, V v) &#123;
+        int hashValue = this.calculateHashCode(k);
+        if (items[hashValue] == null) &#123;
+            items[hashValue] = new LinkedList&lt;Cell&lt;K, V&gt;&gt;();
+        &#125;
+        for (Cell&lt;K, V&gt; cell : items[hashValue]) &#123;
+            if (k.equals(cell.getKey())) &#123;
+                items[hashValue].remove(cell);
+                break;
+            &#125;
+        &#125;
+        Cell&lt;K, V&gt; newItem = new Cell&lt;K, V&gt;(k, v);
+        items[hashValue].add(newItem);
+        return null;
+    &#125;
+
+    public V remove(K k) &#123;
+        // not written
+        return null;
+    &#125;
+
+    private int calculateHashCode(K k) &#123;
+        return k.toString().length() % size;
+    &#125;
+
+    public static void main(String[] args) &#123;
+        HashMapCC150&lt;String, String&gt; map = new HashMapCC150&lt;String, String&gt;(10);
+        map.put(&quot;kevin&quot;, &quot;durant&quot;);
+        map.put(&quot;steven&quot;, &quot;curry&quot;);
+        map.put(&quot;al&quot;, &quot;jefferson&quot;);
+        System.out.println(map.get(&quot;kevin&quot;));
+        System.out.println(map.get(&quot;steven&quot;));
+        System.out.println(map.get(&quot;al&quot;));
+        map.put(&quot;kevin&quot;, &quot;martin&quot;);
+        map.put(&quot;steven&quot;, &quot;nash&quot;);
+        map.put(&quot;kevin&quot;, &quot;braynt&quot;);
+        System.out.println(map.get(&quot;kevin&quot;));
+        System.out.println(map.get(&quot;steven&quot;));
+        System.out.println(map.get(&quot;al&quot;));
+    &#125;
+&#125;
+
+class Cell&lt;K, V&gt; &#123;
+    private K key;
+    private V value;
+
+    public Cell(K k, V v) &#123;
+        key = k;
+        value = v;
+    &#125;
+
+    public boolean equivalent(Cell&lt;K, V&gt; c) &#123;
+        return equivalent(c.getKey());
+    &#125;
+
+    public boolean equivalent(K k) &#123;
+        return key.equals(k);
+    &#125;
+
+    public K getKey() &#123;
+        return key;
+    &#125;
+
+    public V getValue() &#123;
+        return value;
+    &#125;
+&#125;
+</code></pre>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

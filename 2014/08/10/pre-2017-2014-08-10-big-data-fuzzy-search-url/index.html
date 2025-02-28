@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    [Design] Big Data - Fuzzy Search url (Bloom Filter)  丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">[Design] Big Data - Fuzzy Search url (Bloom Filter) </div>
+  <div class="post-meta">
+    <div class="date">2014 August 10th</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><p><a target="_blank" rel="noopener" href="http://blog.csdn.net/v_july_v/article/details/7382693">link</a></p>
+<blockquote>
+<p>给你A,B两个文件，各存放50亿条URL，每条URL占用64字节，内存限制是4G，让你找出A,B文件共同的URL。如果是三个乃至n个文件呢？</p>
+</blockquote>
+<h3 id="Bloom-Filter"><a href="#Bloom-Filter" class="headerlink" title="Bloom Filter"></a>Bloom Filter</h3><p>自从Burton Bloom在70年代提出<a target="_blank" rel="noopener" href="http://blog.csdn.net/v_july_v/article/details/6685894">Bloom Filter</a>之后，Bloom Filter就被广泛用于__拼写检查，数据库系统中。。。可以实现数据字典，进行数据的判重，或者集合求交集__</p>
+<h4 id="基本原理及要点"><a href="#基本原理及要点" class="headerlink" title="基本原理及要点"></a>基本原理及要点</h4><p>An empty Bloom filter is <strong>a bit array of m bits</strong>, all set to 0. There must also be <strong>k different hash functions</strong> defined, each of which maps or hashes some set element to one of the m array positions with a uniform random distribution. </p>
+<p>很明显这个过程并不保证查找的结果是100%正确的。同时也不支持删除一个已经插入的关键字，因为该关键字对应的位会牵动到其他的关键字。</p>
+<p>所以一个简单的改进就是 counting Bloom filter，用一个counter数组代替位数组，就可以支持删除了。 </p>
+<h3 id="Error-rate"><a href="#Error-rate" class="headerlink" title="Error rate"></a>Error rate</h3><pre><code>m: length of BF array (in bits)
+n: number of input elements
+k: number of hash functions
+</code></pre>
+<p>A Bloom filter <a target="_blank" rel="noopener" href="http://en.wikipedia.org/wiki/Bloom_filter#Space_and_time_advantages">with 1% error</a> and an optimal value of k, in contrast, requires only about 9.6 bits per element (means m &#x3D; 9.6 x n). </p>
+<h4 id="Usage"><a href="#Usage" class="headerlink" title="Usage"></a>Usage</h4><p>Bloom Filter可以用来实现数据字典，进行数据的判重，或者集合求交集.</p>
+<h3 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h3><p>Of course we can always use <strong>【分治+trie树&#x2F;hash+小顶堆】</strong> standard solution, but for <strong>Fuzzy search, BF is the best</strong>. </p>
+<p>4G &#x3D; 2^32 大概是40亿 x 8大概是340亿bit，n &#x3D; 50亿，如果按出错率0.01算需要的大概是480亿个bit。现在可用的是340亿，相差并不多，这样可能会使出错率上升些。</p>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

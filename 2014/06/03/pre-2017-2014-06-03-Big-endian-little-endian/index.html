@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    [Design] Big Endian and Little Endian 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">[Design] Big Endian and Little Endian</div>
+  <div class="post-meta">
+    <div class="date">2014 June 3rd</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><h3 id="Difference"><a href="#Difference" class="headerlink" title="Difference"></a>Difference</h3><p><strong><a target="_blank" rel="noopener" href="http://en.wikipedia.org/wiki/Endianness">Big-endian</a> systems store the most significant byte of a word in the smallest address</strong> and the least significant byte is stored in the largest address.</p>
+<p><strong>Little-endian systems, in contrast, store the least significant byte in the smallest address</strong>.</p>
+<p>Both forms of endianness are in widespread use in computing and networking.</p>
+<h3 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h3><p><img src="/images/big-endian.png"></p>
+<p>The data word “0A 0B 0C 0D” (a set of 4 bytes written out using left-to-right positional, hexadecimal notation) and the four memory locations with addresses a, a+1, a+2 and a+3.</p>
+<p>In Big-endian systems, byte 0A is stored in a, 0B in a+1, 0C in a+2 and 0D in a+3. In Little-endian systems, the order is reversed with 0D stored in memory address a, 0C in a+1, 0B in a+2, and 0A in a+3.</p>
+<h3 id="Why"><a href="#Why" class="headerlink" title="Why ?"></a>Why ?</h3><p>IBMs and Intel x86 are little endian, while Motorolas and Sun are big endian.</p>
+<p><strong>Big-endian</strong> is the most common convention in data <strong>networking (including IPv6)</strong>, and <strong>little-endian</strong> is popular among <strong>microprocessors</strong> in part due to Intel.</p>
+<p>Why is endianness so important? Suppose you are storing int values to a file, then you send the file to a machine which uses the opposite endianness and read in the value. You’ll run into problems because of endianness. You’ll read in reversed values that won’t make sense.</p>
+<p>Endianness is also a big issue when sending numbers over the network. Again, if you send a value from a machine of one endianness to a machine of the opposite endianness, you’ll have problems. This is even worse over the network, because you might not be able to determine the endianness of the machine that sent you the data.</p>
+<p>The solution is to send 4 byte quantities using <a target="_blank" rel="noopener" href="http://www.tutorialspoint.com/unix_sockets/network_byte_orders.htm">network byte order</a> which is arbitrarily picked to be one of the endianness (not sure if it’s big or little, but it’s one of them). If your machine has the same endianness as network byte order, then great, no change is needed. If not, then you must reverse the bytes.</p>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    [Google] Lexicographic order (letter replacement) of dictionary  丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">[Google] Lexicographic order (letter replacement) of dictionary </div>
+  <div class="post-meta">
+    <div class="date">2015 January 18th</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><p><a target="_blank" rel="noopener" href="http://www.careercup.com/question?id=13394663">link</a></p>
+<blockquote>
+<p>Given set of words that are lexicographically sorted, return lexicographic order. E.g:</p>
+</blockquote>
+<pre><code>abc
+acd
+bcc
+bed
+bdc
+dab
+</code></pre>
+<blockquote>
+<p>The order of letters for the given example would be</p>
+</blockquote>
+<pre><code>a-&gt;b-&gt;c-&gt;e-&gt;d
+</code></pre>
+<h3 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h3><blockquote>
+<p>Just form a graph(DAG) and do a topological sort. </p>
+</blockquote>
+<p>Start from the first pair in the dictionary. Compare two strings in this pair <strong>till first mismatch</strong>. </p>
+<p>Eg: <strong>aad &amp; aab</strong>, in this case create an edge <strong>d -&gt; b</strong>. </p>
+<p>More details is available <a target="_blank" rel="noopener" href="http://codereview.stackexchange.com/questions/48292/return-the-lexicographic-order">here</a>. </p>
+<h4 id="Variant-and-a-different-solution"><a href="#Variant-and-a-different-solution" class="headerlink" title="Variant, and a different solution"></a>Variant, and a different solution</h4><p>Another way of asking this question, is:</p>
+<blockquote>
+<p>有一个字典因为某种原因每个字符都被替换成一个别的字符了（但还是一一对应)，<br>但是单词的顺序没有改变，比如</p>
+</blockquote>
+<pre><code>cat
+coffee
+common
+
+--&gt; 
+
+dkc
+dbhhzz
+dbllbq
+</code></pre>
+<blockquote>
+<p>让找出的这个替换的规则（guaranteed to have a unique one)</p>
+</blockquote>
+<p><strong>Alternative solution</strong> is to check according to frequencies.</p>
+<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><pre><code>public String lexicoOrder(String[] dict) &#123;
+	String ans = &quot;&quot;;
+
+	// for each pair, maintain 2 HashMap
+	HashMap&lt;Character, Integer&gt; incount = new HashMap&lt;Character, Integer&gt;();
+	HashMap&lt;Character, List&lt;Character&gt;&gt; connection = new HashMap&lt;Character, List&lt;Character&gt;&gt;();
+	for (String str : dict) &#123;
+		for (char c : str.toCharArray()) &#123;
+			incount.put(c, 0);
+			connection.put(c, new ArrayList&lt;Character&gt;());
+		&#125;
+	&#125;
+	buildGraph(dict, incount, connection);
+
+	// start topology sorting
+	Queue&lt;Character&gt; temp = new LinkedList&lt;Character&gt;();
+	for (char c : incount.keySet()) &#123;
+		if (incount.get(c) == 0) &#123;
+			temp.offer(c);
+			incount.remove(c);
+			// remove any node whose incount is 0
+		&#125;
+	&#125;
+	while (!temp.isEmpty()) &#123;
+		char top = temp.poll();
+		ans += top;
+		// &#39;top&#39; is next char in line. remove it and delete connections
+		List&lt;Character&gt; inNodes = connection.get(top);
+		for (char c : inNodes) &#123;
+			// remove incount for all nodes from inNodes
+			incount.put(c, incount.get(c) - 1);
+			if (incount.get(c) == 0) &#123;
+				incount.remove(c);
+				temp.offer(c);
+			&#125;
+		&#125;
+	&#125;
+	if (incount.size() == 0)
+		return ans;
+	else
+		return &quot;unable to find a valid char sequence.&quot;;
+&#125;
+
+public void buildGraph(String[] dict, HashMap&lt;Character, Integer&gt; incount,
+		HashMap&lt;Character, List&lt;Character&gt;&gt; connection) &#123;
+	// build the graph map
+	// abc
+	// acd
+	// bcc
+	// bed
+	// bdc
+	// dab
+	for (int i = 0; i &lt; dict.length - 1; i++) &#123;
+		// compare dict[i] and dict[i+1]
+		String str1 = dict[i];
+		String str2 = dict[i + 1];
+		int p = 0;
+		while (p &lt; str1.length() &amp;&amp; p &lt; str2.length()) &#123;
+			if (str1.charAt(p) == str2.charAt(p)) &#123;
+				p++;
+			&#125; else &#123;
+				break;
+			&#125;
+		&#125;
+		if (p == str1.length()) &#123;
+			// this is special case eg. &quot;ab&quot; &amp; &quot;abc&quot;
+			// this will not give up any information about lexico order
+			continue;
+		&#125;
+		char from = str1.charAt(p);
+		char to = str2.charAt(p);
+		// update incount
+		incount.put(to, incount.get(to) + 1);
+		// update connection
+		connection.get(from).add(to);
+	&#125;
+&#125;
+</code></pre>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

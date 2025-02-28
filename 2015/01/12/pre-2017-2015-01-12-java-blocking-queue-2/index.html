@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    [Java OOP] Java BlockingQueue (2)  丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">[Java OOP] Java BlockingQueue (2) </div>
+  <div class="post-meta">
+    <div class="date">2015 January 12th</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><h3 id="Blocking-Queue-Implementation"><a href="#Blocking-Queue-Implementation" class="headerlink" title="Blocking Queue Implementation"></a>Blocking Queue Implementation</h3><p><img src="/images/blocking-queue.png"></p>
+<p><a target="_blank" rel="noopener" href="http://tutorials.jenkov.com/java-concurrency/blocking-queues.html">source</a></p>
+<ol>
+<li><p>A blocking queue is a queue, so we init a queue with a pre-defined size.</p>
+</li>
+<li><p>BlockingQueue Class comes with Java 5, in java.util.concurrent.BlockingQueue. This example is only used to help you understand what’s happening behind the scene.</p>
+</li>
+<li><p>Both <strong>enqueue(Object o){}</strong> and <strong>dequeue(){}</strong> are <strong>synchronized</strong> method.</p>
+</li>
+<li><p>Both methods do <strong>while { wait(); }</strong> and then <strong>notifyAll()</strong>.</p>
+</li>
+</ol>
+<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><pre><code>public class MyBlockingQueue &#123;
+
+    private List&lt;Object&gt; queue = new LinkedList&lt;Object&gt;();
+    private int size = 10;
+
+    public MyBlockingQueue(int size) &#123;
+        this.size = size;
+    &#125;
+
+    public synchronized void enqueue(Object item) throws InterruptedException &#123;
+        while (this.queue.size() == this.size) &#123;
+            wait();
+        &#125;
+        if (this.queue.size() == 0) &#123;
+            notifyAll();
+        &#125;
+        this.queue.add(item);
+    &#125;
+
+    public synchronized Object dequeue() throws InterruptedException &#123;
+        while (this.queue.size() == 0) &#123;
+            wait();
+        &#125;
+        if (this.queue.size() == this.size) &#123;
+            notifyAll();
+        &#125;
+
+        return this.queue.remove(0);
+    &#125;
+
+    public boolean isEmpty() &#123;
+        return this.queue.isEmpty();
+    &#125;
+&#125;
+</code></pre>
+<h3 id="Another-example"><a href="#Another-example" class="headerlink" title="Another example"></a>Another example</h3><p>This BlockingQueue example makes use MyBlockingQueue that we defined above.</p>
+<pre><code>public class Main &#123;
+
+    public static void main(String[] args) throws Exception &#123;
+
+        MyBlockingQueue queue = new MyBlockingQueue(1024);
+
+        Producer producer = new Producer(queue);
+        Consumer consumer = new Consumer(queue);
+
+        new Thread(producer).start();
+        new Thread(consumer).start();
+
+        Thread.sleep(4000);
+    &#125;
+&#125;
+</code></pre>
+<p>Producer</p>
+<pre><code>public class Producer implements Runnable &#123;
+
+    protected MyBlockingQueue queue = null;
+
+    public Producer(MyBlockingQueue queue) &#123;
+        this.queue = queue;
+    &#125;
+
+    public void run() &#123;
+        System.out.println(&quot;Producer starting... &quot;);
+        try &#123;
+            for (int i = 1; i &lt;= 5; i++) &#123;
+                queue.enqueue(&quot;&quot; + i);
+                Thread.sleep(500);
+            &#125;
+        &#125; catch (InterruptedException e) &#123;
+            e.printStackTrace();
+        &#125;
+    &#125;
+&#125;
+</code></pre>
+<p>Consumer</p>
+<pre><code>public class Consumer implements Runnable &#123;
+
+    protected MyBlockingQueue queue = null;
+
+    public Consumer(MyBlockingQueue queue) &#123;
+        this.queue = queue;
+    &#125;
+
+    public void run() &#123;
+        try &#123;
+            for (int i = 1; i &lt;= 5; i++) &#123;
+                System.out.println(queue.dequeue());
+            &#125;
+        &#125; catch (InterruptedException e) &#123;
+            e.printStackTrace();
+        &#125;
+        System.out.println(&quot;Consumer finished. &quot;);
+    &#125;
+&#125;
+</code></pre>
+<p>Output:</p>
+<pre><code>Producer starting...
+1
+2
+3
+4
+5
+Consumer finished.
+</code></pre>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

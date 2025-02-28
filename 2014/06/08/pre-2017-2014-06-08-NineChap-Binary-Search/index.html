@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    [NineChap 2.1] Binary Search 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">[NineChap 2.1] Binary Search</div>
+  <div class="post-meta">
+    <div class="date">2014 June 8th</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><h2 id="Binary-Search"><a href="#Binary-Search" class="headerlink" title="Binary Search"></a>Binary Search</h2><h4 id="Recursion-or-While-Loop"><a href="#Recursion-or-While-Loop" class="headerlink" title="Recursion or While-Loop?"></a>Recursion or While-Loop?</h4><p>In general, it’s never a good idea to do binary search with recursion, because that’ll make the interview too boring.</p>
+<h4 id="Template"><a href="#Template" class="headerlink" title="Template"></a>Template</h4><p><a target="_blank" rel="noopener" href="http://answer.ninechapter.com/solutions/binary-search/">link</a></p>
+<p>This template is able to locate the first (or last) occurance of an element <strong>when array contains duplications</strong>.</p>
+<p>If item too small&#x2F;large, left&#x2F;right boundary is returned.</p>
+<p>Read Question “Search for a Range” for more details.</p>
+<pre><code>int binarySearch(vector&lt;int&gt; &amp;A, int target) &#123;
+    if (A.size() == 0) &#123;
+        return -1;
+    &#125;
+
+    int start = 0;
+    int end = A.size() - 1;
+    int mid;
+
+    while (start + 1 &lt; end) &#123;
+        mid = start + (end - start) / 2;
+        if (A[mid] &lt; target) &#123;
+            start = mid;
+        &#125; else &#123;
+            end = mid;
+        &#125;
+    &#125;
+
+    if (A[start] == target) &#123;
+        return start;
+    &#125;
+    if (A[end] == target) &#123;
+        return end;
+    &#125;
+
+    return -1;
+&#125;
+</code></pre>
+<h4 id="Keypoints"><a href="#Keypoints" class="headerlink" title="Keypoints"></a>Keypoints</h4><ol>
+<li>start + 1 &lt; end</li>
+<li>start + (end-start)&#x2F;2</li>
+<li>A[mid] &#x3D;&#x3D;, &lt;, &gt;</li>
+<li>A[start&#x2F;end] &#x3D;&#x3D; target</li>
+</ol>
+<h2 id="Question-list"><a href="#Question-list" class="headerlink" title="Question list"></a>Question list</h2><p><strong>Binary search</strong></p>
+<ol>
+<li><p><strong><a href="/leetcode/2014-05-12-Search-Insert-Position">Search Insert Position</a></strong></p>
+</li>
+<li><p><strong><a href="/leetcode/2014-05-12-Search-for-a-Range">Search for a Range</a></strong></p>
+</li>
+<li><p><strong><a href="/leetcode/2014-05-12-Search-in-Rotated-Sorted-Array">Search in Rotated Sorted Array</a></strong></p>
+</li>
+<li><p><strong><a href="/leetcode/2014-05-22-Search-in-Rotated-Sorted-Array-II">Search in Rotated Sorted Array II</a></strong></p>
+</li>
+<li><p><strong><a href="/leetcode/2014-05-21-Search-a-2D-Matrix">Search a 2D Matrix</a></strong></p>
+</li>
+</ol>
+<p><strong>Additional</strong></p>
+<ol>
+<li><p><strong><a href="/leetcode_plus/2014-06-10-Searching-a-2D-Sorted-Matrix">Search a 2D Matrix II</a></strong> - A tricky question</p>
+</li>
+<li><p><strong>Find the First Bad Version</strong></p>
+<p>The code base version is an integer and start from 0 to n. One day, someone commit a bad version in the code case, so it caused itself and the following versions are all failed in the unittests. You can determine whether a version is bad by the following interface:</p>
+<blockquote>
+<p>boolean isBadVersion(int version);</p>
+</blockquote>
+<p>Find the first bad version.</p>
+</li>
+<li><p><strong>Find a peek</strong></p>
+<p>There is an array which we can assume the numbers in adjcent positions are different. and A[0] &lt; A[1] &amp;&amp; A[A.length - 2] &gt; A[A.length - 1]. We consider a position P is a peek if A[P] &gt; A[P-1] &amp;&amp; A[P] &gt; A[P+1]. Find a peek in this array.</p>
+</li>
+</ol>
+<h2 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h2><p>All following code are written with the template provided above.</p>
+<p><strong>Search Insert Position</strong></p>
+<pre><code>public int searchInsert(int[] A, int target) &#123;
+    // 6 minutes
+    if (A == null || A.length == 0) &#123;
+        return 0;
+    &#125;
+    int left = 0, right = A.length - 1;
+    int mid;
+    while (left + 1 &lt; right) &#123;
+        mid = left + (right - left) / 2;
+        if (A[mid] &lt; target) &#123;
+            left = mid;
+        &#125;
+        else &#123;
+            right = mid;
+        &#125;
+    &#125;
+    if (target &lt;= A[left]) &#123;
+        // equal or less than first element
+        return left;
+    &#125;
+    else if (A[left] &lt; target &amp;&amp; target &lt;= A[right]) &#123;
+        return right;
+    &#125;
+    else &#123;
+        // bigger than largest element
+        return right + 1;
+    &#125;
+&#125;
+</code></pre>
+<p><strong>Search for a Range</strong></p>
+<pre><code>public int[] searchRange(int[] A, int target) &#123;
+    // 6 minutes
+    int[] result = new int[2];
+    result[0] = -1;
+    result[1] = -1;
+    if (A == null || A.length == 0) &#123;
+        return result;
+    &#125;
+    // find the start point of target
+    int left = 0, right = A.length - 1, mid;
+    while (left + 1 &lt; right) &#123;
+        mid = left + (right - left) / 2;
+        if (A[mid] &lt; target) &#123;
+            left = mid;
+        &#125;
+        else &#123;
+            right = mid;
+        &#125;
+    &#125;
+    if (A[left] == target) &#123;
+        result[0] = left;
+    &#125;
+    else if (A[right] == target) &#123;
+        result[0] = right;
+    &#125;
+    else &#123;
+        return result;
+    &#125;
+    // find the end point of target
+    left = 0;
+    right = A.length - 1;
+    while (left + 1 &lt; right) &#123;
+        mid = left + (right - left) / 2;
+        if (A[mid] &lt;= target) &#123;
+            left = mid;
+        &#125;
+        else &#123;
+            right = mid;
+        &#125;
+    &#125;
+    if (A[right] == target) &#123;
+        result[1] = right;
+    &#125;
+    else if (A[left] == target) &#123;
+        result[1] = left;
+    &#125;
+    return result;
+&#125;
+</code></pre>
+<p><strong>Search in Rotated Sorted Array</strong></p>
+<p>Note: this is an high-freq qeustion. Every company will ask this question.</p>
+<p>The solution is using 4 if-conditions. It takes long time first, because I compare A[mid] with target. It become complex.</p>
+<p>We should compared A[left] and A[mid] first, then it’ll be much easier for coding.</p>
+<pre><code>public int search(int[] A, int target) &#123;
+    // this is the 4th time that I do this question
+    // 7 minutes
+    if (A == null || A.length == 0) &#123;
+		return -1;
+	&#125;
+	int left = 0;
+	int right = A.length - 1;
+	int mid;
+	while (left + 1 &lt; right) &#123;
+		mid = left + (right - left) / 2;
+		if (A[mid] == target) &#123;
+			return mid;
+		&#125; else if (A[left] &lt; A[mid]) &#123;
+			if (A[left] &lt;= target &amp;&amp; target &lt; A[mid]) &#123;
+				right = mid;
+			&#125; else &#123;
+				left = mid;
+			&#125;
+		&#125; else &#123;
+			if (A[mid] &lt; target &amp;&amp; target &lt;= A[right]) &#123;
+				left = mid;
+			&#125; else &#123;
+				right = mid;
+			&#125;
+		&#125;
+	&#125;
+	if (A[left] == target) &#123;
+		return left;
+	&#125; else if (A[right] == target) &#123;
+		return right;
+	&#125;
+	return -1;
+&#125;
+</code></pre>
+<p><strong>Search in Rotated Sorted Array II</strong></p>
+<p>There are multiple ways to remove duplications. My previous solution is removing duplicate before entering the while-loop, which is a very good idea.</p>
+<p>Binary can’t be used, because there might be: value of start &#x3D; mid &#x3D; end. In this case, the entire list needs to be search. Impossible!</p>
+<p>The worse case will anyway take O(n) time. To indicate the time complexity is regardless of binary search, Mr. Huang suggests the following code:</p>
+<pre><code>public boolean search(int[] A, int target) &#123;
+    for (int i = 0; i &lt; A.length; i ++) &#123;
+        if (A[i] == target) &#123;
+            return true;
+        &#125;
+    &#125;
+    return false;
+&#125;
+</code></pre>
+<p><strong>Search a 2D Matrix</strong></p>
+<p>my code (2D search):</p>
+<pre><code>public boolean searchMatrix(int[][] matrix, int target) &#123;
+    // 13 miniutes
+    if (matrix == null || matrix.length == 0 || matrix[0].length == 0) &#123;
+        return false;
+    &#125;
+    int m = matrix.length;
+    int n = matrix[0].length;
+    // find target vertically from matrix[0] to matrix[m-1]
+    int top = 0, bottom = m - 1;
+    int mid;
+    while (top + 1 &lt; bottom) &#123;
+        mid = top + (bottom - top) / 2;
+        if (matrix[mid][0] &lt; target) &#123;
+            top = mid;
+        &#125;
+        else &#123;
+            bottom = mid;
+        &#125;
+    &#125;
+    // locate the row number
+    int row = -1;
+    if (matrix[top][0] &lt;= target &amp;&amp; target &lt;= matrix[top][n-1]) &#123;
+        row = top;
+    &#125;
+    else if (matrix[bottom][0]&lt;=target &amp;&amp; target &lt;= matrix[bottom][n-1]) &#123;
+        row = bottom;
+    &#125;
+    else &#123;
+        return false;
+    &#125;
+    // now find target from matrix[row]
+    int left = 0, right = n - 1;
+    while (left + 1 &lt; right) &#123;
+        mid = left + (right - left) / 2;
+        if (matrix[row][mid] &lt; target) &#123;
+            left = mid;
+        &#125;
+        else &#123;
+            right = mid;
+        &#125;
+    &#125;
+    return (matrix[row][left] == target || matrix[row][right] == target);
+&#125;
+</code></pre>
+<p>better code (1D search):</p>
+<pre><code>public boolean searchMatrix(int[][] matrix, int target) &#123;
+    int rows = matrix.length;
+    int cols = matrix[0].length;
+    int start = 0;
+    int end = rows * cols - 1;
+    while (start &lt;= end) &#123;
+        int mid = (start + end) / 2;
+        // Tricks to treat it as a 1-D array
+        int digit = matrix[mid / cols][mid % cols];
+        if (target == digit) &#123;
+            return true;
+        &#125; else if (target &gt; digit) &#123;
+            start = mid + 1;
+        &#125; else &#123;
+            end = mid - 1;
+        &#125;
+    &#125;
+    return false;
+&#125;
+</code></pre>
+<p><strong>Search a 2D Matrix II</strong></p>
+<p>Read my new post for details.</p>
+<p><strong>Find the First Bad Version</strong></p>
+<p>A simple binary search.</p>
+<p><strong>Find a peek</strong></p>
+<p>A binary search, and for each ‘mid’ point, judge weather it’s a peek, or it’s upward sloping, or downward sloping.</p>
+<p>Code skipped.</p>
+<h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><h4 id="Always-try-to-exclude-a-half"><a href="#Always-try-to-exclude-a-half" class="headerlink" title="Always try to exclude a half."></a>Always try to exclude a half.</h4></main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    [LeetCode 172] Factorial Trailing Zeroes  丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">[LeetCode 172] Factorial Trailing Zeroes </div>
+  <div class="post-meta">
+    <div class="date">2015 April 13th</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/factorial-trailing-zeroes/">link</a></p>
+<div class="question-content">
+              <p></p><p>Given an integer <i>n</i>, return the number of trailing zeroes in <i>n</i>!.</p>
+
+<p><b>Note: </b>Your solution should be in logarithmic time complexity.</p>
+
+<p><b>Credits:</b><br>Special thanks to <a target="_blank" rel="noopener" href="https://oj.leetcode.com/discuss/user/ts">@ts</a> for adding this problem and creating all test cases.</p><p></p>
+
+<pre><code>            &lt;div id=&quot;tags&quot; class=&quot;btn btn-xs btn-warning&quot;&gt;Show Tags&lt;/div&gt;
+            &lt;span class=&quot;hide&quot;&gt;
+
+              &lt;a class=&quot;btn btn-xs btn-primary&quot; href=&quot;/tag/math/&quot;&gt;Math&lt;/a&gt;
+
+            &lt;/span&gt;
+
+        &lt;/div&gt;
+</code></pre>
+<h3 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h3><p>This question I’ve seen it quite a few time, also. We’re basically count the number of factor 5s.</p>
+<p>Eg.</p>
+<blockquote>
+<p>n &#x3D; 5, count &#x3D; 1</p>
+</blockquote>
+<blockquote>
+<p>n &#x3D; 6, count &#x3D; 1</p>
+</blockquote>
+<blockquote>
+<p>n &#x3D; 10, count &#x3D; 2</p>
+</blockquote>
+<blockquote>
+<p>n &#x3D; 24, count &#x3D; 4</p>
+</blockquote>
+<blockquote>
+<p>n &#x3D; 25, count &#x3D; 6</p>
+</blockquote>
+<blockquote>
+<p>n &#x3D; 26, count &#x3D; 6</p>
+</blockquote>
+<h3 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h3><p>Please read this post <strong>[[LintCode] Trailing Zeros of Factorial]</strong>.</p>
+<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><pre><code>public class Solution &#123;
+    public int trailingZeroes(int n) &#123;
+        if (n &lt; 5) &#123;
+            return 0;
+        &#125;
+        int res = 0;
+        long base = 5;
+        while (n &gt;= base) &#123;
+            res += n / base;
+            base *= 5;
+        &#125;
+        return res;
+    &#125;
+&#125;
+</code></pre>
+<p>another pretty good solution:</p>
+<pre><code>public class Solution &#123;
+    public int trailingZeroes(int n) &#123;
+        int count = 0;
+        for (int i = n / 5; i &gt; 0; i = i / 5) &#123;
+            count = count + i;
+        &#125;
+        return count;
+    &#125;
+&#125;
+</code></pre>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

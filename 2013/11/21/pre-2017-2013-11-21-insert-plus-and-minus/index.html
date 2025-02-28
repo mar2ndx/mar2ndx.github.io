@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    [Question] Insert Plus and Minus to Complete Expression  丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">[Question] Insert Plus and Minus to Complete Expression </div>
+  <div class="post-meta">
+    <div class="date">2013 November 21st</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><h1 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h1><p><a target="_blank" rel="noopener" href="http://www.1point3acres.com/bbs/thread-148692-1-1.html">link</a></p>
+<blockquote>
+<p>Given a string of numbers, eg. “43868643”. Put ‘+’ and ‘-‘ in between, and build an expression.</p>
+</blockquote>
+<h1 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h1><p>Iterate thru the input string and do DFS recrusively.</p>
+<p>At each position, there’s 3 possibilities: plus, minus or do not skip.</p>
+<h1 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h1><pre><code>public List&lt;String&gt; solve(String str) &#123;
+	if (str == null || str.length() == 0) &#123;
+		return null;
+	&#125;
+	List&lt;String&gt; result = new ArrayList&lt;String&gt;();
+	helper(result, &quot;&quot;, 0, str);
+	Collections.sort(result);
+	return result;
+&#125;
+
+private void helper(List&lt;String&gt; result, String curExp, int curVal, String remain) &#123;
+	if (curVal == Integer.parseInt(remain)) &#123;
+		result.add(curExp + &quot;=&quot; + remain);
+	&#125; else if (curVal + Integer.parseInt(remain) == 0) &#123;
+		result.add(curExp + &quot;=-&quot; + remain);
+	&#125;
+	for (int i = 1; i &lt; remain.length(); i++) &#123;
+		String nextStr = remain.substring(0, i);
+		int nextNum = Integer.parseInt(nextStr);
+
+		// case 1: add a + between curExp and nextStr
+		String newExp = curExp + &quot;+&quot; + nextStr;
+		int newVal = curVal + nextNum;
+		helper(result, newExp, newVal, remain.substring(i));
+
+		// case 2: &#39;-&#39; sign
+		newExp = curExp + &quot;-&quot; + nextStr;
+		newVal = curVal - nextNum;
+		helper(result, newExp, newVal, remain.substring(i));
+	&#125;
+&#125;
+</code></pre>
+<h1 id="Testing"><a href="#Testing" class="headerlink" title="Testing"></a>Testing</h1><pre><code>Input is 4312
+Print the list:
++4-3+1=2
+-4+3-1=-2
+
+Input is 43868643
+Print the list:
++4+3+8+6-8-6-4=3
++4+3+8-6-8+6-4=3
++4+3+86-86-4=3
++4+3-8+6+8-6-4=3
++4+3-8+68-64=3
++4+3-8-6+8+6-4=3
++4+3-86+86-4=3
++4-3+8+6-8-6-4=-3
++4-3+8-6-8+6-4=-3
++4-3+86-86-4=-3
++4-3-8+6+8-6-4=-3
++4-3-8+68-64=-3
++4-3-8-6+8+6-4=-3
++4-3-86+86-4=-3
++43+8+6-8-6=43
++43+8-6-8+6=43
++43+86-86=43
++43-8+6+8-6=43
++43-8-6+8+6=43
++43-86+86=43
+-4+3+8+6-8-6+4=3
+-4+3+8-6-8+6+4=3
+-4+3+8-68+64=3
+-4+3+86-86+4=3
+-4+3-8+6+8-6+4=3
+-4+3-8-6+8+6+4=3
+-4+3-86+86+4=3
+-4-3+8+6-8-6+4=-3
+-4-3+8-6-8+6+4=-3
+-4-3+8-68+64=-3
+-4-3+86-86+4=-3
+-4-3-8+6+8-6+4=-3
+-4-3-8-6+8+6+4=-3
+-4-3-86+86+4=-3
+-43+8+6-8-6=-43
+-43+8-6-8+6=-43
+-43+86-86=-43
+-43-8+6+8-6=-43
+-43-8-6+8+6=-43
+-43-86+86=-43
+</code></pre>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

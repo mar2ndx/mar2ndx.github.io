@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    [NineChap 2.2] Sorted Array 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">[NineChap 2.2] Sorted Array</div>
+  <div class="post-meta">
+    <div class="date">2014 June 9th</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><h2 id="Sorted-Array"><a href="#Sorted-Array" class="headerlink" title="Sorted Array"></a>Sorted Array</h2><h4 id="Template"><a href="#Template" class="headerlink" title="Template"></a>Template</h4><p>There is no template.</p>
+<h4 id="Question-list"><a href="#Question-list" class="headerlink" title="Question list"></a>Question list</h4><ol>
+<li><p><strong><a href="/leetcode/2014-05-09-Remove-Duplicates-from-Sorted-Array">Remove Duplicates from Sorted Array</a></strong></p>
+</li>
+<li><p><strong><a href="/leetcode/2014-05-22-Remove-Duplicates-from-Sorted-Array-II">Remove Duplicates from Sorted Array II</a></strong></p>
+</li>
+<li><p><strong><a href="/leetcode/2014-05-23-Merge-Sorted-Array">Merge Sorted Array</a></strong></p>
+</li>
+<li><p><strong><a href="/leetcode/2014-04-26-Median-of-Two-Sorted-Arrays">Median of Two Sorted Arrays</a></strong></p>
+</li>
+<li><p><strong><a href="/lintcode/2014-06-08-Recover-Rotated-Sorted-Array">Recover Rotated Sorted Array</a></strong></p>
+</li>
+</ol>
+<h4 id="Additional"><a href="#Additional" class="headerlink" title="Additional"></a>Additional</h4><ol>
+<li><p><strong><a href="/leetcode/2014-06-03-Reverse-Words-in-a-String">Reverse Words in a String</a></strong></p>
+</li>
+<li><p><strong>Rotate String</strong></p>
+<p>Given string “abcdefg” and offset &#x3D; 3, the rotated string is “efgabcd”.</p>
+</li>
+</ol>
+<h2 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h2><p><strong>Remove Duplicates from Sorted Array</strong></p>
+<pre><code>public int removeDuplicates(int[] A) &#123;
+    if (A == null || A.length == 0) &#123;
+		return 0;
+	&#125;
+	int left = 1;
+	int right = 1;
+	while (right &lt; A.length) &#123;
+		if (A[right - 1] != A[right]) &#123;
+			A[left] = A[right];
+			left++;
+		&#125;
+		right++;
+	&#125;
+	return left;
+&#125;
+</code></pre>
+<p><strong>Remove Duplicates from Sorted Array II</strong> - slightly difficult in coding</p>
+<pre><code>public int removeDuplicates(int[] A) &#123;
+    if (A == null || A.length == 0) &#123;
+		return 0;
+	&#125;
+	int left = 1;
+	int right = 1;
+	boolean twice = false;
+	while (right &lt; A.length) &#123;
+		if (A[right - 1] != A[right]) &#123;
+			A[left++] = A[right++];
+			twice = false;
+		&#125; else if (!twice)&#123;
+			A[left++] = A[right++];
+			twice = true;
+		&#125; else &#123;
+			right++;
+		&#125;
+	&#125;
+	return left;
+&#125;
+</code></pre>
+<p><strong>Merge Sorted Array</strong></p>
+<p>Easy question, tail to head merge.</p>
+<p><strong>Median of Two Sorted Arrays</strong></p>
+<p>This question is Find kth largest from A&amp;B. Refer to original post.</p>
+<p><strong>Recover Rotated Sorted Array</strong></p>
+<p>I wrote a new post.</p>
+<p><strong>Reverse Words in a String</strong></p>
+<pre><code>public String reverseWords(String s) &#123;
+	if (s == null || s.length() == 0) &#123;
+		return s;
+	&#125;
+	String[] words = s.split(&quot; &quot;);
+	String firstReversed = &quot;&quot;;
+	for (int i = 0; i &lt; words.length; i ++) &#123;
+	    if (words[i].equals(&quot;&quot;)) continue;
+		firstReversed += inPlaceReverse(words[i]) + &quot; &quot;;
+	&#125;
+	return inPlaceReverse(firstReversed);
+&#125;
+
+private String inPlaceReverse(String str) &#123;
+	if (str == null || str.length() == 0) return str;
+	char[] chars = str.trim().toCharArray();
+	int left = 0;
+	int right = chars.length - 1;
+	while (left &lt; right) &#123;
+		char temp = chars[left];
+		chars[left] = chars[right];
+		chars[right] = temp;
+		left ++;
+		right --;
+	&#125;
+	return String.valueOf(chars);
+&#125;
+</code></pre>
+<p><strong>Rotate String</strong></p>
+<p>Same strategy.</p>
+<h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ol>
+<li>If array is sorted, try binary search</li>
+<li>If array is not sorted, try sort it first</li>
+<li>When you see ‘rotated array’, think of ‘list reverse’.</li>
+</ol>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

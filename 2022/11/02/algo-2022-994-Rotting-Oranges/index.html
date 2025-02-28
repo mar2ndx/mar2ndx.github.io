@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    994. Rotting Oranges 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">994. Rotting Oranges</div>
+  <div class="post-meta">
+    <div class="date">2022 November 2nd</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><p>Link: <a target="_blank" rel="noopener" href="https://leetcode.cn/problems/rotting-oranges/">https://leetcode.cn/problems/rotting-oranges/</a></p>
+<h1 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h1><p>difficulty: mid<br>adj diff: 3</p>
+<pre><code>You are given an m x n grid where each cell can have one of three values:
+
+	0 representing an empty cell,
+	1 representing a fresh orange, or
+	2 representing a rotten orange.
+
+Every minute, any fresh orange that is 4-directionally adjacent to a rotten orange becomes rotten.
+
+Return the minimum number of minutes that must elapse until no cell has a fresh orange. If this is impossible, return -1.
+
+ 
+
+Example 1:
+
+Input: grid = [[2,1,1],[1,1,0],[0,1,1]]
+Output: 4
+
+Example 2:
+
+Input: grid = [[2,1,1],[0,1,1],[1,0,1]]
+Output: -1
+Explanation: The orange in the bottom left corner (row 2, column 0) is never rotten, because rotting only happens 4-directionally.
+
+Example 3:
+
+Input: grid = [[0,2]]
+Output: 0
+Explanation: Since there are already no fresh oranges at minute 0, the answer is just 0.
+
+ 
+
+Constraints:
+
+	m == grid.length
+	n == grid[i].length
+	1 &lt;= m, n &lt;= 10
+	grid[i][j] is 0, 1, or 2.
+</code></pre>
+<p>老是写错,后来发现是 for (int i &#x3D; queue.size(); i &gt; 0; i–) 写成 for (int i &#x3D; 0; i &lt; queue.size(); i++) 了. </p>
+<p>怎么debug都发现不了, 哎…</p>
+<h1 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">    public int orangesRotting(int[][] grid) &#123;</span><br><span class="line">        int m = grid.length;</span><br><span class="line">        int n = grid[0].length;</span><br><span class="line">        List&lt;int[]&gt; queue = new LinkedList&lt;int[]&gt;();</span><br><span class="line">        int totalFresh = 0;</span><br><span class="line">        int minutesElapse = 0;</span><br><span class="line"></span><br><span class="line">        // 1. find all rotten, count total fresh</span><br><span class="line">        for (int i = 0; i &lt; m; i++) &#123;</span><br><span class="line">            for (int j = 0; j &lt; n; j++) &#123;</span><br><span class="line">                if (grid[i][j] == 2) &#123;</span><br><span class="line">                    queue.add(new int[]&#123;i, j&#125;);</span><br><span class="line">                &#125; else if (grid[i][j] == 1) &#123;</span><br><span class="line">                    totalFresh++;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        // start bfs using queue</span><br><span class="line">        while (true) &#123;</span><br><span class="line">            int currentFresh = totalFresh;</span><br><span class="line">            // try 4 directions</span><br><span class="line">            for (int i = queue.size(); i &gt; 0; i--) &#123;</span><br><span class="line">                int[] pos = queue.remove(0);</span><br><span class="line">                currentFresh += traverse(grid, queue, pos[0] - 1, pos[1], m, n);</span><br><span class="line">                currentFresh += traverse(grid, queue, pos[0] + 1, pos[1], m, n);</span><br><span class="line">                currentFresh += traverse(grid, queue, pos[0], pos[1] + 1, m, n);</span><br><span class="line">                currentFresh += traverse(grid, queue, pos[0], pos[1] - 1, m, n);</span><br><span class="line">            &#125;</span><br><span class="line">            if (currentFresh == totalFresh) &#123;</span><br><span class="line">                // NO fresh oragne is rotten today, return</span><br><span class="line">                break;</span><br><span class="line">            &#125;</span><br><span class="line">            totalFresh = currentFresh;</span><br><span class="line">            minutesElapse++;</span><br><span class="line">        &#125;</span><br><span class="line">        return totalFresh == 0 ? minutesElapse : -1;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    private int traverse(int[][] grid, List&lt;int[]&gt; queue, int x, int y, int m, int n) &#123;</span><br><span class="line">        // return value: how many fresh turn rotten</span><br><span class="line">        if (x &lt; 0 || x == m || y &lt; 0 || y == n) &#123;</span><br><span class="line">            return 0;</span><br><span class="line">        &#125; else if (grid[x][y] == 1) &#123;</span><br><span class="line">            // a fresh orange turns rotten here. </span><br><span class="line">            queue.add(new int[]&#123;x, y&#125;);</span><br><span class="line">            grid[x][y] = 2;</span><br><span class="line">            return -1;</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            return 0;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

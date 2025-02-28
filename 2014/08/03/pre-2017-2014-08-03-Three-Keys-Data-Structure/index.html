@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    [Google] Three Keys Data Structure 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">[Google] Three Keys Data Structure</div>
+  <div class="post-meta">
+    <div class="date">2014 August 3rd</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><p><a target="_blank" rel="noopener" href="http://www.careercup.com/question?id=5763793837621248">link</a></p>
+<blockquote>
+<p>Give efficient implementation of the following problem.</p>
+</blockquote>
+<blockquote>
+<p>An item consist of different keys say k1, k2, k3. User can insert any number of items in database, search for item using <strong>any (one) key</strong>, delete it using any key and iterate through all the items in sorted order <strong>using any key</strong>. Give the most efficient way such that it supports insertion, search based on a key, iteration and deletion.</p>
+</blockquote>
+<h3 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h3><p>There’re 3 keys, so we need 3 maps to store search map for 3 types of keys. For example, the DS is like this:</p>
+<blockquote>
+<p>(date, name, country) -&gt; ItemObject</p>
+</blockquote>
+<p>Then we would have:</p>
+<blockquote>
+<p>date -&gt; a list of ItemObject</p>
+<p>name -&gt; a list of ItemObject</p>
+<p>country -&gt; a list of ItemObject</p>
+</blockquote>
+<p>Since we need to iterate in order, we choose TreeMap over HashMap.</p>
+<p>For scalability purpose, we use another HashMap&lt;KeyType, TreeMap&gt; and put 3 items in.</p>
+<h3 id="Final-Data-Structure"><a href="#Final-Data-Structure" class="headerlink" title="Final Data Structure"></a>Final Data Structure</h3><p>3 DS needed. <a target="_blank" rel="noopener" href="http://www.careercup.com/question?id=5763793837621248">source</a></p>
+<ol>
+<li>ArrayList<ItemObject> list;</li>
+<li>TreeMap&lt;KeyValue, List<ItemObject>&gt; index;</li>
+<li>HashMap&lt;KeyType, TreeMap&lt;KeyValue, List<ItemObject>&gt;&gt; mapOfIndexes;</li>
+</ol>
+<h4 id="Method-add-item-void"><a href="#Method-add-item-void" class="headerlink" title="Method add(item): void"></a>Method add(item): void</h4><ol>
+<li>add item in ArrayList.</li>
+<li>For each key, get TreeMap from HashMap and add into TreeMap.</li>
+</ol>
+<h4 id="Method-search-key-List"><a href="#Method-search-key-List" class="headerlink" title="Method search(key): List"></a>Method search(key): List<Item></h4><ol>
+<li>Get TreeMap from HashMap for provided key.</li>
+<li>Search the TreeMap</li>
+<li>Return List Of Items</li>
+</ol>
+<h4 id="Method-delete-key-List"><a href="#Method-delete-key-List" class="headerlink" title="Method delete(key): List"></a>Method delete(key): List<Item></h4><ol>
+<li>Using search method get List Of item</li>
+<li>Delete items from ArrayList and <strong>also delete its mapping from all (3) TreeMap</strong></li>
+</ol>
+<h4 id="Method-orderedIterator-keytype-Iterator"><a href="#Method-orderedIterator-keytype-Iterator" class="headerlink" title="Method orderedIterator(keytype): Iterator"></a>Method orderedIterator(keytype): Iterator</h4><ol>
+<li>Get TreeMap from HashMap for provided key</li>
+<li>Get EntrySet from TreeMap</li>
+<li>Return EntrySet.iterator();</li>
+</ol>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

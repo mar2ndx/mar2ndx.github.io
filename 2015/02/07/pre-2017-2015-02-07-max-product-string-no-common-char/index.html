@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    [Google] Max prodcut of strings that have no common char  丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">[Google] Max prodcut of strings that have no common char </div>
+  <div class="post-meta">
+    <div class="date">2015 February 7th</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><p><a target="_blank" rel="noopener" href="http://www.mitbbs.com/article_t1/JobHunting/32868775_0_1.html">link</a></p>
+<blockquote>
+<p>Given a dictionary of wrods,find the pair of word with following property:</p>
+</blockquote>
+<blockquote>
+<ol>
+<li><p>the two word don’t have same letter.</p>
+</li>
+<li><p>the multiple of the two word’s length is maximum.</p>
+</li>
+</ol>
+</blockquote>
+<blockquote>
+<p>I give a simple O(n<em>n</em>k)(k is the average length of word) method.but i think there will be better one.</p>
+</blockquote>
+<h3 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h3><p><a target="_blank" rel="noopener" href="http://www.careercup.com/question?id=4951409057333248">Best answer</a> suggest as top comment:</p>
+<blockquote>
+<p>Assuming the word is A-Z&#x2F;a-z only, use a bitmap to set which letters it contains.</p>
+</blockquote>
+<blockquote>
+<p>e.g. ca &#x3D;&gt; 000….101</p>
+<p>bb &#x3D;&gt; 000…010</p>
+</blockquote>
+<p>This is called <strong>Bitmask</strong> of string. Read <strong>[Question] Check string with no common letters (Bitmask)</strong>.</p>
+<p>Then:</p>
+<blockquote>
+<p>Iterate over the words in decreasing order of length.</p>
+</blockquote>
+<blockquote>
+<p>for each pair of words, AND the bitmaps.</p>
+</blockquote>
+<blockquote>
+<p>Return the first pair that gives a 0 result.</p>
+</blockquote>
+<blockquote>
+<p>This should be n<em>k + n</em>n</p>
+</blockquote>
+<h4 id="Be-cautious"><a href="#Be-cautious" class="headerlink" title="Be cautious"></a>Be cautious</h4><p>For the second part of the solution above, is this code going to work?</p>
+<pre><code>Arrays.sort(strs) in descending order;
+for (int i = 0; i &lt; strs.length; i++) &#123;
+    for (int j = 0; j &lt; i; j++) &#123;
+        if (strs[i].bitmask &amp; strs[j].bitmask == 0) &#123;
+            // this pair do not have common char
+            // since strs in descending order, and i, j start from 0
+            // the product of length should be max
+            return i + &#39; &#39; + j;
+        &#125;
+    &#125;
+&#125;
+</code></pre>
+<p>Well, this is wrong. For example: {“ababa”, “aaa”, “bbb”, “cc”}, if we do longest-string to shorest-string, we would return “aaa”, “bbb” immediately when we found it. <strong>However, 5 _ 2 &gt; 3 _ 3</strong>.</p>
+<p>So, we have to find largest product using max-heap, like we did in <strong>[Google] Top N Values From Sum of 2 Arrays</strong>, “pop 1 and push 2”.</p>
+<h3 id="Another-solution"><a href="#Another-solution" class="headerlink" title="Another solution"></a>Another solution</h3><p><strong>DP</strong>: for each string, find the reversed set of char, and then find the max string using the reversed set. This idea is great, too, but less intuitive.</p>
+<p>It is explained <a target="_blank" rel="noopener" href="http://qr.ae/BYGHK">here</a>.</p>
+<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><p>not written</p>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

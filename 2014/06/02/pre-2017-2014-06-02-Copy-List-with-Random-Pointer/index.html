@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    [LeetCode 138] Copy List with Random Pointer 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">[LeetCode 138] Copy List with Random Pointer</div>
+  <div class="post-meta">
+    <div class="date">2014 June 2nd</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><p><a target="_blank" rel="noopener" href="https://oj.leetcode.com/problems/copy-list-with-random-pointer/">link</a></p>
+<div class="question-content bg-color bg-img font-color">
+            <p class="font-color"></p><p class="font-color">
+A linked list is given such that each node contains an additional random pointer which could point to any node in the list or null.
+</p>
+
+<p class="font-color">
+Return a deep copy of the list.
+</p><p class="font-color"></p>
+          </div>
+
+<h3 id="Stats"><a href="#Stats" class="headerlink" title="Stats"></a>Stats</h3><table border="2">
+	<tr>
+		<td>Adjusted Difficulty</td>
+		<td bgcolor="red">4</td>
+	</tr>
+	<tr>
+		<td>Time to use</td>
+		<td bgcolor="lime">20 minutes</td>
+	</tr>
+</table>
+
+<p>Ratings&#x2F;Color &#x3D; 1(white) 2(lime) 3(yellow) 4&#x2F;5(red)</p>
+<h3 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h3><p><strong>This is not a difficult question</strong>, however I mark it as difficulty level “4” because there are 2 solution, the second of which is hard to think of.</p>
+<h3 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h3><p><strong>Solution 1 which is my initial idea is using HashMap</strong> to store mappings from original nodes to copied nodes. This solution become exactly same as another question “Clone Graph”, only easier. It works fine.</p>
+<p>However such solution uses O(n) extra space. Can we do it with less space?</p>
+<p><strong>Solution 2 is a in-place method</strong> which directly creates the copied list. It is well explained in <a target="_blank" rel="noopener" href="http://www.geeksforgeeks.org/a-linked-list-with-next-and-arbit-pointer/">here</a>:</p>
+<blockquote>
+<ol>
+<li>Create a copy of first node and insert it between Node 1 &amp; Node 2 in original list. Then create a copy of second node and insert it between Node 2 &amp; Node 3… Continue in this fashion</li>
+<li>Set random link of the copied nodes (by referring to <strong>original.random.next</strong>)</li>
+<li>Restore the original and copied lists (and return answer)</li>
+</ol>
+</blockquote>
+<p>This solution (although uses 3 while-loops) is O(n) and O(1) extra space.</p>
+<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><p><strong>First, my solution using HashMap</strong></p>
+<pre><code>public RandomListNode copyRandomList(RandomListNode head) &#123;
+    if (head == null) return null;
+    RandomListNode newHead = new RandomListNode(head.label);
+    HashMap&lt;RandomListNode, RandomListNode&gt; map =
+            new HashMap&lt;RandomListNode, RandomListNode&gt;();
+    map.put(head, newHead);
+    RandomListNode orin = head, cp = newHead;
+    while (orin != null) &#123;
+        if (orin.next != null) &#123;
+            if (!map.containsKey(orin.next))
+                map.put(orin.next, new RandomListNode(orin.next.label));
+            cp.next = map.get(orin.next);
+        &#125;
+        if (orin.random != null) &#123;
+            if (!map.containsKey(orin.random))
+                map.put(orin.random, new RandomListNode(orin.random.label));
+            cp.random = map.get(orin.random);
+        &#125;
+        orin = orin.next;
+        cp = cp.next;
+    &#125;
+    return newHead;
+&#125;
+</code></pre>
+<p><strong>Second, constent space solution</strong></p>
+<pre><code>public RandomListNode copyRandomList(RandomListNode head)  &#123;
+    if (head == null)  &#123;
+		return null;
+	&#125;
+	// copy each node and append right after original node
+	RandomListNode p = head;
+	while (p != null)  &#123;
+		RandomListNode cp = new RandomListNode(p.label);
+		cp.next = p.next;
+		p.next = cp;
+		p = p.next.next;
+	&#125;
+	// now set random pointer of all copied nodes
+	p = head;
+	while (p != null)  &#123;
+		if (p.random != null)  &#123;
+			p.next.random = p.random.next;
+		&#125;
+		p = p.next.next;
+	&#125;
+	// now restore original list, and connected all copied nodes
+	RandomListNode ans = head.next;
+	RandomListNode m = head, n = head.next;
+	while (m != null)  &#123;
+		if (n.next == null)  &#123;
+			m.next = null;
+			m = null;
+		&#125;
+		else  &#123;
+			m.next = n.next;
+			n.next = n.next.next;
+			m = m.next;
+			n = n.next;
+		&#125;
+	&#125;
+	return ans;
+&#125;
+</code></pre>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

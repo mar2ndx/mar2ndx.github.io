@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    [CC150v5] 18.7 Longest Word Made From Other Words  丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">[CC150v5] 18.7 Longest Word Made From Other Words </div>
+  <div class="post-meta">
+    <div class="date">2014 October 2nd</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><blockquote>
+<p>Given a list of words, write a program to find the longest word made of other words in the list.</p>
+</blockquote>
+<blockquote>
+<p>EXAMPLE</p>
+<p>Input: cat, banana, dog, nana, walk, walker, dogwalker</p>
+<p>Output: dogwalker</p>
+</blockquote>
+<h3 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h3><p><strong>Search it recursively from longest to shortest</strong>. Use HashSet to help us search for words quickly. </p>
+<p>This question might look difficult at first, it’s actually a very classical recursive search. </p>
+<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><pre><code>public static void printLongestWord(String[] arr) &#123;
+	Arrays.sort(arr, new LengthComparator());
+	HashSet&lt;String&gt; set = new HashSet&lt;String&gt;();
+	for (String str : arr) &#123;
+		set.add(str);
+	&#125;
+	for (String word : arr) &#123;
+		if (canDivide(word, 0, set)) &#123;
+			System.out.println(word);
+			return;
+		&#125;
+	&#125;
+	System.out.println(&quot;can not find such word&quot;);
+&#125;
+
+private static boolean canDivide(String word, int from, HashSet&lt;String&gt; set) &#123;
+	if (from == word.length()) &#123;
+		return true;
+	&#125;
+	for (int i = from; i &lt; word.length(); i++) &#123;
+		String str = word.substring(from, i + 1);
+		if (from == 0 &amp;&amp; i == word.length() - 1) &#123;
+			continue;
+		&#125; else if (!set.contains(str)) &#123;
+			continue;
+		&#125;
+		if (canDivide(word, i + 1, set)) &#123;
+			return true;
+		&#125;
+	&#125;
+	return false;
+&#125;
+</code></pre>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

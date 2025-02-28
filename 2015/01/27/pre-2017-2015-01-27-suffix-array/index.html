@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    [Fundamental] Suffix Array  丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">[Fundamental] Suffix Array </div>
+  <div class="post-meta">
+    <div class="date">2015 January 27th</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><p><a target="_blank" rel="noopener" href="http://www.geeksforgeeks.org/suffix-array-set-1-introduction/">ref</a></p>
+<h3 id="Suffix-Array"><a href="#Suffix-Array" class="headerlink" title="Suffix Array"></a>Suffix Array</h3><p>A suffix array is a sorted array of all suffixes of a given string.</p>
+<p><strong>Any suffix tree based algorithm</strong> can be replaced with an algorithm <strong>that uses a suffix array</strong> enhanced with additional information and solves the same problem in the same time complexity.</p>
+<p><strong>Naive algorithm</strong> for construction of suffix array is to consider all suffixes, sort them using a O(nLogn) sorting algorithm and while sorting, maintain original indexes. Time complexity is _O(n^2 * Logn)__.</p>
+<p>There is an advanced <strong>nLogn Algorithm</strong> algorithm available to read <a target="_blank" rel="noopener" href="http://www.geeksforgeeks.org/suffix-array-set-2-a-nlognlogn-algorithm/">here</a>. Basic idea is to “Sort according to first two characters” and then “according to first four character”.</p>
+<p>Example question: <strong>[Facebook] Query Search (HashMap, suffix array)</strong>.</p>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

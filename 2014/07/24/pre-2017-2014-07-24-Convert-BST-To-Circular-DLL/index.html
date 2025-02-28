@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    [LeetCode Plus] Convert BST to Circular DLL  丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">[LeetCode Plus] Convert BST to Circular DLL </div>
+  <div class="post-meta">
+    <div class="date">2014 July 24th</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><p><a target="_blank" rel="noopener" href="http://leetcode.com/2010/11/convert-binary-search-tree-bst-to.html">link</a></p>
+<blockquote>
+<p>Convert a BST to a sorted circular doubly-linked list in-place. </p>
+</blockquote>
+<blockquote>
+<p>Think of the left and right pointers as synonymous to the previous and next pointers in a doubly-linked list.</p>
+</blockquote>
+<h3 id="One-Inorder"><a href="#One-Inorder" class="headerlink" title="One: Inorder"></a>One: Inorder</h3><p>This question can be solved with <strong>inorder traversal with the help of a ‘pre’ pointer</strong>. </p>
+<p>This solution is recommended by L33tcode, but not very intuitive, and difficult to write. The C++ code is attached below. <a target="_blank" rel="noopener" href="http://leetcode.com/2010/11/convert-binary-search-tree-bst-to.html">source</a>. </p>
+<pre><code>void treeToDoublyList(Node *p, Node *&amp; prev, Node *&amp; head) &#123;
+  if (!p) return;
+  treeToDoublyList(p-&gt;left, prev, head);
+  // current node&#39;s left points to previous node
+  p-&gt;left = prev;
+  if (prev)
+    prev-&gt;right = p;  // previous node&#39;s right points to current node
+  else
+    head = p; // current node (smallest element) is head of
+              // the list if previous node is not available
+  // as soon as the recursion ends, the head&#39;s left pointer 
+  // points to the last node, and the last node&#39;s right pointer
+  // points to the head pointer.
+  Node *right = p-&gt;right;
+  head-&gt;left = p;
+  p-&gt;right = head;
+  // updates previous node
+  prev = p;
+  treeToDoublyList(right, prev, head);
+&#125;
+
+// Given an ordered binary tree, returns a sorted circular
+// doubly-linked list. The conversion is done in-place.
+Node* treeToDoublyList(Node *root) &#123;
+  Node *prev = NULL;
+  Node *head = NULL;
+  treeToDoublyList(root, prev, head);
+  return head;
+&#125;
+</code></pre>
+<h3 id="Two-Divide-and-conquer"><a href="#Two-Divide-and-conquer" class="headerlink" title="Two: Divide and conquer"></a>Two: Divide and conquer</h3><p>The good and intuitive solution is to do D&amp;C and <strong>solve left and right recursively</strong>. Do note how the circular linked lists are merged, and be careful when replacing the pointers. </p>
+<p>The Java code is posted below. <a target="_blank" rel="noopener" href="http://cslibrary.stanford.edu/109/TreeListRecursion.html">source</a></p>
+<pre><code>public static TreeNode convertBstToDLL(TreeNode root) &#123;
+	// convert bst to circular dll 
+	if (root == null)
+		return (null);
+
+	// Recursively do the subtrees (leap of faith!)
+	TreeNode lln = convertBstToDLL(root.left);
+	TreeNode rrn = convertBstToDLL(root.right);
+
+	// Make root a circular DLL
+	root.left = root;
+	root.right = root;
+
+	// At this point we have three lists, merge them
+	lln = appendDLL(lln, root);
+	lln = appendDLL(lln, rrn);
+
+	return lln;
+&#125;
+
+public static TreeNode appendDLL(TreeNode a, TreeNode b) &#123;
+	// append 2 circular DLL
+	if (a == null)
+		return b;
+	if (b == null)
+		return a;
+
+	TreeNode aLast = a.left;
+	TreeNode bLast = b.left;
+
+	aLast.right = b;
+	b.left = aLast;
+	bLast.right = a;
+	a.left = bLast;
+
+	return a;
+&#125;
+</code></pre>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

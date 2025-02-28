@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    [Design] Model–view–controller (MVC)  丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">[Design] Model–view–controller (MVC) </div>
+  <div class="post-meta">
+    <div class="date">2014 August 4th</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><h3 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h3><p><a target="_blank" rel="noopener" href="http://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller">Model–view–controller</a> (MVC) is a software architectural pattern for implementing <strong>user interfaces</strong>.</p>
+<p><strong>From MIT handouts 3</strong>: MVC uses separate programming entities to <strong>store the data(model), display the data(view), and modify the data(controller)</strong>.</p>
+<h3 id="Components"><a href="#Components" class="headerlink" title="Components"></a>Components</h3><p><strong>The central component of MVC, the model</strong>, captures the application’s behavior in terms of its problem domain, independent of the user interface. The model directly manages the application’s data, logic and rules.</p>
+<p><strong>A view can be any output representation</strong> of information, such as a chart or a diagram; multiple views of the same information are possible, such as a bar chart for management and a tabular view for accountants.</p>
+<p><strong>The third part, the controller</strong>, accepts input and converts it to commands for the model or view.</p>
+<p>Early web MVC frameworks took a thin client approach that placed almost the entire MVC on server. As client technologies have matured, MVC components can be executed partly on the client(AJAX).</p>
+<h3 id="Other-good-explanation"><a href="#Other-good-explanation" class="headerlink" title="Other good explanation"></a>Other good explanation</h3><p>MVC is a <a target="_blank" rel="noopener" href="http://geekswithblogs.net/gregorymalcolm/archive/2009/07/14/user-interface-patterns.aspx">user interface design pattern</a>.</p>
+<ol>
+<li><p>Controller – Represents interactions, typically with the mouse or keyboard, or in the case of web applications, in the form of HTTP requests.</p>
+</li>
+<li><p>View – Renders the graphical output of the application</p>
+</li>
+<li><p>Model – Everything else. In particular this includes <strong>the data and business logic</strong>.</p>
+</li>
+</ol>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

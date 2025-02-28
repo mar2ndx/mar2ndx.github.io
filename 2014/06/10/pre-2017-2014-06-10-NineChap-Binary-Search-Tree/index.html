@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    [NineChap 3.3] Binary Search Tree 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">[NineChap 3.3] Binary Search Tree</div>
+  <div class="post-meta">
+    <div class="date">2014 June 10th</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><h2 id="Question-list"><a href="#Question-list" class="headerlink" title="Question list"></a>Question list</h2><p><strong>BST</strong></p>
+<ol>
+<li><p><strong><a href="/leetcode/2014-05-26-Validate-Binary-Search-Tree">Validate Binary Search Tree</a></strong></p>
+</li>
+<li><p><strong><a href="/design/2014-06-11-BST-insert-and-delete">Insert a Node in Binary Search Tree</a></strong></p>
+</li>
+<li><p><strong><a href="/design/2014-06-11-BST-insert-and-delete">Delete a Node in Binary Search Tree</a></strong></p>
+</li>
+<li><p><strong><a href="/question/2014-06-13-Search-range-BST-trim-BST">Search Range in a Binary Search Tree</a></strong></p>
+</li>
+</ol>
+<p><strong>Additional</strong></p>
+<ol>
+<li><p><strong><a href="/leetcode/2014-05-25-Recover-Binary-Search-Tree">Recover Binary Search Tree</a></strong> - used global variable</p>
+</li>
+<li><p><strong><a href="/leetcode/2014-05-26-Convert-Sorted-Array-to-Binary-Search-Tree">Convert Sorted Array to Binary Search Tree</a></strong></p>
+</li>
+<li><p><strong><a href="/leetcode/2014-05-26-Convert-Sorted-List-to-Binary-Search-Tree">Convert Sorted List to Binary Search Tree</a></strong> - used global variable</p>
+</li>
+</ol>
+<h2 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h2><p><strong>Validate Binary Search Tree</strong></p>
+<pre><code>public boolean isValidBST(TreeNode root) &#123;
+    return validate(root, Integer.MIN_VALUE, Integer.MAX_VALUE);
+&#125;
+
+private boolean validate(TreeNode node, int min, int max) &#123;
+	if (node == null) &#123;
+		return true;
+	&#125;
+	if (node.val &lt;= min || max &lt;= node.val) &#123;
+		return false;
+	&#125;
+	return validate(node.left, min, node.val) &amp; validate(node.right, node.val, max);
+&#125;
+</code></pre>
+<p><strong>Insert a Node in Binary Search Tree</strong> and <strong>Delete a Node in Binary Search Tree</strong> are written in a new post.</p>
+<p><strong>Search Range in a Binary Search Tree</strong></p>
+<p>There is a new post for this.</p>
+<p><strong>Recover Binary Search Tree</strong></p>
+<pre><code>// 3 global variables used
+TreeNode first = null;
+TreeNode second = null;
+TreeNode current = null;
+
+public void recoverTree(TreeNode root) &#123;
+    traverse(root);
+    if (first != null) &#123;
+        int temp = first.val;
+        first.val = second.val;
+        second.val = temp;
+    &#125;
+&#125;
+
+public void traverse(TreeNode root) &#123;
+    if (root == null) &#123;
+        return;
+    &#125;
+    traverse(root.left);
+    // inorder traversal
+    if (current != null &amp;&amp; current.val &gt; root.val) &#123;
+        if (first == null) &#123;
+            first = current;
+        &#125;
+        second = root;
+    &#125;
+    current = root;
+    traverse(root.right);
+&#125;
+</code></pre>
+<p><strong>Convert Sorted Array to Binary Search Tree</strong></p>
+<pre><code>public TreeNode sortedArrayToBST(int[] num) &#123;
+    if (num == null || num.length == 0) &#123;
+		return null;
+	&#125;
+	return build(num, 0, num.length - 1);
+&#125;
+
+private TreeNode build(int[] num, int start, int end) &#123;
+	if (start &gt; end) &#123;
+		return null;
+	&#125;
+	int mid = start + (end - start) / 2;
+	TreeNode head = new TreeNode(num[mid]);
+	head.left = build(num, start, mid - 1);
+	head.right = build(num, mid + 1, end);
+	return head;
+&#125;
+</code></pre>
+<p><strong>Convert Sorted List to Binary Search Tree</strong> - note that this solution uses 1 global variable</p>
+<pre><code>ListNode cur = null;
+
+public TreeNode sortedListToBST(ListNode head) &#123;
+	// count total length of the list
+	ListNode p = head;
+	int count = 0;
+	while (p != null) &#123;
+		p = p.next;
+		count++;
+	&#125;
+	// start to traverse the tree and fill in data
+	cur = head;
+	return build(0, count - 1);
+&#125;
+
+private TreeNode build(int start, int end) &#123;
+	if (start &gt; end) &#123;
+		return null;
+	&#125;
+	int mid = start + (end - start) / 2;
+	TreeNode head = new TreeNode(0);
+	head.left = build(start, mid - 1);
+	head.val = cur.val;
+	cur = cur.next;
+	head.right = build(mid + 1, end);
+	return head;
+&#125;
+</code></pre>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    [Question] Square Count of Matchstick Graph 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">[Question] Square Count of Matchstick Graph</div>
+  <div class="post-meta">
+    <div class="date">2014 August 20th</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><blockquote>
+<p>给出下面这个图 设计数据结构和算法求出图中<strong>所有的正方形数量</strong> (count the number of squares).</p>
+</blockquote>
+<p><img src="/images/matchstick-square-count.jpg"></p>
+<h3 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h3><ol>
+<li><p><strong>Pre-processing</strong>: 从每一个点开始存储上下左右四个方向最多延伸到的位置</p>
+</li>
+<li><p><strong>Main algorithm</strong>: 枚举右下角位置 然后枚举正方形边长</p>
+</li>
+<li><p>根据预处理的延伸情况判断是否能够有一个正方形被构造出来</p>
+</li>
+</ol>
+<p>Total time complexity is O(n^3).</p>
+<blockquote>
+<p>预处理可以 O(n^2) 预处理是有递推关系的</p>
+<p>但是后面枚举的部分，只能 O(n^3)</p>
+<p><strong>不能动态规划的原因是</strong>：他给定了一个可以变化的图，这个图上规模为 n 的图和规模为 n-1 的图中正方形个数之间不存在递推关系。</p>
+</blockquote>
+<p>And 一般来说处理矩阵的问题，大部分都是 O(n^3)</p>
+<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3></main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

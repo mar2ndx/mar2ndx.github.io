@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    [Java OOP] Java Global Variable 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">[Java OOP] Java Global Variable</div>
+  <div class="post-meta">
+    <div class="date">2014 June 15th</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><h3 id="Global-variable"><a href="#Global-variable" class="headerlink" title="Global variable?"></a>Global variable?</h3><p>There is no such thing as a ‘global variable’ in Java.</p>
+<blockquote>
+<p>In computer programming, a global variable is a variable that is accessible in every scope (the global environment). Some languages, like Java, don’t have global variables. <a target="_blank" rel="noopener" href="https://sg.answers.yahoo.com/question/index?qid=20110811104130AA5JrbR">reference</a></p>
+</blockquote>
+<p>But static variable can be seen as one, although every static variable must belong to some class (like Math.MIN_VALUE).</p>
+<p>Global variables are generally only used for declaring constants. In this case, declare it as ‘final static’. <a target="_blank" rel="noopener" href="http://stackoverflow.com/questions/4646577/global-variables-in-java">reference</a></p>
+<h3 id="Four-types-of-variable-in-Java"><a href="#Four-types-of-variable-in-Java" class="headerlink" title="Four types of variable in Java"></a>Four types of variable in Java</h3><h4 id="Local-variables"><a href="#Local-variables" class="headerlink" title="Local variables"></a>Local variables</h4><p>Created when the method, constructor or block is entered and will be destroyed once it exits the method, constructor or block.</p>
+<h4 id="Instance-variables"><a href="#Instance-variables" class="headerlink" title="Instance variables"></a>Instance variables</h4><p>Outside a method or constructor.</p>
+<p>When a space is allocated for an object in the heap, a slot for each instance variable value is created. It is destroyed when the object is destroyed.</p>
+<h4 id="Class-static-variables"><a href="#Class-static-variables" class="headerlink" title="Class&#x2F;static variables"></a>Class&#x2F;static variables</h4><p>Static variable is class variable.</p>
+<p>Declared with ‘static’ keyword in a class.</p>
+<h4 id="Constants"><a href="#Constants" class="headerlink" title="Constants"></a>Constants</h4><p>Most common usage of static variable - constant.</p>
+<p>Declared with ‘static final’ keyword in a class.</p>
+<h3 id="One-more-thing"><a href="#One-more-thing" class="headerlink" title="One more thing"></a>One more thing</h3><p>About <a target="_blank" rel="noopener" href="http://programmers.stackexchange.com/a/65289">stack and heap in Java</a>:</p>
+<blockquote>
+<p>In Java, primitives are created on the stack.</p>
+<p>Objects are created on the heap, and only references (which in turn are primitives) are passed around on the stack.</p>
+<p>If you create an object, it is put on the heap, with all the variables that belong to it, so that it can persist after the function call returns.</p>
+</blockquote>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

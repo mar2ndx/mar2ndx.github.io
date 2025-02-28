@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    [CC150v4] 20.4 Count 2s in Digits  丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">[CC150v4] 20.4 Count 2s in Digits </div>
+  <div class="post-meta">
+    <div class="date">2014 September 10th</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><blockquote>
+<p>Write a method to count the number of 2s between 0 and n.</p>
+</blockquote>
+<h3 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h3><p><strong>This is a difficult question</strong>, especially hard to come up with the correct formula. Eg. </p>
+<blockquote>
+<p>f(279) &#x3D; {(79 + 1) + 2 * f(99)} + f(79)</p>
+<p>f(513) &#x3D; {100 + 5 * f(99)} + f(13)</p>
+</blockquote>
+<p>Take 513 as example, the first digit is 5. We know that all the 200+ is within the range, so <strong>there’re 100 twos in the first digit</strong>. Then, for the rest of the digits, we get f(99) for number between 0 and 99, and another f(99) for number between 100 and 199… and <strong>this happens 5 times until 499</strong>. That’s why we have 5 multiple by f(99). </p>
+<p>In the end, we do the calculation <strong>recursively for reminder number 13</strong>. </p>
+<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><pre><code>public static int myAnswer(int n) &#123;
+	if (n == 0)
+		return 0;
+	int power = 1;
+	while (power * 10 &lt;= n) &#123;
+		power *= 10;
+	&#125;
+
+	int first = n / power;
+	int reminder = n % power;
+	int firstDigit2count = 0;
+	if (first &gt; 2) &#123;
+		firstDigit2count = power;
+	&#125; else if (first == 2) &#123;
+		firstDigit2count = reminder + 1;
+	&#125;
+	int totalCountBeforeReminder = firstDigit2count
+			+ (first * myAnswer(power - 1));
+	return totalCountBeforeReminder + myAnswer(reminder);
+&#125;
+</code></pre>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

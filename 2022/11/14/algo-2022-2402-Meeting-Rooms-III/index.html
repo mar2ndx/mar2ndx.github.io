@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    2402. Meeting Rooms III 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">2402. Meeting Rooms III</div>
+  <div class="post-meta">
+    <div class="date">2022 November 14th</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><p>Link: <a target="_blank" rel="noopener" href="https://leetcode.cn/problems/meeting-rooms-iii/">https://leetcode.cn/problems/meeting-rooms-iii/</a></p>
+<h1 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h1><p>difficulty: hard<br>adj diff: 4</p>
+<pre><code>You are given an integer n. There are n rooms numbered from 0 to n - 1.
+
+You are given a 2D integer array meetings where meetings[i] = [starti, endi] means that a meeting will be held during the half-closed time interval [starti, endi). All the values of starti are unique.
+
+Meetings are allocated to rooms in the following manner:
+
+Each meeting will take place in the unused room with the lowest number.
+If there are no available rooms, the meeting will be delayed until a room becomes free. The delayed meeting should have the same duration as the original meeting.
+When a room becomes unused, meetings that have an earlier original start time should be given the room.
+Return the number of the room that held the most meetings. If there are multiple rooms, return the room with the lowest number.
+
+A half-closed interval [a, b) is the interval between a and b including a and not including b.
+
+ 
+
+Example 1:
+
+Input: n = 2, meetings = [[0,10],[1,5],[2,7],[3,4]]
+Output: 0
+Explanation:
+- At time 0, both rooms are not being used. The first meeting starts in room 0.
+- At time 1, only room 1 is not being used. The second meeting starts in room 1.
+- At time 2, both rooms are being used. The third meeting is delayed.
+- At time 3, both rooms are being used. The fourth meeting is delayed.
+- At time 5, the meeting in room 1 finishes. The third meeting starts in room 1 for the time period [5,10).
+- At time 10, the meetings in both rooms finish. The fourth meeting starts in room 0 for the time period [10,11).
+Both rooms 0 and 1 held 2 meetings, so we return 0.
+Example 2:
+
+Input: n = 3, meetings = [[1,20],[2,10],[3,5],[4,9],[6,8]]
+Output: 1
+Explanation:
+- At time 1, all three rooms are not being used. The first meeting starts in room 0.
+- At time 2, rooms 1 and 2 are not being used. The second meeting starts in room 1.
+- At time 3, only room 2 is not being used. The third meeting starts in room 2.
+- At time 4, all three rooms are being used. The fourth meeting is delayed.
+- At time 5, the meeting in room 2 finishes. The fourth meeting starts in room 2 for the time period [5,10).
+- At time 6, all three rooms are being used. The fifth meeting is delayed.
+- At time 10, the meetings in rooms 1 and 2 finish. The fifth meeting starts in room 1 for the time period [10,12).
+Room 0 held 1 meeting while rooms 1 and 2 each held 2 meetings, so we return 1.
+ 
+
+Constraints:
+
+1 &lt;= n &lt;= 100
+1 &lt;= meetings.length &lt;= 105
+meetings[i].length == 2
+0 &lt;= starti &lt; endi &lt;= 5 * 105
+All the values of starti are unique.
+</code></pre>
+<p>这道题的算法并不算非常难：双 Heap。</p>
+<ol>
+<li>一个用来存放 空 room</li>
+<li>另一个用来存放 正在进行的 meeting</li>
+</ol>
+<p>难点来了：那就是 自定义 comparator。</p>
+<ol>
+<li>对于正在进行 meeting 的 heap，implements Comparable<Meeting> 然后定义 compareTo 方法，根据 endTime 从小到大排列。</li>
+<li>对于空 room，需要重新自定义一个 comparator()，根据 Room Index 来排列。</li>
+</ol>
+<h2 id="Comparable-Vs-Comparator"><a href="#Comparable-Vs-Comparator" class="headerlink" title="Comparable Vs Comparator"></a>Comparable Vs Comparator</h2><p>所以，看懂 Comparable 和 Comparator 的区别了吗？</p>
+<ol>
+<li>Comparable 是一个<strong>内比较器</strong> 的接口。用于 object 自己跟自己比较。</li>
+<li>Comparator 是一个<strong>外比较器</strong>，用于：<ol>
+<li>一个 object 没有 implement Comparable，例如 int[]</li>
+<li>实现了 Comparable，但是我们还想自定义一下</li>
+</ol>
+</li>
+</ol>
+<h1 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h1><p>Code 1 （同时使用 Comparable 和 Comparator，不太推荐）</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br></pre></td><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">    public int mostBooked(int n, int[][] meetings) &#123;</span><br><span class="line">        int[] usedTime = new int[n];</span><br><span class="line"></span><br><span class="line">        // idleRooms: heap, ranked by room index number</span><br><span class="line">        Queue&lt;Meeting&gt; idleRooms = new PriorityQueue&lt;Meeting&gt;(new Comparator&lt;Meeting&gt;() &#123;</span><br><span class="line">            public int compare(Meeting m1, Meeting m2) &#123;</span><br><span class="line">                return m1.roomNumber - m2.roomNumber;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">        for (int i = 0; i &lt; n; i++) &#123;</span><br><span class="line">            idleRooms.offer( new Meeting(i) );</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        // inProgress: heap, ranked by meeting endTime</span><br><span class="line">        Queue&lt;Meeting&gt; inProgress = new PriorityQueue&lt;Meeting&gt;();</span><br><span class="line">        Arrays.sort(meetings, new Comparator&lt;int[]&gt;() &#123;</span><br><span class="line">            public int compare(int[] meeting1, int[] meeting2) &#123;</span><br><span class="line">                return meeting1[0] - meeting2[0];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line"></span><br><span class="line">        // in time-order, do the following:</span><br><span class="line">        // 1. get the next meeting (start time = T)</span><br><span class="line">        // 2. end meetings in inProgress, whose endTime is before T</span><br><span class="line">        // 3. fetch the next avaible room from idleRooms</span><br><span class="line">        // 4. start the meeting</span><br><span class="line">        for (int i = 0; i &lt; meetings.length; i++) &#123;</span><br><span class="line">            Meeting temp;</span><br><span class="line">            while (!inProgress.isEmpty() &amp;&amp; inProgress.peek().endTime &lt;= meetings[i][0]) &#123;</span><br><span class="line">                temp = inProgress.poll();</span><br><span class="line">                idleRooms.offer(temp);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            // if no room is idle, then meetings[i] would need to wait</span><br><span class="line">            long currentMeetingWaitTime = 0;</span><br><span class="line">            if (idleRooms.isEmpty()) &#123;</span><br><span class="line">                temp = inProgress.poll();</span><br><span class="line">                idleRooms.offer(temp);</span><br><span class="line">                currentMeetingWaitTime = temp.endTime - meetings[i][0];</span><br><span class="line">            &#125;</span><br><span class="line">            temp = idleRooms.poll();</span><br><span class="line">            ++usedTime[temp.roomNumber];</span><br><span class="line"></span><br><span class="line">            temp.endTime = meetings[i][1] + currentMeetingWaitTime;</span><br><span class="line">            inProgress.offer(temp);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        // All meetings are finished, now count</span><br><span class="line">        int mostUsedRoomNumber = 0;</span><br><span class="line">        for (int i = 1; i &lt; n; i++) &#123;</span><br><span class="line">            if (usedTime[i] &gt; usedTime[mostUsedRoomNumber]) &#123;</span><br><span class="line">                mostUsedRoomNumber = i;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return mostUsedRoomNumber;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class Meeting implements Comparable&lt;Meeting&gt; &#123;</span><br><span class="line">    int roomNumber;</span><br><span class="line">    long endTime;</span><br><span class="line"></span><br><span class="line">    public Meeting(int num) &#123;</span><br><span class="line">        roomNumber = num;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public int compareTo(Meeting m) &#123;</span><br><span class="line">        if (this.endTime == m.endTime) &#123;</span><br><span class="line">            return this.roomNumber - m.roomNumber;</span><br><span class="line">        &#125;</span><br><span class="line">        return Long.compare(this.endTime, m.endTime) ;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Code 2 （只用 Comparator，推荐）</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br></pre></td><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">    public int mostBooked(int n, int[][] meetings) &#123;</span><br><span class="line">        int[] usedTime = new int[n];</span><br><span class="line"></span><br><span class="line">        // idleRooms: heap, ranked by room index number</span><br><span class="line">        Queue&lt;Meeting&gt; idleRooms = new PriorityQueue&lt;Meeting&gt;(new Comparator&lt;Meeting&gt;() &#123;</span><br><span class="line">            public int compare(Meeting m1, Meeting m2) &#123;</span><br><span class="line">                return m1.roomNumber - m2.roomNumber;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">        for (int i = 0; i &lt; n; i++) &#123;</span><br><span class="line">            idleRooms.offer( new Meeting(i) );</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        // inProgress: heap, ranked by meeting endTime</span><br><span class="line">        Queue&lt;Meeting&gt; inProgress = new PriorityQueue&lt;Meeting&gt;(new Comparator&lt;Meeting&gt;() &#123;</span><br><span class="line">            public int compare(Meeting m1, Meeting m2) &#123;</span><br><span class="line">                if (m1.endTime == m2.endTime) &#123;</span><br><span class="line">                    return m1.roomNumber - m2.roomNumber;</span><br><span class="line">                &#125;</span><br><span class="line">                return Long.compare(m1.endTime, m2.endTime);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">        Arrays.sort(meetings, new Comparator&lt;int[]&gt;() &#123;</span><br><span class="line">            public int compare(int[] meeting1, int[] meeting2) &#123;</span><br><span class="line">                return meeting1[0] - meeting2[0];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line"></span><br><span class="line">        // in time-order, do the following:</span><br><span class="line">        // 1. get the next meeting (start time = T)</span><br><span class="line">        // 2. end meetings in inProgress, whose endTime is before T</span><br><span class="line">        // 3. fetch the next avaible room from idleRooms</span><br><span class="line">        // 4. start the meeting</span><br><span class="line">        for (int i = 0; i &lt; meetings.length; i++) &#123;</span><br><span class="line">            Meeting temp;</span><br><span class="line">            while (!inProgress.isEmpty() &amp;&amp; inProgress.peek().endTime &lt;= meetings[i][0]) &#123;</span><br><span class="line">                temp = inProgress.poll();</span><br><span class="line">                idleRooms.offer(temp);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            // if no room is idle, then meetings[i] would need to wait</span><br><span class="line">            long currentMeetingWaitTime = 0;</span><br><span class="line">            if (idleRooms.isEmpty()) &#123;</span><br><span class="line">                temp = inProgress.poll();</span><br><span class="line">                idleRooms.offer(temp);</span><br><span class="line">                currentMeetingWaitTime = temp.endTime - meetings[i][0];</span><br><span class="line">            &#125;</span><br><span class="line">            temp = idleRooms.poll();</span><br><span class="line">            ++usedTime[temp.roomNumber];</span><br><span class="line"></span><br><span class="line">            temp.endTime = meetings[i][1] + currentMeetingWaitTime;</span><br><span class="line">            inProgress.offer(temp);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        // All meetings are finished, now count</span><br><span class="line">        int mostUsedRoomNumber = 0;</span><br><span class="line">        for (int i = 1; i &lt; n; i++) &#123;</span><br><span class="line">            if (usedTime[i] &gt; usedTime[mostUsedRoomNumber]) &#123;</span><br><span class="line">                mostUsedRoomNumber = i;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return mostUsedRoomNumber;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class Meeting &#123;</span><br><span class="line">    int roomNumber;</span><br><span class="line">    long endTime;</span><br><span class="line"></span><br><span class="line">    public Meeting(int num) &#123;</span><br><span class="line">        roomNumber = num;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Code 3，简略版。也就是 idleRooms 直接 &#x3D; new PriorityQueue<Integer>() 。可以少写一个 Comparator），代码短很多。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br></pre></td><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">    public int mostBooked(int n, int[][] meetings) &#123;</span><br><span class="line">        int[] usedTime = new int[n];</span><br><span class="line">        Queue&lt;Integer&gt; idleRooms = new PriorityQueue&lt;Integer&gt;();</span><br><span class="line">        for (int i = 0; i &lt; n; i++) &#123;</span><br><span class="line">            idleRooms.offer(i);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        // inProgress: heap, ranked by meeting endTime</span><br><span class="line">        Queue&lt;Meeting&gt; inProgress = new PriorityQueue&lt;Meeting&gt;(new Comparator&lt;Meeting&gt;() &#123;</span><br><span class="line">            public int compare(Meeting m1, Meeting m2) &#123;</span><br><span class="line">                if (m1.endTime == m2.endTime) &#123;</span><br><span class="line">                    return m1.roomNumber - m2.roomNumber;</span><br><span class="line">                &#125;</span><br><span class="line">                return Long.compare(m1.endTime, m2.endTime);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line"></span><br><span class="line">        Arrays.sort(meetings, new Comparator&lt;int[]&gt;() &#123;</span><br><span class="line">            public int compare(int[] meeting1, int[] meeting2) &#123;</span><br><span class="line">                return meeting1[0] - meeting2[0];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line"></span><br><span class="line">        // in time-order, do the following:</span><br><span class="line">        // 1. get the next meeting (start time = T)</span><br><span class="line">        // 2. end meetings in inProgress, whose endTime is before T</span><br><span class="line">        // 3. fetch the next avaible room from idleRooms</span><br><span class="line">        // 4. start the meeting</span><br><span class="line">        for (int i = 0; i &lt; meetings.length; i++) &#123;</span><br><span class="line">            while (!inProgress.isEmpty() &amp;&amp; inProgress.peek().endTime &lt;= meetings[i][0]) &#123;</span><br><span class="line">                idleRooms.offer(inProgress.poll().roomNumber);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            // if no room is idle, then meetings[i] would need to wait</span><br><span class="line">            long currentMeetingWaitTime = 0;</span><br><span class="line">            if (idleRooms.isEmpty()) &#123;</span><br><span class="line">                currentMeetingWaitTime = inProgress.peek().endTime - meetings[i][0];</span><br><span class="line">                idleRooms.offer(inProgress.poll().roomNumber);</span><br><span class="line">            &#125;</span><br><span class="line">            Meeting startNewMeeting = new Meeting(</span><br><span class="line">                idleRooms.poll(),</span><br><span class="line">                meetings[i][1] + currentMeetingWaitTime</span><br><span class="line">            );</span><br><span class="line">            ++usedTime[startNewMeeting.roomNumber];</span><br><span class="line">            inProgress.offer(startNewMeeting);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        // All meetings are finished, now count</span><br><span class="line">        int mostUsedRoomNumber = 0;</span><br><span class="line">        for (int i = 1; i &lt; n; i++) &#123;</span><br><span class="line">            if (usedTime[i] &gt; usedTime[mostUsedRoomNumber]) &#123;</span><br><span class="line">                mostUsedRoomNumber = i;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return mostUsedRoomNumber;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class Meeting &#123;</span><br><span class="line">    int roomNumber;</span><br><span class="line">    long endTime;</span><br><span class="line"></span><br><span class="line">    public Meeting(int num, long endTime) &#123;</span><br><span class="line">        this.roomNumber = num;</span><br><span class="line">        this.endTime = endTime;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

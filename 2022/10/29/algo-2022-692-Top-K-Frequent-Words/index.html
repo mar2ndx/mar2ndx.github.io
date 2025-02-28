@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    692. Top K Frequent Words 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">692. Top K Frequent Words</div>
+  <div class="post-meta">
+    <div class="date">2022 October 29th</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><p>Link: <a target="_blank" rel="noopener" href="https://leetcode.cn/problems/top-k-frequent-words/">https://leetcode.cn/problems/top-k-frequent-words/</a></p>
+<h1 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h1><p>difficulty: mid<br>adj diff: 4</p>
+<pre><code>Given an array of strings words and an integer k, return the k most frequent strings.
+
+Return the answer sorted by the frequency from highest to lowest. Sort the words with the same frequency by their lexicographical order.
+
+Example 1:
+
+Input: words = [&quot;i&quot;,&quot;love&quot;,&quot;leetcode&quot;,&quot;i&quot;,&quot;love&quot;,&quot;coding&quot;], k = 2
+Output: [&quot;i&quot;,&quot;love&quot;]
+Explanation: &quot;i&quot; and &quot;love&quot; are the two most frequent words.
+Note that &quot;i&quot; comes before &quot;love&quot; due to a lower alphabetical order.
+
+Example 2:
+
+Input: words = [&quot;the&quot;,&quot;day&quot;,&quot;is&quot;,&quot;sunny&quot;,&quot;the&quot;,&quot;the&quot;,&quot;the&quot;,&quot;sunny&quot;,&quot;is&quot;,&quot;is&quot;], k = 4
+Output: [&quot;the&quot;,&quot;is&quot;,&quot;sunny&quot;,&quot;day&quot;]
+Explanation: &quot;the&quot;, &quot;is&quot;, &quot;sunny&quot; and &quot;day&quot; are the four most frequent words, with the number of occurrence being 4, 3, 2 and 1 respectively.
+
+Constraints:
+
+	1 &lt;= words.length &lt;= 500
+	1 &lt;= words[i].length &lt;= 10
+	words[i] consists of lowercase English letters.
+	k is in the range [1, The number of unique words[i]]
+
+Follow-up: Could you solve it in O(n log(k)) time and O(n) extra space?
+</code></pre>
+<p>这道题主要考察的 java 基础只是，算法没啥可说，min-heap。</p>
+<p>我没写完，以下代码不 pass，但是其实也差不多了（差一个 Comparator）。</p>
+<h1 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">public List&lt;String&gt; topKFrequent(String[] words, int k) &#123;</span><br><span class="line">    int len = words.length;</span><br><span class="line">    PriorityQueue&lt;String&gt; heap = new PriorityQueue&lt;String&gt;(k);</span><br><span class="line">    int threshold = 0;</span><br><span class="line"></span><br><span class="line">    Map&lt;String, Integer&gt; map = new HashMap&lt;String, Integer&gt;();</span><br><span class="line">    for (String str: words) &#123;</span><br><span class="line">        if (!map.containsKey(str)) &#123;</span><br><span class="line">            map.put(str, 0);</span><br><span class="line">        &#125;</span><br><span class="line">        int count = map.get(str) + 1;</span><br><span class="line">        map.put(str, count);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    for (Map.Entry&lt;String, Integer&gt; entry : map.entrySet()) &#123;</span><br><span class="line">        String word = entry.getKey();</span><br><span class="line">        int count = entry.getValue();</span><br><span class="line"></span><br><span class="line">        if (heap.size() &lt; k) &#123;</span><br><span class="line">            heap.offer(word);</span><br><span class="line">            threshold = Math.min(threshold, count);</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            if (count &gt; threshold || (count == threshold &amp;&amp; word.compareTo(heap.peek()) &lt; 0)) &#123;</span><br><span class="line">                heap.poll();</span><br><span class="line">                heap.offer(word);</span><br><span class="line">                threshold = count;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    List&lt;String&gt; ans = new LinkedList&lt;String&gt;();</span><br><span class="line">    while (heap.size() &gt; 0) &#123;</span><br><span class="line">        ans.add(heap.poll());</span><br><span class="line">    &#125;</span><br><span class="line">    return ans;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

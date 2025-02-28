@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    [Design] HBase and HDFS 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">[Design] HBase and HDFS</div>
+  <div class="post-meta">
+    <div class="date">2015 February 15th</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><h3 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h3><p><a target="_blank" rel="noopener" href="http://hortonworks.com/hadoop/hdfs/">Hadoop Distributed File System</a> (HDFS) is a <strong>Java-based file system</strong> that provides scalable and reliable data storage that is designed to span large clusters of commodity servers. <strong>HDFS, MapReduce</strong>, and YARN form the core of Apache™ Hadoop®.</p>
+<p><a target="_blank" rel="noopener" href="http://hbase.apache.org/">Apache HBase</a> is the Hadoop database, a distributed, scalable, big data store.</p>
+<h4 id="Hadoop"><a href="#Hadoop" class="headerlink" title="Hadoop"></a>Hadoop</h4><p>Hadoop is <a target="_blank" rel="noopener" href="http://stackoverflow.com/a/16930049">basically 2 things</a>, a FS (Hadoop Distributed File System) and a computation framework (MapReduce).</p>
+<p>HDFS allows you store huge amounts of data in a distributed (provides faster read&#x2F;write access) and redundant (provides better availability) manner. And MapReduce allows you to process this huge data in a distributed and parallel manner.</p>
+<p>But MapReduce is not limited to just HDFS.</p>
+<h4 id="HDFS-and-HBase"><a href="#HDFS-and-HBase" class="headerlink" title="HDFS and HBase"></a>HDFS and HBase</h4><p>Being a FS, HDFS lacks the random read&#x2F;write capability. It is good for sequential data access. And this is where HBase comes into picture. It is a NoSQL database that runs on top your Hadoop cluster and provides you random real-time read&#x2F;write access to your data.</p>
+<h3 id="Now-the-Comparison"><a href="#Now-the-Comparison" class="headerlink" title="Now, the Comparison"></a>Now, the Comparison</h3><p><strong>HDFS is a distributed file system</strong>. <a target="_blank" rel="noopener" href="http://qr.ae/BqrVU">ref</a></p>
+<ol>
+<li>It is optimized for streaming access of large files. You would typically store files that are in the 100s of MB upwards on HDFS and access them through MapReduce to process them in batch mode.</li>
+<li>HDFS files are write once files. You can append to files in some of the recent versions but that is not a feature that is very commonly used. Consider HDFS files as write-once and read-many files. There is no concept of random writes.</li>
+<li>HDFS doesn’t do random reads very well.</li>
+</ol>
+<p><strong>HBase is a database that stores it’s data in a distributed filesystem</strong>.</p>
+<p>The filesystem of choice typically is HDFS owing to the tight integration between HBase and HDFS. It doesn’t mean that HBase can’t work on any other filesystem.</p>
+<ol>
+<li>Low latency access to small amounts of data from within a large data set. You can access single rows quickly from a billion row table.</li>
+<li>Flexible data model to work with and data is indexed by the row key.</li>
+<li>Fast scans across tables.</li>
+<li>Scale in terms of writes as well as total volume of data.</li>
+</ol>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

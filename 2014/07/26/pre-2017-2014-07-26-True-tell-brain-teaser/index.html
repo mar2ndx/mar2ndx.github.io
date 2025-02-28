@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    [Question] Truth tell brain teaser 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">[Question] Truth tell brain teaser</div>
+  <div class="post-meta">
+    <div class="date">2014 July 26th</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><p><a target="_blank" rel="noopener" href="http://tech-queries.blogspot.sg/2011/07/truth-or-lie.html">link</a></p>
+<blockquote>
+<p>There are 100 people in a room. A person always speaks either lie or truth.</p>
+</blockquote>
+<blockquote>
+<p>When asked:</p>
+</blockquote>
+<pre><code>1st person says =&gt; all are liars
+2nd person says =&gt; at most 1 speaks truth
+3rd person says =&gt; at most 2 speak truth
+4th person says =&gt; at most 3 speak truth
+.
+.
+.
+100th person says =&gt; at most 99 speak truth
+</code></pre>
+<blockquote>
+<p>“At most N” means “there’re N or less than N”.</p>
+</blockquote>
+<blockquote>
+<p>How many people speak only truth?</p>
+</blockquote>
+<h3 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h3><ol start="50">
+<li></li>
+<li><p>Assume 1st person speaks truth, then all including him should be liar. It means he doesn’t speak truth.</p>
+</li>
+<li><p>Assume 2nd person speaks truth, then he is the only person who speaks truth. But if this statement is true then statements by all others are also true. I.e. if “at most 1 person speaks truth” is true then “at most N speak truth” is also true. So person 2 is also a liar.</p>
+</li>
+<li><p>Assume 3rd person is speaking truth. But then the statements of person 4-100 are also true, which contradicts his own statement. It means that person 3 is also a liar.</p>
+</li>
+<li><p>This process will continue since 50th person. So 1-50 people are liars.</p>
+</li>
+<li><p>51st person says “at most 50 speak truth”. Lets say he is speaking truth. “at most 50” means any number from 0-50. It means that statements like “at most 51 speak truth” and “at most 70 speak truth” are also true. It means that people from 51 to 100 are speaking truth.</p>
+</li>
+</ol>
+<p><strong>Hence, 50 people speak truth</strong>.</p>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

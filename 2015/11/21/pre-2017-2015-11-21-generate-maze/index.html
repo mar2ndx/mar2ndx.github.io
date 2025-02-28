@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    [Design] How to generate Maze  丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">[Design] How to generate Maze </div>
+  <div class="post-meta">
+    <div class="date">2015 November 21st</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><h1 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h1><p><a target="_blank" rel="noopener" href="http://www.glassdoor.com/Interview/Design-a-2D-dungeon-crawling-game-It-must-allow-for-various-items-in-the-maze-walls-objects-and-computer-controlled-c-QTN_57.htm">link</a></p>
+<blockquote>
+<p>Design a 2D dungeon crawling game. It must allow for various items in the maze - walls, objects, and computer-controlled characters.</p>
+</blockquote>
+<h1 id="Part-1-API-design"><a href="#Part-1-API-design" class="headerlink" title="Part 1: API design"></a>Part 1: API design</h1><p>Serialize:</p>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="http://qr.ae/RbRhHv">if a certain cell has a wall</a> to the North and West but not to the South or East, it would be represented as 1001, or 9… (e.g., “9,6,11,12\n3,10,10,4\n13,9,12,5\n3,6,1,6” in a 4x4 maze)</p>
+</blockquote>
+<p>Design API~</p>
+<h1 id="Part-2-Algorithm"><a href="#Part-2-Algorithm" class="headerlink" title="Part 2: Algorithm"></a>Part 2: Algorithm</h1><h2 id="Depth-first-search"><a href="#Depth-first-search" class="headerlink" title="Depth-first search"></a>Depth-first search</h2><p>This is most common and <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Maze_generation_algorithm#Depth-first_search">one of the simplest ways to generate a maze using a computer</a>. It’s commonly implemented using <strong><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Maze_generation_algorithm#Recursive_backtracker">Recursive backtrack</a></strong>.</p>
+<ol>
+<li><p>from a random cell, select a random neighbour that hasn’t been visited.</p>
+</li>
+<li><p>removes the ‘wall’ and adds the new cell to a stack.</p>
+</li>
+<li><p>a cell with no unvisited neighbours is considered <strong>dead-end</strong>.</p>
+</li>
+<li><p>When at a dead-end it backtracks through the path until it reaches a cell with unvisited neighbours, continuing from there.</p>
+</li>
+<li><p>until every cell has been visited, the computer would backtrack all the way to the beginning cell.</p>
+</li>
+<li><p>Entire maze space is guaranted a complete visit.</p>
+</li>
+</ol>
+<h3 id="side-note"><a href="#side-note" class="headerlink" title="side note"></a>side note</h3><blockquote>
+<p>To add difficulty and a fun factor to the DFS, you can <strong>influence the likelihood of which neighbor you should visit</strong>, instead of completely random.</p>
+</blockquote>
+<blockquote>
+<p>By making it more likely to visit neighbors to your sides, you can have a more horizontal maze generation.</p>
+</blockquote>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

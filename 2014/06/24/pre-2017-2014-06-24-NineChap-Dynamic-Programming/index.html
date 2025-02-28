@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    [NineChap 5.1] Dynamic Programming 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">[NineChap 5.1] Dynamic Programming</div>
+  <div class="post-meta">
+    <div class="date">2014 June 24th</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><h2 id="Dynamic-Programming"><a href="#Dynamic-Programming" class="headerlink" title="Dynamic Programming"></a>Dynamic Programming</h2><p>The fundamental of DP is ‘merorized search’. It’s easy to implement but bad for memory. And it’s generally useless in the industry.</p>
+<h3 id="When-to-use-DP"><a href="#When-to-use-DP" class="headerlink" title="When to use DP?"></a>When to use DP?</h3><ol>
+<li>Input cannot sort</li>
+<li>Find minimum&#x2F;maximum result</li>
+<li>Check the feasibility</li>
+<li>Count all possible solutions</li>
+</ol>
+<p>If question asks you to find all possible solutions, it’s gonna be DFS, not DP.</p>
+<h3 id="5-Types-of-DP"><a href="#5-Types-of-DP" class="headerlink" title="5 Types of DP"></a>5 Types of DP</h3><ol>
+<li>Matrix DP (10%)</li>
+<li>Sequence&#x2F;Two Sequences DP (80%)</li>
+<li>Interval DP (5%)</li>
+<li>Tree DP (5%)</li>
+<li>States Compressing DP (0%)</li>
+</ol>
+<p>Type 3 to 5 are less important.</p>
+<h3 id="Question-List"><a href="#Question-List" class="headerlink" title="Question List"></a>Question List</h3><p><strong>Type 1: Matrix DP</strong></p>
+<ol>
+<li><p><strong><a href="/leetcode/2014-05-27-Triangle">Triangle</a></strong></p>
+</li>
+<li><p><strong><a href="/leetcode/2014-05-20-Unique-Paths">Unique Paths </a></strong></p>
+</li>
+<li><p><strong><a href="/leetcode/2014-05-20-Unique-Paths-II">Unique Paths II </a></strong></p>
+</li>
+<li><p><strong><a href="/leetcode/2014-05-20-Minimum-Path-Sum">Minimum Path Sum </a></strong></p>
+</li>
+</ol>
+<p><strong>Type 2.1: Sequence Dp</strong></p>
+<ol>
+<li><p><strong><a href="/leetcode/2014-05-21-Climbing-Stairs">Climbing Stairs </a></strong></p>
+</li>
+<li><p><strong><a href="/leetcode/2014-05-16-Jump-Game">Jump Game </a></strong></p>
+</li>
+<li><p><strong><a href="/leetcode/2014-05-14-Jump-Game-II">Jump Game II</a></strong> - tricky, index handling</p>
+</li>
+<li><p><strong><a href="/leetcode/2014-05-30-Palindrome-Partitioning-II">Palindrome Partitioning II </a></strong></p>
+</li>
+<li><p><strong><a href="/leetcode/2014-06-02-Word-Break">Word Break </a></strong></p>
+</li>
+<li><p><strong><a href="/leetcode/2014-06-02-Word-Break-II">Word Break II</a></strong></p>
+</li>
+<li><p><strong><a href="/leetcode/2014-05-23-Decode-Ways">Decode Ways </a></strong> - tricky, initial state</p>
+</li>
+<li><p><strong><a href="/lintcode/2014-06-24-Longest-Increasing-Subsequence">Longest Increasing Subsequence</a></strong></p>
+</li>
+</ol>
+<p><strong>Type 2.2: Two Sequences Dp</strong></p>
+<ol>
+<li><p><strong><a href="/leetcode/2014-05-27-Distinct-Subsequences">Distinct Subsequences </a></strong> - difficult, state transition formula</p>
+</li>
+<li><p><strong><a href="/leetcode/2014-05-21-Edit-Distance">Edit Distance </a></strong></p>
+</li>
+<li><p><strong><a href="/leetcode/2014-05-24-Interleaving-String">Interleaving String </a></strong></p>
+</li>
+<li><p><strong><a href="/lintcode/2014-06-24-Longest-Common-Subsequence">Longest Common Subsequence</a></strong></p>
+</li>
+</ol>
+<p><strong>Type 3: Interval Dp</strong></p>
+<p><a target="_blank" rel="noopener" href="http://wikioi.com/problem/1048/">Merge Stone</a></p>
+<p><strong>Type 4: Tree Dp</strong></p>
+<ol>
+<li><strong><a href="/leetcode/2014-05-28-Binary-Tree-Maximum-Path-Sum">Binary Tree Maximum Path Sum</a></strong></li>
+</ol>
+<p><strong>Type 5: States Compressing DP</strong></p>
+<p>Ignore.</p>
+<p>Additional questions</p>
+<ol>
+<li><p><strong><a href="/leetcode/2014-05-20-Maximum-Subarray">Maximum Subarray </a></strong></p>
+</li>
+<li><p><strong><a href="/question/2014-06-30-Coin-Changing-Problem">Coin Change Problem</a></strong></p>
+</li>
+</ol>
+<h2 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h2><h4 id="Type-1-Matrix-DP"><a href="#Type-1-Matrix-DP" class="headerlink" title="Type 1: Matrix DP"></a>Type 1: Matrix DP</h4><p><strong>Triangle</strong></p>
+<pre><code>public int minimumTotal(List&lt;List&lt;Integer&gt;&gt; triangle) &#123;
+    if (triangle == null || triangle.size() == 0) &#123;
+        return 0;
+    &#125;
+    int len = triangle.size();
+    int[][] dp = new int[len][len];
+    for (int i = len - 1; i &gt;= 0; i--) &#123;
+        // bottom-up approach (row by row)
+        for (int j = 0; j &lt;= i; j++) &#123;
+            if (i == len - 1) &#123;
+                dp[i][j] = triangle.get(i).get(j);
+            &#125; else &#123;
+                dp[i][j] = triangle.get(i).get(j)
+                        + Math.min(dp[i+1][j], dp[i+1][j+1]);
+            &#125;
+        &#125;
+    &#125;
+    return dp[0][0];
+&#125;
+</code></pre>
+<p><strong>Unique Paths</strong></p>
+<pre><code>public int uniquePaths(int m, int n) &#123;
+    if (m == 0 &amp;&amp; n == 0) &#123;
+        return 0;
+    &#125;
+    int[][] dp = new int[m][n];
+    for (int i = 0; i &lt; m; i++) &#123;
+        for (int j = 0; j &lt; n; j++) &#123;
+            if (i == 0 || j == 0) &#123;
+                dp[i][j] = 1;
+            &#125; else &#123;
+                dp[i][j] = dp[i-1][j] + dp[i][j-1];
+            &#125;
+        &#125;
+    &#125;
+    return dp[m-1][n-1];
+&#125;
+</code></pre>
+<p><strong>Unique Paths II</strong></p>
+<pre><code>public int uniquePathsWithObstacles(int[][] obstacleGrid) &#123;
+    if (obstacleGrid == null) &#123;
+        return 0;
+    &#125;
+    int m = obstacleGrid.length;
+    int n = obstacleGrid[0].length;
+    int[][] dp = new int[m][n];
+    for (int i = 0; i &lt; m; i++) &#123;
+        for (int j = 0; j &lt; n; j++) &#123;
+            if (obstacleGrid[i][j] != 0) &#123;
+                dp[i][j] = 0;
+            &#125; else if (i == 0 &amp;&amp; j == 0) &#123;
+                dp[i][j] = 1;
+            &#125; else if (i == 0) &#123;
+                dp[i][j] = dp[i][j-1];
+            &#125; else if (j == 0) &#123;
+                dp[i][j] = dp[i-1][j];
+            &#125; else &#123;
+                dp[i][j] = dp[i-1][j] + dp[i][j-1];
+            &#125;
+        &#125;
+    &#125;
+    return dp[m-1][n-1];
+&#125;
+</code></pre>
+<p><strong>Minimum Path Sum</strong></p>
+<pre><code>public int minPathSum(int[][] grid) &#123;
+    if (grid == null) &#123;
+        return 0;
+    &#125;
+    int m = grid.length;
+    int n = grid[0].length;
+    int[][] dp = new int[m][n];
+    for (int i = 0; i &lt; m; i++) &#123;
+        for (int j = 0; j &lt; n; j++) &#123;
+            if (i == 0 &amp;&amp; j == 0) &#123;
+                dp[i][j] = grid[i][j];
+            &#125; else if (i == 0) &#123;
+                dp[i][j] = dp[i][j-1] + grid[i][j];
+            &#125; else if (j == 0) &#123;
+                dp[i][j] = dp[i-1][j] + grid[i][j];
+            &#125; else &#123;
+                dp[i][j] = grid[i][j] + Math.min(dp[i-1][j], dp[i][j-1]);
+            &#125;
+        &#125;
+    &#125;
+    return dp[m-1][n-1];
+&#125;
+</code></pre>
+<h4 id="Type-2-1-Sequence-Dp"><a href="#Type-2-1-Sequence-Dp" class="headerlink" title="Type 2.1: Sequence Dp"></a>Type 2.1: Sequence Dp</h4><p><strong>Climbing Stairs</strong></p>
+<pre><code>public int climbStairs(int n) &#123;
+    if (n &lt;= 2) &#123;
+		return n;
+	&#125;
+	int[] dp = new int[n];
+	dp[0] = 1;
+	dp[1] = 2;
+	for (int i = 2; i &lt; n; i++) &#123;
+		dp[i] = dp[i - 2] + dp[i - 1];
+	&#125;
+	return dp[n - 1];
+&#125;
+</code></pre>
+<p><strong>Jump Game</strong></p>
+<pre><code>public boolean canJump(int[] A) &#123;
+    if (A == null || A.length == 0)
+		return false;
+	int reach = 0;
+	int len = A.length;
+	for (int i = 0; i &lt; len; i++) &#123;
+		if (i &gt; reach)
+			break;
+		reach = Math.max(reach, i + A[i]);
+		if (reach &gt;= len - 1)
+			return true;
+	&#125;
+	return false;
+&#125;
+</code></pre>
+<p><strong>Jump Game II</strong></p>
+<pre><code>public int jump(int[] A) &#123;
+    if (A == null || A.length &lt;= 1)
+		return 0;
+	int[] dp = new int[A.length];
+	int cur = 1;
+	for (int i = 0; i &lt; A.length - 1; i++) &#123;
+		while (cur &lt;= i + A[i] &amp;&amp; cur &lt; dp.length) &#123;
+			dp[cur] = dp[i] + 1;
+			cur++;
+		&#125;
+		if (cur == dp.length) &#123;
+			break;
+		&#125;
+	&#125;
+	return dp[A.length - 1];
+&#125;
+</code></pre>
+<p><strong>Palindrome Partitioning II</strong></p>
+<pre><code>public int minCut(String s) &#123;
+    if (s == null || s.length() &lt;= 1) &#123;
+        return 0;
+    &#125;
+    boolean[][] map = palindromeMap(s);
+    int len = s.length();
+    int[] dp = new int[len + 1];
+    dp[0] = -1;
+    for (int i = 1; i &lt;= len; i++) &#123;
+        dp[i] = Integer.MAX_VALUE;
+        for (int j = 1; j &lt;= i; j++) &#123;
+            if (map[i-1][j-1]) &#123;
+                dp[i] = Math.min(dp[i], dp[j-1] + 1);
+            &#125;
+        &#125;
+    &#125;
+    return dp[len];
+&#125;
+
+private boolean[][] palindromeMap(String s) &#123;
+    int len = s.length();
+    boolean[][] map = new boolean[len][len];
+    char[] ss = s.toCharArray();
+    for (int i = 0; i &lt; len; i++) &#123;
+        for (int j = i; j &gt;= 0; j--) &#123;
+            if (i == j) &#123;
+                map[i][j] = true;
+            &#125; else if (i - j == 1) &#123;
+                map[i][j] = ss[i] == ss[j];
+            &#125; else &#123;
+                map[i][j] = (ss[i] == ss[j]) &amp; map[i - 1][j + 1];
+            &#125;
+        &#125;
+    &#125;
+    return map;
+&#125;
+</code></pre>
+<p><strong>Word Break</strong></p>
+<pre><code>public boolean wordBreak(String s, Set&lt;String&gt; dict) &#123;
+    if (s == null || s.length() == 0) &#123;
+        return true;
+    &#125;
+    int len = s.length();
+    boolean[] dp = new boolean[len + 1];
+    dp[0] = true;
+    for (int i = 1; i &lt;= len; i++) &#123;
+        for (int j = 0; j &lt; i; j++) &#123;
+            if (!dp[j]) &#123;
+                continue;
+            &#125;
+            if (dict.contains(s.substring(j, i))) &#123;
+                dp[i] = true;
+                break;
+            &#125;
+        &#125;
+    &#125;
+    return dp[len];
+&#125;
+</code></pre>
+<p><strong>Word Break II</strong></p>
+<p>My code is definitely correct, although it got TLE.</p>
+<p>See original post for more.</p>
+<p><strong>Decode Ways</strong></p>
+<pre><code>public int numDecodings(String s) &#123;
+    if (s == null || s.length() == 0) &#123;
+		return 0;
+	&#125;
+	int len = s.length();
+	int[] dp = new int[len + 1];
+	dp[0] = 1;
+	dp[1] = 1; // pay attention to the initial state
+	if (!isValidNumber(s.substring(0, 1))) &#123;
+		return 0;
+	&#125;
+	for (int i = 2; i &lt;= len; i++) &#123;
+		if (isValidNumber(s.substring(i - 1, i))) &#123;
+			dp[i] += dp[i - 1];
+		&#125;
+		if (isValidNumber(s.substring(i - 2, i))) &#123;
+			dp[i] += dp[i - 2];
+		&#125;
+	&#125;
+	return dp[len];
+&#125;
+
+private boolean isValidNumber(String input) &#123;
+	if (input.length() == 0 || input.length() &gt; 2 || input.charAt(0) == &#39;0&#39;) &#123;
+		return false;
+	&#125;
+	int num = Integer.parseInt(input);
+	return (1 &lt;= num &amp;&amp; num &lt;= 26);
+&#125;
+</code></pre>
+<p><strong>Longest Increasing Subsequence</strong></p>
+<p>There’s a new post in ‘Lintcode’ category.</p>
+<h4 id="Type-2-2-Two-Sequences-Dp"><a href="#Type-2-2-Two-Sequences-Dp" class="headerlink" title="Type 2.2: Two Sequences Dp"></a>Type 2.2: Two Sequences Dp</h4><p><strong>Distinct Subsequences</strong></p>
+<pre><code>public int numDistinct(String S, String T) &#123;
+    int m = S.length(), n = T.length();
+    int[][] dp = new int[m + 1][n + 1];
+    for (int i = 0; i &lt;= m; i++) &#123;
+        for (int j = 0; j &lt;= n; j++) &#123;
+            if (j == 0) &#123;
+                dp[i][j] = 1;
+            &#125; else if (i == 0) &#123;
+                dp[i][j] = 0;
+            &#125; else &#123;
+                dp[i][j] = dp[i - 1][j];
+                if (S.charAt(i - 1) == T.charAt(j - 1)) &#123;
+                    dp[i][j] += dp[i - 1][j - 1];
+                &#125;
+            &#125;
+        &#125;
+    &#125;
+    return dp[m][n];
+&#125;
+</code></pre>
+<p><strong>Edit Distance</strong></p>
+<pre><code>public int minDistance(String A, String B) &#123;
+    if (A == null || B == null)
+        return 0;
+    int m = A.length(), n = B.length();
+    int[][] dp = new int[m + 1][n + 1];
+    for (int i = 0; i &lt;= m; i++) &#123;
+        for (int j = 0; j &lt;= n; j++) &#123;
+            if (i == 0) &#123;
+                dp[i][j] = j;
+            &#125; else if (j == 0) &#123;
+                dp[i][j] = i;
+            &#125; else &#123;
+                if (A.charAt(i - 1) == B.charAt(j - 1)) &#123;
+                    dp[i][j] = dp[i - 1][j - 1];
+                &#125; else &#123;
+                    dp[i][j] = Math.min(dp[i - 1][j - 1], dp[i - 1][j]);
+                    dp[i][j] = Math.min(dp[i][j], dp[i][j - 1]);
+                    dp[i][j]++;
+                &#125;
+            &#125;
+        &#125;
+    &#125;
+    return dp[m][n];
+&#125;
+</code></pre>
+<p><strong>Interleaving String</strong></p>
+<pre><code>public boolean isInterleave(String s1, String s2, String s3) &#123;
+    if (s1 == null || s2 == null) &#123;
+        return false;
+    &#125;
+    int m = s1.length(), n = s2.length();
+    if (m + n != s3.length()) &#123;
+        return false;
+    &#125;
+    boolean[][] dp = new boolean[m + 1][n + 1];
+    for (int i = 0; i &lt;= m; i++) &#123;
+        for (int j = 0; j &lt;= n; j++) &#123;
+            if (i == 0) &#123;
+                dp[i][j] = s2.substring(0, j).equals(s3.substring(0, j));
+                continue;
+            &#125; else if (j == 0) &#123;
+                dp[i][j] = s1.substring(0, i).equals(s3.substring(0, i));
+                continue;
+            &#125;
+            if (i &gt; 0 &amp;&amp; dp[i - 1][j]
+                    &amp;&amp; s1.charAt(i - 1) == s3.charAt(i + j - 1)) &#123;
+                dp[i][j] = true;
+            &#125;
+            if (j &gt; 0 &amp;&amp; dp[i][j - 1]
+                    &amp;&amp; s2.charAt(j - 1) == s3.charAt(i + j - 1)) &#123;
+                dp[i][j] = true;
+            &#125;
+        &#125;
+    &#125;
+    return dp[m][n];
+&#125;
+</code></pre>
+<p><strong>Longest Common Subsequence</strong></p>
+<p>There’s a new post in ‘Lintcode’ category.</p>
+<h3 id="Type-3-Interval-Dp"><a href="#Type-3-Interval-Dp" class="headerlink" title="Type 3: Interval Dp"></a>Type 3: Interval Dp</h3><p><strong>Merge Stone</strong></p>
+<blockquote>
+<p>有 n 堆石子排成一列，每堆石子有一个重量 w[i], 每次合并可以合并相邻的两堆石子，一次合并的代价为两堆石子的重量和 w[i]+w[i+1]。问安排怎样的合并顺序，能够使得总合并代价达到最小。</p>
+</blockquote>
+<p><a target="_blank" rel="noopener" href="http://wikioi.com/problem/1048/">link</a></p>
+<p>Solution explained:</p>
+<blockquote>
+<p>sum[i[用于记录从第 1 堆到第 i 堆（包含 i）石子的总重量。</p>
+<p>dp[i][j]表示从第 i 堆（包含 i）到第 j 堆（包含 j）石子的合并的最小代价。</p>
+<p>状态转移方程为：dp[i][j] &#x3D; minimize{dp[i][k] + dp[k+1][j] + sum[j] - sum[i-1]}, k 从 i 到 j（不包含 j）。</p>
+<p>len&#x3D;2 表示第一次合并的情况，此时合并的石子为 2 堆。此时，i 从 1 到 n-len+1，j&#x3D;i+len-1。</p>
+</blockquote>
+<p>Quoted from <a target="_blank" rel="noopener" href="http://blog.csdn.net/kingzone_2008/article/details/12361327">this blog</a> and the solution is well explained on <a target="_blank" rel="noopener" href="http://wikioi.com/solution/list/1048/">wikiio</a>.</p>
+<h3 id="Type-4-Tree-Dp"><a href="#Type-4-Tree-Dp" class="headerlink" title="Type 4: Tree Dp"></a>Type 4: Tree Dp</h3><p><strong>Binary Tree Maximum Path Sum</strong></p>
+<p>This is a difficult question, but I solved it. I feel happy.</p>
+<pre><code>private class ResultType &#123;
+    int maxPath;
+    int depth;
+
+    ResultType(int a, int b) &#123;
+        this.maxPath = a;
+        this.depth = b;
+    &#125;
+&#125;
+
+public int maxPathSum(TreeNode root) &#123;
+    if (root == null) &#123;
+        return 0;
+    &#125;
+    return helper(root).maxPath;
+&#125;
+
+private ResultType helper(TreeNode node) &#123;
+    if (node == null) &#123;
+        return new ResultType(Integer.MIN_VALUE, 0);
+    &#125;
+    ResultType ll = helper(node.left);
+    ResultType rr = helper(node.right);
+    int maxPath = node.val + ll.depth + rr.depth;
+    maxPath = Math.max(maxPath, ll.maxPath);
+    maxPath = Math.max(maxPath, rr.maxPath);
+    int depth = 0;
+    depth = Math.max(depth, node.val + Math.max(ll.depth, rr.depth));
+    return new ResultType(maxPath, depth);
+&#125;
+</code></pre>
+<h3 id="Additional-questions"><a href="#Additional-questions" class="headerlink" title="Additional questions"></a>Additional questions</h3><p><strong>Maximum Subarray</strong></p>
+<pre><code>public int maxSubArray(int[] A) &#123;
+    if (A == null || A.length == 0) &#123;
+        return 0;
+    &#125;
+    int len = A.length;
+    int[] dp = new int[len];
+    dp[0] = A[0];
+    for (int i = 1; i &lt; len; i++) &#123;
+        dp[i] = A[i];
+        if (dp[i - 1] &gt; 0)
+            dp[i] += dp[i - 1];
+    &#125;
+    int max = Integer.MIN_VALUE;
+    for (Integer i : dp)
+        max = Math.max(max, i);
+    return max;
+&#125;
+</code></pre>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

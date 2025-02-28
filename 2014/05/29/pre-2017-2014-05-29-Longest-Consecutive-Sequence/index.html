@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    [LeetCode 128] Longest Consecutive Sequence 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">[LeetCode 128] Longest Consecutive Sequence</div>
+  <div class="post-meta">
+    <div class="date">2014 May 29th</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><p><a target="_blank" rel="noopener" href="https://oj.leetcode.com/problems/longest-consecutive-sequence/">link</a></p>
+<div class="question-content">
+            <p></p><p>
+Given an unsorted array of integers, find the length of the longest consecutive elements sequence.
+</p>
+<p>
+For example,<br>
+Given <code>[100, 4, 200, 1, 3, 2]</code>,<br>
+The longest consecutive elements sequence is <code>[1, 2, 3, 4]</code>. Return its length: <code>4</code>.
+</p>
+<p>
+Your algorithm should run in O(<i>n</i>) complexity.
+</p><p></p>
+          </div>
+
+<h3 id="Stats"><a href="#Stats" class="headerlink" title="Stats"></a>Stats</h3><table border="2">
+	<tr>
+		<td>Frequency</td>
+		<td bgcolor="yellow">3</td>
+	</tr>
+	<tr>
+		<td>Difficulty</td>
+		<td bgcolor="red">4</td>
+	</tr>
+	<tr>
+		<td>Adjusted Difficulty</td>
+		<td bgcolor="red">4</td>
+	</tr>
+	<tr>
+		<td>Time to use</td>
+		<td bgcolor="lime">just coding is easy</td>
+	</tr>
+</table>
+
+<p>Ratings&#x2F;Color &#x3D; 1(white) 2(lime) 3(yellow) 4&#x2F;5(red)</p>
+<h3 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h3><p><strong>I did not solve this question</strong>. We are going to make use of <strong>HashSet</strong>.</p>
+<p>Information on HashSet from <a target="_blank" rel="noopener" href="http://docs.oracle.com/javase/7/docs/api/java/util/HashSet.html">official document</a>:</p>
+<blockquote>
+<p><strong>java.util.HashSet</strong></p>
+</blockquote>
+<blockquote>
+<p>This class <strong>implements the Set interface</strong>, backed by a <strong>hash table</strong> (actually a HashMap instance). It makes no guarantees as to the <strong>iteration order</strong> of the set; in particular, it does not guarantee that the order will remain constant over time. This class permits the <strong>null element</strong>.</p>
+</blockquote>
+<blockquote>
+<p>This class offers <strong>constant time performance</strong> for the basic operations (add, remove, contains and size), assuming the hash function disperses the elements properly among the buckets. Iterating over this set requires time proportional to the sum of the HashSet instance’s size (the number of elements) plus the “capacity” of the backing HashMap instance (the number of buckets). Thus, it’s very important not to set the initial capacity too high (or the load factor too low) if iteration performance is important.</p>
+</blockquote>
+<blockquote>
+<p>Note that this implementation is <strong>not synchronized</strong>. If multiple threads access a hash set concurrently, and at least one of the threads modifies the set, it must be synchronized externally.</p>
+</blockquote>
+<p><strong>To summarize it, HashSet</strong>:</p>
+<ol>
+<li><p>implements Set interface</p>
+</li>
+<li><p>implemented by using a hash table</p>
+</li>
+<li><p>un-ordered</p>
+</li>
+<li><p>add, remove and contains methods have constant time O(1)</p>
+</li>
+<li><p>can have null element</p>
+</li>
+<li><p>not sync</p>
+</li>
+</ol>
+<h3 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h3><p><strong>Well explained in <a target="_blank" rel="noopener" href="http://stackoverflow.com/a/7453295">this site</a></strong>.</p>
+<blockquote>
+<p>Dump everything to a hash set.</p>
+</blockquote>
+<blockquote>
+<p>Now go through the hashset. For each element, look up the set for all values neighboring the current value. Keep track of the largest sequence you can find, while removing the elements found from the set. Save the count for comparison.</p>
+</blockquote>
+<blockquote>
+<p>Repeat this until the hashset is empty.</p>
+</blockquote>
+<blockquote>
+<p>Assuming lookup, insertion and deletion are O(1) time, this algorithm would be O(N) time.</p>
+</blockquote>
+<p><strong>Updated on July 4th, 2014</strong>: Look at the 2nd for-loop. Here if I do ‘for (Integer in: set)’ to iterate all numbers, I will get “java.util.ConcurrentModificationException “. This is because we are iterating while modifying. <strong>The most tricky part of this solution is iteration thru the array</strong>, instead of the set. Take note of that!</p>
+<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">public int longestConsecutive(int[] num) &#123;</span><br><span class="line">    int longest = 1;</span><br><span class="line">    HashSet&lt;Integer&gt; set = new HashSet&lt;Integer&gt;();</span><br><span class="line">    for (Integer in: num) set.add(in);</span><br><span class="line">    for (Integer in: num) &#123;</span><br><span class="line">        int left = in - 1, right = in + 1;</span><br><span class="line">        while (set.contains(left)) &#123;</span><br><span class="line">            set.remove(left);</span><br><span class="line">            left --;</span><br><span class="line">        &#125;</span><br><span class="line">        while (set.contains(right)) &#123;</span><br><span class="line">            set.remove(right);</span><br><span class="line">            right ++;</span><br><span class="line">        &#125;</span><br><span class="line">        longest = Math.max(longest, right - left - 1);</span><br><span class="line">    &#125;</span><br><span class="line">    return longest;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Updated Oct 29, 2022</strong></p>
+<p>一定要注意：for loop 里面，iterate array（然后 remove from HashSet）</p>
+<p>不要 iterate HashSet！会报错。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">public int longestConsecutive(int[] nums) &#123;</span><br><span class="line">    Set&lt;Integer&gt; set = new HashSet&lt;Integer&gt;();</span><br><span class="line">    for (int i: nums) &#123;</span><br><span class="line">        set.add(i);</span><br><span class="line">    &#125;</span><br><span class="line">    int len = 0;</span><br><span class="line">    for (int j: nums) &#123;</span><br><span class="line">        if (set.contains(j)) &#123;</span><br><span class="line">            int left = j-1, right = j+1;</span><br><span class="line">            while (set.contains(left)) &#123;</span><br><span class="line">                set.remove(left--);</span><br><span class="line">            &#125;</span><br><span class="line">            while (set.contains(right)) &#123;</span><br><span class="line">                set.remove(right++);</span><br><span class="line">            &#125;</span><br><span class="line">            len = Math.max(len, right - left - 1);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    return len;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>其实，官方有一种**不会超时，也不用 hashset.remove()**的代码。如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">    public int longestConsecutive(int[] nums) &#123;</span><br><span class="line">        Set&lt;Integer&gt; num_set = new HashSet&lt;Integer&gt;();</span><br><span class="line">        for (int num : nums) &#123;</span><br><span class="line">            num_set.add(num);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        int longestStreak = 0;</span><br><span class="line"></span><br><span class="line">        for (int num : num_set) &#123;</span><br><span class="line">            // 注意看：这是 left boundary，所以只需要 right direction check</span><br><span class="line">            // 这样就不会超时了。</span><br><span class="line">            if (!num_set.contains(num - 1)) &#123;</span><br><span class="line">                int currentNum = num;</span><br><span class="line">                int currentStreak = 1;</span><br><span class="line"></span><br><span class="line">                while (num_set.contains(currentNum + 1)) &#123;</span><br><span class="line">                    currentNum += 1;</span><br><span class="line">                    currentStreak += 1;</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">                longestStreak = Math.max(longestStreak, currentStreak);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        return longestStreak;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    [LeetCode Plus] Reverse linked list iteratively and recursively 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">[LeetCode Plus] Reverse linked list iteratively and recursively</div>
+  <div class="post-meta">
+    <div class="date">2014 June 17th</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><p><a target="_blank" rel="noopener" href="http://leetcode.com/2010/04/reversing-linked-list-iteratively-and.html">link</a></p>
+<blockquote>
+<p>Implement the reversal of a singly linked list iteratively and recursively. </p>
+</blockquote>
+<h3 id="Iteratively"><a href="#Iteratively" class="headerlink" title="Iteratively"></a>Iteratively</h3><p>First, the iterative solution is very common, and is listed as <strong>one of the “5 fundamental operations of linked list”</strong> in the NineChap4 post. I will quote below. </p>
+<blockquote>
+<p>First variant: Reverse from a particular node to the end</p>
+</blockquote>
+<pre><code>public ListNode reverse(ListNode start) &#123;
+    ListNode result = null;
+    ListNode cur = start;
+    while (cur != null) &#123;
+        ListNode temp = cur.next;
+        cur.next = result;
+        result = cur;
+        cur = temp;
+    &#125;
+    return result;
+&#125;
+</code></pre>
+<blockquote>
+<p>Second variant: Reverse from a node until another node</p>
+</blockquote>
+<pre><code>public ListNode reverseRange(ListNode start, int len) &#123;
+	ListNode result = null;
+	ListNode cur = start;
+	while (len &gt; 0) &#123;
+		ListNode temp = cur.next;
+		cur.next = result;
+		result = cur;
+		cur = temp;
+		len--;
+	&#125;
+	start.next = cur;
+	return result;
+&#125;
+</code></pre>
+<h3 id="Recursively"><a href="#Recursively" class="headerlink" title="Recursively"></a>Recursively</h3><p>A good solution suggest by <a target="_blank" rel="noopener" href="http://stackoverflow.com/a/354937">this answer</a>:</p>
+<pre><code>public ListNode reverseRecursively(ListNode head) &#123;
+	if (head == null || head.next == null) &#123;
+		return head;
+	&#125;
+	ListNode temp = head.next;
+	// temp is not NULL
+	ListNode newHead = reverseRecursively(temp);
+	temp.next = head;
+	head.next = null;
+	return newHead;
+&#125;
+</code></pre>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

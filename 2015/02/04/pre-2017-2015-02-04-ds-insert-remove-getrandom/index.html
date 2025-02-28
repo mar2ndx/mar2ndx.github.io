@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    [Google] Data Structure of Insert, Remove, GetRandom  丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">[Google] Data Structure of Insert, Remove, GetRandom </div>
+  <div class="post-meta">
+    <div class="date">2015 February 4th</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><p><a target="_blank" rel="noopener" href="http://www.careercup.com/question?id=11353907">link</a></p>
+<blockquote>
+<p>Design a data structure where the following 3 functions at O(1):</p>
+</blockquote>
+<pre><code>1. Insert(n)
+2. GetRandomElement()
+3. Remove(n)
+</code></pre>
+<h3 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h3><p>Array is best for:</p>
+<ol>
+<li>random access</li>
+</ol>
+<p>HashMap is best for:</p>
+<ol>
+<li>Searching<ol>
+<li>insert</li>
+<li>remove</li>
+</ol>
+</li>
+</ol>
+<p><a target="_blank" rel="noopener" href="http://stackoverflow.com/a/22083895">So the answer is</a> <strong>array + hashmap</strong>:</p>
+<ol>
+<li><p>Insertion can be done by appending to the array and adding to the hash-map.</p>
+</li>
+<li><p>Deletion can be done by first looking up and removing the array index in the hash-map, then <strong>swapping the last element with that element in the array</strong>.</p>
+</li>
+<li><p>Get random can be done by returning a random index from the array.</p>
+</li>
+<li><p>All operations take O(1).</p>
+</li>
+</ol>
+<p>Note <a target="_blank" rel="noopener" href="http://stackoverflow.com/a/5684892">how hashmap is used</a>:</p>
+<blockquote>
+<p>insert(value): append the value to array and let i be it’s index in A. Set H[value]&#x3D;i.</p>
+</blockquote>
+<p>Hashmap stores value’s index in the array - that is to say: <strong>this DS does not support inserting duplicating values</strong>.</p>
+<p>Finally, when we delete, we swap the last element to replace the gap. This is an nice idea!</p>
+<h4 id="follow-up"><a href="#follow-up" class="headerlink" title="follow-up"></a>follow-up</h4><blockquote>
+<p>what if we want to get the top x% number?</p>
+</blockquote>
+<p>Well, heap of course. And note that <strong>Heap size is <a target="_blank" rel="noopener" href="http://stackoverflow.com/a/9115884">auto-increasing</a></strong>:</p>
+<blockquote>
+<p>PriorityQueue is unbounded, it can grow as big as your memory allows, and it will grow automatically when needed. The initialCapacity parameter is just a hint to reserve room for that many elements initially.</p>
+</blockquote>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

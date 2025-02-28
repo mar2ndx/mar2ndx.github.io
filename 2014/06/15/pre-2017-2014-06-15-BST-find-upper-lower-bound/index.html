@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    [Question] Binary Search Tree find upper/lower bound 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">[Question] Binary Search Tree find upper/lower bound</div>
+  <div class="post-meta">
+    <div class="date">2014 June 15th</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><blockquote>
+<p>Given a BST, find the node that is larger&#x2F;smaller than particular number </p>
+</blockquote>
+<p>Or the question can be: </p>
+<blockquote>
+<p>Given a binary search tree and a value k, please find a node in the binary search tree whose value is closest to k. <a target="_blank" rel="noopener" href="http://codercareer.blogspot.sg/2013/03/no-45-closest-node-in-binary-search-tree_2.html">link</a></p>
+</blockquote>
+<h3 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h3><p><strong>This post is based on the second question above</strong>.</p>
+<ol>
+<li>Traverse the tree top-down. </li>
+<li>While traversing, record values that are closer to target than previously-found value. </li>
+<li>If found, the target, break and return. <a target="_blank" rel="noopener" href="http://stackoverflow.com/a/6209372">source</a></li>
+</ol>
+<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><p>From <a target="_blank" rel="noopener" href="http://codercareer.blogspot.sg/2013/03/no-45-closest-node-in-binary-search-tree_2.html">this post</a>.</p>
+<pre><code>BinaryTreeNode* getClosestNode(BinaryTreeNode* pRoot, int value)
+&#123;
+    BinaryTreeNode* pClosest = NULL;
+    int minDistance = 0x7FFFFFFF;
+    BinaryTreeNode* pNode = pRoot;
+    while(pNode != NULL)&#123;
+        int distance = abs(pNode-&gt;m_nValue - value);
+        if(distance &lt; minDistance)&#123;
+            minDistance = distance;
+            pClosest = pNode;
+        &#125;
+
+        if(distance == 0)
+            break;
+
+        if(pNode-&gt;m_nValue &gt; value)
+            pNode = pNode-&gt;m_pLeft;
+        else if(pNode-&gt;m_nValue &lt; value)
+            pNode = pNode-&gt;m_pRight;
+    &#125;
+
+    return pClosest;
+&#125;
+</code></pre>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

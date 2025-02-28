@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    [LeetCode 32] Longest Valid Parentheses  丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">[LeetCode 32] Longest Valid Parentheses </div>
+  <div class="post-meta">
+    <div class="date">2014 May 12th</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><p><a target="_blank" rel="noopener" href="http://oj.leetcode.com/problems/longest-valid-parentheses/">link</a></p>
+<div class="question-content">
+            <p></p><p>Given a string containing just the characters <code>'('</code> and <code>')'</code>, find the length of the longest valid (well-formed) parentheses substring.
+</p>
+<p>
+For <code>"(()"</code>, the longest valid parentheses substring is <code>"()"</code>, which has length = 2.
+</p>
+<p>
+Another example is <code>")()())"</code>, where the longest valid parentheses substring is <code>"()()"</code>, which has length = 4.
+</p><p></p>
+          </div>
+          
+<h3 id="Stats"><a href="#Stats" class="headerlink" title="Stats"></a>Stats</h3><table border="2">
+	<tr>
+		<td>Frequency</td>
+		<td bgcolor="white">1</td>
+	</tr>
+	<tr>
+		<td>Difficulty</td>
+		<td bgcolor="red">4</td>
+	</tr>
+	<tr>
+		<td>Adjusted Difficulty</td>
+		<td bgcolor="red">4</td>
+	</tr>
+	<tr>
+		<td>Time to use</td>
+		<td bgcolor="red">--------</td>
+	</tr>
+</table>
+
+<h3 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h3><p><strong>There are 2 ways to solve this problem</strong>, stack and DP.</p>
+<p><strong>Stack method 1 is more straight-forward</strong> (code shown below). The idea is to keep a stack of “(“ indexes, and another variable called “last”. <strong>Note that only “)” can violates a pattern</strong>. So whenever I see a “(“, just push to stack. When the pattern is violated by a “)”, I update “last”. The code explains itself very well. If not, <a target="_blank" rel="noopener" href="http://discuss.leetcode.com/questions/212/longest-valid-parentheses/1488">look here</a></p>
+<p><strong>Stack method 2 is more tricky</strong>. This time I will not only push the index of “(“ to stack, but also the index of “)” when the pattern got violated. It’s hard to explain, and hard to think of at first.</p>
+<p><strong>The DP solution is not very difficult</strong>. Basically create an array of same length as string s. dp[i] denotes the length of valid parenthese ending with index i. The idea is similar to <a target="_blank" rel="noopener" href="http://blog.csdn.net/abcbc/article/details/8826782">this blog</a>, but he used reverse DP, and I use normal DP.</p>
+<p>I will explain DP with an example of input “<strong>)()()</strong>“. For this string, we have <strong>dp[0] &#x3D; 0, dp[1] &#x3D; 0, dp[2] &#x3D; 2, dp[3] &#x3D; 0</strong>. For dp[4], I check the 3rd position first, and find that dp[4] &#x3D; 2. Then I also have to add dp[2] into dp[4] to make it complete. The end result is dp[4] &#x3D; 2 + 2 &#x3D; 4.</p>
+<h3 id="My-code"><a href="#My-code" class="headerlink" title="My code"></a>My code</h3><p>Stack method 1 (recommended)</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">public class Solution &#123;</span><br><span class="line">    public int longestValidParentheses(String s) &#123;</span><br><span class="line">        if (s == null || s.length() == 0) &#123;</span><br><span class="line">            return 0;</span><br><span class="line">        &#125;</span><br><span class="line">        int len = s.length();</span><br><span class="line">        int longest = 0;</span><br><span class="line">        Stack&lt;Integer&gt; stack = new Stack&lt;Integer&gt;();</span><br><span class="line">        int start = 0;</span><br><span class="line">        for (int i = 0; i &lt; len; i++) &#123;</span><br><span class="line">            char ch = s.charAt(i);</span><br><span class="line">            if (ch == &#x27;(&#x27;) &#123;</span><br><span class="line">                // well, no matter what, &#x27;(&#x27; is alway a valid part</span><br><span class="line">                // push the index to the stack</span><br><span class="line">                stack.push(i);</span><br><span class="line">            &#125; else if (ch == &#x27;)&#x27;) &#123;</span><br><span class="line">                if (stack.isEmpty()) &#123;</span><br><span class="line">                    // invalid &#x27;)&#x27;, update &#x27;start&#x27; variable</span><br><span class="line">                    start = i + 1;</span><br><span class="line">                &#125; else &#123;</span><br><span class="line">                    int pos = stack.pop();</span><br><span class="line">                    if (stack.isEmpty()) &#123;</span><br><span class="line">                        // this is why we need &#x27;start&#x27; variable</span><br><span class="line">                        longest = Math.max(longest, i - start + 1);</span><br><span class="line">                    &#125; else &#123;</span><br><span class="line">                        // important: must peek stack again.</span><br><span class="line">                        // eg. (()()  if don&#x27;t peek again</span><br><span class="line">                        longest = Math.max(longest, i - stack.peek());</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return longest;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Stack method 2</p>
+<pre><code>public int longestValidParentheses(String s) &#123;
+    int res = 0;
+    Stack&lt;Integer&gt; stack = new Stack&lt;Integer&gt;();
+    char[] arr = s.toCharArray();
+    for (int i = 0; i &lt; arr.length; i++) &#123;
+        if (arr[i] == &#39;)&#39; &amp;&amp; !stack.isEmpty() &amp;&amp; arr[stack.peek()] == &#39;(&#39;) &#123;
+            stack.pop();
+            if (stack.isEmpty()) res = i + 1;
+            else res = Math.max(res, i - stack.peek());
+        &#125; else stack.push(i);
+    &#125;
+    return res;
+&#125;
+</code></pre>
+<p>DP</p>
+<pre><code>public int longestValidParentheses(String s) &#123;
+    int len = s.length();
+    if (len &lt;= 1) return 0;
+    int max = Integer.MIN_VALUE;
+    int[] dp = new int[len];
+    for (int i = 1; i &lt; len; i ++) &#123;
+        if (s.charAt(i) == &#39;(&#39;) dp[i] = 0;
+        else &#123;
+            int j = i - 1 - dp[i - 1];
+            if (j &gt;= 0 &amp;&amp; s.charAt(j) ==&#39;(&#39;) &#123;
+                dp[i] = dp[i - 1] + 2;
+                if (j &gt;= 1) dp[i] += dp[j - 1];
+            &#125;
+            else dp[i] = 0;
+        &#125;
+        max = Math.max(max, dp[i]);
+    &#125;
+    return max;
+&#125;
+</code></pre>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

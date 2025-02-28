@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    [LeetCode 28] Implement strStr 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">[LeetCode 28] Implement strStr</div>
+  <div class="post-meta">
+    <div class="date">2014 May 10th</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><p><a target="_blank" rel="noopener" href="http://oj.leetcode.com/problems/implement-strstr/">link</a></p>
+<div class="question-content">
+<p></p><p>
+Implement strStr().
+</p>
+<p>
+Returns a pointer to the first occurrence of needle in haystack, or <b>null</b> if needle is not part of haystack.
+</p><p></p>
+</div>
+
+<h3 id="Stats"><a href="#Stats" class="headerlink" title="Stats"></a>Stats</h3><table border="2">
+	<tr>
+		<td>Frequency</td>
+		<td bgcolor="red">5</td>
+	</tr>
+	<tr>
+		<td>Diffficulty</td>
+		<td bgcolor="red">4</td>
+	</tr>
+	<tr>
+		<td>Adjusted Difficulty</td>
+		<td bgcolor="red">4</td>
+	</tr>
+	<tr>
+		<td>Time to use</td>
+		<td bgcolor="white">----------</td>
+	</tr>
+</table>
+
+<p>Ratings&#x2F;Color &#x3D; 1(white) 2(lime) 3(yellow) 4&#x2F;5(red)</p>
+<h3 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h3><p>There are 2 ways to solve this problem.</p>
+<ol>
+<li><p><strong>Most common way</strong> is using 2 nested loop</p>
+</li>
+<li><p>Also can be solved by <a target="_blank" rel="noopener" href="http://en.wikipedia.org/wiki/Knuth%E2%80%93Morris%E2%80%93Pratt_algorithm">KPM algorithm</a></p>
+</li>
+</ol>
+<h3 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h3><p>Standard solution is posted below. Read <a target="_blank" rel="noopener" href="http://www.programcreek.com/2012/12/leetcode-implement-strstr-java/">this post</a> for more.</p>
+<p>As for KMP algo, I have to admit I am not able to do it. Plz refer to <a target="_blank" rel="noopener" href="http://discuss.leetcode.com/questions/76/implement-strstr">this blog</a> and <a target="_blank" rel="noopener" href="http://fisherlei.blogspot.sg/2012/12/leetcode-implement-strstr.html">this blog</a> for more!</p>
+<h3 id="My-code"><a href="#My-code" class="headerlink" title="My code"></a>My code</h3><pre><code>public class Solution &#123;
+    public int strStr(String haystack, String needle) &#123;
+        if (haystack == null || needle == null) &#123;
+            return -1;
+        &#125; else if (haystack.length() &lt; needle.length()) &#123;
+            return -1;
+        &#125; else if (haystack.length() == 0 &amp;&amp; needle.length() == 0) &#123;
+            return 0;
+        &#125;
+        for (int i = 0; i &lt;= haystack.length() - needle.length(); i++) &#123;
+            int j;
+            // try to match part of haystack (starting from i) to needle
+            for (j = 0; j &lt; needle.length(); j++) &#123;
+                if (haystack.charAt(i + j) != needle.charAt(j)) &#123;
+                    break;
+                &#125;
+            &#125;
+            // if part of haystack (starting from i) matches needle
+            if (j == needle.length()) &#123;
+                return i;
+            &#125;
+            // if not match, proceed to next loop
+        &#125;
+        return -1;
+    &#125;
+&#125;
+</code></pre>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

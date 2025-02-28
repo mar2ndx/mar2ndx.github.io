@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    [LeetCode Plus] Lowest Common Ancestor of BST  丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">[LeetCode Plus] Lowest Common Ancestor of BST </div>
+  <div class="post-meta">
+    <div class="date">2014 June 10th</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><p><a target="_blank" rel="noopener" href="http://leetcode.com/2011/07/lowest-common-ancestor-of-a-binary-search-tree.html">link</a></p>
+<div class="entry bg-color bg-img font-color">
+    <blockquote class="bg-color bg-img font-color">
+        <p class="font-color bg-color bg-img">Given a binary search tree (BST), find the lowest common ancestor of two given nodes in the BST.</p>
+    </blockquote>
+    <p class="font-color bg-color bg-img"><span id="more-782" class="font-color"></span>
+        <br>
+    </p><pre class="bg-color bg-img font-color">        _______<span style="color: #990000;" class="font-color">6</span>______
+       /              \
+    ___<span style="color: #990000;" class="font-color">2</span>__          ___<span style="color: #990000;" class="font-color">8</span>__
+   /      \        /      \
+   <span style="color: #990000;" class="font-color">0</span>      _<span style="color: #990000;" class="font-color">4       7       9</span>
+         /  \
+         <span style="color: #990000;" class="font-color">3   5</span></pre>
+    <p class="font-color bg-color bg-img">Using the above tree as an example, the lowest common ancestor (LCA) of nodes <span style="color: #990000;" class="font-color">2</span> and <span style="color: #990000;" class="font-color bg-color bg-img">8</span> is <span style="color: #990000;" class="font-color">6</span>. But how about LCA of nodes <span style="color: #990000;" class="font-color">2</span> and <span style="color: #990000;" class="font-color">4</span>? Should it be <span style="color: #990000;" class="font-color">6</span> or <span style="color: #990000;" class="font-color">2</span>?</p>
+    <p class="font-color bg-color bg-img">According to the <a target="_blank" rel="noopener" href="http://en.wikipedia.org/wiki/Least_common_ancestor" class="font-color">definition of LCA on  Wikipedia</a>: "The lowest common ancestor is defined between two nodes <em>v</em> and <em>w</em> as the lowest node in T that has both <em>v</em> and <em>w</em> as descendants (where we allow a node to be a descendant of itself)." Since a node can be a descendant of itself, the LCA of <span style="color: #990000;" class="font-color">2</span> and <span style="color: #990000;" class="font-color">4</span> should be <span style="color: #990000;" class="font-color">2</span>, according to this definition.</p>
+    <p class="font-color bg-color bg-img"><strong>Hint:</strong>
+        <br>A top-down walk from the root of the tree is enough.</p>
+</div>
+
+<h3 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h3><p><strong>This question is the easiest of this series of questions</strong>. I will quote the solution analysis.</p>
+<blockquote>
+<p>There’s only three cases you need to consider.</p>
+</blockquote>
+<pre><code>1. Both nodes are to the left of the tree.
+2. Both nodes are to the right of the tree.
+3. One node is on the left while the other is on the right. This node must be LCA.
+4. Current node equals to one of the two nodes, this node must be the LCA.
+</code></pre>
+<blockquote>
+<p>The run time complexity is O(h), where h is the height of the BST.</p>
+</blockquote>
+<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><p>The code is not written by me.</p>
+<pre><code>Node *LCA(Node *root, Node *p, Node *q) &#123;
+  if (!root || !p || !q) return NULL;
+  if (max(p-&gt;data, q-&gt;data) &lt; root-&gt;data)
+    return LCA(root-&gt;left, p, q);
+  else if (min(p-&gt;data, q-&gt;data) &gt; root-&gt;data)
+    return LCA(root-&gt;right, p, q);
+  else
+    return root;
+&#125;
+</code></pre>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

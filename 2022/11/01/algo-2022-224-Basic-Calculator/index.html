@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    224. Basic Calculator 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">224. Basic Calculator</div>
+  <div class="post-meta">
+    <div class="date">2022 November 1st</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><p>Link: <a target="_blank" rel="noopener" href="https://leetcode.cn/problems/basic-calculator/">https://leetcode.cn/problems/basic-calculator/</a></p>
+<h1 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h1><p>difficulty: hard<br>adj diff: 5</p>
+<pre><code>Given a string s representing a valid expression, implement a basic calculator to evaluate it, and return the result of the evaluation.
+
+Note: You are not allowed to use any built-in function which evaluates strings as mathematical expressions, such as eval().
+
+ 
+
+Example 1:
+
+Input: s = &quot;1 + 1&quot;
+Output: 2
+
+Example 2:
+
+Input: s = &quot; 2-1 + 2 &quot;
+Output: 3
+
+Example 3:
+
+Input: s = &quot;(1+(4+5+2)-3)+(6+8)&quot;
+Output: 23
+
+ 
+
+Constraints:
+
+	1 &lt;= s.length &lt;= 3 * 105
+	s consists of digits, &#39;+&#39;, &#39;-&#39;, &#39;(&#39;, &#39;)&#39;, and &#39; &#39;.
+	s represents a valid expression.
+	&#39;+&#39; is not used as a unary operation (i.e., &quot;+1&quot; and &quot;+(2 + 3)&quot; is invalid).
+	&#39;-&#39; could be used as a unary operation (i.e., &quot;-1&quot; and &quot;-(2 + 3)&quot; is valid).
+	There will be no two consecutive operators in the input.
+	Every number and running calculation will fit in a signed 32-bit integer.
+</code></pre>
+<p>Too hard. 太难了，不会写。</p>
+<p>2条Stack，一个存 number，一个存operator。看代码吧。</p>
+<h1 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h1><p>Solution reference: <a target="_blank" rel="noopener" href="https://leetcode.cn/problems/basic-calculator/solution/shuang-zhan-jie-jue-tong-yong-biao-da-sh-olym/">https://leetcode.cn/problems/basic-calculator/solution/shuang-zhan-jie-jue-tong-yong-biao-da-sh-olym/</a></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></td><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line"></span><br><span class="line">    Stack&lt;Integer&gt; numbers = new Stack&lt;Integer&gt;();</span><br><span class="line">    Stack&lt;Character&gt; operators = new Stack&lt;Character&gt;();</span><br><span class="line"></span><br><span class="line">    public int calculate(String s) &#123;</span><br><span class="line">        numbers.push(0);</span><br><span class="line">        char[] expression = s.replace(&quot; &quot;, &quot;&quot;).toCharArray();</span><br><span class="line"></span><br><span class="line">        for (int i = 0; i &lt; expression.length; i++) &#123;</span><br><span class="line">            char ch = expression[i];</span><br><span class="line">            if (ch == &#x27;(&#x27;) &#123;</span><br><span class="line">                operators.push(ch);</span><br><span class="line">            &#125; else if (ch == &#x27;)&#x27;) &#123;</span><br><span class="line">                while (!operators.isEmpty()) &#123;</span><br><span class="line">                    // 计算到最近一个左括号为止</span><br><span class="line">                    if (operators.peek() == &#x27;(&#x27;) &#123;</span><br><span class="line">                        operators.pop();</span><br><span class="line">                        break;</span><br><span class="line">                    &#125; else &#123;</span><br><span class="line">                        calculateOnce();</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125; else if (&#x27;0&#x27; &lt;= ch &amp;&amp; ch &lt;= &#x27;9&#x27;) &#123;</span><br><span class="line">                int u = 0;</span><br><span class="line">                int j = i;</span><br><span class="line">                // 将从 i 位置开始后面的连续数字整体取出，加入 numbers</span><br><span class="line">                while (j &lt; expression.length </span><br><span class="line">                        &amp;&amp; (&#x27;0&#x27; &lt;= expression[j] &amp;&amp; expression[j] &lt;= &#x27;9&#x27;)</span><br><span class="line">                    ) &#123;</span><br><span class="line">                    u = u * 10 + (int)(expression[j++] - &#x27;0&#x27;);</span><br><span class="line">                &#125;</span><br><span class="line">                numbers.push(u);</span><br><span class="line">                i = j - 1;</span><br><span class="line">            &#125; else &#123; // is an operator, namely: + or -</span><br><span class="line">                if (i &gt; 0 </span><br><span class="line">                    &amp;&amp; (expression[i - 1] == &#x27;(&#x27; </span><br><span class="line">                        || expression[i - 1] == &#x27;+&#x27; </span><br><span class="line">                        || expression[i - 1] == &#x27;-&#x27;)</span><br><span class="line">                    ) &#123;</span><br><span class="line">                    numbers.push(0);</span><br><span class="line">                &#125;</span><br><span class="line">                // 有一个新操作要入栈时，先把栈内可以算的都算了</span><br><span class="line">                while (!operators.isEmpty() &amp;&amp; operators.peek() != &#x27;(&#x27;) &#123;</span><br><span class="line">                    calculateOnce();</span><br><span class="line">                &#125;</span><br><span class="line">                operators.push(ch);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        while (!operators.isEmpty()) &#123;</span><br><span class="line">            calculateOnce();</span><br><span class="line">        &#125;</span><br><span class="line">        return numbers.peek();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    private void calculateOnce() &#123;</span><br><span class="line">        if (numbers.isEmpty() || numbers.size() &lt; 2) return;</span><br><span class="line">        if (operators.isEmpty()) return;</span><br><span class="line">        int b = numbers.pop(), a = numbers.pop();</span><br><span class="line">        char op = operators.pop();</span><br><span class="line">        numbers.push(op == &#x27;+&#x27; ? a + b : a - b);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

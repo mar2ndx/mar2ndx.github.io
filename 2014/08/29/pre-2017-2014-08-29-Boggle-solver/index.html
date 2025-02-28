@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    [Google] Boggle Solver (search words from matrix) 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">[Google] Boggle Solver (search words from matrix)</div>
+  <div class="post-meta">
+    <div class="date">2014 August 29th</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><p><a target="_blank" rel="noopener" href="http://stackoverflow.com/questions/746082/how-to-find-list-of-possible-words-from-a-letter-matrix-boggle-solver">link</a></p>
+<blockquote>
+<p>Boggle Game:</p>
+</blockquote>
+<pre><code>F X I E
+A M L O
+E W B X
+A S T U
+</code></pre>
+<blockquote>
+<p>The goal of the game is to find as many words as you can that can be formed by chaining letters together. You are given a dictionary of words are reference.</p>
+</blockquote>
+<h3 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h3><p><strong><a target="_blank" rel="noopener" href="http://stackoverflow.com/a/4314056">The best solution</a> is to use Trie</strong>, then do DFS search.</p>
+<p>The idea is from <a target="_blank" rel="noopener" href="http://stackoverflow.com/a/746102">this answer</a> (however, this guy said his solution does not handle ‘visited’ nodes properly, meaning that same char might be visited again to produce a word).</p>
+<p>We need to first define a class called Item:</p>
+<pre><code>class Item &#123;
+    public final int x, y;
+    public final String prefix;
+
+    public Item(int row, int column, String prefix) &#123;
+        this.x = row;
+        this.y = column;
+        this.prefix = prefix;
+    &#125;
+&#125;
+</code></pre>
+<p>So when we start doing DFS, we pass in an Item object which stores 2 information:</p>
+<ol>
+<li>The next position that we’re going to visit.</li>
+<li>The prefix string that we have validated so far (before visiting this position).</li>
+</ol>
+<p>For example:</p>
+<pre><code>F X I E
+A M L O
+E W B X
+A S T U
+</code></pre>
+<p>We’ll have Items objects like (0, 0, “”), (0, 1, “F”), (0, 2, “FA”) … We guarantee that the prefix must be a valid prefix by searching them in the Trie.</p>
+<p>How to tell whether a string is a prefix of word, or it’s an actual word? We have a property in TrieNode called TrieNode.isWord() to help us.</p>
+<p>The code I wrote below is based on <a target="_blank" rel="noopener" href="http://stackoverflow.com/a/11698898">this Java solution by zouzhile</a>.</p>
+<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><p>BoggleSolver.java</p>
+<pre><code>public class BoggleSolver &#123;
+
+    private static BufferedReader in = null;
+    private static final String INPUT_FILE = &quot;dictionary.txt&quot;;
+
+    public static void beginFileReader() &#123;
+        try &#123;
+            in = new BufferedReader(new FileReader(new File(BoggleSolver.class
+                    .getResource(INPUT_FILE).toURI())));
+        &#125; catch (FileNotFoundException e) &#123;
+            e.printStackTrace();
+        &#125; catch (URISyntaxException e) &#123;
+            e.printStackTrace();
+        &#125;
+    &#125;
+
+    private Trie buildTrie() &#123;
+        Trie trie = new Trie();
+        beginFileReader();
+        String line = null;
+        try &#123;
+            while ((line = in.readLine()) != null) &#123;
+                String[] words = line.split(&quot; &quot;);
+                for (String word : words) &#123;
+                    word = word.trim().toLowerCase();
+                    trie.addWord(word);
+                &#125;
+            &#125;
+            if (in != null) &#123;
+                in.close();
+            &#125;
+        &#125; catch (IOException e1) &#123;
+            e1.printStackTrace();
+        &#125;
+        return trie;
+    &#125;
+
+    public Set&lt;String&gt; findWords(char[][] map, Trie dict) &#123;
+        Set&lt;String&gt; ans = new TreeSet&lt;String&gt;();
+        int m = map.length;
+        int n = map[0].length;
+        for (int i = 0; i &lt; m; i++) &#123;
+            for (int j = 0; j &lt; n; j++) &#123;
+                boolean[][] visited = new boolean[m][n];
+                findWordsDfs(ans, dict, map, visited, new Item(i, j, &quot;&quot;));
+                // item have 3 parameters:
+                // location x,y and the prefix string before reaching (i.j)
+            &#125;
+        &#125;
+        return ans;
+    &#125;
+
+    public void findWordsDfs(Set&lt;String&gt; ans, Trie dict, char[][] map,
+            boolean[][] visited, Item item) &#123;
+        // item: the location that we&#39;re going to test
+        // item.prefix is the word prefix before reaching (x, y)
+
+        int m = map.length;
+        int n = map[0].length;
+        int x = item.x;
+        int y = item.y;
+
+        // check whether cur.(x,y) is a valid position
+        if (x &lt; 0 || x &gt;= m || y &lt; 0 || y &gt;= n) &#123;
+            return;
+        &#125; else if (visited[x][y]) &#123;
+            return;
+        &#125;
+        String newWord = item.prefix + map[x][y];
+        // check whether cur.prefix is a valid prefix
+        TrieNode findWord = dict.match(newWord);
+        if (findWord == null) &#123;
+            // up to this position (x, y), the word dont&#39; exists
+            return;
+        &#125;
+        // now cur is in a valid position, with a valid prefix
+        if (findWord.isWord()) &#123;
+            ans.add(newWord);
+        &#125;
+        // visit this position, and continue in 4 different directions
+        visited[x][y] = true;
+        findWordsDfs(ans, dict, map, visited, new Item(x, y - 1, newWord));
+        findWordsDfs(ans, dict, map, visited, new Item(x, y + 1, newWord));
+        findWordsDfs(ans, dict, map, visited, new Item(x - 1, y, newWord));
+        findWordsDfs(ans, dict, map, visited, new Item(x + 1, y, newWord));
+        visited[x][y] = false;
+    &#125;
+
+    public static void main(String[] args) &#123;
+        String[] rows = &quot;eela,elps,weut,korn&quot;.split(&quot;,&quot;);
+        char[][] input = new char[4][4];
+        for (int i = 0; i &lt; 4; i++) &#123;
+            input[i] = rows[i].toCharArray();
+        &#125;
+
+        // prepare test data
+        BoggleSolver solver = new BoggleSolver();
+        Trie dictionary = solver.buildTrie();
+        // start finding words
+        Set&lt;String&gt; set = solver.findWords(input, dictionary);
+        // present the result
+        System.out.println(set.size() + &quot; words are found, they are: &quot;);
+        for (String str : set) &#123;
+            System.out.println(str);
+        &#125;
+    &#125;
+
+    class Item &#123;
+        public final int x, y;
+        public final String prefix;
+
+        public Item(int row, int column, String prefix) &#123;
+            this.x = row;
+            this.y = column;
+            this.prefix = prefix;
+        &#125;
+    &#125;
+&#125;
+</code></pre>
+<p>Trie.java</p>
+<pre><code>public class Trie &#123;
+    private TrieNode root;
+
+    public Trie() &#123;
+        this.root = new TrieNode();
+    &#125;
+
+    public void addWord(String word) &#123;
+        TrieNode node = this.root;
+        for (char c : word.toCharArray()) &#123;
+            node = node.addChild(c);
+            if (node == null)
+                return;
+        &#125;
+        node.setWord(true);
+    &#125;
+
+    public TrieNode match(String s) &#123;
+        TrieNode node = this.root;
+        for (char c : s.toCharArray()) &#123;
+            node = node.get(c);
+            if (node == null)
+                return null;
+        &#125;
+        return node;
+    &#125;
+&#125;
+</code></pre>
+<p>TrieNode.java</p>
+<pre><code>public class TrieNode &#123;
+    private TrieNode[] children;
+    private boolean isWord = false;
+
+    public TrieNode() &#123;
+        this.children = new TrieNode[26];
+    &#125;
+
+    public TrieNode addChild(char child) &#123;
+        if (child &lt; &#39;a&#39; || child &gt; &#39;z&#39;)
+            return null;
+
+        int offset = child - &#39;a&#39;;
+        if (this.children[offset] == null) &#123;
+            this.children[offset] = new TrieNode();
+        &#125;
+        return this.children[offset];
+    &#125;
+
+    public boolean isWord() &#123;
+        return isWord;
+    &#125;
+
+    public void setWord(boolean isWord) &#123;
+        this.isWord = isWord;
+    &#125;
+
+    public TrieNode get(char c) &#123;
+        int offset = c - &#39;a&#39;;
+        return this.children[offset];
+    &#125;
+&#125;
+</code></pre>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

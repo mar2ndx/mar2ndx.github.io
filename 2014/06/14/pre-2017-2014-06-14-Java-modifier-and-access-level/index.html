@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    [Java OOP] Java modifier and Access Level 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">[Java OOP] Java modifier and Access Level</div>
+  <div class="post-meta">
+    <div class="date">2014 June 14th</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><h2 id="4-Types-of-Access-Level"><a href="#4-Types-of-Access-Level" class="headerlink" title="4 Types of Access Level"></a>4 Types of Access Level</h2><h4 id="Private"><a href="#Private" class="headerlink" title="Private"></a>Private</h4><p>Like you’d think, only the class in which it is declared can see it.</p>
+<h4 id="Package-Private-default"><a href="#Package-Private-default" class="headerlink" title="Package Private (default)"></a>Package Private (default)</h4><p>Can only be seen and used by the package in which it was declared.</p>
+<p>This is the default in Java (which some see as a mistake).</p>
+<h4 id="Protected"><a href="#Protected" class="headerlink" title="Protected"></a>Protected</h4><p>Package Private, plus can be seen by subclasses.</p>
+<h4 id="Public"><a href="#Public" class="headerlink" title="Public"></a>Public</h4><p>Everyone can see it.</p>
+<h2 id="Differences"><a href="#Differences" class="headerlink" title="Differences"></a>Differences</h2><p><img src="/images/java-access-level-table.png"></p>
+<p><strong>Note</strong>: Java default access setting is ‘No modifier’, which is also called ‘<strong>Package Private</strong>‘.</p>
+<p><strong>Another note</strong>: by saying ‘subclass’, it means subclass declared in <strong>another package</strong>.</p>
+<h4 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h4><p>Class structure:</p>
+<p><img src="/images/java-classes-access-level.gif"></p>
+<p>For the methods of ‘Alpha’ class, the visibility is listed below.</p>
+<p>For example, Gamma can only access public methods in Alpha.</p>
+<table class="tg">
+  <tr>
+    <th class="tg-031e">Modifier</th>
+    <th class="tg-031e">Alpha</th>
+    <th class="tg-031e">Beta</th>
+    <th class="tg-031e">Alphasub</th>
+    <th class="tg-031e">Gamma</th>
+  </tr>
+  <tr>
+    <td class="tg-031e">public</td>
+    <td class="tg-031e">Y</td>
+    <td class="tg-031e">Y</td>
+    <td class="tg-031e">Y</td>
+    <td class="tg-031e">Y</td>
+  </tr>
+  <tr>
+    <td class="tg-031e">protected</td>
+    <td class="tg-031e">Y</td>
+    <td class="tg-031e">Y</td>
+    <td class="tg-031e">Y</td>
+    <td class="tg-031e">N</td>
+  </tr>
+  <tr>
+    <td class="tg-031e">no modifier</td>
+    <td class="tg-031e">Y</td>
+    <td class="tg-031e">Y</td>
+    <td class="tg-031e">N</td>
+    <td class="tg-031e">N</td>
+  </tr>
+  <tr>
+    <td class="tg-031e">private</td>
+    <td class="tg-031e">Y</td>
+    <td class="tg-031e">N</td>
+    <td class="tg-031e">N</td>
+    <td class="tg-031e">N</td>
+  </tr>
+</table>
+<br />
+
+<h2 id="Additional-question"><a href="#Additional-question" class="headerlink" title="Additional question"></a>Additional question</h2><h4 id="Can-we-declare-a-top-level-class-as-private"><a href="#Can-we-declare-a-top-level-class-as-private" class="headerlink" title="Can we declare a top-level class as private?"></a>Can we declare a top-level class as private?</h4><p>Answer: No, Java does not allow top-level private class. Think about it, a top-level class as private would be useless because nothing could access it.</p>
+<p>If you really want, you can use inner or nested classes. If you have a private inner or nested class, then access is restricted to the scope of that outer class.</p>
+<p><a target="_blank" rel="noopener" href="http://stackoverflow.com/questions/1913863/java-why-can-we-define-a-top-level-class-as-private">link</a></p>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

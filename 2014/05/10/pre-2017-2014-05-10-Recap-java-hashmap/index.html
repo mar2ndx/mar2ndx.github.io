@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    [Fundamental] Recap on Java HashMap  丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">[Fundamental] Recap on Java HashMap </div>
+  <div class="post-meta">
+    <div class="date">2014 May 10th</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><h4 id="The-HashMap"><a href="#The-HashMap" class="headerlink" title="The HashMap"></a>The HashMap</h4><blockquote cite="http://www.sparknotes.com/cs/searching/hashtables/section1.html">
+<div>
+<a target="_blank" rel="noopener" href="http://www.sparknotes.com/cs/searching/hashtables/section1.html">link</a>
+</div>
+<p>
+A hash table is made up of two parts: an array (the actual table where the data to be searched is stored) and a mapping function, known as a hash function. 
+</p>
+<p>
+The hash function is a mapping from the input space to the integer space that defines the indices of the array. In other words, the hash function provides a way for assigning numbers to the input data such that the data can then be stored at the array index corresponding to the assigned number.
+</p>
+</blockquote>
+
+<p>For example, if I want to store &lt;”Durant”&gt;, I pass “Durant” into the hash function, and get (let’s say) number 3. So in the Hash Table, it will store table(3 -&gt; “Durant”).</p>
+<p>In this way, the <strong>searching of HashMap can almost achieve O(1) time in best case</strong> (like array access).</p>
+<p>However,</p>
+<blockquote cite="http://stackoverflow.com/a/9214421">
+<div>
+<a target="_blank" rel="noopener" href="http://stackoverflow.com/a/9214421">link</a>
+</div>
+<p>
+For average case, It really is (as the wikipedia page says) O(1+n/k) where K is the hash table size. If K is large enough, then the result is effectively O(1). But suppose K is 10 and N is 100. In that case each bucket will have on average 10 entries, so the search time is definitely not O(1); it is a linear search through up to 10 entries.
+</p>
+</blockquote>
+
+<p>In practise, we will just assume search in HashMap always O(1).</p>
+<p>Below is a great conclusion.</p>
+<blockquote cite="http://stackoverflow.com/a/9214594">
+<div>
+<a target="_blank" rel="noopener" href="http://stackoverflow.com/a/9214594">link</a>
+</div>
+<p><a target="_blank" rel="noopener" href="http://en.wikipedia.org/wiki/Hash_table">Hash tables</a> are <code>O(1)</code> <strong>average and <a target="_blank" rel="noopener" href="http://en.wikipedia.org/wiki/Amortized_analysis">amortized</a></strong> case complexity, however is suffers from <code>O(n)</code> <strong>worst case</strong> time complexity. [And I think this is where your confusion is]</p>
+
+<p>Hash tables suffer from <code>O(n)</code> worst time complexity due to two reasons:</p>
+
+<ol>
+<li>If too many elements were hashed into the same key: looking inside this key may take <code>O(n)</code> time.</li>
+<li>Once a hash table has passed its <a target="_blank" rel="noopener" href="http://en.wikipedia.org/wiki/Load_balancing_%28computing%29">load balance</a> - it has to rehash [create a new bigger table, and re-insert each element to the table]. </li>
+</ol>
+
+<p>However, it is said to be <code>O(1)</code> average and amortized case because:</p>
+
+<ol>
+<li>It is very rare that many items will be hashed to the same key [if you chose a good hash function and you don't have too big load balance.</li>
+<li>The rehash operation, which is <code>O(n)</code>, can at most happen after <code>n/2</code> ops, which are all assumed <code>O(1)</code>: Thus when you sum the average time per op, you get : <code>(n*O(1) + O(n)) / n) = O(1)</code></li>
+</ol>
+</blockquote>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    [Question] Single Number III 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">[Question] Single Number III</div>
+  <div class="post-meta">
+    <div class="date">2014 June 28th</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><p><a target="_blank" rel="noopener" href="http://www.geeksforgeeks.org/find-two-non-repeating-elements-in-an-array-of-repeating-elements/">link</a></p>
+<blockquote>
+<p>In an array, all numbers in the array repeat twice except two numbers, which repeat only once. </p>
+</blockquote>
+<blockquote>
+<p>Assume all the numbers are placed randomly. Find the 2 numbers. </p>
+</blockquote>
+<h3 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h3><p>The main idea of the solution is how to remove repeated elements. It’s definitely <strong>using XOR</strong>. </p>
+<p>We need to try solve this problem like we did in ‘Single number 1’ but how? We can divide the array into 2 part, each part containing 1 non-repeating number. </p>
+<p>The difficulty and the trick, is how do we divide?</p>
+<h3 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h3><ol>
+<li><p>xor &#x3D; arr[0]^arr[1]^arr[2]…..arr[n-1]</p>
+</li>
+<li><p>We can extract the rightmost set bit of any number n by taking ( n &amp; ~(n-1))</p>
+</li>
+<li><p>We take any set bit of xor and <strong>divide the elements of the array in two sets</strong> – one set of elements with same bit set and other set with same bit not set. </p>
+<p> By doing so, we will get x in one set and y in another set.</p>
+</li>
+</ol>
+<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><p>C++ Code from GFG</p>
+<pre><code>/* This finction sets the values of *x and *y to nonr-epeating
+ elements in an array arr[] of size n*/
+void get2NonRepeatingNos(int arr[], int n, int *x, int *y)
+&#123;
+  int xor = arr[0]; /* Will hold xor of all elements */
+  int set_bit_no;  /* Will have only single set bit of xor */
+  int i;
+  *x = 0;
+  *y = 0;
+
+  /* Get the xor of all elements */
+  for(i = 1; i &lt; n; i++)
+   xor ^= arr[i];
+
+  /* Get the rightmost set bit in set_bit_no */
+  set_bit_no = xor &amp; ~(xor-1);
+
+  /* Now divide elements in two sets by comparing rightmost set
+   bit of xor with bit at same position in each element. */
+  for(i = 0; i &lt; n; i++)
+  &#123;
+    if(arr[i] &amp; set_bit_no)
+     *x = *x ^ arr[i]; /*XOR of first set */
+    else
+     *y = *y ^ arr[i]; /*XOR of second set*/
+  &#125;
+&#125;
+
+/* Driver program to test above function */
+int main()
+&#123;
+  int arr[] = &#123;2, 3, 7, 9, 11, 2, 3, 11&#125;;
+  int *x = (int *)malloc(sizeof(int));
+  int *y = (int *)malloc(sizeof(int));
+  get2NonRepeatingNos(arr, 8, x, y);
+  printf(&quot;The non-repeating elements are %d and %d&quot;, *x, *y);
+  getchar();
+&#125;
+</code></pre>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    [LeetCode 5] Longest Palindromic Substring  丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">[LeetCode 5] Longest Palindromic Substring </div>
+  <div class="post-meta">
+    <div class="date">2014 April 28th</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><p><a target="_blank" rel="noopener" href="http://oj.leetcode.com/problems/longest-palindromic-substring/">link</a></p>
+<div class="question-content">
+<p></p><p>Given a string <i>S</i>, find the longest palindromic substring in <i>S</i>. You may assume that the maximum length of <i>S</i> is 1000, and there exists one unique longest palindromic substring.</p><p></p>
+</div>
+
+<h3 id="Stats"><a href="#Stats" class="headerlink" title="Stats"></a>Stats</h3><table border="2">
+	<tr>
+		<td>Frequency</td>
+		<td bgcolor="lime">2</td>
+	</tr>
+	<tr>
+		<td>Diffficulty</td>
+		<td bgcolor="red">4</td>
+	</tr>
+	<tr>
+		<td>Adjusted Difficulty</td>
+		<td bgcolor="red">4</td>
+	</tr>
+	<tr>
+		<td>Time to use</td>
+		<td bgcolor="red">----------</td>
+	</tr>
+</table>
+
+<p>Ratings&#x2F;Color &#x3D; 1(white) 2(lime) 3(yellow) 4&#x2F;5(red)</p>
+<h3 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h3><p>There are 2 solutions. One is <strong>DP</strong> which is O(N^2) time and O(N^2) space. Another is “Search around corner”, which uses less space.</p>
+<h3 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h3><p><strong>DP solution is straight-forward</strong>. Use 2D array to check palindrome intervals and make it as either true or false. Meanwhile, update longest.</p>
+<p>O(N^2) time and O(N^2) space</p>
+<p><strong>Search around corner</strong> is basically iterate through the entire string and assume each char (or char pair) as center of the palindrome. The code isn’t difficult once you come up with the idea.</p>
+<p>For more, read <a target="_blank" rel="noopener" href="http://leetcode.com/2011/11/longest-palindromic-substring-part-i.html">this post</a></p>
+<p>O(N^2) time and O(1) space</p>
+<h3 id="My-code"><a href="#My-code" class="headerlink" title="My code"></a>My code</h3><p>DP solution</p>
+<pre><code>public class Solution &#123;
+    public String longestPalindrome(String s) &#123;
+        if (s == null || s.length() == 0) &#123;
+            return &quot;&quot;;
+        &#125;
+        String longest = &quot;&quot;;
+        int len = s.length();
+        // dp[i][j] means substring of s from i to j is palindrome
+        boolean[][] dp = new boolean[len][len];
+        // why i decrease from (len-1) to 0, but j increase from i to (len-1)?
+        // think about it!
+        for (int i = len - 1; i &gt;= 0; i--) &#123;
+            for (int j = i; j &lt; len; j++) &#123;
+                if (i == j) &#123;
+                    dp[i][j] = true;
+                &#125; else if (i + 1 == j) &#123;
+                    dp[i][j] = s.charAt(i) == s.charAt(j);
+                &#125; else &#123;
+                    // important to note: dp[i+1][j-1]
+                    // i depends on (i+1), so i from large to small
+                    // j is just the opposite, small to large
+                    dp[i][j] = s.charAt(i) == s.charAt(j) &amp;&amp; dp[i+1][j-1];
+                &#125;
+                if (dp[i][j] &amp;&amp; j + 1 - i &gt; longest.length()) &#123;
+                    longest = s.substring(i, j + 1);
+                &#125;
+            &#125;
+        &#125;
+        return longest;
+    &#125;
+&#125;
+</code></pre>
+<p>Search around corner</p>
+<pre><code>public class Solution &#123;
+    public String longestPalindrome(String s) &#123;
+        if (s.length() &lt;= 1)
+            return s;
+        String largest = s.substring(0, 1);
+        for (int i = 0; i &lt; s.length(); i++) &#123;
+            String first = this.searchAroundCenter(s, i, i);
+            String second = this.searchAroundCenter(s, i, i + 1);
+            if (first.length() &lt; second.length())
+                first = second;
+            if (largest.length() &lt; first.length())
+                largest = first;
+        &#125;
+        return largest;
+    &#125;
+
+    private String searchAroundCenter(String s, int a, int b) &#123;
+        if (a &lt; 0 || b &gt; s.length() - 1)
+            return &quot;&quot;;
+        while (s.charAt(a) == s.charAt(b)) &#123;
+            a--;
+            b++;
+            if (a &lt; 0 || b &gt; s.length() - 1)
+                return s.substring(a + 1, b);
+        &#125;
+        return s.substring(a + 1, b);
+    &#125;
+&#125;
+</code></pre>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

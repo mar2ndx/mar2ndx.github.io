@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    727. Minimum Window Subsequence 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">727. Minimum Window Subsequence</div>
+  <div class="post-meta">
+    <div class="date">2022 November 4th</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><p>Link: <a target="_blank" rel="noopener" href="https://leetcode.cn/problems/sliding-window-maximum/">https://leetcode.cn/problems/sliding-window-maximum/</a></p>
+<h1 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h1><p>difficulty: high<br>adj diff: 4</p>
+<pre><code>Given strings s1 and s2, return the minimum contiguous substring part of s1, so that s2 is a subsequence of the part.
+
+If there is no such window in s1 that covers all characters in s2, return the empty string &quot;&quot;. If there are multiple such minimum-length windows, return the one with the left-most starting index.
+
+
+
+Example 1:
+
+Input: s1 = &quot;abcdebdde&quot;, s2 = &quot;bde&quot;
+Output: &quot;bcde&quot;
+Explanation: 
+&quot;bcde&quot; is the answer because it occurs before &quot;bdde&quot; which has the same length.
+&quot;deb&quot; is not a smaller window because the elements of s2 in the window must occur in order.
+
+Example 2:
+
+Input: s1 = &quot;jmeqksfrsdcmsiwvaovztaqenprpvnbstl&quot;, s2 = &quot;u&quot;
+Output: &quot;&quot;
+
+
+
+Constraints:
+
+    1 &lt;= s1.length &lt;= 2 * 104
+    1 &lt;= s2.length &lt;= 100
+    s1 and s2 consist of lowercase English letters.
+</code></pre>
+<p>注意：用Map来记录出现的 occurence count 是错误的解法！</p>
+<p>因为，substring 的字母顺序不能变。</p>
+<p>这是<a target="_blank" rel="noopener" href="https://leetcode.cn/problems/minimum-window-subsequence/solution/itcharge-727-zui-xiao-chuang-kou-zi-xu-l-v3az/">网友给的正确的解法</a>：</p>
+<ol>
+<li>向右扩大窗口，匹配字符，直到匹配完 s2 的最后一个字符。</li>
+<li>当满足条件时，缩小窗口，并更新最小窗口的起始位置和最短长度。</li>
+<li>缩小窗口到不满足条件为止。</li>
+</ol>
+<blockquote>
+<p>这道题的难点在于第二步中如何缩小窗口。</p>
+<p>当匹配到一个子序列时，可以采用逆向匹配的方式，从 s2 的最后一位字符匹配到 s2 的第一位字符。<br>找到符合要求的最大下标，即是窗口的左边界。</p>
+</blockquote>
+<h1 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h1><p>代码源自于：<a target="_blank" rel="noopener" href="https://leetcode.cn/problems/minimum-window-subsequence/solution/shuang-zhi-zhen-jia-bi-100-by-tsinghuach-wf2z/">https://leetcode.cn/problems/minimum-window-subsequence/solution/shuang-zhi-zhen-jia-bi-100-by-tsinghuach-wf2z/</a></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">    public String minWindow(String s1, String s2) &#123;</span><br><span class="line">        //S = &quot;abcdebdde&quot;, T = &quot;bde&quot;</span><br><span class="line">        //left-&gt;    -&lt;right</span><br><span class="line">        //bcde   bde</span><br><span class="line">        char [] s=s1.toCharArray();</span><br><span class="line">        char [] t=s2.toCharArray();//转化的数组 </span><br><span class="line">        int left=0;</span><br><span class="line">        int right=0;</span><br><span class="line">        int i=0;//循环t</span><br><span class="line">        int start=0;//起始位置</span><br><span class="line">        int minlength=s.length+1;//最短长度  //abcdebdde  a-&gt;e   a-d</span><br><span class="line">        //abcdef  bcd</span><br><span class="line">        while(left&lt;s.length)&#123; //遍历字符的起始位置</span><br><span class="line">            if(s[left]==t[i])&#123;</span><br><span class="line">                i++;</span><br><span class="line">            &#125;</span><br><span class="line">            if(i==t.length)&#123;//包含了</span><br><span class="line">                right=left;//备份</span><br><span class="line">                while(i&gt;0)&#123;</span><br><span class="line">                    if(s[left]==t[i-1])&#123; //相等，回退</span><br><span class="line">                        i--;//退回，恢复0</span><br><span class="line">                    &#125;</span><br><span class="line">                    left--;</span><br><span class="line">                &#125;</span><br><span class="line">                left++;</span><br><span class="line">                if(right-left+1&lt;minlength)&#123; //保存最短</span><br><span class="line">                    minlength=right-left+1;//缩短长度</span><br><span class="line">                    start=left;</span><br><span class="line"></span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            left++;</span><br><span class="line">        &#125;</span><br><span class="line">        if(minlength==s.length+1)&#123;</span><br><span class="line">            return &quot;&quot;;</span><br><span class="line">        &#125;else&#123;</span><br><span class="line">            return s1.substring(start,start+minlength);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

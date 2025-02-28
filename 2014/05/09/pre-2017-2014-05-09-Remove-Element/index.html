@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    [LeetCode 27] Remove Element 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">[LeetCode 27] Remove Element</div>
+  <div class="post-meta">
+    <div class="date">2014 May 9th</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><p><a target="_blank" rel="noopener" href="http://oj.leetcode.com/problems/remove-element/">link</a></p>
+<div class="question-content">
+            <p></p><p>Given an array and a value, remove all instances of that value in place and return the new length.
+</p>
+
+<p>
+The order of elements can be changed. It doesn't matter what you leave beyond the new length.
+</p><p></p>
+</div>
+
+<h3 id="Stats"><a href="#Stats" class="headerlink" title="Stats"></a>Stats</h3><table border="2">
+	<tr>
+		<td>Frequency</td>
+		<td bgcolor="red">4</td>
+	</tr>
+	<tr>
+		<td>Diffficulty</td>
+		<td bgcolor="white">1</td>
+	</tr>
+	<tr>
+		<td>Adjusted Difficulty</td>
+		<td bgcolor="white">1</td>
+	</tr>
+	<tr>
+		<td>Time to use</td>
+		<td bgcolor="lime">----------</td>
+	</tr>
+</table>
+
+<p>Ratings&#x2F;Color &#x3D; 1(white) 2(lime) 3(yellow) 4&#x2F;5(red)</p>
+<h3 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h3><p>Similar to the question <strong>[LeetCode 26] Remove Duplicates From Sorted Array</strong>. Use 2 pointers.</p>
+<h3 id="Let’s-play-a-game"><a href="#Let’s-play-a-game" class="headerlink" title="Let’s play a game"></a>Let’s play a game</h3><p>The code I gave is 21 lines. It’s too long. Can we solve this problem with less code?</p>
+<p>Sure we can! I have a 10-line version:</p>
+<pre><code>public class Solution &#123;
+    public int removeElement(int[] A, int elem) &#123;
+        int left = 0, right = 0;
+        while (right &lt; A.length) &#123;
+            if (A[right] == elem) right++;
+            else A[left++] = A[right++];
+        &#125;
+        return left;
+    &#125;
+&#125;
+</code></pre>
+<p>Now for a moment I thought the above code is the most concise, until I read <a target="_blank" rel="noopener" href="http://needjobasap.blogspot.sg/2014/01/removeelement-leetcode.html">this blog</a>. The code is:</p>
+<pre><code>public class Solution &#123;
+    public int removeElement(int[] A, int elem) &#123;
+        int p = 0;
+        for (int i = 0; i &lt; A.length; i++)
+            if (A[i] != elem) A[p++] = A[i];
+        return p;
+    &#125;
+&#125;
+</code></pre>
+<p>OK game over. Look at the standard answer below. Happy Leetcoding!</p>
+<h3 id="My-code"><a href="#My-code" class="headerlink" title="My code"></a>My code</h3><pre><code>public class Solution &#123;
+    public int removeElement(int[] A, int elem) &#123;
+        if (A == null || A.length == 0) &#123;
+            return 0;
+        &#125;
+        int len = A.length;
+        int left = 0;
+        int right = 0;
+        while (right &lt; len) &#123;
+            // skip all instances of elem
+            while (right &lt; len &amp;&amp; A[right] == elem) &#123;
+                right++;
+            &#125;
+            if (right == len) &#123;
+                break;
+            &#125;
+            A[left++] = A[right++];
+        &#125;
+        return left;
+    &#125;
+&#125;
+</code></pre>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

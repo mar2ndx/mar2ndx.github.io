@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    [LeetCode 173] Binary Search Tree Iterator  丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">[LeetCode 173] Binary Search Tree Iterator </div>
+  <div class="post-meta">
+    <div class="date">2015 April 15th</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/binary-search-tree-iterator/">link</a></p>
+<div class="question-content">
+              <p></p><p>Implement an iterator over a binary search tree (BST). Your iterator will be initialized with the root node of a BST.</p>
+
+<p>Calling <code>next()</code> will return the next smallest number in the BST.</p>
+
+<p><b>Note: </b><code>next()</code> and <code>hasNext()</code> should run in average O(1) time and uses O(<i>h</i>) memory, where <i>h</i> is the height of the tree. </p>
+
+<p><b>Credits:</b><br>Special thanks to <a target="_blank" rel="noopener" href="https://oj.leetcode.com/discuss/user/ts">@ts</a> for adding this problem and creating all test cases.</p><p></p>
+              
+<pre><code>            &lt;div id=&quot;tags&quot; class=&quot;btn btn-xs btn-warning&quot;&gt;Show Tags&lt;/div&gt;
+            &lt;span class=&quot;hide&quot;&gt;
+              
+              &lt;a class=&quot;btn btn-xs btn-primary&quot; href=&quot;/tag/tree/&quot;&gt;Tree&lt;/a&gt;
+              
+              &lt;a class=&quot;btn btn-xs btn-primary&quot; href=&quot;/tag/stack/&quot;&gt;Stack&lt;/a&gt;
+              
+            &lt;/span&gt;
+          
+        &lt;/div&gt;
+</code></pre>
+<h3 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h3><p>This is an extremely important question, if you are going for an interview. I repeat: <strong>this is an extremely important question, if you are going for an interview</strong>. If you do not remember it by heart, I will repeat again.</p>
+<p>The solution of the iterator applies to a lot of related questions. So make sure you practise this question until you are perfect. You WILL BE ASKED this question at times.</p>
+<p>You could read my other post [[Question] Iterator of Binary Search Tree].</p>
+<h3 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h3><p>We only need to keep 1 variable in RAM, that is a stack.</p>
+<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><pre><code>public class BSTIterator &#123;
+
+    Stack&lt;TreeNode&gt; stack = new Stack&lt;TreeNode&gt;();
+
+    public BSTIterator(TreeNode root) &#123;
+        while (root != null) &#123;
+            stack.push(root);
+            root = root.left;
+        &#125;
+    &#125;
+
+    /** @return whether we have a next smallest number */
+    public boolean hasNext() &#123;
+        return !stack.isEmpty();
+    &#125;
+
+    /** @return the next smallest number */
+    public int next() &#123;
+        if (!hasNext()) &#123;
+            return 0;
+        &#125;
+        TreeNode next = stack.pop();
+        TreeNode node = next.right;
+        while (node != null) &#123;
+            stack.push(node);
+            node = node.left;
+        &#125;
+        return next.val;
+    &#125;
+&#125;
+</code></pre>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

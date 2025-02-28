@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    MySql (3) - Sharding 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">MySql (3) - Sharding</div>
+  <div class="post-meta">
+    <div class="date">2022 October 30th</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><h1 id="MySQL-3-sharding"><a href="#MySQL-3-sharding" class="headerlink" title="MySQL-3: sharding"></a>MySQL-3: sharding</h1><ol>
+<li><p>MySQL 连接数</p>
+<p> MySQL默认100个连接。（单机最大1500连接）</p>
+</li>
+<li><p>数据量</p>
+<p> 如果单行是100 bytes，当超过50M行的时候，很吃力</p>
+</li>
+<li><p>索引</p>
+<p> 占空间大，命中率低，查询的可能很慢。</p>
+</li>
+</ol>
+<h2 id="MySQL-性能优化"><a href="#MySQL-性能优化" class="headerlink" title="MySQL 性能优化"></a>MySQL 性能优化</h2><p>4种方案：</p>
+<ol>
+<li>参数优化</li>
+<li>加Cache，加index</li>
+<li>读写分离</li>
+<li>（最终方案）： 分库分表</li>
+</ol>
+<h2 id="What-is-NewSQL"><a href="#What-is-NewSQL" class="headerlink" title="What is NewSQL"></a>What is NewSQL</h2><p>分布式 + Relational DB，例如 TiDB。</p>
+<h1 id="分库分表"><a href="#分库分表" class="headerlink" title="分库分表"></a>分库分表</h1><p>类型：</p>
+<ol>
+<li><p>垂直分</p>
+<p> eg。不同表放入不同DB种（vertical DB）<br> eg。blob文件，单独拿出来放（vertical table）</p>
+</li>
+<li><p>水平分：一张大表，切割分开</p>
+<p> 1.1 范围式分割（例如：时间）<br> 1.1 hash 分割（例如：ID取模）<br> 1.1 hybrid 式</p>
+</li>
+</ol>
+<h2 id="对比2中-水平分割方法"><a href="#对比2中-水平分割方法" class="headerlink" title="对比2中 水平分割方法"></a>对比2中 水平分割方法</h2><p>根据范围分割：</p>
+<ol>
+<li>好处：数据部分迁移，extensibility更好</li>
+<li>坏处：热点数据分布不均匀，压力不能 balance</li>
+</ol>
+<p>根据hash分割：</p>
+<ol>
+<li>好处：热点数据分布均匀，可以balance压力</li>
+<li>坏处：hash算法一旦改，数据全部需要迁移，extensibility差</li>
+</ol>
+<p>解决办法：hybrid 式</p>
+<ol>
+<li>先范围，再hash。</li>
+<li>一致性hash环（consistent hashing）</li>
+</ol>
+<h2 id="分布式事务问题"><a href="#分布式事务问题" class="headerlink" title="分布式事务问题"></a>分布式事务问题</h2><p>本地的transaction 要做到 ACID。但是distributed transaction做不到 ACID。</p>
+<p>CAP定理：</p>
+<ol>
+<li>consistency</li>
+<li>availability</li>
+<li>partition tolerance</li>
+</ol>
+<p>三者只能得其二。</p>
+<p>BASE定理 &#x3D; </p>
+<pre><code>Basically Available(基本可用)
+Soft state(软状态)
+Eventually consistent(最终一致性)
+</code></pre>
+<h2 id="分布式主键"><a href="#分布式主键" class="headerlink" title="分布式主键"></a>分布式主键</h2><ol>
+<li>Redis incr命令</li>
+<li>UUID 可以，但是：长，且不是排序的，对MySQL不太友好。</li>
+</ol>
+<p>终极解决方案：Snowflake algorithm （by Twitter）：</p>
+<pre><code>在分布式系统中，生产全局唯一，且趋势递增的 ID。
+</code></pre>
+<blockquote>
+<p>雪花算法原理就是生成一个的64位比特位的 long 类型的唯一 id。</p>
+<ol>
+<li>最高1位固定值0，因为生成的 id 是正整数，如果是1就是负数了。</li>
+<li>接下来41位存储毫秒级时间戳，2^41&#x2F;(1000606024365)&#x3D;69，大概可以使用69年。</li>
+<li>再接下10位存储机器码，包括5位 datacenterId 和5位 workerId。最多可以部署2^10&#x3D;1024台机器。</li>
+<li>最后12位存储序列号。同一毫秒时间戳时，通过这个递增的序列号来区分。即对于同一台机器而言，同一毫秒时间戳下，可以生成2^12&#x3D;4096个不重复 id。</li>
+</ol>
+<p>可以将雪花算法作为一个单独的服务进行部署，然后需要全局唯一 id 的系统，请求雪花算法服务获取 id 即可。</p>
+<p>对于每一个雪花算法服务，需要先指定10位的机器码，这个根据自身业务进行设定即可。例如机房号+机器号，机器号+服务号，或者是其他可区别标识的10位比特位的整数值都行。</p>
+</blockquote>
+<p>但是snowflake基于timestamp，所以，如果某台machine clock回拨了，可能会造成ID冲突，或ID乱序。</p>
+<h2 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h2><p>避免跨DB的join。</p>
+<p>2种办法：</p>
+<ol>
+<li>E-R分片：将有ER关系的，存在一个库中（根据ID的奇偶）</li>
+<li>“全局表”：在每一个分布式DB中，都建立一个表，并且数据是一样的。</li>
+</ol>
+<h1 id="实战"><a href="#实战" class="headerlink" title="实战"></a>实战</h1><p>问：现在有5亿行，有ID, name, city, sex,  请问如何 shard？</p>
+<p>答：</p>
+<ol>
+<li>用City，不好 ———— 会造成热点数据不均匀问题。</li>
+<li>用timestamp，也不好 ———— 也会造成热点数据不均匀。</li>
+</ol>
+<p>表的大小？</p>
+<ol>
+<li>单行 data &lt; 100 bytes，则 50M rows 一张表。</li>
+<li>单行 data &gt; 100 bytes，则 10M rows 一张表。</li>
+</ol>
+<p>所以：500M &#x2F; 50M &#x3D; 10，向上取整 &#x3D; 16。hash function 最好用（uid % 16）。</p>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

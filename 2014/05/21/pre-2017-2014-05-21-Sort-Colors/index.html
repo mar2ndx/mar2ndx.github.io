@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    [LeetCode 75] Sort Colors 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">[LeetCode 75] Sort Colors</div>
+  <div class="post-meta">
+    <div class="date">2014 May 21st</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><p><a target="_blank" rel="noopener" href="https://oj.leetcode.com/problems/sort-colors/">link</a></p>
+<div class="question-content">
+            <p></p><p>
+Given an array with <i>n</i> objects colored red, white or blue, sort them so that objects of the same color are adjacent, with the colors in the order red, white and blue.
+</p>
+
+<p>
+Here, we will use the integers 0, 1, and 2 to represent the color red, white, and blue respectively.
+</p>
+
+<p>
+<b>Note:</b><br>
+You are not suppose to use the library's sort function for this problem.
+</p>
+
+<div class="spoilers" >
+<p><b>Follow up:</b><br>
+A rather straight forward solution is a two-pass algorithm using counting sort.<br>
+First, iterate the array counting number of 0's, 1's, and 2's, then overwrite array with total number of 0's, then 1's and followed by 2's.</p>
+<p>Could you come up with an one-pass algorithm using only constant space?<br>
+</p>
+</div><p></p>
+          </div>
+
+<h3 id="Stats"><a href="#Stats" class="headerlink" title="Stats"></a>Stats</h3><table border="2">
+	<tr>
+		<td>Frequency</td>
+		<td bgcolor="lime">2</td>
+	</tr>
+	<tr>
+		<td>Difficulty</td>
+		<td bgcolor="red">4</td>
+	</tr>
+	<tr>
+		<td>Adjusted Difficulty</td>
+		<td bgcolor="red">4</td>
+	</tr>
+	<tr>
+		<td>Time to use</td>
+		<td bgcolor="yellow">--------</td>
+	</tr>
+</table>
+
+<p>Ratings&#x2F;Color &#x3D; 1(white) 2(lime) 3(yellow) 4&#x2F;5(red)</p>
+<h3 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h3><p><strong>This is a extremely interesting question, with very tricky solutions</strong>. But the 3rd piece of code is actually the standard solution (by making use of the idea from <strong>partition array</strong>).</p>
+<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><p><strong>First solution came from</strong> <a target="_blank" rel="noopener" href="https://oj.leetcode.com/discuss/1827/anyone-with-one-pass-and-constant-space-solution">this blog</a>.</p>
+<pre><code>public void sortColors(int[] A) &#123;
+    int a = -1, b = -1, c = -1;
+    for (int i = 0; i &lt; A.length; i ++) &#123;
+        if (A[i] == 0) &#123;
+            A[++ c] = 2;
+            A[++ b] = 1;
+            A[++ a] = 0;
+        &#125; else if (A[i] == 1) &#123;
+            A[++ c] = 2;
+            A[++ b] = 1;
+        &#125; else &#123;
+            A[++ c] = 2;
+        &#125;
+    &#125;
+&#125;
+</code></pre>
+<p><strong>Second solution, 2 pointer &amp; swap</strong> which is written <a target="_blank" rel="noopener" href="http://fisherlei.blogspot.sg/2013/01/leetcode-sort-colors.html">here</a>.</p>
+<pre><code>public void sortColors(int[] A) &#123;
+    int len = A.length;
+    int i = 0, x = 0, y = len - 1;
+    while (i &lt;= y) &#123;
+        if (A[i] == 0)
+            swap(A, i ++, x ++);
+        else if (A[i] == 2)
+            swap(A, i, y --);
+        else i ++;
+    &#125;
+&#125;
+
+private void swap(int[] A, int a, int b) &#123;
+    int temp = A[a];
+    A[a] = A[b];
+    A[b] = temp;
+&#125;
+</code></pre>
+<p><strong>Updated on July 4th, 2014</strong>: Use of solution of <strong>Partition Array</strong> to partition colors twice:</p>
+<ol>
+<li>first time move all 0 to left.</li>
+<li>second time move all 1 to left, following the 0s.</li>
+</ol>
+<p>Code :</p>
+<pre><code>public void sortColors(int[] A) &#123;
+    if (A == null || A.length == 0) &#123;
+		return;
+	&#125;
+	int len = A.length;
+	partition(A, 0, len - 1, 0);
+	int p = 0;
+	while (p &lt; len &amp;&amp; A[p] == 0) &#123;
+		p++;
+	&#125;
+	partition(A, p, len - 1, 1);
+&#125;
+
+private void partition(int[] A, int start, int end, int target) &#123;
+	// find the target and put it on the left side of the array
+	while (start &lt; end) &#123;
+		while (start &lt; A.length &amp;&amp; A[start] == target) &#123;
+			start++;
+		&#125;
+		while (end &gt;= 0 &amp;&amp; A[end] != target) &#123;
+			end--;
+		&#125;
+		if (start &gt; end) &#123;
+			break;
+		&#125; else &#123;
+			int temp = A[start];
+			A[start] = A[end];
+			A[end] = temp;
+		&#125;
+	&#125;
+&#125;
+</code></pre>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

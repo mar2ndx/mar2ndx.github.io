@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    340. Longest Substring with At Most K Distinct Characters 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">340. Longest Substring with At Most K Distinct Characters</div>
+  <div class="post-meta">
+    <div class="date">2022 November 8th</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><p>Link: <a target="_blank" rel="noopener" href="https://leetcode.cn/problems/longest-substring-with-at-most-k-distinct-characters/">https://leetcode.cn/problems/longest-substring-with-at-most-k-distinct-characters/</a></p>
+<h1 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h1><p>difficulty: mid<br>adj diff: 4</p>
+<pre><code>Given a string s and an integer k, return the length of the longest substring of s that contains at most k distinct characters.
+
+Example 1:
+
+Input: s = &quot;eceba&quot;, k = 2
+Output: 3
+Explanation: The substring is &quot;ece&quot; with length 3.
+Example 2:
+
+Input: s = &quot;aa&quot;, k = 1
+Output: 2
+Explanation: The substring is &quot;aa&quot; with length 2.
+
+Constraints:
+
+1 &lt;= s.length &lt;= 5 * 104
+0 &lt;= k &lt;= 50
+</code></pre>
+<h1 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">	public int lengthOfLongestSubstringKDistinct(String s, int k) &#123;</span><br><span class="line">		int len = s.length();</span><br><span class="line">		int distinctLetters = 0;</span><br><span class="line">		int maxLength = 0;</span><br><span class="line">		int left = 0;</span><br><span class="line">		int right = 0;</span><br><span class="line">		int[] map = new int[128];</span><br><span class="line"></span><br><span class="line">		while (right &lt; len) &#123;</span><br><span class="line">			if (distinctLetters &lt;= k) &#123;</span><br><span class="line">				maxLength = Math.max(maxLength, right - left);</span><br><span class="line">				char nextChar = s.charAt(right++);</span><br><span class="line">				if (map[nextChar] == 0) &#123;</span><br><span class="line">					distinctLetters++;</span><br><span class="line">				&#125;</span><br><span class="line">				map[nextChar]++;</span><br><span class="line">			&#125; else &#123;</span><br><span class="line">				// move left till distinctLetters == k</span><br><span class="line">				while (distinctLetters &gt; k) &#123;</span><br><span class="line">					char nextChar = s.charAt(left++);</span><br><span class="line">					if (map[nextChar] == 1) &#123;</span><br><span class="line">						distinctLetters--;</span><br><span class="line">					&#125;</span><br><span class="line">					map[nextChar]--;</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		if (distinctLetters &lt;= k) &#123;</span><br><span class="line">			maxLength = Math.max(maxLength, right - left);</span><br><span class="line">		&#125;</span><br><span class="line">		return maxLength;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

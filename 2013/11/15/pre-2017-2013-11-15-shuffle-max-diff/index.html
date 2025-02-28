@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    [Question] Shuffle and Get Max Difference  丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">[Question] Shuffle and Get Max Difference </div>
+  <div class="post-meta">
+    <div class="date">2013 November 15th</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><h1 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h1><p><a target="_blank" rel="noopener" href="http://stackoverflow.com/questions/23205277/max-absolute-sum-in-a-array">link</a></p>
+<blockquote>
+<p>Given an array with four integers A, B, C, D, shuffle them in some order (there are 24 shuffles). </p>
+</blockquote>
+<blockquote>
+<p>… Get the best shuffle such that</p>
+</blockquote>
+<blockquote>
+<p>F(S) &#x3D; abs(s[0]-s[1]) + abs(s[1]-s[2])+ abs(s[2]-s[3])<br>is maximum</p>
+</blockquote>
+<blockquote>
+<p>For example</p>
+</blockquote>
+<pre><code>A=5, B= 3, C=-1, D =5
+s[0]=5, s[1]=-1, s[2]= 5, s[3] =3
+</code></pre>
+<blockquote>
+<p>will give F[s] &#x3D;14 as max diff</p>
+</blockquote>
+<h1 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h1><p>Referring to <a target="_blank" rel="noopener" href="http://stackoverflow.com/a/23205616">this execellent answer</a>:</p>
+<ol>
+<li>sort input and we get 4 number from min to max: A B C D</li>
+<li>swap A and B - B A C D</li>
+<li>swap C and D - B A D C</li>
+<li>swap head and tail - C A D B</li>
+</ol>
+<p>Finally you got CADB or BDAC.</p>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

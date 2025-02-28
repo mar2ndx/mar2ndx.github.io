@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    [NineChap System Design] Class 4.1: Crawler  丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">[NineChap System Design] Class 4.1: Crawler </div>
+  <div class="post-meta">
+    <div class="date">2015 August 30th</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><h1 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h1><p><strong>KISS - Keep It Simple, Sweetie</strong>.</p>
+<p>In Today’s lecture:</p>
+<ol>
+<li>write a crawler</li>
+<li>thread-saft consumer &amp; producer</li>
+<li>GFS, BigTable and MapReduce</li>
+<li>Top 10 keyword&#x2F;anagram using MapReduce</li>
+<li>Log analysis</li>
+</ol>
+<h1 id="News-Aggregator-App"><a href="#News-Aggregator-App" class="headerlink" title="News Aggregator App"></a>News Aggregator App</h1><ol>
+<li><p>Info Collection</p>
+<p>crawler</p>
+</li>
+<li><p>Info retrieval: rank, search and recommend.</p>
+<p>They are in fact, all related to <strong>sorting</strong>.</p>
+</li>
+</ol>
+<p><img src="/images/design-class4-News-Aggregator.png"></p>
+<h2 id="Step-1-Info-collection-with-crawler"><a href="#Step-1-Info-collection-with-crawler" class="headerlink" title="Step 1, Info collection with crawler"></a>Step 1, Info collection with crawler</h2><h3 id="crawler-code"><a href="#crawler-code" class="headerlink" title="crawler code"></a>crawler code</h3><p>Python:</p>
+<pre><code>import urllib2
+
+# request
+url = &quot;www.google.com&quot;
+request = urllib2.Request(url)
+response = urllib2.urlopen(request)
+page = response.read()
+
+# save the file
+webFile = open(&#39;webpage.html&#39;, &#39;web&#39;)
+webFile.write(page)
+webFile.close()
+</code></pre>
+<h3 id="Network-process"><a href="#Network-process" class="headerlink" title="Network process"></a>Network process</h3><p>Use of <strong>socket</strong>.</p>
+<p><img src="/images/design-class4-web-socket-1.png"></p>
+<p>Socket is like the cellphone in the Call Center example.</p>
+<blockquote>
+<p><strong><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Network_socket">socket</a></strong> is an endpoint of an inter-process communication across a computer network.</p>
+</blockquote>
+<blockquote>
+<p>Today, most communication between computers is based on the Internet Protocol; therefore most network sockets are <strong>Internet sockets</strong>.</p>
+</blockquote>
+<p>What is socket? Where is it?</p>
+<p><img src="/images/design-class4-web-socket-2.png"></p>
+<p>It’s in-between <strong>Application Layer</strong> (HTTP, FTP, DNS) and <strong>Transport layer</strong> (UDP, TCP).</p>
+<p>Remembering that socket is like a cellphone. It is an <strong>abstraction layer</strong>, that hinds the complexity of lower layer, thus making it easier to sende data in application layer.</p>
+<h3 id="How-is-client-connected-to-Server"><a href="#How-is-client-connected-to-Server" class="headerlink" title="How is client connected to Server?"></a>How is client connected to Server?</h3><p>3-way handshake. Read <strong>[Design] TCP 3-Way Handshake</strong></p>
+<h3 id="HTML"><a href="#HTML" class="headerlink" title="HTML"></a>HTML</h3><p><a target="_blank" rel="noopener" href="http://www.w3schools.com/js/js_htmldom.asp">DOM tree</a>:</p>
+<p><img src="/images/html-dom-tree.gif"></p>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="http://www.w3.org/TR/DOM-Level-2-Core/introduction.html">Document Object Model</a> (DOM) is an application programming interface (API) for valid HTML and well-formed XML documents. It <strong>defines the logical structure of documents</strong> and the way a document is accessed and manipulated.</p>
+</blockquote>
+<h3 id="How-to-crawler-all-the-news"><a href="#How-to-crawler-all-the-news" class="headerlink" title="How to crawler all the news"></a>How to crawler all the news</h3><ol>
+<li>Go to index page</li>
+<li>identify all the links (regex)</li>
+</ol>
+<h2 id="Crawl-more-websites"><a href="#Crawl-more-websites" class="headerlink" title="Crawl more websites"></a>Crawl more websites</h2><h3 id="Simple-design"><a href="#Simple-design" class="headerlink" title="Simple design"></a>Simple design</h3><ol>
+<li>use crawlers to find out all list pages</li>
+<li>send the new lists to a Scheduler</li>
+<li>Scheduler will use crawlers again, to crawl pages.</li>
+</ol>
+<p><img src="/images/design-class4-cralwer-arch-1.png"></p>
+<p>This design is bad, cuz there is crawler waste. How can we <strong>reuse</strong> these crawlers???</p>
+<h3 id="Adv-design"><a href="#Adv-design" class="headerlink" title="Adv design"></a>Adv design</h3><p>Design crawler that can crawl <strong>both list and pages</strong> information.</p>
+<blockquote>
+<p>Look at our crawler: the text extraction logic and Regex for <em>abc.com</em> and <em>bfe.com</em> are totally different. However, they both share the same crawling techniques.</p>
+</blockquote>
+<p>So we pass in all info a crawler task needs. Like:</p>
+<p><img src="/images/design-class4-cralwer-arch-2.png"></p>
+<ol>
+<li><p>we gave <strong>more priority to list pages than content pages</strong>. Otherwise, your content get out of date soon.</p>
+</li>
+<li><p>Type include both list&#x2F;content and source info.</p>
+</li>
+<li><p>status can be done, working, or new.</p>
+</li>
+<li><p>timestamps helps us make sure each crawler runs every hour (let’s say)</p>
+</li>
+</ol>
+<p>So when schedule <strong>pick the next crawler task</strong> to run, it will choose <strong>based on Priority</strong>. However if the <strong>timestamp (availableTime) is not yet reached</strong>, the job won’t be executed.</p>
+<p>If you crawler <strong>runs until endTime</strong> and haven’t finish, force finish it. We should also add <strong>task created time</strong> to the info.</p>
+<h3 id="How-to-identify-similar-news"><a href="#How-to-identify-similar-news" class="headerlink" title="How to identify similar news?"></a>How to identify similar news?</h3><p>Calculate the similarity between pages. More on this subject later.</p>
+<h2 id="How-to-design-Scheduler"><a href="#How-to-design-Scheduler" class="headerlink" title="How to design Scheduler?"></a>How to design Scheduler?</h2><p><img src="/images/design-class4-cralwer-arch-3.png"></p>
+<h3 id="Solution-with-Sleep"><a href="#Solution-with-Sleep" class="headerlink" title="Solution with Sleep"></a>Solution with Sleep</h3><p>Define variables:</p>
+<pre><code>taskTable&lt;table&gt; - store task lists
+pageTable&lt;page&gt; - store page contents
+
+task.url
+task.state = new/working/done
+task.type = list/page
+</code></pre>
+<p>code:</p>
+<pre><code>while (true) &#123;
+    // get 1 task. If can&#39;t get, wait
+    taskTable.lock();               // IMPORTANT
+    newTask = taskTable.findOne(state == &#39;new&#39;)
+
+    if (!newTask) &#123;
+        taskTable.unlock();         // IMPORTANT
+        sleep(1000);                // IMPORTANT
+        continue;
+    &#125;
+
+    newTask.state = &quot;working&quot;;
+    taskTable.unlock();
+
+    // execute the task, and insert to
+    // either taskTable or pageTable
+    newPage = Crawl(newTask.url);
+
+    if (newTask.state === &#39;list&#39;) &#123;
+        // insert all urls to taskTable
+        taskTable.lock();
+        foreach (url in newPage) &#123;
+            taskTable.add(new task(url));
+        &#125;
+
+        // mark the task as &quot;done&quot;
+        newTask.state = &quot;done&quot;;     // IMPORTANT
+        taskTable.unlock();
+    &#125; else &#123;
+        // insert page content to pageTable
+        pageTable.lock();
+        pageTable.add(newPage.content());
+        pageTable.unlock();
+
+        // mark the task as &quot;done&quot;
+        taskTable.lock();
+        newTask.state = &quot;done&quot;;     // IMPORTANT
+        taskTable.unlock();
+    &#125;
+&#125;
+</code></pre>
+<h3 id="Solution-with-Conditional-Variable"><a href="#Solution-with-Conditional-Variable" class="headerlink" title="Solution with Conditional Variable"></a>Solution with Conditional Variable</h3><p>What is Conditional Variable:</p>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://goo.gl/xOFXrY">A condition variable</a> is basically <strong>a container of threads that are waiting on a certain condition</strong>.</p>
+<p>Monitors provide a mechanism for threads to temporarily give up exclusive access in order to wait for some condition to be met, before regaining exclusive access and resuming their task.</p>
+</blockquote>
+<p><img src="/images/design-class4-condition-variable.png"></p>
+<p>Look at last 3 lines of code. <strong>Before going to sleep, CV have to release the lock</strong>, so that other threads can access the taskTable.</p>
+<p>Then CV goes to sleep. <strong>Right after CV has been waken up</strong>, it has to lock the mutex again.</p>
+<p>Solution w&#x2F; cv:</p>
+<pre><code>while (true) &#123;
+    // get 1 task. If can&#39;t get, wait
+    taskTable.lock();
+    newTask = taskTable.findOne(state == &#39;new&#39;)
+
+    if (!newTask) &#123;
+        taskTable.unlock();
+        Cond_Wait(cond, taskTable);  // Modified
+        continue;
+    &#125;
+
+    newTask.state = &quot;working&quot;;
+    taskTable.unlock();
+
+    // execute the task, and insert to
+    // either taskTable or pageTable
+    newPage = Crawl(newTask.url);
+
+    if (newTask.state === &#39;list&#39;) &#123;
+        // insert all urls to taskTable
+        taskTable.lock();
+        foreach (url in newPage) &#123;
+            taskTable.add(new task(url));
+            Cond_Signal(cond);       // Modified
+        &#125;
+
+        // mark the task as &quot;done&quot;
+        newTask.state = &quot;done&quot;;
+        taskTable.unlock();
+    &#125; else &#123;
+        // insert page content to pageTable
+        pageTable.lock();
+        pageTable.add(newPage.content());
+        pageTable.unlock();
+
+        // mark the task as &quot;done&quot;
+        taskTable.lock();
+        newTask.state = &quot;done&quot;;
+        taskTable.unlock();
+    &#125;
+&#125;
+</code></pre>
+<p>Why Good: no need to busy-spin (example above have to always wait 1 second). So this solution is better.</p>
+<h3 id="Solution-with-Semaphore"><a href="#Solution-with-Semaphore" class="headerlink" title="Solution with Semaphore"></a>Solution with Semaphore</h3><p>This is better than Condition Variable, cuz it’s easier to implement. And Semaphore not only locks thread, it also <strong>can lock process</strong>.</p>
+<p>CV locks on a certain condition. But Semaphore locks the numbers (of task, or resources etc).</p>
+<p>Semaphore implementation (fairly difficult, read for interest):</p>
+<pre><code>Wait(semaphore) &#123;
+    Lockf(semaphore);
+    semaphore.value--;
+    if (semaphore.value &lt; 0) &#123;
+        semaphore.processWaitList.Add(this.process);
+        Release(semaphore);
+        Block(this.process);
+    &#125; else &#123;
+        Release(semaphore);
+    &#125;
+&#125;
+
+Signal(semaphore) &#123;
+    Lock(semaphore);
+    semaphore.value++;
+    if (semaphore.value &lt;= 0) &#123;
+        process = semaphore.processWaitList.pop();
+        Wakeup(process);
+    &#125;
+    Release(semaphore);
+&#125;
+</code></pre>
+<p>Note that in Java and C++, Wait() &#x3D;&#x3D; acquire() and Signal() &#x3D;&#x3D; release(). Read more <a target="_blank" rel="noopener" href="http://tutorials.jenkov.com/java-util-concurrent/semaphore.html">Jenkov’s post</a>.</p>
+<p>code w&#x2F; semaphore:</p>
+<pre><code>while (true) &#123;
+    // get 1 task. If can&#39;t get, wait
+    Wait(numberOfNewTask);           // Modified
+
+    taskTable.lock();
+    newTask = taskTable.findOne(state == &#39;new&#39;)
+    newTask.state = &quot;working&quot;;
+    taskTable.unlock();
+
+    // execute the task, and insert to
+    // either taskTable or pageTable
+    newPage = Crawl(newTask.url);
+
+    if (newTask.state === &#39;list&#39;) &#123;
+        // insert all urls to taskTable
+        taskTable.lock();
+        foreach (url in newPage) &#123;
+            taskTable.add(new task(url));
+            Signal(numberOfNewTask); // Modified
+        &#125;
+
+        // mark the task as &quot;done&quot;
+        newTask.state = &quot;done&quot;;
+        taskTable.unlock();
+    &#125; else &#123;
+        // insert page content to pageTable
+        pageTable.lock();
+        pageTable.add(newPage.content());
+        pageTable.unlock();
+
+        // mark the task as &quot;done&quot;
+        taskTable.lock();
+        newTask.state = &quot;done&quot;;
+        taskTable.unlock();
+    &#125;
+&#125;
+</code></pre>
+<p><strong>What happens in Line 3 ‘Wait(numberOfNewTask)’</strong>? Well, the programs checks on the numberOfNewTask (counter) variable, and:</p>
+<ol>
+<li>If there is 1 or more tasks, just proceed.</li>
+<li>If no tasks available, block itself and wait there. (Later someone will wake it up and it will resume).</li>
+</ol>
+<h3 id="Design-an-consumer-producer"><a href="#Design-an-consumer-producer" class="headerlink" title="Design an consumer-producer"></a>Design an consumer-producer</h3><p>Stay tuned for future post.</p>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

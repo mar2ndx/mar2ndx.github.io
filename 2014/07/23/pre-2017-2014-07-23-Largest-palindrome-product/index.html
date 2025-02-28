@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    [Question] Largest palindrome product  丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">[Question] Largest palindrome product </div>
+  <div class="post-meta">
+    <div class="date">2014 July 23rd</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><p><a target="_blank" rel="noopener" href="http://projecteuler.net/problem=4">link</a></p>
+<blockquote>
+<p>The largest palindrome made from the product of two 2-digit numbers is 9009 &#x3D; 91 × 99. </p>
+</blockquote>
+<blockquote>
+<p>Find the largest palindrome made from the product of two 3-digit numbers. </p>
+</blockquote>
+<h3 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h3><p>We suppose the largest such palindrome will have six digits rather than five, because 143*777 &#x3D; 111111 is a palindrome. And we can tell that 6-digit base-10 palindrome <strong>must be a multiple of 11</strong>. </p>
+<p>So the question becomes finding the largest palindrome under a million that is a <strong>product of two 3-digit numbers</strong>. </p>
+<h3 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h3><p>We now declare variable m and n: </p>
+<ol>
+<li>step m down from 999 to 100 by 1</li>
+<li>step n down from 999 to 100 by:<ol>
+<li>if m is divisible by 11, then step n down by 11</li>
+<li>if m is indivisible by 11, then step n down by 1</li>
+</ol>
+</li>
+<li>keep track of the largest product found so far: p &#x3D; r * s<ol>
+<li>next time when we found such product value (m * n), it must be m &lt;&#x3D; r. So n have to be really large in order to make the final product larger than p. </li>
+<li>i.e. n &gt;&#x3D; p&#x2F;m. </li>
+<li>As larger palindromes are found, the range of n gets more restricted</li>
+</ol>
+</li>
+</ol>
+<p><a target="_blank" rel="noopener" href="http://stackoverflow.com/a/7198175">reference</a></p>
+<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><p>C++ code from stackoverflow</p>
+<pre><code>int main(void) &#123;
+  enum &#123; A=100000, B=10000, C=1000, c=100, b=10, a=1, T=10 &#125;;
+  int m, n, p, q=111111, r=143, s=777;
+  int nDel, nLo, nHi, inner=0, n11=(999/11)*11;
+
+  for (m=999; m&gt;99; --m) &#123;
+    nHi = n11;  nDel = 11;
+    if (m%11==0) &#123;
+      nHi = 999;  nDel = 1;
+    &#125;
+    nLo = q/m-1;
+    if (nLo &lt; m) nLo = m-1;
+
+    for (n=nHi; n&gt;nLo; n -= nDel) &#123;
+      ++inner;
+      // Check if p = product is a palindrome
+      p = m * n;
+      if (p%T==p/A &amp;&amp; (p/B)%T==(p/b)%T &amp;&amp; (p/C)%T==(p/c)%T) &#123;
+    q=p; r=m; s=n;
+    printf (&quot;%d at %d * %d\n&quot;, q, r, s);
+    break;          // We&#39;re done with this value of m
+      &#125;
+
+    &#125;
+  &#125;
+  printf (&quot;Final result:  %d at %d * %d   inner=%d\n&quot;, q, r, s, inner);
+  return 0;
+&#125;
+</code></pre>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

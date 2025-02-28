@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    [Palantir] Largest basin size in matrix 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">[Palantir] Largest basin size in matrix</div>
+  <div class="post-meta">
+    <div class="date">2015 January 20th</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><p><a target="_blank" rel="noopener" href="http://www.careercup.com/question?id=15380670">link</a></p>
+<p>A group of farmers has some elevation data, and we’re going to help them understand how rainfall flows over their farmland.</p>
+<p>We’ll represent the land as a two-dimensional array of altitudes and use the following model, based on the idea that water flows downhill:</p>
+<p>If a cell’s neighboring cells all have higher altitudes, we call this cell a sink; water collects in sinks. Two cells are neighbors if the rows and columns each differ by at most one. Hence an interior cell will have eight neighbors, a cell on the edge will have five neighbors, and a cell in a corner will have three neighbors.</p>
+<p>Otherwise, water will flow to the neighboring cell with the lowest altitude. If a cell is not a sink, you may assume it has a unique lowest neighbor and that this neighbor will be lower than the cell.<br>Cells that drain into the same sink – directly or indirectly – are said to be part of the same basin.</p>
+<p>Your challenge is to partition the map into basins. In particular, given a map of elevations, your code should partition the map into basins and output the sizes of the basins, in descending order.</p>
+<p>Assume the elevation maps are square. Input will begin with a line with one integer, S, the height (and width) of the map. The next S lines will each contain a row of the map, each with S integers – the elevations of the S cells in the row. Some farmers have small land plots such as the examples below, while some have larger plots. However, in no case will the total size of the farmland exceed 1000x1000.</p>
+<p>Note: The input uses unix line endings (\n). If you try to view the sample inputs on a windows machine with a program that does not convert line endings (like Notepad), you will see the input appear all on a single line.</p>
+<p>Your code should output a space-separated list of the basin sizes, in descending order. (Trailing spaces are ignored.)</p>
+<p>While correctness and performance are the most important parts of this problem, a human will be reading your solution, so please make an effort to submit clean, readable code. In particular, do not write code as if you were solving a problem for a competition.</p>
+<p>A few examples are below.</p>
+<p>Input:</p>
+<pre><code>       3
+       1 5 2
+       2 4 7
+       3 6 9
+</code></pre>
+<p>Output:</p>
+<pre><code>            7 2
+</code></pre>
+<p>The basins, labeled with A’s and B’s, are:</p>
+<pre><code>       A A B
+       A A B
+       A A A
+</code></pre>
+<p>Input:</p>
+<pre><code>       1
+       10
+</code></pre>
+<p>Output:</p>
+<pre><code>       1
+</code></pre>
+<p>There is only one basin in this case.</p>
+<p>Input:</p>
+<pre><code>       5
+       1 0 2 5 8
+       2 3 4 7 9
+       3 5 7 9 9
+       1 2 5 5 3
+       3 3 5 1 0
+</code></pre>
+<p>Output:</p>
+<pre><code>       10 8 7
+</code></pre>
+<p>The basins, labeled with A’s, B’s, and C’s, are:</p>
+<pre><code>       A A A A A
+       A A A A A
+       B B B C C
+       B B C C C
+       B B C C C
+</code></pre>
+<p>Input:</p>
+<pre><code>       4
+       0 3 2 3
+       3 2 1 4
+       3 4 3 3
+       5 5 2 0
+</code></pre>
+<p>Output:</p>
+<pre><code>       6 5 5
+</code></pre>
+<p>The basins, labeled with A’s, B’s, and C’s, are:</p>
+<pre><code>       A A B B
+       A A B B
+       A B C C
+       A C C C
+</code></pre>
+<h3 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h3><p>I did not find a ‘best’ solution online, but there’s a good enough explanation available <a target="_blank" rel="noopener" href="http://stackoverflow.com/questions/24336686/find-the-largest-basin-size-in-a-given-matrix">here</a>:</p>
+<ol>
+<li><p>First store index according to their heights.</p>
+</li>
+<li><p>Then iterate from smallest height to largest height.</p>
+</li>
+<li><p>If current index is not visited, make it Basin surface (where water can collect), and make all higher neighbours as Non-Basin surface.</p>
+</li>
+<li><p>Repeat step 3 till all indexes are visited.</p>
+</li>
+<li><p>DFS find each basin</p>
+</li>
+</ol>
+<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><p>I post my solution written in 2013.</p>
+<pre><code>public class MeSolution2013 &#123;
+
+    public static void main(String args[]) &#123;
+
+        String inputFile;
+        int testCaseNumber = 1;
+
+        while (true) &#123;
+            inputFile = &quot;input&quot; + testCaseNumber + &quot;.txt&quot;;
+            BufferedReader in;
+            try &#123;
+                URI uri = MeSolution2013.class.getResource(inputFile).toURI();
+                in = new BufferedReader(new FileReader(new File(uri)));
+            &#125; catch (Exception e) &#123;
+                // there is not more test cases
+                break;
+            &#125;
+
+            Scanner sc = new Scanner(in);
+            int length = sc.nextInt();
+            int[][] elevation = new int[length][length];
+            for (int i = 0; i &lt; length; i++) &#123;
+                for (int j = 0; j &lt; length; j++) &#123;
+                    elevation[i][j] = sc.nextInt();
+                &#125;
+            &#125;
+
+            List&lt;Pair&gt; sinkList = new ArrayList&lt;Pair&gt;();
+
+            // first find out all sink nodes
+            for (int i = 0; i &lt; length; i++) &#123;
+                for (int j = 0; j &lt; length; j++) &#123;
+                    if (elevation[i][j] &lt; lowestNeighbor(i, j, elevation)) &#123;
+                        // (i,j) is a sink point
+                        sinkList.add(new Pair(i, j));
+                    &#125;
+                &#125;
+            &#125;
+
+            // then for each sink node, return the count
+            int[] basinSize = new int[sinkList.size()];
+            for (int i = 0; i &lt; sinkList.size(); i++) &#123;
+                basinSize[i] = count(sinkList.get(i).X, sinkList.get(i).Y,
+                        elevation);
+            &#125;
+            Arrays.sort(basinSize);
+
+            for (int i = sinkList.size() - 1; i &gt;= 0; i--) &#123;
+                System.out.print(basinSize[i]);
+                if (i != 0)
+                    System.out.print(&quot; &quot;);
+            &#125;
+            System.out.println();
+            testCaseNumber++;
+        &#125;
+    &#125;
+
+    static int count(int x, int y, int[][] ele) &#123;
+
+        int num = 1;
+
+        // if the neighbour is higher than current, add count to current count
+        // if all neighbours are lower than current, return 1
+
+        // diagonal neighbors
+        if (withinBound(x - 1, y, ele) &amp;&amp; rainFlowFrom(x, y, x - 1, y, ele)) &#123; // upper
+                                                                                // elment
+            num += count(x - 1, y, ele);
+        &#125;
+        if (withinBound(x + 1, y, ele) &amp;&amp; rainFlowFrom(x, y, x + 1, y, ele)) &#123; // lower
+                                                                                // element
+            num += count(x + 1, y, ele);
+        &#125;
+        if (withinBound(x, y - 1, ele) &amp;&amp; rainFlowFrom(x, y, x, y - 1, ele)) &#123; // left
+                                                                                // hand
+                                                                                // side
+            num += count(x, y - 1, ele);
+        &#125;
+        if (withinBound(x, y + 1, ele) &amp;&amp; rainFlowFrom(x, y, x, y + 1, ele)) &#123; // right
+                                                                                // hand
+                                                                                // side
+            num += count(x, y + 1, ele);
+        &#125;
+
+        // diagonal neighbors
+        if (withinBound(x - 1, y - 1, ele)
+                &amp;&amp; rainFlowFrom(x, y, x - 1, y - 1, ele)) &#123; // upper elment
+            num += count(x - 1, y - 1, ele);
+        &#125;
+        if (withinBound(x + 1, y + 1, ele)
+                &amp;&amp; rainFlowFrom(x, y, x + 1, y + 1, ele)) &#123; // lower element
+            num += count(x + 1, y + 1, ele);
+        &#125;
+        if (withinBound(x + 1, y - 1, ele)
+                &amp;&amp; rainFlowFrom(x, y, x + 1, y - 1, ele)) &#123; // left hand side
+            num += count(x + 1, y - 1, ele);
+        &#125;
+        if (withinBound(x - 1, y + 1, ele)
+                &amp;&amp; rainFlowFrom(x, y, x - 1, y + 1, ele)) &#123; // right hand side
+            num += count(x - 1, y + 1, ele);
+        &#125;
+
+        return num;
+    &#125;
+
+    static Boolean withinBound(int x, int y, int[][] ele) &#123;
+        int bound = ele.length;
+        return (x &gt;= 0 &amp;&amp; x &lt; bound &amp;&amp; y &gt;= 0 &amp;&amp; y &lt; bound);
+    &#125;
+
+    static Boolean rainFlowFrom(int a, int b, int c, int d, int[][] ele) &#123;
+        // rain in (c,d) flows into (a,b).
+        if (ele[a][b] &gt;= ele[c][d])
+            // if (a,b) is higher than (c,d), impossible to flow this way
+            return false;
+
+        int lowest = lowestNeighbor(c, d, ele);
+
+        return (ele[a][b] == lowest);
+        // the question states &quot;you may assume it has a unique lowest neighbor&quot;
+        // so if flow to (a,b), then that is the unique lowest height.
+    &#125;
+
+    static int lowestNeighbor(int a, int b, int[][] ele) &#123;
+        int height = 9999999;
+
+        // adjacent neighbor
+        if (withinBound(a - 1, b, ele) &amp;&amp; ele[a - 1][b] &lt; height) &#123;
+            height = ele[a - 1][b];
+        &#125;
+        if (withinBound(a + 1, b, ele) &amp;&amp; ele[a + 1][b] &lt; height) &#123;
+            height = ele[a + 1][b];
+        &#125;
+        if (withinBound(a, b - 1, ele) &amp;&amp; ele[a][b - 1] &lt; height) &#123;
+            height = ele[a][b - 1];
+        &#125;
+        if (withinBound(a, b + 1, ele) &amp;&amp; ele[a][b + 1] &lt; height) &#123;
+            height = ele[a][b + 1];
+        &#125;
+
+        // diagonal neighbor
+        if (withinBound(a - 1, b - 1, ele) &amp;&amp; ele[a - 1][b - 1] &lt; height) &#123;
+            height = ele[a - 1][b - 1];
+        &#125;
+        if (withinBound(a + 1, b - 1, ele) &amp;&amp; ele[a + 1][b - 1] &lt; height) &#123;
+            height = ele[a + 1][b - 1];
+        &#125;
+        if (withinBound(a - 1, b + 1, ele) &amp;&amp; ele[a - 1][b + 1] &lt; height) &#123;
+            height = ele[a - 1][b + 1];
+        &#125;
+        if (withinBound(a + 1, b + 1, ele) &amp;&amp; ele[a + 1][b + 1] &lt; height) &#123;
+            height = ele[a + 1][b + 1];
+        &#125;
+        return height;
+    &#125;
+&#125;
+
+class Pair &#123;
+
+    public int X;
+    public int Y;
+
+    public Pair(int _x, int _y) &#123;
+        X = _x;
+        Y = _y;
+    &#125;
+&#125;
+</code></pre>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

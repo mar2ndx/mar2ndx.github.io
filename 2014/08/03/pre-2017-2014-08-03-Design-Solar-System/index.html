@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    [Google] Design Solar System (`) 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">[Google] Design Solar System (`)</div>
+  <div class="post-meta">
+    <div class="date">2014 August 3rd</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><p><a target="_blank" rel="noopener" href="http://www.careercup.com/question?id=14761735">link</a></p>
+<blockquote>
+<p>Design a web application to represent hierarchy of solar system.</p>
+</blockquote>
+<blockquote>
+<p>Give details of Persistence layer, business layer, presentation layer and Client-server protocol.</p>
+</blockquote>
+<h3 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h3><p><strong>First, OOD part</strong> is very well covered in <a target="_blank" rel="noopener" href="http://www.ehow.com/how_5579338_build-own-solar-system-java.html">this site</a>. There’re 2 abstract class: <strong>OrbitalSystem</strong>, where ‘Star&#x2F;Sun’ is an instance, and <strong>GravityObject</strong>, where ‘Planet&#x2F;Earch’ is an instance. Though this does not take satellite into consideration.</p>
+<p><strong>Second, the multi-layer structure</strong>. It’s cover in another post <strong><a href="/design/2014-08-03-Multilayered-architecture">Multilayered architecture</a></strong></p>
+<p><strong>Third, the protocol</strong>. We <a target="_blank" rel="noopener" href="http://stackoverflow.com/a/4279218">use HTTP protocol</a>, because:</p>
+<blockquote>
+<p>HTTP(S) is the best protocol to use. The overhead (i.e. headers) is pretty small, the transfer can be gzipped, the connection can be secured (via SSL). Also, ports 80 (HTTP) and 443 (HTTPS) will be open in 99% of cases. Other ports are not – for example some carriers block all other ports unless you pay extra.</p>
+</blockquote>
+<p>More info on HTTP communication comes later.</p>
+<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><p>from <a target="_blank" rel="noopener" href="http://www.ehow.com/how_5579338_build-own-solar-system-java.html">here</a></p>
+<pre><code>public abstract class GravityObject &#123;
+    double xPosition;
+    double yPosition;
+    double degreeInOrbit;
+    double distanceFromParent;
+
+    GravityObject() &#123;
+    this.distance = 0;
+    &#125;
+
+    GravityObject(double distance) &#123;
+    this.distance = distance;
+    &#125;
+&#125;
+
+import java.util.ArrayList;
+
+public abstract class OrbitalSystem extends GravityObject &#123;
+    private ArrayList children = new ArrayList(); // Objects within the system. They will orbit the parent.
+
+    public void add(GravityObject child) &#123; children.add(child); &#125;
+
+    public void tick() &#123;
+        for (int x = 0; x &lt; children.size(); x++) &#123;
+            GravityObject current = children.get(x);
+            current.degree += 1
+            current.xPosition = this.xPosition + Math.cos(degree/180 * Math.PI)* current.distance;
+            current.yPosition = this.yPosition - Math.sin(degree/180 * Math.PI) * current.distance;
+        &#125;
+    &#125;
+&#125;
+
+public class Star extends OrbitalSystem &#123;
+
+&#125;;
+
+public class Planet extends GravityObject &#123;
+
+&#125;;
+
+public static int main(String[] args) &#123;
+    Star s = new Star(); // Create a new star.
+    s.add(new Planet(20)); // Add a planet to the star&#39;s orbital system which orbits at a distance of 20 units.
+    s.add(new Planet(66)); // Add another planet to the star&#39;s orbital system which orbits at a distance of 66 units.
+
+    while (true) &#123;
+        s.tick();
+    &#125;
+&#125;
+</code></pre>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

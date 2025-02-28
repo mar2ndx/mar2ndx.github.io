@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    [Design] Linux and TCP ports  丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">[Design] Linux and TCP ports </div>
+  <div class="post-meta">
+    <div class="date">2015 June 8th</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><h1 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h1><p><a target="_blank" rel="noopener" href="http://en.wikipedia.org/wiki/Port_%28computer_networking%29">a port</a> is <strong>a software construct serving as a communications endpoint</strong> in a computer’s host operating system.</p>
+<p>purpose of ports is to uniquely identify different applications or processes running on a single computer and thereby <strong>enable them to share a single physical connection to a packet-switched network</strong> like the Internet.</p>
+<p>The protocols that <strong>primarily use ports</strong> are the Transport Layer protocols, such as TCP and UDP.</p>
+<p><strong>Port info can be viewed on Linux &#x2F;etc&#x2F;services files</strong>.</p>
+<h2 id="there’re-only-65536-ports"><a href="#there’re-only-65536-ports" class="headerlink" title="there’re only 65536 ports"></a>there’re only 65536 ports</h2><p>In TCP&#x2F;IP stack, port number field is just 16bit size unsigned integer. Port number thus ranging from 0 to 65535.</p>
+<h2 id="well-known-ports"><a href="#well-known-ports" class="headerlink" title="well-known ports"></a>well-known ports</h2><p><strong>Well-known ports</strong> (or Privileged Ports) are those from 0 through 1023.</p>
+<ul>
+<li>20 &amp; 21: File Transfer Protocol (FTP)</li>
+<li>22: Secure Shell (SSH)</li>
+<li>23: Telnet remote login service</li>
+<li>25: Simple Mail Transfer Protocol (SMTP)</li>
+<li>53: Domain Name System (DNS) service</li>
+<li>80: Hypertext Transfer Protocol (HTTP) used in the World Wide Web</li>
+<li>110: Post Office Protocol (POP3)</li>
+<li>119: Network News Transfer Protocol (NNTP)</li>
+<li>143: Internet Message Access Protocol (IMAP)</li>
+<li>161: Simple Network Management Protocol (SNMP)</li>
+<li>194: Internet Relay Chat (IRC)</li>
+<li>443: HTTP Secure (HTTPS)</li>
+<li>465: SMTP Secure (SMTPS)</li>
+</ul>
+<h2 id="Socket"><a href="#Socket" class="headerlink" title="Socket"></a>Socket</h2><p><a target="_blank" rel="noopener" href="http://www.linuxnix.com/2011/05/important-port-numbers-linux-system-administrator.html">Socket is combination of</a> software Port and IP address.</p>
+<h2 id="Protocol-number"><a href="#Protocol-number" class="headerlink" title="Protocol number"></a>Protocol number</h2><p>In an IP header, <a target="_blank" rel="noopener" href="https://technet.microsoft.com/en-us/library/cc959827.aspx">the Protocol field identifies the service</a> in the next higher level in the protocol stack to which data is passed. <strong>Do not confuse this with port number, which is used for communication by TCP&#x2F;UDP</strong>.</p>
+<table>
+<tbody><tr><th>
+<p>
+Service</p>
+</th><th>
+<p>
+Protocol Number</p>
+</th></tr>
+<tr><td>
+<p>
+Internet Control Message Protocol (ICMP)</p>
+</td><td>
+<p>
+1</p>
+</td></tr>
+<tr><td>
+<p>
+Transmission Control Protocol (TCP)</p>
+</td><td>
+<p>
+6</p>
+</td></tr>
+<tr><td>
+<p>
+User Datagram Protocol (UDP)</p>
+</td><td>
+<p>
+17</p>
+</td></tr>
+<tr><td>
+<p>
+General Routing Encapsulation (PPTP data over GRE)</p>
+</td><td>
+<p>
+47</p>
+</td></tr>
+<tr><td>
+<p>
+Authentication Header (AH) IPSec</p>
+</td><td>
+<p>
+51</p>
+</td></tr>
+<tr><td>
+<p>
+Encapsulation Security Payload (ESP) IPSec</p>
+</td><td>
+<p>
+50</p>
+</td></tr>
+<tr><td>
+<p>
+Exterior Gateway Protocol (EGP)</p>
+</td><td>
+<p>
+8</p>
+</td></tr>
+<tr><td>
+<p>
+Gateway-Gateway Protocol (GGP)</p>
+</td><td>
+<p>
+3</p>
+</td></tr>
+<tr><td>
+<p>
+Host Monitoring Protocol (HMP)</p>
+</td><td>
+<p>
+20</p>
+</td></tr>
+<tr><td>
+<p>
+Internet Group Management Protocol (IGMP)</p>
+</td><td>
+<p>
+88</p>
+</td></tr>
+<tr><td>
+<p>
+MIT Remote Virtual Disk (RVD)</p>
+</td><td>
+<p>
+66</p>
+</td></tr>
+<tr><td>
+<p>
+OSPF Open Shortest Path First</p>
+</td><td>
+<p>
+89</p>
+</td></tr>
+<tr><td>
+<p>
+PARC Universal Packet Protocol (PUP)</p>
+</td><td>
+<p>
+12</p>
+</td></tr>
+<tr><td>
+<p>
+Reliable Datagram Protocol (RDP)</p>
+</td><td>
+<p>
+27</p>
+</td></tr>
+<tr><td>
+<p>
+Reservation Protocol (RSVP) QoS</p>
+</td><td>
+<p>
+46</p>
+</td></tr>
+</tbody></table>
+
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://learningnetwork.cisco.com/thread/61029">When the IP packet contain TCP data</a> the protocol number field will have the value 6 in it, so the payload will be sent to the TCP stack, TCP would then use the port numbers to send the data to the correct application. The same is for UDP with protocol number 17.</p>
+</blockquote>
+<blockquote>
+<p>Another way to look at the IP protocol number field is, if we didn’t have this field in the IP packet header, IP would only be capable of carrying one type of data, while adding this field allowed the IP to carry multiple types of data differentiated by the protocol number, the same goes for TCP&#x2F;UDP using TCP&#x2F;UDP ports to serve multiple applications and Ethernet using the Ethertype, and so on.</p>
+</blockquote>
+<h2 id="can-multiple-app-bind-to-or-listen-to-the-same-port"><a href="#can-multiple-app-bind-to-or-listen-to-the-same-port" class="headerlink" title="can multiple app bind to (or listen to) the same port?"></a>can multiple app bind to (or listen to) the same port?</h2><p>Can’t. <a target="_blank" rel="noopener" href="http://stackoverflow.com/questions/1694144/can-two-applications-listen-to-the-same-port">Because You can only have one application</a> listening on a single port at one time.</p>
+<blockquote>
+<p>the app opens a port, gets a handle to it, and the OS notifies it (via that handle) when a client connection (or a packet in UDP case) arrives.</p>
+<p>If the OS allowed two apps to open the same port, how would it know which one to notify?</p>
+</blockquote>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    [LeetCode 52] N-Queens II 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">[LeetCode 52] N-Queens II</div>
+  <div class="post-meta">
+    <div class="date">2014 May 16th</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><p><a target="_blank" rel="noopener" href="http://oj.leetcode.com/problems/n-queens-ii/">link</a></p>
+<div class="question-content">
+            <p></p><p>Follow up for N-Queens problem.</p>
+
+<p>Now, instead outputting board configurations, return the total number of distinct solutions.</p>
+
+<p><img src="http://www.leetcode.com/wp-content/uploads/2012/03/8-queens.png"></p><p></p>
+          </div>
+
+<h3 id="Stats"><a href="#Stats" class="headerlink" title="Stats"></a>Stats</h3><table border="2">
+	<tr>
+		<td>Frequency</td>
+		<td bgcolor="yellow">3</td>
+	</tr>
+	<tr>
+		<td>Difficulty</td>
+		<td bgcolor="red">4</td>
+	</tr>
+	<tr>
+		<td>Adjusted Difficulty</td>
+		<td bgcolor="lime">2</td>
+	</tr>
+	<tr>
+		<td>Time to use</td>
+		<td bgcolor="lime">--------</td>
+	</tr>
+</table>
+
+<p>Ratings&#x2F;Color &#x3D; 1(white) 2(lime) 3(yellow) 4&#x2F;5(red)</p>
+<h3 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h3><p>I posted 2 solution by me. Second code is same as <a target="_blank" rel="noopener" href="https://github.com/rffffffff007/leetcode/blob/master/N-Queens%20II.java">this guy’s code</a>.</p>
+<h3 id="My-code"><a href="#My-code" class="headerlink" title="My code"></a>My code</h3><p><strong>Using global variable</strong> (similar to [LeetCode 51] N-Queens)</p>
+<pre><code>public class Solution &#123;
+
+    int total = 0;
+
+    public int totalNQueens(int n) &#123;
+        if (n &lt;= 0) &#123;
+            return 0;
+        &#125;
+        int[] map = new int[n];
+        helper(map, 0, n);
+        return total;
+    &#125;
+
+    private void helper(int[] map, int row, int n) &#123;
+        if (row == n) &#123;
+            total++;
+            return;
+        &#125;
+        for (int i = 0; i &lt; n; i++) &#123;
+            map[row] = i;
+            // check if map[row] conflicts with any row above
+            boolean valid = true;
+            for (int k = 0; k &lt; row; k++) &#123;
+                if (Math.abs(map[k] - map[row]) == row - k || map[k] == map[row]) &#123;
+                    // not valid!
+                    valid = false;
+                    break;
+                &#125;
+            &#125;
+            if (valid) &#123;
+                helper(map, row + 1, n);
+            &#125;
+        &#125;
+    &#125;
+&#125;
+</code></pre>
+<p><strong>Without using global variable</strong></p>
+<pre><code>public class Solution &#123;
+    public int totalNQueens(int n) &#123;
+        return solve(0, n, new int[n]);
+    &#125;
+
+    private int solve(int cur, int n, int[] list) &#123;
+        if (cur == n) return 1;
+        int ans = 0;
+        for (int i = 0; i &lt; n; i++) &#123;
+            boolean conflict = false;
+            for (int j = 0; j &lt; cur; j++)
+                if (i == list[j] || cur - j == Math.abs(i - list[j]))
+                    conflict = true;
+            if (conflict) continue;
+            list[cur] = i;
+            ans += solve(cur + 1, n, list);
+        &#125;
+        return ans;
+    &#125;
+&#125;
+</code></pre>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    [Fundamental] Min-Max Algorithm (minmax)  丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">[Fundamental] Min-Max Algorithm (minmax) </div>
+  <div class="post-meta">
+    <div class="date">2014 August 30th</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><h3 id="Definition"><a href="#Definition" class="headerlink" title="Definition"></a>Definition</h3><p>For every two-person, zero-sum game with finitely many strategies, there exists a value V and a mixed strategy for each player, such that</p>
+<ol>
+<li>Given player 2’s strategy, the best payoff possible for player 1 is V, and</li>
+<li>Given player 1’s strategy, the best payoff possible for player 2 is −V.</li>
+</ol>
+<p>Equivalently, Player 1’s strategy guarantees him a payoff of V regardless of Player 2’s strategy.</p>
+<p>Put it in a simple way: MAX tries to <strong>max the utility</strong>, and MIN try to <strong>min it</strong>.</p>
+<p><img src="/images/minmax-example-1.png"></p>
+<h3 id="Steps"><a href="#Steps" class="headerlink" title="Steps"></a>Steps</h3><ol>
+<li>Have a <strong>heuristic evaluation function</strong>, which gives a value to non-final game states.</li>
+<li>Generate the values down to terminal states.</li>
+<li>Min-max calculate the utility, like this:</li>
+</ol>
+<p><img src="/images/minmax-example-2.png"></p>
+<h3 id="An-example"><a href="#An-example" class="headerlink" title="An example"></a>An example</h3><p>Othello game:</p>
+<blockquote>
+<p>A player can place a new piece in a position if there exists at least one straight (horizontal, vertical, or diagonal) occupied line between the new piece and another piece of the same kind, with one or more contiguous pieces from the opponent player between them.</p>
+<p>After placing the new piece, the pieces from the opponent player will be captured and become the pieces from the same player.</p>
+<p>The player with the most pieces on the board wins.</p>
+</blockquote>
+<p>First, the <strong>heuristic evaluation function</strong>:</p>
+<p><img src="/images/minmax-example-2.png"></p>
+<p>Now, generate terminal level utility values:</p>
+<p><img src="/images/minmax-example-3.png"></p>
+<p>Now, do min-max algorithm:</p>
+<p><img src="/images/minmax-example-4.png"></p>
+<h3 id="Pruning"><a href="#Pruning" class="headerlink" title="Pruning"></a>Pruning</h3><p>The performance of the naïve minimax algorithm may be improved dramatically, without affecting the result, <a target="_blank" rel="noopener" href="http://en.wikipedia.org/wiki/Minimax#Minimax_algorithm_with_alternate_moves">by the use of</a> <strong>alpha-beta pruning</strong>.</p>
+<p><a target="_blank" rel="noopener" href="http://en.wikipedia.org/wiki/Alpha%E2%80%93beta_pruning">Alpha–beta pruning</a> is a search algorithm that seeks to decrease the number of nodes that are evaluated by the minimax algorithm in its search tree.</p>
+<p><img src="/images/minmax-ab-pruning.png"></p>
+<p>It works when you evaluate the tree <strong>left-to-rigth</strong>. Considering under the same parent, once you found any number that is largest then the smallest-found-so-far, in the MAX level, you can skip this node. Example:</p>
+<p><img src="/images/minmax-ab-pruning2.png"></p>
+<p>The pruned values won’t influence the final result.</p>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

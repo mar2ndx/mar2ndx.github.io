@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    [Google] Check if repeating subsequence exists  丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">[Google] Check if repeating subsequence exists </div>
+  <div class="post-meta">
+    <div class="date">2015 January 11th</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><p><a target="_blank" rel="noopener" href="http://www.careercup.com/question?id=5931067269709824">link</a></p>
+<blockquote>
+<p>Given a string, find if there is any sub-sequence that repeats itself. Do not reuse any char.</p>
+</blockquote>
+<blockquote>
+<p>Eg:</p>
+</blockquote>
+<pre><code>1. abab &lt;------yes, ab is repeated
+2. abba &lt;---- No, a and b follow different order
+3. acbdaghfb &lt;-------- yes, a followed by b twice
+4. abcdacb &lt;----- yes, a followed by b twice
+</code></pre>
+<blockquote>
+<p>Note that no char should be reused. I.e. “aab” is a false.</p>
+</blockquote>
+<h3 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h3><p>This looks like a question without any clue. However, this actually is a modified version of <strong>[LintCode] Longest Common Subsequence</strong>.</p>
+<p>Look at that question: there’s 2 input string, and they match char-by-char. For this question, we are simply <strong>matching input string with input string itself</strong>. And chars should be match <strong>ONLY</strong> at different positions, that’s the key. As pointed out by the <a target="_blank" rel="noopener" href="http://www.careercup.com/question?id=5931067269709824">top comment</a>:</p>
+<blockquote>
+<p>Now we can modify the longest_common_subsequence(a, a) to find the value of the longest repeated subsequence in a by excluding the cases when i &#x3D;&#x3D; j</p>
+</blockquote>
+<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><pre><code>public boolean checkRepeatSubseq(String input) &#123;
+	int len = input.length();
+	int[][] dp = new int[len + 1][len + 1];
+	// dp[i][j] denotes the length of subseq between 2 strings:
+	// 1. first i chars of input
+	// 2. first j chars of input
+	for (int i = 1; i &lt;= len; i++) &#123;
+		for (int j = i; j &lt;= len; j++) &#123;
+			if (i != j &amp;&amp; input.charAt(i - 1) == input.charAt(j - 1)) &#123;
+				int temp = Math.max(dp[i - 1][j], dp[i][j - 1]);
+				dp[i][j] = Math.max(temp, dp[i - 1][j - 1] + 1);
+			&#125; else &#123;
+				dp[i][j] = Math.max(dp[i - 1][j], dp[i][j - 1]);
+			&#125;
+		&#125;
+	&#125;
+	return dp[len][len] &gt;= 2;
+&#125;
+</code></pre>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

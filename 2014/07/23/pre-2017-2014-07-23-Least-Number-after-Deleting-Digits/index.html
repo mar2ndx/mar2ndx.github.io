@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    [Question] Least Number after Deleting Digits 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">[Question] Least Number after Deleting Digits</div>
+  <div class="post-meta">
+    <div class="date">2014 July 23rd</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><p><a target="_blank" rel="noopener" href="http://codercareer.blogspot.sg/2013/11/no-48-least-number-after-deleting-digits.html">link</a></p>
+<blockquote>
+<p>Please get the least number after deleting k digits from the input number. </p>
+</blockquote>
+<blockquote>
+<p>For example, if the input number is 24635, the least number is 23 after deleting 3 digits. </p>
+</blockquote>
+<h3 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h3><p>There’s a solution which instead of ‘delete k’, find the smallest number by ‘keeping (n-k) numbers’. It’s more strightforward. </p>
+<h3 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h3><ol>
+<li>From the start, search till the end.<ol>
+<li>If a digit is greater than next one, delete it. </li>
+<li>If all digits are increasingly sorted, delete last.</li>
+</ol>
+</li>
+<li>Each time go back to start to search again.</li>
+</ol>
+<p>Example</p>
+<blockquote>
+<p>24635 -&gt; 2435 -&gt; 235 -&gt; 23</p>
+</blockquote>
+<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><p>from Harry He</p>
+<pre><code>public static String getLeastNumberDeletingDigits_1(String number, int k) &#123;
+    String leastNumber = number;
+    while(k &gt; 0 &amp;&amp; leastNumber.length() &gt; 0) &#123;
+        int firstDecreasingDigit = getFirstDecreasing(leastNumber);
+        if(firstDecreasingDigit &gt;= 0) &#123;
+            leastNumber = removeDigit(leastNumber, firstDecreasingDigit);
+        &#125;
+        else &#123;
+            leastNumber = removeDigit(leastNumber, leastNumber.length() - 1);
+        &#125;
+
+        --k;
+    &#125;
+
+    return leastNumber;
+&#125;
+
+private static int getFirstDecreasing(String number) &#123;
+    for(int i = 0; i &lt; number.length() - 1; ++i) &#123;
+        int curDigit = number.charAt(i) - &#39;0&#39;;
+        int nextDigit = number.charAt(i + 1) - &#39;0&#39;;
+        if(curDigit &gt; nextDigit) &#123;
+            return i;
+        &#125;
+    &#125;
+
+    return -1;
+&#125;
+
+private static String removeDigit(String number, int digitIndex) &#123;
+    String result = &quot;&quot;;
+    if(digitIndex &gt; 0) &#123;
+        result = number.substring(0, digitIndex);
+    &#125;
+    if(digitIndex &lt; number.length() - 1) &#123;
+        result += number.substring(digitIndex + 1);
+    &#125;
+
+    return result;
+&#125;
+</code></pre>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

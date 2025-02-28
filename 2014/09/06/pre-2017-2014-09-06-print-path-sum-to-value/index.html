@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    [CC150v4] 4.8 Print Path Sum to Value  丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">[CC150v4] 4.8 Print Path Sum to Value </div>
+  <div class="post-meta">
+    <div class="date">2014 September 6th</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><blockquote>
+<p>You are given a binary tree in which each node contains a value. Design an algorithm to print all paths which sum up to that value. Note that it can be any path in the tree - it does not have to start at the root.</p>
+</blockquote>
+<h3 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h3><p><strong>Keep a list of items as buffer</strong>, and check the following condition:</p>
+<blockquote>
+<p>“does this node complete a path with the sum?”</p>
+</blockquote>
+<p>There’re n nodes in total, and the max size of buffer is lg(n), so the time complexity is O(nlgn).</p>
+<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><p><strong>written by me</strong></p>
+<pre><code>public static void find(TreeNode head, int target) &#123;
+	findSum(head, target, new ArrayList&lt;Integer&gt;());
+&#125;
+
+private static void findSum(TreeNode node, int target, List&lt;Integer&gt; buffer) &#123;
+	if (node == null)
+		return;
+
+	buffer.add(node.data);
+	int sum = 0;
+	for (int i = buffer.size() - 1; i &gt;= 0; i--) &#123;
+		sum += buffer.get(i);
+		if (sum == target) &#123;
+			// from (i)th element until the last element is a valid path
+			printPath(buffer, i);
+		&#125;
+	&#125;
+
+	List&lt;Integer&gt; clone1 = new ArrayList&lt;Integer&gt;(buffer);
+	findSum(node.left, target, clone1);
+
+	List&lt;Integer&gt; clone2 = new ArrayList&lt;Integer&gt;(buffer);
+	findSum(node.right, target, clone2);
+&#125;
+
+private static void printPath(List&lt;Integer&gt; buffer, int start) &#123;
+	System.out.print(&quot;Path: &quot;);
+	for (int i = start; i &lt; buffer.size(); i++) &#123;
+		System.out.print(buffer.get(i) + &quot; &quot;);
+	&#125;
+	System.out.println();
+&#125;
+</code></pre>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>
