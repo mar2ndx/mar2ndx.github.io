@@ -6,7 +6,6 @@ comments: true
 date: 2024-12-01 00:00:00
 ---
 
-
 When to use async/await in Python?
 
 ## TL;DR

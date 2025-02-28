@@ -45,7 +45,7 @@ Order by log.
 
 Kafka uses Kernel bypass to achieve high write throughput. 
 
-![](/images/system-design-bidding-platform-1.png)
+![](/images/system-design-bidding-platform-1.jpg)
 
 Downside: use will be notified about bidding result, async. Thus using Kafka is not a great solution. 
 
@@ -67,7 +67,7 @@ Solution:
 4. We can partition Bid Engine by auctionID using consistant hashing. 
 5. But make sure all bids for 1 auction always on the same machine. 
 
-![](/images/system-design-bidding-platform-2.png)
+![](/images/system-design-bidding-platform-2.jpg)
 
 ### How to achieve fault tolerance?
 
@@ -87,7 +87,7 @@ Let's put in Kafka __so multiple consumers can subscribe__!
 
 Remember your Kafka is the source of truth, with certain replication configurations. 
 
-![](/images/system-design-bidding-platform-3.png)
+![](/images/system-design-bidding-platform-3.jpg)
 
 Note: 
 
@@ -100,11 +100,11 @@ Remember now we have additional network call to Kafka, and we need sychronous re
 
 Here's the psueducode. 
 
-![](/images/system-design-bidding-platform-4.png)
+![](/images/system-design-bidding-platform-4.jpg)
 
 But to solve the problem of Kafka race condition: 
 
-![](/images/system-design-bidding-platform-5.png)
+![](/images/system-design-bidding-platform-5.jpg)
 
 这一段没太看懂！
 
@@ -112,7 +112,7 @@ But to solve the problem of Kafka race condition:
 
 # 5. Bid consumers
 
-![](/images/system-design-bidding-platform-6.png)
+![](/images/system-design-bidding-platform-6.jpg)
 
 
 
@@ -120,7 +120,7 @@ But to solve the problem of Kafka race condition:
 
 Many people watching the top Kafka queue. like this:
 
-![](/images/system-design-bidding-platform-7.png)
+![](/images/system-design-bidding-platform-7.jpg)
 
 
 
@@ -129,7 +129,7 @@ Many people watching the top Kafka queue. like this:
 1. As bid come in, update the finish time. 
 2. Bid engine occasionally check the auction time. 
 
-![](/images/system-design-bidding-platform-8.png)
+![](/images/system-design-bidding-platform-8.jpg)
 
 
 
