@@ -81,13 +81,33 @@ def process_markdown_file(filepath):
             metadata["tags"] = []
         if "comments" not in metadata:
             metadata["comments"] = "true"
+
+        # If date not in metadata, try to extract from filename first, then fall back to file time
         if "date" not in metadata:
-            stat = os.stat(filepath)
-            try:
-                creation_time = datetime.datetime.fromtimestamp(stat.st_birthtime)
-            except AttributeError:
-                creation_time = datetime.datetime.fromtimestamp(stat.st_ctime)
-            metadata["date"] = creation_time.strftime("%Y-%m-%d %H:%M")
+            filename = os.path.basename(filepath)
+            date_match = re.match(r'(\d{4})-(\d{2})-(\d{2})', filename)
+            
+            if date_match:
+                year, month, day = date_match.groups()
+                try:
+                    parsed_date = datetime.datetime.strptime(f"{year}-{month}-{day}", "%Y-%m-%d")
+                    metadata["date"] = parsed_date.strftime("%Y-%m-%d %H:%M")
+                except ValueError:
+                    # If date parsing fails, fall back to file creation time
+                    stat = os.stat(filepath)
+                    try:
+                        creation_time = datetime.datetime.fromtimestamp(stat.st_birthtime)
+                    except AttributeError:
+                        creation_time = datetime.datetime.fromtimestamp(stat.st_ctime)
+                    metadata["date"] = creation_time.strftime("%Y-%m-%d %H:%M")
+            else:
+                # No date in filename, use file creation time
+                stat = os.stat(filepath)
+                try:
+                    creation_time = datetime.datetime.fromtimestamp(stat.st_birthtime)
+                except AttributeError:
+                    creation_time = datetime.datetime.fromtimestamp(stat.st_ctime)
+                metadata["date"] = creation_time.strftime("%Y-%m-%d %H:%M")
 
         # Create new frontmatter with ordered fields
         ordered_fields = ["title", "category", "tags", "comments", "date"]
