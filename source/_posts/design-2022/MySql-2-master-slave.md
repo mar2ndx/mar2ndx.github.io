@@ -1,9 +1,11 @@
 ---
 title: MySql (2) - Master/slave
-comments: true
 category: Design
 tags: []
+comments: true
+date: 2022-10-30 10:13
 ---
+
 
 # MySQL-2: master / slave
 

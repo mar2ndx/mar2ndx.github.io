@@ -1,9 +1,11 @@
 ---
 title: MySql (4) - Performance Optimization
-comments: true
 category: Design
 tags: []
+comments: true
+date: 2022-10-30 10:06
 ---
+
 
 # MySQL-4: optimize
 

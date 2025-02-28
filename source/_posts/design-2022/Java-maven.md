@@ -1,9 +1,11 @@
 ---
 title: Maven tutorial
-comments: true
 category: Design
 tags: []
+comments: true
+date: 2023-01-16 08:58
 ---
+
 
 Link: [Maven零基础入门教程（一套轻松搞定maven工具）
 ](https://www.bilibili.com/video/BV1TW411g7hP/)
