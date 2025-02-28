@@ -1,11 +1,10 @@
 ---
-title: How to deploy to Github pages in Year 2025
+title: Deploy Github Pages in Year 2025
 category: unknown
 tags: []
 comments: true
 date: 2025-02-23 01:35:43
 ---
-
 
 I have a love-hate relationship with Github Pages. 
 
@@ -40,7 +39,6 @@ You need to choose __Repository permissions__ and __Account permissions__.
 Choose "Contents" and "Pages" under __Repository permissions__. Nothing under __Account permissions__.
 
 Then change remote origin like this:
-
 
     git remote set-url origin https://the_user_name:the_github_token@github.com/mar2ndx/mar2ndx.github.io.git
     git push -u origin master
