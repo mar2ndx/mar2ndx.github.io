@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[NineChap System Design] Class 1.3: Improvement "
-comments: true
 category: NineChap
+tags: []
+comments: true
+date: 2015-08-23 00:00
 ---
+
 
 # From Level 0 to Level 1
 

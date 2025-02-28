@@ -1,10 +1,11 @@
 ---
-layout: post
 title: "[CC150v5] 14.6 Implement CircularArray in Java "
-comments: true
 category: CC150v5
-tags: [ src ]
+tags: []
+comments: true
+date: 2014-09-26 00:00
 ---
+
 
 ### Question
 

@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Design] Design Twitter"
-comments: true
 category: Design
+tags: []
+comments: true
+date: 2016-07-11 00:00
 ---
+
 
 # System design evaluation form
 

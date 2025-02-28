@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Question] Number Of Bus Stations (meeting rooms) "
-comments: true
 category: Question
+tags: []
+comments: true
+date: 2013-11-05 00:00
 ---
+
 
 ### Question
 

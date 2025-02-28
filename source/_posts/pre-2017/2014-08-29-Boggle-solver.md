@@ -1,11 +1,11 @@
 ---
-layout: post
 title: "[Google] Boggle Solver (search words from matrix)"
+category: q-google
+tags: []
 comments: true
-categories:
-  - q-google
-  - z-string-search
+date: 2014-08-29 00:00
 ---
+
 
 ### Question
 

@@ -1,10 +1,11 @@
 ---
-layout: post
 title: "[Question] Inorder Successor in Binary Search Tree"
-comments: true
 category: Question
-tags: [ src ]
+tags: []
+comments: true
+date: 2014-07-31 00:00
 ---
+
 
 ### Question 
 

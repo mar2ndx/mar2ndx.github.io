@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Design] Big Data Storage "
-comments: true
 category: Design
+tags: []
+comments: true
+date: 2015-01-06 00:00
 ---
+
 
 [ref](http://www.mitbbs.com/article/JobHunting/32580869_0.html)
 

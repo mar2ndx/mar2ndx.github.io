@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Design] Difference: Internet and the Web "
-comments: true
 category: Design
+tags: []
+comments: true
+date: 2015-02-08 00:00
 ---
+
 
 ### Internet
 

@@ -1,10 +1,11 @@
 ---
-layout: post
 title: "[Amazon] Infix to Postfix conversion "
-comments: true
 category: Question
-tags: [  ]
+tags: []
+comments: true
+date: 2013-11-20 00:00
 ---
+
 
 # Question
 

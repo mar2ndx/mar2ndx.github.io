@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[LeetCode 25] Reverse Nodes in k-Groups "
-comments: true
 category: Leetcode
+tags: []
+comments: true
+date: 2014-05-11 00:00
 ---
+
 
 ### Question
 

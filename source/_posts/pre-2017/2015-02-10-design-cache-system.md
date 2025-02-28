@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Design] Design Cache System (`)"
-comments: true
 category: Design
+tags: []
+comments: true
+date: 2015-02-10 00:00
 ---
+
 
 ### Easy version
 

@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Ruby] RubyGems, gem, Gemfile and Bundler "
-comments: true
 category: experience
+tags: []
+comments: true
+date: 2014-12-22 00:00
 ---
+
 
 Sometme I found the different concepts in Ruby very confusing for beginners. So I write this post to explain some terminologies in ruby setup.
 

@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Question] Axis Aligned Rectangles "
-comments: true
 category: Question
+tags: []
+comments: true
+date: 2014-12-02 00:00
 ---
+
 
 ### Question
 

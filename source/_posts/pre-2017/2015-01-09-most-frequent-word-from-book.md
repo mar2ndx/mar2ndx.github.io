@@ -1,11 +1,11 @@
 ---
-layout: post
 title: "[Question] Most Frequent Word from a book "
+category: Question
+tags: []
 comments: true
-categories:
-  - Question
-  - z-string-search
+date: 2015-01-09 00:00
 ---
+
 
 ### Question
 

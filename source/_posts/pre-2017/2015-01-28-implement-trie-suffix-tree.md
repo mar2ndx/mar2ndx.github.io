@@ -1,11 +1,11 @@
 ---
-layout: post
 title: "[Fundamental] Implement Trie and Suffix Tree "
+category: Fundamental
+tags: []
 comments: true
-categories:
-  - Fundamental
-  - z-string-search
+date: 2015-01-28 00:00
 ---
+
 
 ### Trie Node
 

@@ -1,10 +1,11 @@
 ---
-layout: post
 title: "[Question] Binary Search Tree find upper/lower bound"
-comments: true
 category: Question
-tags: [ unit test needed ]
+tags: []
+comments: true
+date: 2014-06-15 00:00
 ---
+
 
 
 ### Question 

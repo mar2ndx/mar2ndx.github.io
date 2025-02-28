@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[LeetCode 118] Pascal's Triangle"
-comments: true
 category: Leetcode
+tags: []
+comments: true
+date: 2014-05-27 00:00
 ---
+
 
 ### Question
 

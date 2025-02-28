@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Java OOP] Can abstract class have constructor "
-comments: true
 category: Java OOP
+tags: []
+comments: true
+date: 2015-02-09 00:00
 ---
+
 
 # A short answer
 

@@ -1,10 +1,11 @@
 ---
-layout: post
 title: "[ItInt5] Excel Decimal Conversion "
-comments: true
 category: Question
-tags: [ ItInt5 ]
+tags: []
+comments: true
+date: 2014-08-16 00:00
 ---
+
 
 ### Question 
 

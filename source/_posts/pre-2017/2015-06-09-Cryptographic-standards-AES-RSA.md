@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Design] Cryptographic standard, AES and RSA "
-comments: true
 category: Design
+tags: []
+comments: true
+date: 2015-06-09 00:00
 ---
+
 
 # Overview
 

@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Question] Make a fair coin from a biased coin"
-comments: true
 category: Question
+tags: []
+comments: true
+date: 2014-06-30 00:00
 ---
+
 
 ### Question
 

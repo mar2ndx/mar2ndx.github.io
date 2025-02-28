@@ -1,10 +1,11 @@
 ---
-layout: post
 title: "[CC150v5] 17.14 Optimal Way to Unconcatenate Doc "
-comments: true
 category: CC150v5
-tags: [ src ]
+tags: []
+comments: true
+date: 2014-10-01 00:00
 ---
+
 
 ### Question
 

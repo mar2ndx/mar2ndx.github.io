@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[CC150v5] 8.8 Design Othello Game "
-comments: true
 category: CC150v5
+tags: []
+comments: true
+date: 2014-08-24 00:00
 ---
+
 
 ### Question
 

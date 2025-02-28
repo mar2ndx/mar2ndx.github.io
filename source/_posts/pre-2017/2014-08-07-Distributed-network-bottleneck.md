@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Design] Distributed Network Bottleneck"
-comments: true
 category: Design
+tags: []
+comments: true
+date: 2014-08-07 00:00
 ---
+
 
 ## Question
 

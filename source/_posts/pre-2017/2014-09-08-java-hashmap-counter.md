@@ -1,12 +1,11 @@
 ---
-layout: post
 title: "[CC150v4] 14.6 Java HashMap Counter "
+category: CC150v4
+tags: []
 comments: true
-categories:
-- CC150v4
-- Java OOP
-tags: [ src ]
+date: 2014-09-08 00:00
 ---
+
 
 ### Question
 

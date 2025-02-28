@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Google] Set Cover Problem "
-comments: true
 category: q-google
+tags: []
+comments: true
+date: 2015-02-05 00:00
 ---
+
 
 ### Question
 

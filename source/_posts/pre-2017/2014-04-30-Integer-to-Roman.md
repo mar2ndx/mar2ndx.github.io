@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[LeetCode 12] Integer to Roman"
-comments: true
 category: Leetcode
+tags: []
+comments: true
+date: 2014-04-30 00:00
 ---
+
 
 ### Question
 

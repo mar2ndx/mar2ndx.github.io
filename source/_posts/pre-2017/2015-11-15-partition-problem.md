@@ -1,10 +1,11 @@
 ---
-layout: post
 title: "[Question] Partition Problem (divide array into halves) "
-comments: true
 category: Question
 tags: []
+comments: true
+date: 2015-11-15 00:00
 ---
+
 
 # Question
 

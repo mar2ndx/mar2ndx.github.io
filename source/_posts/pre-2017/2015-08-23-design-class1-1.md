@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[NineChap System Design] Class 1.1: Overview "
-comments: true
 category: NineChap
+tags: []
+comments: true
+date: 2015-08-23 00:00
 ---
+
 
 # Overview
 

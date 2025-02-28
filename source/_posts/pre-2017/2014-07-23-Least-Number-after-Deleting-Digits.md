@@ -1,10 +1,11 @@
 ---
-layout: post
 title: "[Question] Least Number after Deleting Digits"
-comments: true
 category: Question
-tags: [ unit test needed ]
+tags: []
+comments: true
+date: 2014-07-23 00:00
 ---
+
 
 ### Question 
 

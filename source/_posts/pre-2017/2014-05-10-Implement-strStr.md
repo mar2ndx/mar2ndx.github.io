@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[LeetCode 28] Implement strStr"
-comments: true
 category: Leetcode
+tags: []
+comments: true
+date: 2014-05-10 00:00
 ---
+
 
 ### Question
 

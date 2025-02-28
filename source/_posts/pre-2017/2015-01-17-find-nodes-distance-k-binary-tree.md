@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Amazon] Find nodes of distance k from Binary Tree "
-comments: true
 category: Question
+tags: []
+comments: true
+date: 2015-01-17 00:00
 ---
+
 
 ### Question
 

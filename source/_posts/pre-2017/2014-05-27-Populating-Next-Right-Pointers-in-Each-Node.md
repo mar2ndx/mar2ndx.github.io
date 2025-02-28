@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[LeetCode 116] Populating Next Right Pointers in Each Node"
-comments: true
 category: Leetcode
+tags: []
+comments: true
+date: 2014-05-27 00:00
 ---
+
 
 ### Question
 

@@ -1,10 +1,11 @@
 ---
-layout: post
 title: "[Google] Lexicographic order (letter replacement) of dictionary "
-comments: true
 category: q-google
-tags: [ src ]
+tags: []
+comments: true
+date: 2015-01-18 00:00
 ---
+
 
 ### Question 
 

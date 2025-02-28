@@ -1,12 +1,11 @@
 ---
-layout: post
 title: "[Google] Crazy Distance Between Strings "
+category: q-google
+tags: []
 comments: true
-categories:
-- q-google
-- z-string-search
-tags: [ src ]
+date: 2015-01-11 00:00
 ---
+
 
 ### Question 
 

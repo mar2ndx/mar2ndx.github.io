@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Google] Google Pre-interview Coaching "
-comments: true
 category: q-google
+tags: []
+comments: true
+date: 2014-08-28 00:00
 ---
+
 
 ### Question
 

@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Question] Split an integer or coin"
-comments: true
 category: Question
+tags: []
+comments: true
+date: 2014-12-22 00:00
 ---
+
 
 ### Question
 

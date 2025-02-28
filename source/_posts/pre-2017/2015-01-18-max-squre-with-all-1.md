@@ -1,10 +1,11 @@
 ---
-layout: post
 title: "[Question] Maximum square sub-matrix with all 1s "
-comments: true
 category: Question
-tags: [ src ]
+tags: []
+comments: true
+date: 2015-01-18 00:00
 ---
+
 
 ### Question
 

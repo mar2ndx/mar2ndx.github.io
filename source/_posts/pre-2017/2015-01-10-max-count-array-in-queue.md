@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Google] Maximum Count Array in a Queue "
-comments: true
 category: q-google
+tags: []
+comments: true
+date: 2015-01-10 00:00
 ---
+
 
 ### Question
 

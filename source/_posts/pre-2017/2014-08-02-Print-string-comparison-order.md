@@ -1,10 +1,11 @@
 ---
-layout: post
 title: "[Google] Print string comparison order"
-comments: true
 category: q-google
-tags: [ src ]
+tags: []
+comments: true
+date: 2014-08-02 00:00
 ---
+
 
 ### Question 
 

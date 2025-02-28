@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Amazon] Mininum Range that includes at least One "
-comments: true
 category: Question
+tags: []
+comments: true
+date: 2015-01-10 00:00
 ---
+
 
 ### Question
 

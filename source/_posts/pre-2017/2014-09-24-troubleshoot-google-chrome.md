@@ -1,11 +1,11 @@
 ---
-layout: post
 title: "[CC150v5] 12.0 Example - Troubleshoot Google Chrome "
+category: CC150v5
+tags: []
 comments: true
-categories:
-  - CC150v5
-  - z-testing
+date: 2014-09-24 00:00
 ---
+
 
 ### Question
 

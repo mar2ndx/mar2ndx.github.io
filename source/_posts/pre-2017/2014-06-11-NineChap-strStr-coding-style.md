@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[NineChap 1.1] strStr and Coding Style"
-comments: true
 category: NineChap
+tags: []
+comments: true
+date: 2014-06-11 00:00
 ---
+
 
 ## strStr Question
 

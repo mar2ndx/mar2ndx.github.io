@@ -1,10 +1,11 @@
 ---
-layout: post
 title: "[Google] Winner of tic-tac-toe"
-comments: true
 category: q-google
-tags: [ src ]
+tags: []
+comments: true
+date: 2014-09-09 00:00
 ---
+
 
 ### Question 
 

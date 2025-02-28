@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Design] Overview of Big Data Technology"
-comments: true
 category: Design
+tags: []
+comments: true
+date: 2014-08-04 00:00
 ---
+
 
 [link](https://datajobs.com/what-is-hadoop-and-nosql)
 

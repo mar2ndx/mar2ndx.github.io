@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Design] DFS, BFS and space efficiency"
-comments: true
 category: Design
+tags: []
+comments: true
+date: 2014-05-29 00:00
 ---
+
 
 ### First Word
 

@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[LeetCode 30] Substring with Concatenation of All Words"
-comments: true
 category: Leetcode
+tags: []
+comments: true
+date: 2014-05-10 00:00
 ---
+
 
 ### Question
 

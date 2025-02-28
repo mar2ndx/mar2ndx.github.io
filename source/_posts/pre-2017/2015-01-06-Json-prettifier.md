@@ -1,10 +1,11 @@
 ---
-layout: post
 title: "[Facebook] Write a Json prettifier "
-comments: true
 category: Question
-tags: [ src ]
+tags: []
+comments: true
+date: 2015-01-06 00:00
 ---
+
 
 ### Question 
 

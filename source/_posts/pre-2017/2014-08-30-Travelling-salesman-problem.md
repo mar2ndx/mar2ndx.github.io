@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Fundamental] Travelling salesman problem "
-comments: true
 category: Fundamental
+tags: []
+comments: true
+date: 2014-08-30 00:00
 ---
+
 
 ### TSP problem
 

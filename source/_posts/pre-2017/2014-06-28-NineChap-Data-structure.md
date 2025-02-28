@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[NineChap 7] Data Structure"
-comments: true
 category: NineChap
+tags: []
+comments: true
+date: 2014-06-28 00:00
 ---
+
 
 ## Data Structure
 

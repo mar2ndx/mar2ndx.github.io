@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Apple] Calculate Area "
-comments: true
 category: Question
+tags: []
+comments: true
+date: 2015-01-29 00:00
 ---
+
 
 ### Question
 

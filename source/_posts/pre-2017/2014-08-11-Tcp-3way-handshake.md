@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Design] TCP 3-Way Handshake"
-comments: true
 category: Design
+tags: []
+comments: true
+date: 2014-08-11 00:00
 ---
+
 
 ### Handshaking
 

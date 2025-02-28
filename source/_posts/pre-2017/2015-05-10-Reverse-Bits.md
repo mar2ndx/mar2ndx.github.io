@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[LeetCode 190] Reverse Bits "
-comments: true
 category: Leetcode
+tags: []
+comments: true
+date: 2015-05-10 00:00
 ---
+
 
 ### Question 
 

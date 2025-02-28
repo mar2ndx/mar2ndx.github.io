@@ -1,10 +1,11 @@
 ---
-layout: post
 title: "[Facebook] Maximum sum such that no two elements are adjacent "
-comments: true
 category: Question
-tags: [ src ]
+tags: []
+comments: true
+date: 2014-12-22 00:00
 ---
+
 
 ### Question 
 

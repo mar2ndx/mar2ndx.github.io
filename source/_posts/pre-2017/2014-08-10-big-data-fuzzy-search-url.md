@@ -1,11 +1,11 @@
 ---
-layout: post
 title: "[Design] Big Data - Fuzzy Search url (Bloom Filter) "
+category: Design
+tags: []
 comments: true
-categories:
-- Design
-- z-string-search
+date: 2014-08-10 00:00
 ---
+
 
 ### Question 
 

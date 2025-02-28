@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[LeetCode 111] Minimum Depth of Binary Tree"
-comments: true
 category: Leetcode
+tags: []
+comments: true
+date: 2014-05-25 00:00
 ---
+
 
 ### Question
 

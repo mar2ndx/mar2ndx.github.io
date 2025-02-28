@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Design] Big Data - Remove Duplicate Numbers"
-comments: true
 category: Design
+tags: []
+comments: true
+date: 2014-08-10 00:00
 ---
+
 
 ### Question
 

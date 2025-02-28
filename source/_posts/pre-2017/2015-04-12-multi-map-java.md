@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Palantir] MultiMap in Java without using Collections "
-comments: true
 category: Question
+tags: []
+comments: true
+date: 2015-04-12 00:00
 ---
+
 
 ### Question
 

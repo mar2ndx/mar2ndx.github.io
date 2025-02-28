@@ -1,10 +1,11 @@
 ---
-layout: post
 title: "[ItInt5] Maximum circular subarray sum"
-comments: true
 category: Question
-tags: [ ItInt5 ]
+tags: []
+comments: true
+date: 2014-08-11 00:00
 ---
+
 
 ### Question 
 

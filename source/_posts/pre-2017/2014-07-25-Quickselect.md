@@ -1,12 +1,11 @@
 ---
-layout: post
 title: "[Fundamental] Quickselect "
+category: Fundamental
+tags: []
 comments: true
-categories:
-- Fundamental
-- z-top-K
-tags: [ src ]
+date: 2014-07-25 00:00
 ---
+
 
 ### Question 
 

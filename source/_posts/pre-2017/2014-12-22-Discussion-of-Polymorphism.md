@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Java OOP] Discussion of Polymorphism "
-comments: true
 category: Java OOP
+tags: []
+comments: true
+date: 2014-12-22 00:00
 ---
+
 
 # Overview
 

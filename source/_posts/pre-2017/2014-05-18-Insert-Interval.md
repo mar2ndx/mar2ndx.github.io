@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[LeetCode 57] Insert Interval"
-comments: true
 category: Leetcode
+tags: []
+comments: true
+date: 2014-05-18 00:00
 ---
+
 
 ### Question
 

@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Question] ASCII, Utf-8, Utf-16 and Unicode"
-comments: true
 category: Question
+tags: []
+comments: true
+date: 2014-06-04 00:00
 ---
+
 
 ## First Word
 

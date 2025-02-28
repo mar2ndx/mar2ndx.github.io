@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Question] Square Count of Matchstick Graph"
-comments: true
 category: Question
+tags: []
+comments: true
+date: 2014-08-20 00:00
 ---
+
 
 ### Question
 

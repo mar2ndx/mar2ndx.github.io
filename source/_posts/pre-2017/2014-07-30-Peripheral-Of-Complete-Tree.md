@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Question] Peripheral Of A Complete Tree"
-comments: true
 category: Question
+tags: []
+comments: true
+date: 2014-07-30 00:00
 ---
+
 
 ### Question
 

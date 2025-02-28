@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[LeetCode 114] Flatten Binary Tree to Linked List"
-comments: true
 category: Leetcode
+tags: []
+comments: true
+date: 2014-05-28 00:00
 ---
+
 
 ### Question
 

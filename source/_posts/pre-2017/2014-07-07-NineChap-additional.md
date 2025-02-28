@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[NineChap 10] Additional Questions"
-comments: true
 category: NineChap
+tags: []
+comments: true
+date: 2014-07-07 00:00
 ---
+
 
 The following questions does not appear in NineChap, but they all worth reading.
 

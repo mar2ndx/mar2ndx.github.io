@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[LeetCode 64] Minimum Path Sum"
-comments: true
 category: Leetcode
+tags: []
+comments: true
+date: 2014-05-20 00:00
 ---
+
 
 ### Question
 

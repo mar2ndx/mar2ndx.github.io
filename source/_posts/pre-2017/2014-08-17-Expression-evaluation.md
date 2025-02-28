@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Twitter] Arithmetic Expression Evaluation"
-comments: true
 category: Question
+tags: []
+comments: true
+date: 2014-08-17 00:00
 ---
+
 
 ### Question
 

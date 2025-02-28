@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[NineChap 6] Graph and Search"
-comments: true
 category: NineChap
+tags: []
+comments: true
+date: 2014-06-26 00:00
 ---
+
 
 ## Graph
 

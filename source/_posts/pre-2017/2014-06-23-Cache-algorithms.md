@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Design] Cache and Page Replacement Algorithms"
-comments: true
 category: Design
+tags: []
+comments: true
+date: 2014-06-23 00:00
 ---
+
 
 ### Cache Algorithms
 

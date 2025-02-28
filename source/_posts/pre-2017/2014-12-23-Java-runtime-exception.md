@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Java OOP] Java Runtime Exception "
-comments: true
 category: Java OOP
+tags: []
+comments: true
+date: 2014-12-23 00:00
 ---
+
 
 ### Exceptions in Java
 

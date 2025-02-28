@@ -1,10 +1,11 @@
 ---
-layout: post
 title: "[Question] Shuffle and Get Max Difference "
-comments: true
 category: Question
-tags: [  ]
+tags: []
+comments: true
+date: 2013-11-15 00:00
 ---
+
 
 # Question
 

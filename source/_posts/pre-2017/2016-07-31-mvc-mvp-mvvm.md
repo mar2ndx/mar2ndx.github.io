@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Design] MVC, MVP and MVVM"
-comments: true
 category: Design
+tags: []
+comments: true
+date: 2016-07-31 00:00
 ---
+
 
 # MVC Pattern
 

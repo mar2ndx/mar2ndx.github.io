@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Question] Ways of Dice Throw"
-comments: true
 category: Question
+tags: []
+comments: true
+date: 2014-08-20 00:00
 ---
+
 
 ### Question
 

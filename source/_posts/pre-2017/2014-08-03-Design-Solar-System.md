@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Google] Design Solar System (`)"
-comments: true
 category: q-google
+tags: []
+comments: true
+date: 2014-08-03 00:00
 ---
+
 
 ### Question
 

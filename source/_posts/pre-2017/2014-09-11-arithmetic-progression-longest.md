@@ -1,10 +1,11 @@
 ---
-layout: post
 title: "[Google] Length of Longest Arithmetic Progression (LLAP) "
-comments: true
 category: q-google
-tags: [ src ]
+tags: []
+comments: true
+date: 2014-09-11 00:00
 ---
+
 
 ### Question 
 

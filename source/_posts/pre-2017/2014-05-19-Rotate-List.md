@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[LeetCode 61] Rotate List"
-comments: true
 category: Leetcode
+tags: []
+comments: true
+date: 2014-05-19 00:00
 ---
+
 
 ### Question
 

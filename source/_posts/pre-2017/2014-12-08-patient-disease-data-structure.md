@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Epic] Patient Disease Data Structure "
-comments: true
 category: Question
+tags: []
+comments: true
+date: 2014-12-08 00:00
 ---
+
 
 ### Question
 

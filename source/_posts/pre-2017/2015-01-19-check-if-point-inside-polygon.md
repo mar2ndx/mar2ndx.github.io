@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Question] Check if given point inside polygon "
-comments: true
 category: Question
+tags: []
+comments: true
+date: 2015-01-19 00:00
 ---
+
 
 ### Question
 

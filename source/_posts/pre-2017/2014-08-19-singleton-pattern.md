@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Java OOP] Singleton Pattern Introduction "
-comments: true
 category: Java OOP
+tags: []
+comments: true
+date: 2014-08-19 00:00
 ---
+
 
 ### Singleton Pattern
 

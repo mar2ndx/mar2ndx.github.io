@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Design] Find similar library books "
-comments: true
 category: Design
+tags: []
+comments: true
+date: 2015-02-08 00:00
 ---
+
 
 ### Question
 

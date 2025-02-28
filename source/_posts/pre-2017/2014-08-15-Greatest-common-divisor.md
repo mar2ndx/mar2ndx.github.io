@@ -1,10 +1,11 @@
 ---
-layout: post
 title: "[Question] Greatest Common Divisor"
-comments: true
 category: Question
-tags: [ src ]
+tags: []
+comments: true
+date: 2014-08-15 00:00
 ---
+
 
 ### Question 
 

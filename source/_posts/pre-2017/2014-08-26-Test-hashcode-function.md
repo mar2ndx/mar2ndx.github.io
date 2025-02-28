@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Testing] Test hashCode() function"
-comments: true
 category: Testing
+tags: []
+comments: true
+date: 2014-08-26 00:00
 ---
+
 
 ### Question
 

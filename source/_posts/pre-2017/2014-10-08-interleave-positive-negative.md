@@ -1,10 +1,11 @@
 ---
-layout: post
 title: "[Question] Interleave Positive and Negative Numbers "
-comments: true
 category: Question
-tags: [ src ]
+tags: []
+comments: true
+date: 2014-10-08 00:00
 ---
+
 
 ### Question
 

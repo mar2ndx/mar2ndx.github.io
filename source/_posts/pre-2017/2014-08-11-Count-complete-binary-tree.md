@@ -1,10 +1,11 @@
 ---
-layout: post
 title: "[Google] Count Complete Binary Tree"
-comments: true
 category: q-google
-tags: [ ItInt5 ]
+tags: []
+comments: true
+date: 2014-08-11 00:00
 ---
+
 
 ### Question 
 

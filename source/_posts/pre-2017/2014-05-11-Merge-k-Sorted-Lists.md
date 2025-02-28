@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[LeetCode 23] Merge k Sorted Lists "
-comments: true
 category: Leetcode
+tags: []
+comments: true
+date: 2014-05-11 00:00
 ---
+
 
 ### Question
 

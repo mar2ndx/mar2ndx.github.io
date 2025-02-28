@@ -1,10 +1,11 @@
 ---
-layout: post
 title: "[Design] Strategy design pattern "
-comments: true
 category: Design
 tags: []
+comments: true
+date: 2015-11-18 00:00
 ---
+
 
 # Overview
 

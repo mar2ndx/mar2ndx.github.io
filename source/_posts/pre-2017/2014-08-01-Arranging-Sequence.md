@@ -1,10 +1,11 @@
 ---
-layout: post
 title: "[Question] Arranging Sequence "
-comments: true
 category: Question
-tags: [ src ]
+tags: []
+comments: true
+date: 2014-08-01 00:00
 ---
+
 
 ### Question 
 

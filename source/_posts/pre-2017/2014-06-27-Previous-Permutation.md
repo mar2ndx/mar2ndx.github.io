@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[LintCode] Previous Permutation"
-description: ""
 category: LintCode
+tags: []
+comments: true
+date: 2014-06-27 00:00
 ---
+
 
 ### Question
 

@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Design] Designing a simple web crawler "
-comments: true
 category: Design
+tags: []
+comments: true
+date: 2015-11-22 00:00
 ---
+
 
 # 1. Choose a framework
 

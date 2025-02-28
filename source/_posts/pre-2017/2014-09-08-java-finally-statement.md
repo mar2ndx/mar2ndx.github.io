@@ -1,11 +1,11 @@
 ---
-layout: post
 title: "[CC150v4] 14.2 Java Finally Statement "
+category: CC150v4
+tags: []
 comments: true
-categories:
-  - CC150v4
-  - Java OOP
+date: 2014-09-08 00:00
 ---
+
 
 ### Question
 

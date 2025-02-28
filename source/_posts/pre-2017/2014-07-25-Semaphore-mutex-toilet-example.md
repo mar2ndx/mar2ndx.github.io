@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Design] Semaphore Mutex Toilet Example"
-comments: true
 category: Design
+tags: []
+comments: true
+date: 2014-07-25 00:00
 ---
+
 
 ## Mutex vs. Semaphore
 

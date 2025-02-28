@@ -1,10 +1,11 @@
 ---
-layout: post
 title: "[Java OOP] Thread pool pattern"
-comments: true
 category: Java OOP
-tags: [src]
+tags: []
+comments: true
+date: 2014-08-08 00:00
 ---
+
 
 ### Overview
 

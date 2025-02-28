@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Design] Distributed Caching - memcached "
-comments: true
 category: Design
+tags: []
+comments: true
+date: 2015-01-24 00:00
 ---
+
 
 ### What is Memcached?
 

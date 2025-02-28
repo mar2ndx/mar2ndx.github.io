@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Java OOP] Why avoid using Protected? "
-comments: true
 category: Java OOP
+tags: []
+comments: true
+date: 2015-10-22 00:00
 ---
+
 
 # Overview
 

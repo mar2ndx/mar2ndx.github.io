@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[LeetCode 32] Longest Valid Parentheses "
-comments: true
 category: Leetcode
+tags: []
+comments: true
+date: 2014-05-12 00:00
 ---
+
 
 ### Question
 

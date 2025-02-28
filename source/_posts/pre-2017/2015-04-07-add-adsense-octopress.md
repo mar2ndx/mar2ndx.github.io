@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Octopress] Add Google AdSense to Octopress "
-comments: true
 category: experience
+tags: []
+comments: true
+date: 2015-04-07 00:00
 ---
+
 
 ## Apply for Google AdSense
 

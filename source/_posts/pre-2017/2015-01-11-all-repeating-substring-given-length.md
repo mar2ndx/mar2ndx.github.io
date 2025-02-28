@@ -1,12 +1,11 @@
 ---
-layout: post
 title: "[LinkedIn] Find all repeating substring with given length "
+category: Question
+tags: []
 comments: true
-categories:
-- Question
-- z-string-search
-tags: [ src ]
+date: 2015-01-11 00:00
 ---
+
 
 ### Question
 

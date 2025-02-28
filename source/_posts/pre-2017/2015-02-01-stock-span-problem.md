@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Question] Stock Span Problem (couting BST) "
-comments: true
 category: Question
+tags: []
+comments: true
+date: 2015-02-01 00:00
 ---
+
 
 ### Question
 

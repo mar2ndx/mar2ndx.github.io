@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Design] Time complexity calculation (Master theorem)"
-comments: true
 category: Design
+tags: []
+comments: true
+date: 2014-06-17 00:00
 ---
+
 
 ### Master theorem
 

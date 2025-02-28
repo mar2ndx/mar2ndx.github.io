@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Ruby] Endless error with gem dependencies "
-comments: true
 category: experience
+tags: []
+comments: true
+date: 2014-12-23 00:00
 ---
+
 
 ### The problem
 

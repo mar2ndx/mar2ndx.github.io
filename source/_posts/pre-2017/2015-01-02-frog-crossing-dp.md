@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Question] Frog Crossing (dynamic programming) "
-comments: true
 category: Question
+tags: []
+comments: true
+date: 2015-01-02 00:00
 ---
+
 
 ### Question
 

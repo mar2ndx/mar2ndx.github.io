@@ -1,11 +1,11 @@
 ---
-layout: post
 title: "[Design] Big Data - Top k Frequency"
+category: Design
+tags: []
 comments: true
-categories:
-  - Design
-  - z-top-K
+date: 2014-07-25 00:00
 ---
+
 
 ### Question
 

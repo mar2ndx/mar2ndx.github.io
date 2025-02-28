@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[LeetCode 54] Spiral Matrix"
-comments: true
 category: Leetcode
+tags: []
+comments: true
+date: 2014-05-16 00:00
 ---
+
 
 ### Question
 

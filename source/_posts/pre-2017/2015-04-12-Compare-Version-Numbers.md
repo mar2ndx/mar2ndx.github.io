@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[LeetCode 165] Compare Version Numbers "
-comments: true
 category: Leetcode
+tags: []
+comments: true
+date: 2015-04-12 00:00
 ---
+
 
 ### Question 
 

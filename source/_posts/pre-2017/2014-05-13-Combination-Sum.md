@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[LeetCode 39] Combination Sum"
-comments: true
 category: Leetcode
+tags: []
+comments: true
+date: 2014-05-13 00:00
 ---
+
 
 ### Question
 

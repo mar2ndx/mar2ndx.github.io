@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[LintCode] Longest Increasing Subsequence"
-comments: true
 category: LintCode
+tags: []
+comments: true
+date: 2014-06-24 00:00
 ---
+
 
 ### Question
 

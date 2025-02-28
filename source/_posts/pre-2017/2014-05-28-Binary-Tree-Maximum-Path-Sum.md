@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[LeetCode 124] Binary Tree Maximum Path Sum"
-comments: true
 category: Leetcode
+tags: []
+comments: true
+date: 2014-05-28 00:00
 ---
+
 
 ### Question
 

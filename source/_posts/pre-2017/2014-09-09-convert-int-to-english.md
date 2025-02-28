@@ -1,10 +1,11 @@
 ---
-layout: post
 title: "[CC150v4] 19.6 Convert Integer to English "
-comments: true
 category: CC150v4
-tags: [ src ]
+tags: []
+comments: true
+date: 2014-09-09 00:00
 ---
+
 
 ### Question
 

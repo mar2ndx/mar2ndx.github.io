@@ -1,11 +1,11 @@
 ---
-layout: post
 title: "[Question] Number of occurence of given sub-sequence "
+category: Question
+tags: []
 comments: true
-categories:
-  - Question
-  - z-string-search
+date: 2015-01-11 00:00
 ---
+
 
 ### Question
 

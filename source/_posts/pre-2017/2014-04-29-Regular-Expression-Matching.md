@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[LeetCode 10] Regular Expression Matching "
-comments: true
 category: Leetcode
+tags: []
+comments: true
+date: 2014-04-29 00:00
 ---
+
 
 ### Question
 

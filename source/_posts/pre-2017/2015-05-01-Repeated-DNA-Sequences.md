@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[LeetCode 187] Repeated DNA Sequences "
-comments: true
 category: Leetcode
+tags: []
+comments: true
+date: 2015-05-01 00:00
 ---
+
 
 ### Question
 

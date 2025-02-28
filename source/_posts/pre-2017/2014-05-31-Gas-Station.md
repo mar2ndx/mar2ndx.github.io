@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[LeetCode 134] Gas Station"
-comments: true
 category: Leetcode
+tags: []
+comments: true
+date: 2014-05-31 00:00
 ---
+
 
 ### Question
 

@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[LeetCode 188] Best Time to Buy and Sell Stock IV "
-comments: true
 category: Leetcode
+tags: []
+comments: true
+date: 2015-11-04 00:00
 ---
+
 
 ### Question 
 

@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[LeetCode 152] Maximum Product Subarray "
-comments: true
 category: Leetcode
+tags: []
+comments: true
+date: 2015-04-07 00:00
 ---
+
 
 ### Question 
 

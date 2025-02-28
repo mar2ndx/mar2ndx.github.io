@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[LeetCode 14] Longest Common Prefix "
-comments: true
 category: Leetcode
+tags: []
+comments: true
+date: 2014-05-01 00:00
 ---
+
 
 ### Question
 

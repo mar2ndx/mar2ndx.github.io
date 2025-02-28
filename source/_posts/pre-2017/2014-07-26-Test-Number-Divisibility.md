@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Testing] Test Number Divisibility"
-comments: true
 category: Testing
+tags: []
+comments: true
+date: 2014-07-26 00:00
 ---
+
 
 ### Question
 

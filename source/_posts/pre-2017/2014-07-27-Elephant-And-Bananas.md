@@ -1,10 +1,11 @@
 ---
-layout: post
 title: "[Question] Elephant And Bananas"
-comments: true
 category: Question
-tags: [  ]
+tags: []
+comments: true
+date: 2014-07-27 00:00
 ---
+
 
 ### Question 
 

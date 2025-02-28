@@ -1,10 +1,11 @@
 ---
-layout: post
 title: "[Question] Two Dimensional Knapsack Problem"
-comments: true
 category: Question
-tags: [ unit test needed ]
+tags: []
+comments: true
+date: 2015-01-28 00:00
 ---
+
 
 ### Question 
 

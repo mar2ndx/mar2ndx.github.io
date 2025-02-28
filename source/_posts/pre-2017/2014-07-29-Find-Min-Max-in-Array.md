@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Question] Find Min & Max in an Array Using Minimum Comparisons"
-comments: true
 category: Question
+tags: []
+comments: true
+date: 2014-07-29 00:00
 ---
+
 
 ### Question
 

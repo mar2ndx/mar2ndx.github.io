@@ -1,10 +1,11 @@
 ---
-layout: post
 title: "[Question] Implement Stack using Two Queues"
-comments: true
 category: Question
-tags: [ src ]
+tags: []
+comments: true
+date: 2014-07-23 00:00
 ---
+
 
 ### Question 
 

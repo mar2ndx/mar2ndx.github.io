@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Design] Virtual Memory, Page Fault and Thrashing"
-comments: true
 category: Design
+tags: []
+comments: true
+date: 2014-08-26 00:00
 ---
+
 
 ### Terminologies
 

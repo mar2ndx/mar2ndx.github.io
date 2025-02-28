@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Java OOP] Three Properties of Class/Object "
-comments: true
 category: Java OOP
+tags: []
+comments: true
+date: 2015-08-24 00:00
 ---
+
 
 # Objects
 

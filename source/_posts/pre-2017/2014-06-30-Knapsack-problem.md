@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Question] 0-1 Knapsack Problem"
-comments: true
 category: Question
+tags: []
+comments: true
+date: 2014-06-30 00:00
 ---
+
 
 ### Question
 

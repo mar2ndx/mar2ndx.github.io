@@ -1,11 +1,11 @@
 ---
-layout: post
 title: "[CC150v4] 11.2 Random error debugging 2 "
+category: CC150v4
+tags: []
 comments: true
-categories:
-  - CC150v4
-  - z-testing
+date: 2014-09-08 00:00
 ---
+
 
 ### Question
 

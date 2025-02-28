@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Fundamental] The 7 Bridges Problem "
-comments: true
 category: Fundamental
+tags: []
+comments: true
+date: 2015-10-04 00:00
 ---
+
 
 # Overview
 

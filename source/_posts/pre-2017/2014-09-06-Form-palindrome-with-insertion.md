@@ -1,10 +1,11 @@
 ---
-layout: post
 title: "[Google] Form a Palindrome with Insertion"
-comments: true
 category: q-google
-tags: [ src ]
+tags: []
+comments: true
+date: 2014-09-06 00:00
 ---
+
 
 ### Question 
 

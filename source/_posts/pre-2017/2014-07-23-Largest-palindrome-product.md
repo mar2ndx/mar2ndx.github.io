@@ -1,10 +1,11 @@
 ---
-layout: post
 title: "[Question] Largest palindrome product "
-comments: true
 category: Question
-tags: [ unit test needed ]
+tags: []
+comments: true
+date: 2014-07-23 00:00
 ---
+
 
 ### Question 
 

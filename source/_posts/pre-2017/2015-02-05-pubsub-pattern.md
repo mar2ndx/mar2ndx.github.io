@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Java OOP] PubSub (Publish–subscribe) pattern "
-comments: true
 category: Java OOP
+tags: []
+comments: true
+date: 2015-02-05 00:00
 ---
+
 
 ### Publish–subscribe pattern
 

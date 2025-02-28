@@ -1,10 +1,11 @@
 ---
-layout: post
 title: "[Design] BST Node Insertion / Deletion"
-comments: true
 category: Design
 tags: []
+comments: true
+date: 2014-06-11 00:00
 ---
+
 
 ## First Word
 

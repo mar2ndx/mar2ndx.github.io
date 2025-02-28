@@ -1,11 +1,11 @@
 ---
-layout: post
 title: "[Facebook] Query Search (HashMap, suffix array) "
+category: Question
+tags: []
 comments: true
-categories:
-  - Question
-  - z-string-search
+date: 2014-08-14 00:00
 ---
+
 
 ### Question
 

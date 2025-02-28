@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Question] Reservoir sampling "
-comments: true
 category: Question
+tags: []
+comments: true
+date: 2015-02-07 00:00
 ---
+
 
 [Reservoir sampling](http://en.wikipedia.org/wiki/Reservoir_sampling) is a family of randomized algorithms for randomly choosing k samples from a list of n items, where n is either **a very large number**. Typically n is large enough that the list **doesn’t fit into main memory**. For example, a list of search queries in Google and Facebook.
 

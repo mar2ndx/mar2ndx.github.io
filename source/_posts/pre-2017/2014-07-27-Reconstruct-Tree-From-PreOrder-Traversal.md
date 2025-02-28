@@ -1,10 +1,11 @@
 ---
-layout: post
 title: "[Question] Reconstruct Tree From Pre-Order Traversal"
-comments: true
 category: Question
-tags: [ src ]
+tags: []
+comments: true
+date: 2014-07-27 00:00
 ---
+
 
 ### Question 
 

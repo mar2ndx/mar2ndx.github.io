@@ -1,10 +1,11 @@
 ---
-layout: post
 title: "[CC150v4] 20.3 Generate M int from Array of Size N "
-comments: true
 category: CC150v4
-tags: [ src ]
+tags: []
+comments: true
+date: 2014-09-10 00:00
 ---
+
 
 ### Question
 

@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[LeetCode 52] N-Queens II"
-comments: true
 category: Leetcode
+tags: []
+comments: true
+date: 2014-05-16 00:00
 ---
+
 
 ### Question
 

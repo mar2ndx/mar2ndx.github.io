@@ -1,10 +1,11 @@
 ---
-layout: post
 title: "[CC150v5] 2.7 Linked List Palindrome "
-comments: true
 category: CC150v5
-tags: [ src ]
+tags: []
+comments: true
+date: 2014-09-15 00:00
 ---
+
 
 ### Question
 

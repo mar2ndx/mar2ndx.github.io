@@ -1,10 +1,11 @@
 ---
-layout: post
 title: "[CC150v5] 9.10 Stack up the Boxes "
-comments: true
 category: CC150v5
-tags: [ src ]
+tags: []
+comments: true
+date: 2014-09-17 00:00
 ---
+
 
 ### Question
 

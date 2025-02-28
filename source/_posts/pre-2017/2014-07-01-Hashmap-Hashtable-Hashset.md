@@ -1,10 +1,11 @@
 ---
-layout: post
 title: "[Design] HashMap vs Hashtable vs HashSet"
-comments: true
 category: Design
-tags: [ General ]
+tags: []
+comments: true
+date: 2014-07-01 00:00
 ---
+
 
 ## Overview
 

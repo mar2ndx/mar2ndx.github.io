@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Twitter] Largest Cycle in Permutation "
-comments: true
 category: Question
+tags: []
+comments: true
+date: 2014-08-27 00:00
 ---
+
 
 ### Question
 

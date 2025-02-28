@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Design] How to Design Logging"
-comments: true
 category: Design
+tags: []
+comments: true
+date: 2016-08-01 00:00
 ---
+
 
 # Logging
 

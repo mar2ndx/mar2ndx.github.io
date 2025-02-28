@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Design] From Client/Server to Multi-Tier"
-comments: true
 category: Design
+tags: []
+comments: true
+date: 2014-08-12 00:00
 ---
+
 
 ### Client/Server
 

@@ -1,10 +1,11 @@
 ---
-layout: post
 title: "[Question] First Character Appearing Only Once"
-comments: true
 category: Question
-tags: [ unit test needed ]
+tags: []
+comments: true
+date: 2014-06-10 00:00
 ---
+
 
 
 ### Question 

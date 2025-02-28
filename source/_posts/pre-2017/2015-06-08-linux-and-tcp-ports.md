@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Design] Linux and TCP ports "
-comments: true
 category: Design
+tags: []
+comments: true
+date: 2015-06-08 00:00
 ---
+
 
 # Overview
 

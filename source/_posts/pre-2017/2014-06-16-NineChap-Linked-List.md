@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[NineChap 4.1] Linked List"
-comments: true
 category: NineChap
+tags: []
+comments: true
+date: 2014-06-16 00:00
 ---
+
 
 ## First Word
 

@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Design] Multithreading Basics"
-comments: true
 category: Design
+tags: []
+comments: true
+date: 2014-07-24 00:00
 ---
+
 
 ## Terminologies
 

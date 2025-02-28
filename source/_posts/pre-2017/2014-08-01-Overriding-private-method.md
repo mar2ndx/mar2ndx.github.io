@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Question] Overriding private method"
-comments: true
 category: Question
+tags: []
+comments: true
+date: 2014-08-01 00:00
 ---
+
 
 ### Question
 

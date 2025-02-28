@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Google] Alphabet Table (`)"
-comments: true
 category: q-google
+tags: []
+comments: true
+date: 2014-08-15 00:00
 ---
+
 
 ### Question
 

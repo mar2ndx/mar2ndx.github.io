@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Question] Which loop is faster"
-comments: true
 category: Question
+tags: []
+comments: true
+date: 2014-07-29 00:00
 ---
+
 
 ### Question
 

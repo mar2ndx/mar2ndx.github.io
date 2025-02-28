@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Google] Three Keys Data Structure"
-comments: true
 category: q-google
+tags: []
+comments: true
+date: 2014-08-03 00:00
 ---
+
 
 ### Question
 

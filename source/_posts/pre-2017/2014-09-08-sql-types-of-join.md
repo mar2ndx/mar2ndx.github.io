@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[CC150v4] 15.2 SQL Types of Join "
-comments: true
 category: CC150v4
+tags: []
+comments: true
+date: 2014-09-08 00:00
 ---
+
 
 ### Question
 

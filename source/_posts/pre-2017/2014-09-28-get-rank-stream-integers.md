@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[CC150v5] 11.8 Get Rank in Stream of Integers "
-comments: true
 category: CC150v5
+tags: []
+comments: true
+date: 2014-09-28 00:00
 ---
+
 
 ### Question
 

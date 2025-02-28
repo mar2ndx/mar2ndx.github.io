@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Brain teaser] 2 Eggs 100 Floors Puzzle "
-comments: true
 category: Question
+tags: []
+comments: true
+date: 2014-06-18 00:00
 ---
+
 
 ### Question
 

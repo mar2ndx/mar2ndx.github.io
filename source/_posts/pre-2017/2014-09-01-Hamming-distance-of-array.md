@@ -1,10 +1,11 @@
 ---
-layout: post
 title: "[Facebook] Hamming Distance of Array"
-comments: true
 category: Question
-tags: [ src ]
+tags: []
+comments: true
+date: 2014-09-01 00:00
 ---
+
 
 ### Question 
 

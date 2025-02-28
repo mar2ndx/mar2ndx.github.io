@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Question] Equilibrium Points in 2D Array "
-comments: true
 category: Question
+tags: []
+comments: true
+date: 2014-12-17 00:00
 ---
+
 
 ### Question
 

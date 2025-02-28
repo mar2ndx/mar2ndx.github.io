@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[LeetCode 21] Merge Two Sorted Lists "
-comments: true
 category: Leetcode
+tags: []
+comments: true
+date: 2014-05-09 00:00
 ---
+
 
 ### Question
 

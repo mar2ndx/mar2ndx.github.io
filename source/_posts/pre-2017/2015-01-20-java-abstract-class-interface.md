@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Java OOP] Interface and Abstract classes "
-comments: true
 category: Java OOP
+tags: []
+comments: true
+date: 2015-01-20 00:00
 ---
+
 
 # Definition
 

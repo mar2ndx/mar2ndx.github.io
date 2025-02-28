@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[LeetCode 99] Recover Binary Search Tree"
-comments: true
 category: Leetcode
+tags: []
+comments: true
+date: 2014-05-25 00:00
 ---
+
 
 ### Question
 

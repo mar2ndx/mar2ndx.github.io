@@ -1,10 +1,11 @@
 ---
-layout: post
 title: "[CC150v5] 5.5 Calculate Bits Conversion Required "
-comments: true
 category: CC150v5
-tags: [ src ]
+tags: []
+comments: true
+date: 2014-09-16 00:00
 ---
+
 
 ### Question
 

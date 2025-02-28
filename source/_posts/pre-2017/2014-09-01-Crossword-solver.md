@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Google] Crosswod Solver"
-comments: true
 category: q-google
+tags: []
+comments: true
+date: 2014-09-01 00:00
 ---
+
 
 ### Question
 

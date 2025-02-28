@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[LeetCode 36] Valid Sudoku"
-comments: true
 category: Leetcode
+tags: []
+comments: true
+date: 2014-05-12 00:00
 ---
+
 
 ### Question
 

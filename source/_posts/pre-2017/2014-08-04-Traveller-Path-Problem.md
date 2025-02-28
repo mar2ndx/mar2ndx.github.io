@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Google] Traveller Path Problem "
-comments: true
 category: q-google
+tags: []
+comments: true
+date: 2014-08-04 00:00
 ---
+
 
 ### Question
 

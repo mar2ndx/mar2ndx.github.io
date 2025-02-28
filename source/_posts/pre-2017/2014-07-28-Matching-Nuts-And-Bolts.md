@@ -1,10 +1,11 @@
 ---
-layout: post
 title: "[Question] Matching Nuts And Bolts"
-comments: true
 category: Question
-tags: [  ]
+tags: []
+comments: true
+date: 2014-07-28 00:00
 ---
+
 
 ### Question 
 

@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Design] Networks and TCP/IP"
-comments: true
 category: Design
+tags: []
+comments: true
+date: 2014-08-06 00:00
 ---
+
 
 ## Overview
 

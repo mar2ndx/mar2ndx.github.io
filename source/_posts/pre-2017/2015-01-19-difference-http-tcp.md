@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Design] Difference between HTTP protocol and TCP protocol "
-comments: true
 category: Design
+tags: []
+comments: true
+date: 2015-01-19 00:00
 ---
+
 
 [ref](http://www.quora.com/What-is-the-difference-between-HTTP-protocol-and-TCP-protocol)
 

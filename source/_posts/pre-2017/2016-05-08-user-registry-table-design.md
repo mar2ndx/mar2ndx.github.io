@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Design] User Registry Table Design "
-comments: true
 category: Design
+tags: []
+comments: true
+date: 2016-05-08 00:00
 ---
+
 
 # First word
 

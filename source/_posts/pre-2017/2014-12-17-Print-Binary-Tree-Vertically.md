@@ -1,10 +1,11 @@
 ---
-layout: post
 title: "[Facebook] Print a Binary Tree in Vertical Order "
-comments: true
 category: Question
-tags: [ src ]
+tags: []
+comments: true
+date: 2014-12-17 00:00
 ---
+
 
 ### Question 
 

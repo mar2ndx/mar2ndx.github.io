@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[CC150v4] 17.1 Type a URL in Browser and Hit Enter "
-comments: true
 category: CC150v4
+tags: []
+comments: true
+date: 2014-08-03 00:00
 ---
+
 
 ### Question
 

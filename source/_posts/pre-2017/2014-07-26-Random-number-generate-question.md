@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Question] Random Number Generate Question"
-comments: true
 category: Question
+tags: []
+comments: true
+date: 2014-07-26 00:00
 ---
+
 
 ### Question
 

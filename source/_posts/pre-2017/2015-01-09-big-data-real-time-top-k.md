@@ -1,11 +1,11 @@
 ---
-layout: post
 title: "[Design] Real Time Top k "
+category: Design
+tags: []
 comments: true
-categories:
-  - Design
-  - z-top-K
+date: 2015-01-09 00:00
 ---
+
 
 ### Question
 

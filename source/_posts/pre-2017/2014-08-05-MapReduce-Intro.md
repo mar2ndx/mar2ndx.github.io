@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Design] MapReduce Intro"
-comments: true
 category: Design
+tags: []
+comments: true
+date: 2014-08-05 00:00
 ---
+
 
 ### An Overview
 

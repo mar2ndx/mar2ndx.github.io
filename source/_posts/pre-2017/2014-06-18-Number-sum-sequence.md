@@ -1,10 +1,11 @@
 ---
-layout: post
 title: "[Question] Number Sum Sequence"
-comments: true
 category: Question
-tags: [ unit test needed ]
+tags: []
+comments: true
+date: 2014-06-18 00:00
 ---
+
 
 
 ### Question 

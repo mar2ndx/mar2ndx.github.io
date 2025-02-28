@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Question] Find row with most 1s "
-comments: true
 category: Question
+tags: []
+comments: true
+date: 2014-11-01 00:00
 ---
+
 
 ### Question
 

@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Google] Collatz Conjecture (Oneness property) "
-comments: true
 category: q-google
+tags: []
+comments: true
+date: 2015-02-04 00:00
 ---
+
 
 ### Collatz Conjecture
 

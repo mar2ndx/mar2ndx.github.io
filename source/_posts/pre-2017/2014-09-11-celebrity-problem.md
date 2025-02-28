@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Question] Celebrity Problem "
-comments: true
 category: Question
+tags: []
+comments: true
+date: 2014-09-11 00:00
 ---
+
 
 ### Question
 

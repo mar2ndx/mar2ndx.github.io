@@ -1,12 +1,11 @@
 ---
-layout: post
 title: "[Question] Trie Wildcard String Matching"
+category: Question
+tags: []
 comments: true
-categories:
-- Question
-- z-string-search
-tags: [  ]
+date: 2017-05-22 00:00
 ---
+
 
 # Question
 

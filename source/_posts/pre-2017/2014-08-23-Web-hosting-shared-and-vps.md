@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Design] Shared Hosting vs. VPS Hosting "
-comments: true
 category: Design
+tags: []
+comments: true
+date: 2014-08-23 00:00
 ---
+
 
 ### Shared hosting
 

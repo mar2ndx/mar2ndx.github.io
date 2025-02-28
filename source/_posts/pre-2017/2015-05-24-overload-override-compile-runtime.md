@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Java OOP] Overload, Override, Compile, Runtime (Static/Dynamic Polymph) "
-comments: true
 category: Java OOP
+tags: []
+comments: true
+date: 2015-05-24 00:00
 ---
+
 
 # The master statement
 

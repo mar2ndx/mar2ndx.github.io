@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Question] Check string with no common letters (Bitmask) "
-comments: true
 category: Question
+tags: []
+comments: true
+date: 2015-02-07 00:00
 ---
+
 
 ### Question
 

@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[LeetCode 142] Linked List Cycle II"
-comments: true
 category: Leetcode
+tags: []
+comments: true
+date: 2014-06-02 00:00
 ---
+
 
 ### Question
 

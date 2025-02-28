@@ -1,11 +1,11 @@
 ---
-layout: post
 title: "[Amazon] Match triplet with reverse order "
+category: Question
+tags: []
 comments: true
-categories:
-  - Question
-  - z-string-search
+date: 2015-01-09 00:00
 ---
+
 
 ### Question
 

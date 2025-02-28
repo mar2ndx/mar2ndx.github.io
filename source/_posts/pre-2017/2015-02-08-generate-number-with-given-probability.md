@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Facebook] Generate number with Given probability "
-comments: true
 category: Question
+tags: []
+comments: true
+date: 2015-02-08 00:00
 ---
+
 
 ### Question
 

@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[LeetCode 38] Count and Say"
-comments: true
 category: Leetcode
+tags: []
+comments: true
+date: 2014-05-13 00:00
 ---
+
 
 ### Question
 

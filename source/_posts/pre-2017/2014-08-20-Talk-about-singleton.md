@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Java OOP] Singleton, 3 implementations "
-comments: true
 category: Java OOP
+tags: []
+comments: true
+date: 2014-08-20 00:00
 ---
+
 
 ### Implement Singlton
 

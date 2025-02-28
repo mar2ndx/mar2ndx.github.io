@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[NineChap System Design] Class 3.2: Web Service "
-comments: true
 category: NineChap
+tags: []
+comments: true
+date: 2015-08-28 00:00
 ---
+
 
 # Question 4
 

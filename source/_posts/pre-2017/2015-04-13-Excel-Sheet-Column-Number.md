@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[LeetCode 171] Excel Sheet Column Number "
-comments: true
 category: Leetcode
+tags: []
+comments: true
+date: 2015-04-13 00:00
 ---
+
 
 ### Question
 

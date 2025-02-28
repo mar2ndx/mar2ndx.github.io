@@ -1,10 +1,11 @@
 ---
-layout: post
 title: "[Question] Construct a BST from Preorder Traversal"
-comments: true
 category: Question
-tags: [ src ]
+tags: []
+comments: true
+date: 2014-07-29 00:00
 ---
+
 
 ### Question 
 

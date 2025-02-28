@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Design] Cryptographic Hash, MD5 and Digital signature "
-comments: true
 category: Design
+tags: []
+comments: true
+date: 2014-08-30 00:00
 ---
+
 
 ### Overview
 

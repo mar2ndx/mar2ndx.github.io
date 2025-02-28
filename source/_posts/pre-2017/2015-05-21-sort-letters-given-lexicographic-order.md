@@ -1,10 +1,11 @@
 ---
-layout: post
 title: "[Palantir] Sort Letters Given Lexicographic Order "
-comments: true
 category: Question
-tags: [  ]
+tags: []
+comments: true
+date: 2015-05-21 00:00
 ---
+
 
 ### Question
 

@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[NineChap 9] Big Date, System Design and Resume (`)"
-comments: true
 category: NineChap
+tags: []
+comments: true
+date: 2014-06-30 00:00
 ---
+
 
 ## Resume
 

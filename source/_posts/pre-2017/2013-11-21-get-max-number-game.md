@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Question] Get Max Number Game (minmax + dp) "
-comments: true
 category: Question
+tags: []
+comments: true
+date: 2013-11-21 00:00
 ---
+
 
 # Question
 

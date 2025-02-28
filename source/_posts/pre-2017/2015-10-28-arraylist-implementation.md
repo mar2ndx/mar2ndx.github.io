@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Java OOP] Java ArrayList implementation "
-comments: true
 category: Java OOP
+tags: []
+comments: true
+date: 2015-10-28 00:00
 ---
+
 
 # Overview
 

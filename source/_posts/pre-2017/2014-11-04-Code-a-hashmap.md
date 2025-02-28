@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Google] Code a HashMap "
-comments: true
 category: q-google
+tags: []
+comments: true
+date: 2014-11-04 00:00
 ---
+
 
 ### Question
 

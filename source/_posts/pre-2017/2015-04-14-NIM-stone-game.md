@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Question] 编程之美 NIM 一排石头的游戏 "
-comments: true
 category: Question
+tags: []
+comments: true
+date: 2015-04-14 00:00
 ---
+
 
 ### Question
 

@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Design] Speed Up Webpage for Slow Connection (1) "
-comments: true
 category: Design
+tags: []
+comments: true
+date: 2015-02-14 00:00
 ---
+
 
 [ref](www.geeksforgeeks.org/amazon-interview-set-72-campus-sde-1)
 

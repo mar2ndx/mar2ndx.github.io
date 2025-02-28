@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[LeetCode 35] Search Insert Position "
-comments: true
 category: Leetcode
+tags: []
+comments: true
+date: 2014-05-12 00:00
 ---
+
 
 ### Question
 

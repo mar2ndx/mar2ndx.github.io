@@ -1,10 +1,11 @@
 ---
-layout: post
 title: "[CC150v5] 18.7 Longest Word Made From Other Words "
-comments: true
 category: CC150v5
-tags: [ src ]
+tags: []
+comments: true
+date: 2014-10-02 00:00
 ---
+
 
 ### Question
 

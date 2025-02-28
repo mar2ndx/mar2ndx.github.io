@@ -1,12 +1,11 @@
 ---
-layout: post
 title: "[CC150v4] 14.5 Java Reflection "
+category: CC150v4
+tags: []
 comments: true
-categories:
-- CC150v4
-- Java OOP
-tags: [ src ]
+date: 2014-09-08 00:00
 ---
+
 
 ### Question
 

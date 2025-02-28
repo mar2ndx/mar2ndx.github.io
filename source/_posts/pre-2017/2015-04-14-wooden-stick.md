@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[UVa] Wooden Sticks "
-comments: true
 category: Question
+tags: []
+comments: true
+date: 2015-04-14 00:00
 ---
+
 
 ### Question
 

@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[NineChap 1.2] Permutation"
-comments: true
 category: NineChap
+tags: []
+comments: true
+date: 2014-06-12 00:00
 ---
+
 
 ## First Word
 

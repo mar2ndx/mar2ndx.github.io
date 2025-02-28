@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Google] Number of subtrees with even nodes "
-comments: true
 category: q-google
+tags: []
+comments: true
+date: 2015-02-04 00:00
 ---
+
 
 ### Question
 

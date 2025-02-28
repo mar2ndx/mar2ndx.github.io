@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Question] Count multiples of array "
-comments: true
 category: Question
+tags: []
+comments: true
+date: 2015-02-09 00:00
 ---
+
 
 ### Question
 

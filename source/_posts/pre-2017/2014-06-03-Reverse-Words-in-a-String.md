@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[LeetCode 151] Reverse Words in a String"
-comments: true
 category: Leetcode
+tags: []
+comments: true
+date: 2014-06-03 00:00
 ---
+
 
 ### Question
 

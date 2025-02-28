@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Question] 2D Bin Packing "
-comments: true
 category: Question
+tags: []
+comments: true
+date: 2015-01-30 00:00
 ---
+
 
 ### Question
 

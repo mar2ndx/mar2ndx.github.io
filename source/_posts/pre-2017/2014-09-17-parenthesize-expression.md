@@ -1,10 +1,11 @@
 ---
-layout: post
 title: "[CC150v5] 9.11 Parenthesize the Expression "
-comments: true
 category: CC150v5
-tags: [ src ]
+tags: []
+comments: true
+date: 2014-09-17 00:00
 ---
+
 
 ### Question
 

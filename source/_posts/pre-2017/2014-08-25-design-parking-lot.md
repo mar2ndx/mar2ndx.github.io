@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[CC150v5] 8.4 Design a Parking Lot "
-comments: true
 category: CC150v5
+tags: []
+comments: true
+date: 2014-08-25 00:00
 ---
+
 
 ### Question
 

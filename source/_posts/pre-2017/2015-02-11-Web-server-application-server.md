@@ -1,10 +1,11 @@
 ---
-uuid: b30213ea-c258-368b-145a-4703783e84f3
-layout: post
 title: "[Design] Application Server vs. Web Server"
-comments: true
 category: Design
+tags: []
+comments: true
+date: 2015-02-11 00:00
 ---
+
 
 ## Overview
 

@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Google] Number of distinct substrings "
-comments: true
 category: q-google
+tags: []
+comments: true
+date: 2015-01-08 00:00
 ---
+
 
 ### Question
 

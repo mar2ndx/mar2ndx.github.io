@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[CC150v5] 5.6 Swap Odd and Even Bits "
-comments: true
 category: CC150v5
+tags: []
+comments: true
+date: 2014-09-16 00:00
 ---
+
 
 ### Question
 

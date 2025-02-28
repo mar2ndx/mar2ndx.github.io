@@ -1,10 +1,11 @@
 ---
-layout: post
 title: "[CC150v5] 17.13 Convert BST to DLL "
-comments: true
 category: CC150v5
-tags: [ src ]
+tags: []
+comments: true
+date: 2014-09-30 00:00
 ---
+
 
 ### Question
 

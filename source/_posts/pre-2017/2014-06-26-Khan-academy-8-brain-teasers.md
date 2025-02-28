@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Brain teaser] Khan Academy 8 brain teasers"
-comments: true
 category: Question
+tags: []
+comments: true
+date: 2014-06-26 00:00
 ---
+
 
 ### Question List
 

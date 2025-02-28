@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[LeetCode Plus] Lowest Common Ancestor of Binary Tree (I)"
-comments: true
 category: leetcode_plus
+tags: []
+comments: true
+date: 2014-06-10 00:00
 ---
+
 
 ### Question
 

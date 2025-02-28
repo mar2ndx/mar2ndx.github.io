@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Java OOP] Java modifier and Access Level"
-comments: true
 category: Java OOP
+tags: []
+comments: true
+date: 2014-06-14 00:00
 ---
+
 
 ## 4 Types of Access Level
 
