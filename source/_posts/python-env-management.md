@@ -1,15 +1,9 @@
 ---
-title: Untitled
-category: unknown
-tags: []
-comments: true
-date: 2025-02-24 08:23
----
-
----
 title: Python environment management
-date: 2024-12-05
+category: unknown
 tags:
+comments: true
+date: 2024-12-05
 ---
 
 ## TL;DR
