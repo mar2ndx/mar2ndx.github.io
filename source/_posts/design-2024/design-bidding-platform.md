@@ -1,9 +1,11 @@
 ---
 title: System Design 2024 - Bidding Platform
-comments: true
 category: Design
 tags: []
+comments: true
+date: 2024-09-25 20:23
 ---
+
 
 # Design Bidding Platform
 

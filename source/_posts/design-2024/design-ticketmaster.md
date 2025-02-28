@@ -1,9 +1,11 @@
 ---
 title: System Design 2024 - TicketMaster
-comments: true
 category: Design
 tags: []
+comments: true
+date: 2024-07-29 06:32
 ---
+
 
 # Design TicketMaster
 
