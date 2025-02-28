@@ -7,6 +7,7 @@ date: 2022-12-02 19:19
 ---
 
 
+
 # Question
 
 Digital wallets have made sending and receiving money easier, but they require authentication. A user must have an access token to initiate transactions in this digital wallet system. There are two types of transactions:

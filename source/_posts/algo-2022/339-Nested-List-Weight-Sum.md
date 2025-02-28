@@ -7,6 +7,7 @@ date: 2022-11-18 07:07
 ---
 
 
+
 Link: https://leetcode.cn/problems/nested-list-weight-sum/
 
 # Question

@@ -7,6 +7,7 @@ date: 2022-11-08 21:41
 ---
 
 
+
 Link: https://leetcode.cn/problems/check-if-two-string-arrays-are-equivalent/
 
 # Question

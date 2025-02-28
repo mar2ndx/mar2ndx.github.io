@@ -7,6 +7,7 @@ date: 2022-11-14 00:08
 ---
 
 
+
 Link: https://leetcode.cn/problems/k-empty-slots/
 
 # Question

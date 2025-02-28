@@ -7,6 +7,7 @@ date: 2022-11-08 21:39
 ---
 
 
+
 Link: https://leetcode.cn/problems/k-th-smallest-in-lexicographical-order/
 
 # Question

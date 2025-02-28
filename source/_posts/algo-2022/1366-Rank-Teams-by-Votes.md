@@ -7,6 +7,7 @@ date: 2022-10-30 23:08
 ---
 
 
+
 Link: https://leetcode.cn/problems/rank-teams-by-votes/
 
 # Question

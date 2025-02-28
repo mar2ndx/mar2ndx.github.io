@@ -7,6 +7,7 @@ date: 2022-11-08 21:39
 ---
 
 
+
 Link: https://leetcode.cn/problems/print-binary-tree/solution/shu-chu-er-cha-shu-by-leetcode-solution-cnxu/
 
     Given the root of a binary tree, construct a 0-indexed m x n string matrix res that represents a formatted layout of the tree. The formatted layout matrix should be constructed using the following rules:

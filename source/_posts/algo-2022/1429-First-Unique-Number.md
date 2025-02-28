@@ -7,6 +7,7 @@ date: 2022-11-18 06:34
 ---
 
 
+
 Link: https://leetcode.cn/problems/first-unique-number/
 
 # Question

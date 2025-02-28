@@ -7,6 +7,7 @@ date: 2022-11-18 06:31
 ---
 
 
+
 Link: https://leetcode.cn/problems/leftmost-column-with-at-least-a-one/
 
 # Question
