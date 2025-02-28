@@ -1,9 +1,11 @@
 ---
 title: System Design 2024 - Twitter
-comments: true
 category: Design
 tags: []
+comments: true
+date: 2024-07-29 06:34
 ---
+
 
 # Design Twitter
 

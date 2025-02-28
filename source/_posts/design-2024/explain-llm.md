@@ -1,9 +1,11 @@
 ---
 title: Explain LLM in Simple Terms
-comments: true
 category: LLM
 tags: []
+comments: true
+date: 2024-08-20 10:41
 ---
+
 
 # What is LLM?
 

@@ -1,9 +1,11 @@
 ---
 title: System Design 2024 - Amazon
-comments: true
 category: Design
 tags: []
+comments: true
+date: 2024-09-25 23:03
 ---
+
 
 # Design Amazon
 
