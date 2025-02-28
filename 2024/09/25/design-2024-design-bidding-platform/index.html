@@ -87,7 +87,7 @@
 <h2 id="Option-1-bid-with-Kafka"><a href="#Option-1-bid-with-Kafka" class="headerlink" title="Option 1: bid with Kafka"></a>Option 1: bid with Kafka</h2><p>Use Kafka as log-based message broker. </p>
 <p>Order by log. </p>
 <p>Kafka uses Kernel bypass to achieve high write throughput. </p>
-<p><img src="/images/system-design-bidding-platform-1.png"></p>
+<p><img src="/images/system-design-bidding-platform-1.jpg"></p>
 <p>Downside: use will be notified about bidding result, async. Thus using Kafka is not a great solution. </p>
 <h2 id="Option-2-synchronized-bid"><a href="#Option-2-synchronized-bid" class="headerlink" title="Option 2: synchronized-bid"></a>Option 2: synchronized-bid</h2><p>Bid Engine: single choke point. </p>
 <p>It must handle high throughput. </p>
@@ -100,7 +100,7 @@
 <li>We can partition Bid Engine by auctionID using consistant hashing. </li>
 <li>But make sure all bids for 1 auction always on the same machine.</li>
 </ol>
-<p><img src="/images/system-design-bidding-platform-2.png"></p>
+<p><img src="/images/system-design-bidding-platform-2.jpg"></p>
 <h3 id="How-to-achieve-fault-tolerance"><a href="#How-to-achieve-fault-tolerance" class="headerlink" title="How to achieve fault tolerance?"></a>How to achieve fault tolerance?</h3><p>Need a backup, that only listens to master. </p>
 <p>Each bid has a seq number. </p>
 <h1 id="4-Message-delivery"><a href="#4-Message-delivery" class="headerlink" title="4. Message delivery"></a>4. Message delivery</h1><p>Multiple clients want to know the bidding results, namely: </p>
@@ -111,7 +111,7 @@
 </ol>
 <p>Let’s put in Kafka <strong>so multiple consumers can subscribe</strong>! </p>
 <p>Remember your Kafka is the source of truth, with certain replication configurations. </p>
-<p><img src="/images/system-design-bidding-platform-3.png"></p>
+<p><img src="/images/system-design-bidding-platform-3.jpg"></p>
 <p>Note: </p>
 <ol>
 <li>Publish to Kafka first, then notify user. </li>
@@ -119,18 +119,18 @@
 </ol>
 <h2 id="How-to-keep-Bid-Engine-thoughput-high"><a href="#How-to-keep-Bid-Engine-thoughput-high" class="headerlink" title="How to keep Bid Engine thoughput high?"></a>How to keep Bid Engine thoughput high?</h2><p>Remember now we have additional network call to Kafka, and we need sychronous return to cleint about the bid result. </p>
 <p>Here’s the psueducode. </p>
-<p><img src="/images/system-design-bidding-platform-4.png"></p>
+<p><img src="/images/system-design-bidding-platform-4.jpg"></p>
 <p>But to solve the problem of Kafka race condition: </p>
-<p><img src="/images/system-design-bidding-platform-5.png"></p>
+<p><img src="/images/system-design-bidding-platform-5.jpg"></p>
 <p>这一段没太看懂！</p>
-<h1 id="5-Bid-consumers"><a href="#5-Bid-consumers" class="headerlink" title="5. Bid consumers"></a>5. Bid consumers</h1><p><img src="/images/system-design-bidding-platform-6.png"></p>
+<h1 id="5-Bid-consumers"><a href="#5-Bid-consumers" class="headerlink" title="5. Bid consumers"></a>5. Bid consumers</h1><p><img src="/images/system-design-bidding-platform-6.jpg"></p>
 <h1 id="6-Popular-auctions"><a href="#6-Popular-auctions" class="headerlink" title="6. Popular auctions"></a>6. Popular auctions</h1><p>Many people watching the top Kafka queue. like this:</p>
-<p><img src="/images/system-design-bidding-platform-7.png"></p>
+<p><img src="/images/system-design-bidding-platform-7.jpg"></p>
 <h1 id="7-Auction-ending"><a href="#7-Auction-ending" class="headerlink" title="7. Auction ending"></a>7. Auction ending</h1><ol>
 <li>As bid come in, update the finish time. </li>
 <li>Bid engine occasionally check the auction time.</li>
 </ol>
-<p><img src="/images/system-design-bidding-platform-8.png"></p>
+<p><img src="/images/system-design-bidding-platform-8.jpg"></p>
 <p>Reference：<a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=3aX-lC5_P1M">https://www.youtube.com/watch?v=3aX-lC5_P1M</a></p>
 </main>
 
