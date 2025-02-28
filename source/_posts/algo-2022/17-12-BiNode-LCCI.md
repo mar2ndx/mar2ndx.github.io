@@ -7,6 +7,7 @@ date: 2022-11-08 21:39
 ---
 
 
+
 Link：https://leetcode.cn/problems/binode-lcci/
 
 # Question

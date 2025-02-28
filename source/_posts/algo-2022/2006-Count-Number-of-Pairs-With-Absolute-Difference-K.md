@@ -7,6 +7,7 @@ date: 2022-11-08 21:53
 ---
 
 
+
 Link: https://leetcode.cn/problems/count-number-of-pairs-with-absolute-difference-k/
 
 # Question

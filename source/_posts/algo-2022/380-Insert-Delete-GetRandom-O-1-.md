@@ -7,6 +7,7 @@ date: 2024-07-16 01:25
 ---
 
 
+
 Link: https://leetcode.cn/problems/insert-delete-getrandom-o1/
 
 # Question

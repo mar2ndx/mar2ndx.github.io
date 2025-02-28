@@ -7,6 +7,7 @@ date: 2022-11-08 23:22
 ---
 
 
+
 Link: https://leetcode.cn/problems/remove-digit-from-number-to-maximize-result/
 
 # Question

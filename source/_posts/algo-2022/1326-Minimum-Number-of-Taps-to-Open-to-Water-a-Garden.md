@@ -7,6 +7,7 @@ date: 2022-11-08 21:39
 ---
 
 
+
 Link: https://leetcode.cn/problems/minimum-number-of-taps-to-open-to-water-a-garden/
 
 # Question
