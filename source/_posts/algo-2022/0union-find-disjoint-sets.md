@@ -1,9 +1,11 @@
 ---
 title: 并查集 (261. Graph Valid Tree)
-comments: true
 category: Leetcode
 tags: []
+comments: true
+date: 2022-10-29 20:59
 ---
+
 
 261. Graph Valid Tree 的另一种做法。
 
