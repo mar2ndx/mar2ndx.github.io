@@ -1,8 +1,11 @@
 ---
 title: Node.js - how to use pnpm globally
+category: unknown
+tags: []
+comments: true
 date: 2024-12-08
-tags:
 ---
+
 
 First thing after getting a new Mac:
 
