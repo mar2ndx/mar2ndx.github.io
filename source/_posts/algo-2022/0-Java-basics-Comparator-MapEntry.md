@@ -6,8 +6,6 @@ comments: true
 date: 2022-11-20 05:37
 ---
 
-
-
 **经验：尽量用 Comparator，不要用 Comparable。**
 
 Comparator class 标准写法：
