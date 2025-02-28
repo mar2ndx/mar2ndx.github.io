@@ -1,9 +1,11 @@
 ---
 title: Java Design Pattern
-comments: true
 category: Design
 tags: []
+comments: true
+date: 2022-11-15 21:23
 ---
+
 
 # 开篇
 

@@ -1,9 +1,11 @@
 ---
 title: SpringMVC learning notes
-comments: true
 category: Design
 tags: []
+comments: true
+date: 2022-10-31 02:57
 ---
+
 
 # Spring MVC
 

@@ -1,9 +1,11 @@
 ---
 title: System design cheat sheet
-comments: true
 category: Design
 tags: []
+comments: true
+date: 2022-11-17 08:56
 ---
+
 
 # Answering framework
 

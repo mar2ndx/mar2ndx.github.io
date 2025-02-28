@@ -1,9 +1,11 @@
 ---
 title: MySql (1) - Indexing, Locking and Transaction
-comments: true
 category: Design
 tags: []
+comments: true
+date: 2022-10-30 06:08
 ---
+
 
 # MySQL Knowledge Graph
 

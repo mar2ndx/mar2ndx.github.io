@@ -1,9 +1,11 @@
 ---
 title: Setup Zookeeper + Kafka in VMware
-comments: true
 category: Design
 tags: []
+comments: true
+date: 2024-07-16 01:23
 ---
+
 
 今天，我们在 VMware 中，跑起来 4 台 Zookeeper + 3 台 Kafka 机器。
 

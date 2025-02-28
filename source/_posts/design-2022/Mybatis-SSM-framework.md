@@ -1,9 +1,11 @@
 ---
 title: MyBatis and SSM (Spring/SpringMVC/MyBatis)
-comments: true
 category: Design
 tags: []
+comments: true
+date: 2022-11-01 04:35
 ---
+
 
 # MyBatis
 
