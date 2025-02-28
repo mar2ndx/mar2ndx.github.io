@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Google] Unsolved Mystery of UTF8 Encoding"
-comments: true
 category: q-google
+tags: []
+comments: true
+date: 2014-09-04 00:00
 ---
+
 
 ### Question
 

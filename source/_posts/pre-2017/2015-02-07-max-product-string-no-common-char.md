@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Google] Max prodcut of strings that have no common char "
-comments: true
 category: q-google
+tags: []
+comments: true
+date: 2015-02-07 00:00
 ---
+
 
 ### Question
 

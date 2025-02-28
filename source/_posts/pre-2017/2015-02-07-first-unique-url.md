@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Google] First Unique URL "
-comments: true
 category: q-google
+tags: []
+comments: true
+date: 2015-02-07 00:00
 ---
+
 
 ### Question
 

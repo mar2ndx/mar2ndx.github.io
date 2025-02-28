@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Design] Implemention of DFS using a Stack"
-comments: true
 category: Design
+tags: []
+comments: true
+date: 2014-06-03 00:00
 ---
+
 
 ### First Word
 

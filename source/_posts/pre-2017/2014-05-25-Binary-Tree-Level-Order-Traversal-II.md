@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[LeetCode 107] Binary Tree Level Order Traversal II"
-comments: true
 category: Leetcode
+tags: []
+comments: true
+date: 2014-05-25 00:00
 ---
+
 
 ### Question
 

@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[NineChap 3.1] Binary Tree DFS and Divide Conquer"
-comments: true
 category: NineChap
+tags: []
+comments: true
+date: 2014-06-10 00:00
 ---
+
 
 ## DFS
 

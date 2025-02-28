@@ -1,10 +1,11 @@
 ---
-layout: post
 title: "[CC150v5] 9.3 Find Magic Index "
-comments: true
 category: CC150v5
-tags: [ src ]
+tags: []
+comments: true
+date: 2014-09-17 00:00
 ---
+
 
 ### Question 1 
 

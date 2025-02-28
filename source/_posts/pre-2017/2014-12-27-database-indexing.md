@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Design] Database Indexing "
-comments: true
 category: Design
+tags: []
+comments: true
+date: 2014-12-27 00:00
 ---
+
 
 [ref 1](http://stackoverflow.com/a/1130) [ref 2](http://www.interspire.com/content/2006/02/15/introduction-to-database-indexes/)
 

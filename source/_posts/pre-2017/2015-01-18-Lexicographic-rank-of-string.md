@@ -1,10 +1,11 @@
 ---
-layout: post
 title: "[Amazon] Lexicographic rank of a string "
-comments: true
 category: Question
-tags: [ src ]
+tags: []
+comments: true
+date: 2015-01-18 00:00
 ---
+
 
 ### Question
 

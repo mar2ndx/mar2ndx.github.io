@@ -1,10 +1,11 @@
 ---
-layout: post
 title: "[Question] Dutch national flag problem "
-comments: true
 category: Question
-tags: [  ]
+tags: []
+comments: true
+date: 2017-05-13 00:00
 ---
+
 
 # Question
 

@@ -1,10 +1,11 @@
 ---
-layout: post
 title: "[Question] Median in a stream of integers"
-comments: true
 category: Question
-tags: [ unit test needed ]
+tags: []
+comments: true
+date: 2014-07-01 00:00
 ---
+
 
 ### Question 
 

@@ -1,10 +1,11 @@
 ---
-layout: post
 title: "[LeetCode 126] Word Ladder II (unsolvable)"
-comments: true
 category: Leetcode
-tags: [ unsolvable ]
+tags: []
+comments: true
+date: 2014-05-30 00:00
 ---
+
 
 ### Question 
 [link](https://oj.leetcode.com/problems/word-ladder-ii/)

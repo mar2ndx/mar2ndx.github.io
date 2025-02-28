@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[CC150v5] 3.7 Stack of Animals "
-comments: true
 category: CC150v5
+tags: []
+comments: true
+date: 2014-09-15 00:00
 ---
+
 
 ### Question
 

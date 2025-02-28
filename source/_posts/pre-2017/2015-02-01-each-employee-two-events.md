@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Greedy] Each Employee 2 events "
-comments: true
 category: Question
+tags: []
+comments: true
+date: 2015-02-01 00:00
 ---
+
 
 [link](http://www.careercup.com/question?id=7894677)
 

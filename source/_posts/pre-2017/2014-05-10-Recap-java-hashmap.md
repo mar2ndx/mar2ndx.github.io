@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Fundamental] Recap on Java HashMap "
-comments: true
 category: Fundamental
+tags: []
+comments: true
+date: 2014-05-10 00:00
 ---
+
 
 #### The HashMap
 

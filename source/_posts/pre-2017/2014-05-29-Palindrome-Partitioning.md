@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[LeetCode 131] Palindrome Partitioning"
-comments: true
 category: Leetcode
+tags: []
+comments: true
+date: 2014-05-29 00:00
 ---
+
 
 ### Question
 

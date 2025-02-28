@@ -1,10 +1,11 @@
 ---
-layout: post
 title: "[Question] Duplicate Rows in Matrix"
-comments: true
 category: Question
-tags: [ src ]
+tags: []
+comments: true
+date: 2014-08-27 00:00
 ---
+
 
 ### Question 1
 

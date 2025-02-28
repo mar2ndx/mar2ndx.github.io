@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[LeetCode 110] Balanced Binary Tree"
-comments: true
 category: Leetcode
+tags: []
+comments: true
+date: 2014-05-26 00:00
 ---
+
 
 ### Question
 

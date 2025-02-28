@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Google] Guess Password "
-comments: true
 category: q-google
+tags: []
+comments: true
+date: 2014-09-16 00:00
 ---
+
 
 ### Question
 

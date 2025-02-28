@@ -1,10 +1,11 @@
 ---
-layout: post
 title: "[ItInt5] 跳马问题加强版"
-comments: true
 category: Question
-tags: [ ItInt5 ]
+tags: []
+comments: true
+date: 2014-08-15 00:00
 ---
+
 
 ### Question 
 

@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[NineChap 2.1] Binary Search"
-comments: true
 category: NineChap
+tags: []
+comments: true
+date: 2014-06-08 00:00
 ---
+
 
 ## Binary Search
 

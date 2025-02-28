@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Amazon] Grep command interview question "
-comments: true
 category: Question
+tags: []
+comments: true
+date: 2015-02-04 00:00
 ---
+
 
 ### Question
 

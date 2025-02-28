@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[LeetCode 93] Restore IP Addresses"
-comments: true
 category: Leetcode
+tags: []
+comments: true
+date: 2014-05-24 00:00
 ---
+
 
 ### Question
 

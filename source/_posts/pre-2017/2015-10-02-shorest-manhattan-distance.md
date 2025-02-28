@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Google] Shortest Manhattan Distance "
-comments: true
 category: q-google
+tags: []
+comments: true
+date: 2015-10-02 00:00
 ---
+
 
 ### Question
 

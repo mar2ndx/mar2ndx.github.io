@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Design] Two's complement (2's complement) "
-comments: true
 category: Design
+tags: []
+comments: true
+date: 2014-07-13 00:00
 ---
+
 
 # Overview
 

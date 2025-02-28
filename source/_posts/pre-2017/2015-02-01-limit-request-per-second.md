@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Design] Limit the Request per Second "
-comments: true
 category: Design
+tags: []
+comments: true
+date: 2015-02-01 00:00
 ---
+
 
 ### Question
 

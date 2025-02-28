@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[LeetCode 198] House Robber "
-comments: true
 category: Leetcode
+tags: []
+comments: true
+date: 2015-05-10 00:00
 ---
+
 
 ### Question 
 

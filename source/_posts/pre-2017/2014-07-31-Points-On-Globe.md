@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Question] Points On Globe Puzzle"
-comments: true
 category: Question
+tags: []
+comments: true
+date: 2014-07-31 00:00
 ---
+
 
 ### Question
 

@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Java OOP] OOP - 4 major principles"
-comments: true
 category: Java OOP
+tags: []
+comments: true
+date: 2014-07-21 00:00
 ---
+
 
 ### 4 Principles
 

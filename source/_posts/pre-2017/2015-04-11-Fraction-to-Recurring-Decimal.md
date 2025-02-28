@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[LeetCode 166] Fraction to Recurring Decimal "
-comments: true
 category: Leetcode
+tags: []
+comments: true
+date: 2015-04-11 00:00
 ---
+
 
 ### Question 
 

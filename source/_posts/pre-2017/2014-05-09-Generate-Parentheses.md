@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[LeetCode 22] Generate Parentheses "
-comments: true
 category: Leetcode
+tags: []
+comments: true
+date: 2014-05-09 00:00
 ---
+
 
 ### Question
 

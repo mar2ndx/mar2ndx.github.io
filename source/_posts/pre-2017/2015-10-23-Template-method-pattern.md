@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Java OOP] Template method pattern (abstract class) "
-comments: true
 category: Java OOP
+tags: []
+comments: true
+date: 2015-10-23 00:00
 ---
+
 
 # Overview
 

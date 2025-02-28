@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Question] Multiples of 3 and 5 "
-comments: true
 category: Question
+tags: []
+comments: true
+date: 2014-11-30 00:00
 ---
+
 
 ### Question
 

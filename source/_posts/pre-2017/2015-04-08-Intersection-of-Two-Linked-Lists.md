@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[LeetCode 160] Intersection of Two Linked Lists "
-comments: true
 category: Leetcode
+tags: []
+comments: true
+date: 2015-04-08 00:00
 ---
+
 
 ### Question 
 

@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[LeetCode 168] Excel Sheet Column Title "
-comments: true
 category: Leetcode
+tags: []
+comments: true
+date: 2015-04-14 00:00
 ---
+
 
 ### Question 
 

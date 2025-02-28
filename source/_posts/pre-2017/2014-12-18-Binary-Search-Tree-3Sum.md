@@ -1,10 +1,11 @@
 ---
-layout: post
 title: "[Facebook] Binary Search Tree 3Sum "
-comments: true
 category: Question
-tags: [ src ]
+tags: []
+comments: true
+date: 2014-12-18 00:00
 ---
+
 
 ### Question 
 

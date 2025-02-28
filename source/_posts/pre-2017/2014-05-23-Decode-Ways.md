@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[LeetCode 91] Decode Ways"
-comments: true
 category: Leetcode
+tags: []
+comments: true
+date: 2014-05-23 00:00
 ---
+
 
 ### Question
 

@@ -1,10 +1,11 @@
 ---
-layout: post
 title: "[Question] Longest Substring with At Most Two Distinct Characters "
-comments: true
 category: Question
-tags: [ src ]
+tags: []
+comments: true
+date: 2014-07-21 00:00
 ---
+
 
 ### Question
 

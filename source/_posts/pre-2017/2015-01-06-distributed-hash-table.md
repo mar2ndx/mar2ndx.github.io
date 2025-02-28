@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Design] Distributed hash table "
-comments: true
 category: Design
+tags: []
+comments: true
+date: 2015-01-06 00:00
 ---
+
 
 [ref](http://blog.csdn.net/yfkiss/article/details/6977509)
 

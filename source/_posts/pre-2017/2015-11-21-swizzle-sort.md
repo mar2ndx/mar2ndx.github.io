@@ -1,10 +1,11 @@
 ---
-layout: post
 title: "[Question] Swizzle Sort "
-comments: true
 category: Question
-tags: [  ]
+tags: []
+comments: true
+date: 2015-11-21 00:00
 ---
+
 
 # Question
 

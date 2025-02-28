@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Question] Check Power of 2"
-comments: true
 category: Question
+tags: []
+comments: true
+date: 2014-07-04 00:00
 ---
+
 
 ### Question
 

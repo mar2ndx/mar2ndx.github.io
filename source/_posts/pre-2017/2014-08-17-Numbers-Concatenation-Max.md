@@ -1,10 +1,11 @@
 ---
-layout: post
 title: "[ItInt5] Numbers Concatenation Max (Largest Number) "
-comments: true
 category: Question
-tags: [ ItInt5 ]
+tags: []
+comments: true
+date: 2014-08-17 00:00
 ---
+
 
 ### Question
 

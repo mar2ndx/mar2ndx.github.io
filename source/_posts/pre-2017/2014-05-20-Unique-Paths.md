@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[LeetCode 62] Unique Paths"
-comments: true
 category: Leetcode
+tags: []
+comments: true
+date: 2014-05-20 00:00
 ---
+
 
 ### Question
 

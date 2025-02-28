@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Design] HTTP cookie"
-comments: true
 category: Design
+tags: []
+comments: true
+date: 2014-08-28 00:00
 ---
+
 
 ### First Word
 

@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[LeetCode 147] Insertion Sort List"
-comments: true
 category: Leetcode
+tags: []
+comments: true
+date: 2014-05-30 00:00
 ---
+
 
 ### Question
 

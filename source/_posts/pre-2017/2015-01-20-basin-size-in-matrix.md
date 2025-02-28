@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Palantir] Largest basin size in matrix"
-comments: true
 category: Question
+tags: []
+comments: true
+date: 2015-01-20 00:00
 ---
+
 
 ### Question
 

@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[NineChap 2.2] Sorted Array"
-comments: true
 category: NineChap
+tags: []
+comments: true
+date: 2014-06-09 00:00
 ---
+
 
 ## Sorted Array
 

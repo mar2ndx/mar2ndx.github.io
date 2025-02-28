@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Design] Cloud, Grid and Cluster "
-comments: true
 category: Design
+tags: []
+comments: true
+date: 2015-01-06 00:00
 ---
+
 
 [ref](http://stackoverflow.com/questions/9723040/what-is-the-difference-between-cloud-grid-and-cluster)
 

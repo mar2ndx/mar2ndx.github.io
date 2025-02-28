@@ -1,10 +1,11 @@
 ---
-layout: post
 title: "[Question] Subarray with Sum Closest"
-comments: true
 category: Question
-tags: [ unit test needed ]
+tags: []
+comments: true
+date: 2014-07-04 00:00
 ---
+
 
 ### Question 
 

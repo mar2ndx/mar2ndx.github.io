@@ -1,10 +1,11 @@
 ---
-layout: post
 title: "[Twitter] Count Visible Nodes in Binary Tree"
-comments: true
 category: Question
-tags: [ src ]
+tags: []
+comments: true
+date: 2014-08-27 00:00
 ---
+
 
 ### Question 
 

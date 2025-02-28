@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[LeetCode 191] Number of 1 Bits "
-comments: true
 category: Leetcode
+tags: []
+comments: true
+date: 2015-05-10 00:00
 ---
+
 
 ### Question 
 

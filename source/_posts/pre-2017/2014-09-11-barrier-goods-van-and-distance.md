@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Google] Barrier, Goods Van and Distance "
-comments: true
 category: q-google
+tags: []
+comments: true
+date: 2014-09-11 00:00
 ---
+
 
 ### Question
 

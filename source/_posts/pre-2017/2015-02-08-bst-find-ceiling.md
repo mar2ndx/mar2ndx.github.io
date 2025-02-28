@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Google] BST find ceiling "
-comments: true
 category: q-google
+tags: []
+comments: true
+date: 2015-02-08 00:00
 ---
+
 
 ### Question
 

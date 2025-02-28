@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[NineChap 5.1] Dynamic Programming"
-comments: true
 category: NineChap
+tags: []
+comments: true
+date: 2014-06-24 00:00
 ---
+
 
 ## Dynamic Programming
 

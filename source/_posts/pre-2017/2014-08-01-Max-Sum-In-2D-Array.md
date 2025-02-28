@@ -1,10 +1,11 @@
 ---
-layout: post
 title: "[Question] Max Sum In A 2D Array (sub-matrix) "
-comments: true
 category: Question
-tags: [src]
+tags: []
+comments: true
+date: 2014-08-01 00:00
 ---
+
 
 ### Question
 

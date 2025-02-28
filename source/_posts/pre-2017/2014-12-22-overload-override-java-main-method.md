@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Java OOP] Override/overload Java main method "
-comments: true
 category: Java OOP
+tags: []
+comments: true
+date: 2014-12-22 00:00
 ---
+
 
 ### Can we overload main method in Java?
 

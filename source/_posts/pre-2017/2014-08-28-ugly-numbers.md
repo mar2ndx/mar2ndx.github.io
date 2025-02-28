@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[CC150v4] 10.7 Ugly Numbers (Hamming numbers) "
-comments: true
 category: CC150v4
+tags: []
+comments: true
+date: 2014-08-28 00:00
 ---
+
 
 ### Question
 

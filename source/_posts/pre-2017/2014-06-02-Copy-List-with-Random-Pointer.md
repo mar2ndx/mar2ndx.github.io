@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[LeetCode 138] Copy List with Random Pointer"
-comments: true
 category: Leetcode
+tags: []
+comments: true
+date: 2014-06-02 00:00
 ---
+
 
 ### Question
 

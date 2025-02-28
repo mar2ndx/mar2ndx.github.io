@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[LeetCode 92] Reverse Linked List II"
-comments: true
 category: Leetcode
+tags: []
+comments: true
+date: 2014-05-23 00:00
 ---
+
 
 ### Question
 

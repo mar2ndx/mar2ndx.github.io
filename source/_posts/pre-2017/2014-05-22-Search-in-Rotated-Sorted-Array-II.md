@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[LeetCode 81] Search in Rotated Sorted Array II"
-comments: true
 category: Leetcode
+tags: []
+comments: true
+date: 2014-05-22 00:00
 ---
+
 
 ### Question
 

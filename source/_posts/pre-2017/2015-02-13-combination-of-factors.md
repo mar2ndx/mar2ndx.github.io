@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[LinkedIn] Unique combination of factors (因式分解) "
-comments: true
 category: Question
+tags: []
+comments: true
+date: 2015-02-13 00:00
 ---
+
 
 ### Question
 

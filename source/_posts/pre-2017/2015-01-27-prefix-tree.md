@@ -1,11 +1,11 @@
 ---
-layout: post
 title: "[Fundamental] Prefix Tree "
+category: Fundamental
+tags: []
 comments: true
-categories:
-  - Fundamental
-  - z-string-search
+date: 2015-01-27 00:00
 ---
+
 
 [ref](http://www.geeksforgeeks.org/trie-insert-and-search/)
 

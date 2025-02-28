@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[LeetCode 73] Set Matrix Zeroes"
-comments: true
 category: Leetcode
+tags: []
+comments: true
+date: 2014-05-21 00:00
 ---
+
 
 ### Question
 

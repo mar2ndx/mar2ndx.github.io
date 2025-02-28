@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[LeetCode 17] Letter Combinations of a Phone Number"
-comments: true
 category: Leetcode
+tags: []
+comments: true
+date: 2014-05-02 00:00
 ---
+
 
 ### Question
 

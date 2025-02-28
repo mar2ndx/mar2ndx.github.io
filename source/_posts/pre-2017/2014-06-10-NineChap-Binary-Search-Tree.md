@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[NineChap 3.3] Binary Search Tree"
-comments: true
 category: NineChap
+tags: []
+comments: true
+date: 2014-06-10 00:00
 ---
+
 
 ## Question list
 

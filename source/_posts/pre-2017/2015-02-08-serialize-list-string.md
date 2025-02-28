@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Google] Transform a unbalanced tree into balanced tree "
-comments: true
 category: q-google
+tags: []
+comments: true
+date: 2015-02-08 00:00
 ---
+
 
 ### Question
 

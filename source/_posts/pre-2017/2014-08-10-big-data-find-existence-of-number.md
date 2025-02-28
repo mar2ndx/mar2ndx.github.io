@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Design] Big Data - Find Existence of a Number"
-comments: true
 category: Design
+tags: []
+comments: true
+date: 2014-08-10 00:00
 ---
+
 
 ### Question
 

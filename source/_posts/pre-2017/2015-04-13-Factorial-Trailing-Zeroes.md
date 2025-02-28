@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[LeetCode 172] Factorial Trailing Zeroes "
-comments: true
 category: Leetcode
+tags: []
+comments: true
+date: 2015-04-13 00:00
 ---
+
 
 ### Question
 

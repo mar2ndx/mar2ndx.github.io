@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Design] Median of array in Distributed Computers"
-comments: true
 category: Design
+tags: []
+comments: true
+date: 2014-08-09 00:00
 ---
+
 
 ### Question
 

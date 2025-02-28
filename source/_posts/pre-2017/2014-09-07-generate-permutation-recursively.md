@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[CC150v4] 8.4 Generate Permutation Recursively "
-comments: true
 category: CC150v4
+tags: []
+comments: true
+date: 2014-09-07 00:00
 ---
+
 
 ### Question
 

@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[LeetCode 149] Max Points on a Line"
-comments: true
 category: Leetcode
+tags: []
+comments: true
+date: 2014-06-03 00:00
 ---
+
 
 ### Question
 

@@ -1,10 +1,11 @@
 ---
-layout: post
 title: "[Question] Print Numbers containing 5"
-comments: true
 category: Question
-tags: [ src ]
+tags: []
+comments: true
+date: 2014-08-05 00:00
 ---
+
 
 ### Question
 

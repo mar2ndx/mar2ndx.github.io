@@ -1,10 +1,11 @@
 ---
-layout: post
 title: "[Amazon] All Strings by Placing Spaces "
-comments: true
 category: Question
-tags: [  ]
+tags: []
+comments: true
+date: 2015-10-07 00:00
 ---
+
 
 ### Question
 

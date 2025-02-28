@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Google] Million Phone Numbers"
-comments: true
 category: q-google
+tags: []
+comments: true
+date: 2014-08-07 00:00
 ---
+
 
 ### Question 1
 

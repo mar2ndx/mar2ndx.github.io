@@ -1,10 +1,11 @@
 ---
-layout: post
 title: "[Java OOP] BlockingQueue and Thread Pool "
-comments: true
 category: Java OOP
-tags: [ src ]
+tags: []
+comments: true
+date: 2015-01-12 00:00
 ---
+
 
 ### Blocking Queue VS. Thread Pool
 

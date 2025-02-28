@@ -1,10 +1,11 @@
 ---
-layout: post
 title: "[Google] Find Occurance Greater Than Index"
-comments: true
 category: q-google
-tags: [ unit test needed ]
+tags: []
+comments: true
+date: 2014-08-04 00:00
 ---
+
 
 ### Question 
 

@@ -1,10 +1,11 @@
 ---
-layout: post
 title: "[LeetCode Plus] Coins in a Line "
-comments: true
 category: leetcode_plus
-tags: [ unit test needed ]
+tags: []
+comments: true
+date: 2014-07-27 00:00
 ---
+
 
 ### Question 
 

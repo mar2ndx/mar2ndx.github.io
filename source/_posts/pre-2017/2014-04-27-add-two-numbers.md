@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[LeetCode 2] Add Two Numbers"
-comments: true
 category: Leetcode
+tags: []
+comments: true
+date: 2014-04-27 00:00
 ---
+
 
 ### Question
 

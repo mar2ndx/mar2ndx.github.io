@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Brain teaser] 6.1 Bottles of Pills "
-comments: true
 category: CC150v5
+tags: []
+comments: true
+date: 2014-09-16 00:00
 ---
+
 
 ### Question
 

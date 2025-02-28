@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[LintCode] Majority Number "
-comments: true
 category: LintCode
+tags: []
+comments: true
+date: 2014-06-28 00:00
 ---
+
 
 ### Question
 

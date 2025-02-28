@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Google] Write a Random Number Generator"
-comments: true
 category: q-google
+tags: []
+comments: true
+date: 2014-08-05 00:00
 ---
+
 
 ### Question
 

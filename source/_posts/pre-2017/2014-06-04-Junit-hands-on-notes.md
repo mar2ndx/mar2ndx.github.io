@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Question] Junit Hand-on Notes"
-comments: true
 category: Question
+tags: []
+comments: true
+date: 2014-06-04 00:00
 ---
+
 
 ## First Word
 

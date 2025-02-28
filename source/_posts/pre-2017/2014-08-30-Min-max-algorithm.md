@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Fundamental] Min-Max Algorithm (minmax) "
-comments: true
 category: Fundamental
+tags: []
+comments: true
+date: 2014-08-30 00:00
 ---
+
 
 ### Definition
 

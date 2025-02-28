@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Design] P2P Technology "
-comments: true
 category: Design
+tags: []
+comments: true
+date: 2015-01-07 00:00
 ---
+
 
 ### Overview
 

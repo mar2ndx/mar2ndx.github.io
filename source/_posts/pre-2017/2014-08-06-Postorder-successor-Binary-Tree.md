@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Google] Postorder successor in Binary Tree"
-comments: true
 category: q-google
+tags: []
+comments: true
+date: 2014-08-06 00:00
 ---
+
 
 ### Question
 

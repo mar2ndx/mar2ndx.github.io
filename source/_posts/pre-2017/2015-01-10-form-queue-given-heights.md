@@ -1,10 +1,11 @@
 ---
-layout: post
 title: "[Google] Form a Queue Given Heights "
-comments: true
 category: q-google
-tags: [ src ]
+tags: []
+comments: true
+date: 2015-01-10 00:00
 ---
+
 
 ### Question 
 

@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Design] Terminology: n-gram "
-comments: true
 category: Design
+tags: []
+comments: true
+date: 2015-01-09 00:00
 ---
+
 
 ### n-gram
 

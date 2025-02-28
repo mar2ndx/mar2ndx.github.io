@@ -1,10 +1,11 @@
 ---
-layout: post
 title: "[Facebook] Scheduling Jobs with Max Cost "
-comments: true
 category: Question
-tags: [ src ]
+tags: []
+comments: true
+date: 2015-01-07 00:00
 ---
+
 
 ### Question 
 

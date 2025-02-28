@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Question] Union and Intersection of two Linked Lists"
-comments: true
 category: Question
+tags: []
+comments: true
+date: 2014-06-17 00:00
 ---
+
 
 ### Question
 

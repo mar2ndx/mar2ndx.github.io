@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[LeetCode 56] Merge Intervals"
-comments: true
 category: Leetcode
+tags: []
+comments: true
+date: 2014-05-17 00:00
 ---
+
 
 ### Question
 

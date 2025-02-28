@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Design] HBase and HDFS"
-comments: true
 category: Design
+tags: []
+comments: true
+date: 2015-02-15 00:00
 ---
+
 
 ### Overview
 

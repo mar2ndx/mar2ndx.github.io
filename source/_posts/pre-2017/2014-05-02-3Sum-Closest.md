@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[LeetCode 16] 3Sum Closest"
-comments: true
 category: Leetcode
+tags: []
+comments: true
+date: 2014-05-02 00:00
 ---
+
 
 ### Question
 

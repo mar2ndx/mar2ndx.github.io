@@ -1,8 +1,11 @@
 ---
-layout: post
 title: "[Java OOP] What is Java Exception"
 category: Java OOP
+tags: []
+comments: true
+date: 2015-10-23 00:00
 ---
+
 
 # The class
 

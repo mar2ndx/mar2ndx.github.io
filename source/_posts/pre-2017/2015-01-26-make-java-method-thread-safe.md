@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Google] Make a Java method thread-safe "
-comments: true
 category: q-google
+tags: []
+comments: true
+date: 2015-01-26 00:00
 ---
+
 
 ### Question
 

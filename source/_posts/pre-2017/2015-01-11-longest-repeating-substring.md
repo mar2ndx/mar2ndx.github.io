@@ -1,12 +1,11 @@
 ---
-layout: post
 title: "[Amazon] Longest Repeating Substring "
+category: Question
+tags: []
 comments: true
-categories:
-- Question
-- z-string-search
-tags: [ src ]
+date: 2015-01-11 00:00
 ---
+
 
 ### Question
 

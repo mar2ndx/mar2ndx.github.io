@@ -1,10 +1,11 @@
 ---
-layout: post
 title: "[LintCode] Recover Rotated Sorted Array"
-comments: true
 category: Lintcode
 tags: []
+comments: true
+date: 2014-06-08 00:00
 ---
+
 
 ### Question
 

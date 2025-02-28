@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Design] Stack and Heap"
-comments: true
 category: Design
+tags: []
+comments: true
+date: 2014-08-23 00:00
 ---
+
 
 ### Overview
 

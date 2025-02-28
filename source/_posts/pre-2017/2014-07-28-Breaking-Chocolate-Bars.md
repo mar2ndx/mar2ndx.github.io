@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Question] Breaking Chocolate Bars "
-comments: true
 category: Question
+tags: []
+comments: true
+date: 2014-07-28 00:00
 ---
+
 
 ### Game #1
 

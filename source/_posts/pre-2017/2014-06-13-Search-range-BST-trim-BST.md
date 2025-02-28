@@ -1,10 +1,11 @@
 ---
-layout: post
 title: "[Question] Search Range in BST (Trim a BST)"
-comments: true
 category: Question
-tags: [unit test needed]
+tags: []
+comments: true
+date: 2014-06-13 00:00
 ---
+
 
 ### Question
 

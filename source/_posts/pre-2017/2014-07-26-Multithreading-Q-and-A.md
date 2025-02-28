@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Design] Multithreading Q&A"
-comments: true
 category: Design
+tags: []
+comments: true
+date: 2014-07-26 00:00
 ---
+
 
 ## General Q & A
 

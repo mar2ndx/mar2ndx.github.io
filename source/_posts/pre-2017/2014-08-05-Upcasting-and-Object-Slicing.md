@@ -1,10 +1,11 @@
 ---
-layout: post
 title: "[Java OOP] Upcasting, Downcasting and Object Slicing"
-comments: true
 category: Java OOP
-tags: [src]
+tags: []
+comments: true
+date: 2014-08-05 00:00
 ---
+
 
 ### Upcasting and Downcasting
 

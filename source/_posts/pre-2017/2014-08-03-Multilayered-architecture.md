@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Design] Multilayered architecture"
-comments: true
 category: Design
+tags: []
+comments: true
+date: 2014-08-03 00:00
 ---
+
 
 ### First Word
 

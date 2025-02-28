@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Testing] Random error debugging 1 "
-comments: true
 category: Testing
+tags: []
+comments: true
+date: 2014-08-07 00:00
 ---
+
 
 ### Question
 

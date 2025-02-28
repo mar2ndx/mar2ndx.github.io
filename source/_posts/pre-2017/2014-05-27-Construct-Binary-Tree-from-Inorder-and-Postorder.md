@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[LeetCode 106] Construct Binary Tree from Inorder and Postorder"
-comments: true
 category: Leetcode
+tags: []
+comments: true
+date: 2014-05-27 00:00
 ---
+
 
 ### Question
 

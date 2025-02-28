@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Design] Merits of BST over HashTables"
-comments: true
 category: Design
+tags: []
+comments: true
+date: 2014-08-23 00:00
 ---
+
 
 ### Question
 

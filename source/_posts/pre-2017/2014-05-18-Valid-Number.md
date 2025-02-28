@@ -1,10 +1,11 @@
 ---
-layout: post
 title: "[LeetCode 65] Valid Number (unsolvable)"
-comments: true
 category: Leetcode
-tags: [ unsolvable ]
+tags: []
+comments: true
+date: 2014-05-18 00:00
 ---
+
 
 ### Question 
 

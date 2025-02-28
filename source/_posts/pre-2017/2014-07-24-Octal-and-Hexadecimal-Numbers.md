@@ -1,10 +1,11 @@
 ---
-layout: post
 title: "[Java OOP] Octal and Hexadecimal Numbers in Java"
-comments: true
 category: Java OOP
-tags: [ src ]
+tags: []
+comments: true
+date: 2014-07-24 00:00
 ---
+
 
 ### Question 
 

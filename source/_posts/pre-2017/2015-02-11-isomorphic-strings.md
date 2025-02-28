@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[LinkedIn] Isomorphic Strings "
-comments: true
 category: Question
+tags: []
+comments: true
+date: 2015-02-11 00:00
 ---
+
 
 ### Question
 

@@ -1,10 +1,11 @@
 ---
-layout: post
 title: "[Google] Array Distance A(i)+A(j)+(j-i) "
-comments: true
 category: q-google
-tags: [ src ]
+tags: []
+comments: true
+date: 2014-09-02 00:00
 ---
+
 
 ### Question 
 

@@ -1,10 +1,11 @@
 ---
-layout: post
 title: "[Question] Iterator of Binary Search Tree"
-comments: true
 category: Question
 tags: []
+comments: true
+date: 2014-06-14 00:00
 ---
+
 
 ### Question
 

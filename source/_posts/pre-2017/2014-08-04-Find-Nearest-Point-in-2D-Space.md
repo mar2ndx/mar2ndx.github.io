@@ -1,10 +1,11 @@
 ---
-layout: post
 title: "[Google] Find Nearest Point in a 2D Space"
-comments: true
 category: q-google
-tags: [ unit test needed ]
+tags: []
+comments: true
+date: 2014-08-04 00:00
 ---
+
 
 ### Question 
 

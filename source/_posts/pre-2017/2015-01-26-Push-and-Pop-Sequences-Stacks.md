@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Question] Push and Pop Sequences of Stacks"
-comments: true
 category: Question
+tags: []
+comments: true
+date: 2015-01-26 00:00
 ---
+
 
 ### Question
 

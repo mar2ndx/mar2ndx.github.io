@@ -1,10 +1,11 @@
 ---
-layout: post
 title: "[Question] Single Number III"
-comments: true
 category: Question
-tags: [ unit test needed ]
+tags: []
+comments: true
+date: 2014-06-28 00:00
 ---
+
 
 
 ### Question 

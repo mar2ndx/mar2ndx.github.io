@@ -1,10 +1,11 @@
 ---
-layout: post
 title: "[CC150v4] 9.7 Circus Tower Routine"
-comments: true
 category: CC150v4
-tags: [ src ]
+tags: []
+comments: true
+date: 2014-08-12 00:00
 ---
+
 
 ### Question 
 

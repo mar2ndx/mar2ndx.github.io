@@ -1,10 +1,11 @@
 ---
-layout: post
 title: "[Question] Max Sum Of Non-Consecutive Elements"
-comments: true
 category: Question
-tags: [ src ]
+tags: []
+comments: true
+date: 2014-08-08 00:00
 ---
+
 
 ### Question 
 

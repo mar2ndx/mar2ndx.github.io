@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[LeetCode 136] Single Number"
-comments: true
 category: Leetcode
+tags: []
+comments: true
+date: 2014-06-01 00:00
 ---
+
 
 ### Question
 

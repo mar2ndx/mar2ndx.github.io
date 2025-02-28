@@ -1,11 +1,11 @@
 ---
-layout: post
 title: "[CC150v4] 20.6 Top Million from Billion "
+category: CC150v4
+tags: []
 comments: true
-categories:
-  - CC150v4
-  - z-top-K
+date: 2014-09-10 00:00
 ---
+
 
 ### Question
 

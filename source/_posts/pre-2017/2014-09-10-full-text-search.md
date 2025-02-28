@@ -1,11 +1,11 @@
 ---
-layout: post
 title: "[CC150v4] 20.8 Full Text Search (suffix tree) "
+category: CC150v4
+tags: []
 comments: true
-categories:
-  - CC150v4
-  - z-string-search
+date: 2014-09-10 00:00
 ---
+
 
 ### Question
 

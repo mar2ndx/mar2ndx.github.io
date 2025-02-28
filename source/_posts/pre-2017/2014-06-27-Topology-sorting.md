@@ -1,10 +1,11 @@
 ---
-layout: post
 title: "[Question] Topology Sort "
-comments: true
 category: Question
-tags: [unit test needed]
+tags: []
+comments: true
+date: 2014-06-27 00:00
 ---
+
 
 ### Question
 

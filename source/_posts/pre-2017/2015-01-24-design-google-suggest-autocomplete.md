@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Design] Design Google Suggest (autocomplete) "
-comments: true
 category: Design
+tags: []
+comments: true
+date: 2015-01-24 00:00
 ---
+
 
 ### Overview
 

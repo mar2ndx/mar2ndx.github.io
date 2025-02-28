@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Design] Multithreading - Deadlock Prevention "
-comments: true
 category: Design
+tags: []
+comments: true
+date: 2014-09-01 00:00
 ---
+
 
 ### Question
 

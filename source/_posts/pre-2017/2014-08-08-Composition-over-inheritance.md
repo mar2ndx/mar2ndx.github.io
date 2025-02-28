@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Design] Composition Over Inheritance"
-comments: true
 category: Design
+tags: []
+comments: true
+date: 2014-08-08 00:00
 ---
+
 
 ### Overview
 

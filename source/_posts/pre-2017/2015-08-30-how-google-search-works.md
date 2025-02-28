@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Design] How Google search works "
-comments: true
 category: Design
+tags: []
+comments: true
+date: 2015-08-30 00:00
 ---
+
 
 # Overview
 

@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[LeetCode 44] Wildcard Matching"
-comments: true
 category: Leetcode
+tags: []
+comments: true
+date: 2014-05-15 00:00
 ---
+
 
 ### Question
 

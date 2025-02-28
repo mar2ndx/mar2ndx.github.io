@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[LeetCode 137] Single Number II"
-comments: true
 category: Leetcode
+tags: []
+comments: true
+date: 2014-06-01 00:00
 ---
+
 
 ### Question
 

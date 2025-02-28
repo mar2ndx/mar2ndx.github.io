@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[NineChap System Design] Class 1.2: An Example "
-comments: true
 category: NineChap
+tags: []
+comments: true
+date: 2015-08-23 00:00
 ---
+
 
 # A bottom-up example
 

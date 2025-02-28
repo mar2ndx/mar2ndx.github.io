@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[LeetCode 34] Search for a Range"
-comments: true
 category: Leetcode
+tags: []
+comments: true
+date: 2014-05-12 00:00
 ---
+
 
 ### Question
 

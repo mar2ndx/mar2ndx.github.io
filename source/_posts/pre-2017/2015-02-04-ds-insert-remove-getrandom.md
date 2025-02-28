@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Google] Data Structure of Insert, Remove, GetRandom "
-comments: true
 category: q-google
+tags: []
+comments: true
+date: 2015-02-04 00:00
 ---
+
 
 ### Question
 

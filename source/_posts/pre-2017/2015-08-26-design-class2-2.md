@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[NineChap System Design] Class 2.2: Database "
-comments: true
 category: NineChap
+tags: []
+comments: true
+date: 2015-08-26 00:00
 ---
+
 
 # Question 5
 

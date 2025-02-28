@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[LeetCode 169] Majority Element "
-comments: true
 category: Leetcode
+tags: []
+comments: true
+date: 2015-04-14 00:00
 ---
+
 
 ### Question
 

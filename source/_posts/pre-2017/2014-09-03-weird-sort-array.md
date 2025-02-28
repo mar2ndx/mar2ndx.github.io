@@ -1,10 +1,11 @@
 ---
-layout: post
 title: "[Google] Weird Sort Array "
-comments: true
 category: q-google
-tags: [ src ]
+tags: []
+comments: true
+date: 2014-09-03 00:00
 ---
+
 
 ### Question 
 

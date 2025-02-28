@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Design] Difference between HTTP and HTTPS "
-comments: true
 category: Design
+tags: []
+comments: true
+date: 2015-01-20 00:00
 ---
+
 
 [ref](http://stackoverflow.com/a/8375247)
 

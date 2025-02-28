@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[NineChap System Design] Class 4.1: Crawler "
-comments: true
 category: NineChap
+tags: []
+comments: true
+date: 2015-08-30 00:00
 ---
+
 
 # Overview
 

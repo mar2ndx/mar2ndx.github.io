@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[NineChap 3.4] Binary Tree Additional"
-comments: true
 category: NineChap
+tags: []
+comments: true
+date: 2014-06-15 00:00
 ---
+
 
 These are some additional questions that are not covered in previous NineChap posts. Some questions are non-standard and difficult to solve, and some are not found in OJ websites. But these are real questions that has been asked during interviews.
 

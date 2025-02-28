@@ -1,10 +1,11 @@
 ---
-layout: post
 title: "[Google] Product All 1s"
-comments: true
 category: q-google
-tags: [ src ]
+tags: []
+comments: true
+date: 2014-08-15 00:00
 ---
+
 
 ### Question 
 

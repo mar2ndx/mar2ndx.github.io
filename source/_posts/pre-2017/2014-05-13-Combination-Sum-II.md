@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[LeetCode 40] Combination Sum II"
-comments: true
 category: Leetcode
+tags: []
+comments: true
+date: 2014-05-13 00:00
 ---
+
 
 ### Question
 

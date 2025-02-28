@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[CC150v4] 20.12 Sub-matrix with Largest Sum "
-comments: true
 category: CC150v4
+tags: []
+comments: true
+date: 2014-09-10 00:00
 ---
+
 
 ### Question
 

@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Design] Facebook Photo Storage "
-comments: true
 category: Design
+tags: []
+comments: true
+date: 2015-09-02 00:00
 ---
+
 
 # Stats
 

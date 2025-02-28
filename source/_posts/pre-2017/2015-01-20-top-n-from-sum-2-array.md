@@ -1,10 +1,11 @@
 ---
-layout: post
 title: "[Google] Top n values from Sum of 2 arrays "
-comments: true
 category: q-google
-tags: [ src ]
+tags: []
+comments: true
+date: 2015-01-20 00:00
 ---
+
 
 ### Question 
 

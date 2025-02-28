@@ -1,10 +1,11 @@
 ---
-layout: post
 title: "[Google] Reverse a Stack without DS "
-comments: true
 category: q-google
-tags: [ src ]
+tags: []
+comments: true
+date: 2015-01-10 00:00
 ---
+
 
 ### Question 
 

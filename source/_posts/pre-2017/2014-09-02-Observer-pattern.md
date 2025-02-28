@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Java OOP] Observer pattern "
-comments: true
 category: Java OOP
+tags: []
+comments: true
+date: 2014-09-02 00:00
 ---
+
 
 ### Observer pattern
 

@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[NineChap 4.2] Linked List Additional"
-comments: true
 category: NineChap
+tags: []
+comments: true
+date: 2014-06-18 00:00
 ---
+
 
 ## Question list
 

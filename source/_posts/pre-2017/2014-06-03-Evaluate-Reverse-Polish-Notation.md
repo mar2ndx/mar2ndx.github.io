@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[LeetCode 150] Evaluate Reverse Polish Notation"
-comments: true
 category: Leetcode
+tags: []
+comments: true
+date: 2014-06-03 00:00
 ---
+
 
 ### Question
 

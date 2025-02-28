@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Design] DNS Communication Protocol "
-comments: true
 category: Design
+tags: []
+comments: true
+date: 2014-09-12 00:00
 ---
+
 
 ### Question
 

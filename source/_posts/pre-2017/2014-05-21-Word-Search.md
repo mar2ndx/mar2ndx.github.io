@@ -1,11 +1,11 @@
 ---
-layout: post
 title: "[LeetCode 79] Word Search"
+category: Leetcode
+tags: []
 comments: true
-categories:
-  - Leetcode
-  - z-string-search
+date: 2014-05-21 00:00
 ---
+
 
 ### Question
 

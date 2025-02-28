@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Design] Big Data - Find Common Elements in 2 Lists "
-comments: true
 category: Design
+tags: []
+comments: true
+date: 2015-02-08 00:00
 ---
+
 
 ### Traditional solution
 

@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Design] Hadoop cluster"
-comments: true
 category: Design
+tags: []
+comments: true
+date: 2014-08-04 00:00
 ---
+
 
 [link](http://searchbusinessanalytics.techtarget.com/definition/Hadoop-cluster)
 

@@ -1,10 +1,11 @@
 ---
-layout: post
 title: "[LeetCode Plus] Reverse linked list iteratively and recursively"
-comments: true
 category: leetcode_plus
-tags: [ unit test needed ]
+tags: []
+comments: true
+date: 2014-06-17 00:00
 ---
+
 
 ### Question 
 

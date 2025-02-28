@@ -1,10 +1,11 @@
 ---
-layout: post
 title: "[Google] Replace Question Mark With Number"
-comments: true
 category: q-google
-tags: [ src ]
+tags: []
+comments: true
+date: 2014-08-05 00:00
 ---
+
 
 ### Question 
 

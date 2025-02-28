@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[LeetCode 128] Longest Consecutive Sequence"
-comments: true
 category: Leetcode
+tags: []
+comments: true
+date: 2014-05-29 00:00
 ---
+
 
 ### Question
 

@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Design] Speed Up Webpage for Slow Connection (4) "
-comments: true
 category: Design
+tags: []
+comments: true
+date: 2015-02-14 00:00
 ---
+
 
 ### What hijacks your load time
 

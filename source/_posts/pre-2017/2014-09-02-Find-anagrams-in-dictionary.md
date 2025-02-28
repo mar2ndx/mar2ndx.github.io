@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Google] Find Anagrams in Dictionary "
-comments: true
 category: q-google
+tags: []
+comments: true
+date: 2014-09-02 00:00
 ---
+
 
 ### Question
 

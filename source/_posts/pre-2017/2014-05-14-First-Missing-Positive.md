@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[LeetCode 41] First Missing Positive"
-comments: true
 category: Leetcode
+tags: []
+comments: true
+date: 2014-05-14 00:00
 ---
+
 
 ### Question
 

@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Java OOP] Interface extend another Interface "
-comments: true
 category: Java OOP
+tags: []
+comments: true
+date: 2014-12-22 00:00
 ---
+
 
 ### Can an interface extend another interface in Java?
 

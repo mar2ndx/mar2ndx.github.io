@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Java OOP] Java Global Variable"
-comments: true
 category: Java OOP
+tags: []
+comments: true
+date: 2014-06-15 00:00
 ---
+
 
 ### Global variable?
 

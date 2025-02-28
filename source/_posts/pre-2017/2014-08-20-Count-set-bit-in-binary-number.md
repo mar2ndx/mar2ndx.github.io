@@ -1,10 +1,11 @@
 ---
-layout: post
 title: "[Question] Count Set Bit in Binary Number"
-comments: true
 category: Question
-tags: [ src ]
+tags: []
+comments: true
+date: 2014-08-20 00:00
 ---
+
 
 ### Question 
 

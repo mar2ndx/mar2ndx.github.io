@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[LeetCode 173] Binary Search Tree Iterator "
-comments: true
 category: Leetcode
+tags: []
+comments: true
+date: 2015-04-15 00:00
 ---
+
 
 ### Question
 

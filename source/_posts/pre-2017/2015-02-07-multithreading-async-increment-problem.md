@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Design] Multithreading Async Increment Problem "
-comments: true
 category: Design
+tags: []
+comments: true
+date: 2015-02-07 00:00
 ---
+
 
 ### Question
 

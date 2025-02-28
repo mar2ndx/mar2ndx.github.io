@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Java OOP] Common Root of Java Classes "
-comments: true
 category: Java OOP
+tags: []
+comments: true
+date: 2014-12-22 00:00
 ---
+
 
 ### Common Root Class
 

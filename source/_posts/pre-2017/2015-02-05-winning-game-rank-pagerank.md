@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Design] Winning Games Rank (pagerank) "
-comments: true
 category: Design
+tags: []
+comments: true
+date: 2015-02-05 00:00
 ---
+
 
 ### Question
 

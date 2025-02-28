@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Java OOP] Java Vector and ArrayList "
-comments: true
 category: Java OOP
+tags: []
+comments: true
+date: 2015-01-20 00:00
 ---
+
 
 ### Difference
 

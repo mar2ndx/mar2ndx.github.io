@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Fundamental] Segment Tree "
-comments: true
 category: Fundamental
+tags: []
+comments: true
+date: 2015-10-08 00:00
 ---
+
 
 # Overview
 

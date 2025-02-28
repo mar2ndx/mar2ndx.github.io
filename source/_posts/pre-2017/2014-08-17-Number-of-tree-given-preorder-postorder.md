@@ -1,10 +1,11 @@
 ---
-layout: post
 title: "[ItInt5] Number of Valid Trees Given Preorder and Postorder "
-comments: true
 category: Question
-tags: [ ItInt5 ]
+tags: []
+comments: true
+date: 2014-08-17 00:00
 ---
+
 
 ### Question 
 

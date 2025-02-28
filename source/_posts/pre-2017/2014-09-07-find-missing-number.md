@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[CC150v4] 5.7 Find Missing Number "
-comments: true
 category: CC150v4
+tags: []
+comments: true
+date: 2014-09-07 00:00
 ---
+
 
 ### Question
 

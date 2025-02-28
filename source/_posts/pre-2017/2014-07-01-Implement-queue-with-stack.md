@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Question] Implement Queue using Stacks"
-comments: true
 category: Question
+tags: []
+comments: true
+date: 2014-07-01 00:00
 ---
+
 
 ### Question
 

@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[LeetCode 82] Remove Duplicates from Sorted List II"
-comments: true
 category: Leetcode
+tags: []
+comments: true
+date: 2014-05-22 00:00
 ---
+
 
 ### Question
 

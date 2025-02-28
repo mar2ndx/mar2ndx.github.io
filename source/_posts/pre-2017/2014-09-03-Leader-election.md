@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Design] Leader Election"
-comments: true
 category: Design
+tags: []
+comments: true
+date: 2014-09-03 00:00
 ---
+
 
 ### Question
 

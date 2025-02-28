@@ -1,10 +1,11 @@
 ---
-layout: post
 title: "[CC150v4] 20.4 Count 2s in Digits "
-comments: true
 category: CC150v4
-tags: [ src ]
+tags: []
+comments: true
+date: 2014-09-10 00:00
 ---
+
 
 ### Question
 

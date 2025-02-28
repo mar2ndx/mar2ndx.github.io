@@ -1,10 +1,11 @@
 ---
-layout: post
 title: "[Question] Count negative in a 2D Sorted Matrix"
-comments: true
 category: Question
-tags: [unit test needed]
+tags: []
+comments: true
+date: 2014-06-14 00:00
 ---
+
 
 ### Question
 

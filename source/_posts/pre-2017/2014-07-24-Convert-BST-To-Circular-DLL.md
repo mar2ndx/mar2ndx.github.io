@@ -1,10 +1,11 @@
 ---
-layout: post
 title: "[LeetCode Plus] Convert BST to Circular DLL "
-comments: true
 category: leetcode_plus
-tags: [ src ]
+tags: []
+comments: true
+date: 2014-07-24 00:00
 ---
+
 
 ### Question 
 

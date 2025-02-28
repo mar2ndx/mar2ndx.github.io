@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[LinkedIn] Sort part to make entire array sorted "
-comments: true
 category: Question
+tags: []
+comments: true
+date: 2015-02-13 00:00
 ---
+
 
 ### Question
 

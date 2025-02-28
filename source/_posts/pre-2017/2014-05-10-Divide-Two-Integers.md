@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[LeetCode 29] Divide Two Integers"
-comments: true
 category: Leetcode
+tags: []
+comments: true
+date: 2014-05-10 00:00
 ---
+
 
 ### Question
 

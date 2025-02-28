@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Google] Diameter of a Binary Tree "
-comments: true
 category: q-google
+tags: []
+comments: true
+date: 2015-01-11 00:00
 ---
+
 
 ### Question
 

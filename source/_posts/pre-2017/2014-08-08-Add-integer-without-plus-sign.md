@@ -1,10 +1,11 @@
 ---
-layout: post
 title: "[Question] Add Integers without +/++"
-comments: true
 category: Question
-tags: [ src ]
+tags: []
+comments: true
+date: 2014-08-08 00:00
 ---
+
 
 ### Question 
 

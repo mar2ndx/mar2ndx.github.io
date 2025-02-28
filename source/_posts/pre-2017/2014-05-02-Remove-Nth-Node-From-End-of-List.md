@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[LeetCode 19] Remove Nth Node From End of List"
-comments: true
 category: Leetcode
+tags: []
+comments: true
+date: 2014-05-02 00:00
 ---
+
 
 ### Question
 

@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Design] How to generate Maze "
-comments: true
 category: Design
+tags: []
+comments: true
+date: 2015-11-21 00:00
 ---
+
 
 # Question
 

@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Google] String Replacement Question "
-comments: true
 category: q-google
+tags: []
+comments: true
+date: 2014-09-03 00:00
 ---
+
 
 ### Question
 

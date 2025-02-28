@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Google] Orthogonal Traverse the Map (`)"
-comments: true
 category: q-google
+tags: []
+comments: true
+date: 2014-08-16 00:00
 ---
+
 
 ### Question
 

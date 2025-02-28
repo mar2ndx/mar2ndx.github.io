@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[LintCode] Segment Tree Query II "
-description: ""
 category: LintCode
+tags: []
+comments: true
+date: 2015-10-13 00:00
 ---
+
 
 ### Question
 

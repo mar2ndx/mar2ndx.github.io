@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Design] Intro to Google Spanner "
-comments: true
 category: Design
+tags: []
+comments: true
+date: 2015-02-09 00:00
 ---
+
 
 ### Spanner
 

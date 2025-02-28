@@ -1,10 +1,11 @@
 ---
-layout: post
 title: "[LeetCode Plus] Binary Tree Serialize and Deserialize"
-comments: true
 category: leetcode_plus
-tags: [unit test needed]
+tags: []
+comments: true
+date: 2014-06-16 00:00
 ---
+
 
 ### Question
 

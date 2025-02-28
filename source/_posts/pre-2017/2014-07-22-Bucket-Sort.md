@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Question] Bucket Sort (bin sort)"
-comments: true
 category: Question
+tags: []
+comments: true
+date: 2014-07-22 00:00
 ---
+
 
 ### Question
 

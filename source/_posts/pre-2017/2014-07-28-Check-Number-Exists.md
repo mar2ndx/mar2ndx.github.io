@@ -1,10 +1,11 @@
 ---
-layout: post
 title: "[Question] Check If Number Exists"
-comments: true
 category: Question
-tags: [ src ]
+tags: []
+comments: true
+date: 2014-07-28 00:00
 ---
+
 
 ### Question 
 

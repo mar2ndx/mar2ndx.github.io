@@ -1,10 +1,11 @@
 ---
-layout: post
 title: "[Question] Max Binary Gap"
-comments: true
 category: Question
-tags: [ src ]
+tags: []
+comments: true
+date: 2014-07-21 00:00
 ---
+
 
 ### Question 
 

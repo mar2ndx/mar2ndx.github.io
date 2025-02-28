@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[LintCode] Trailing Zeros of Factorial"
-description: ""
 category: LintCode
+tags: []
+comments: true
+date: 2014-07-02 00:00
 ---
+
 
 ### Question
 

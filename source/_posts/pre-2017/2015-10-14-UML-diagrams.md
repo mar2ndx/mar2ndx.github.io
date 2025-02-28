@@ -1,9 +1,11 @@
 ---
-layout: post
 title: "[Fundamental] UML Class Diagrams "
-comments: true
 category: Fundamental
+tags: []
+comments: true
+date: 2015-10-14 00:00
 ---
+
 
 # Overview
 
