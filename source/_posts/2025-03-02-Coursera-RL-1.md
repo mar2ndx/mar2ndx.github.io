@@ -6,7 +6,7 @@ comments: true
 date: 2025-03-02 13:58:56
 ---
 
-## Different approach
+# Different approach
 
 RL is different from other ML methods, as RL:
 
@@ -37,4 +37,14 @@ A policy, a reward signal , a value function, and optionally, a model of the env
 1. Model
 
     mimics thebehaviour of environment.
+
+# Multi-armed Bandits
+
+多杆老虎机。
+
+> Slot Machine（老虎机）, are sometimes called One-Armed Bandit. Because traditional slot machines have a single lever (arm) to pull and spin the reels.
+>
+> "Bandit" → Slot machines take people's money like robery, so they are metaphorically called "bandits."
+
+![](/images/Multi-Armed-Bandit.jpeg)
 
