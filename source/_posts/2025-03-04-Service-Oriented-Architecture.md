@@ -15,8 +15,8 @@ SOA protocols were developed in early 2000s to enable standardized, platform-ind
 It concludes:
 
 1. SOAP
-  ○ Uses XML as its message format.
-  ○ Supports RPC.
+	* Uses XML as its message format.
+	* Supports RPC.
 2. WSDL
   ○ Web Services Description Language
 3. WS-Specifications
