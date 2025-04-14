@@ -1,10 +1,24 @@
 ---
-title: Automate Github Pages using CircleCI
+title: Hexo best practice in 2025
 category: unknown
 tags: []
 comments: true
-date: 2025-04-14 04:40:37
+date: 2025-04-14 05:02:19
 ---
+
+# Change _config.yml:
+
+```
+new_post_name: :year-:month-:day-:title.md
+```
+
+After this change, your default file name becomes `2025-04-14-Hexo-best-practice-in-2025` instead of `Hexo-best-practice-in-2025`
+
+# Deploy
+
+## CircleCI
+
+Config:
 
 ```
 version: 2.1
@@ -52,4 +66,36 @@ workflows:
   build-and-deploy:
     jobs:
       - hexo_deploy
+```
+
+Pipeline:
+
+https://app.circleci.com/pipelines/circleci/FxEGXAp1cq3kkmTWi4tCSt
+
+
+## TravisCI
+
+Deprecated already since Travis stopped their free plan, but put config here for archiving:
+
+```
+sudo: false
+language: node_js
+node_js:
+  - 22
+cache: npm
+branches:
+  only:
+    - hexo-source # build master branch only
+script:
+  - hexo generate # generate static files
+deploy:
+  provider: pages
+  skip-cleanup: true
+  github-token: $GITHUB_TOKEN
+  keep-history: true
+  target_branch: master # generate static files to master
+  on:
+#   branch: main
+    branch: hexo-source
+  local-dir: public
 ```
