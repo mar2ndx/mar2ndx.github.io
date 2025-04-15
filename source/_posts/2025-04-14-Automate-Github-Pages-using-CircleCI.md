@@ -8,6 +8,8 @@ date: 2025-04-14 04:40:37
 
 CircleCI Script: 
 
+CircleCI does not check out submodules. If your project requires submodules, add run steps like below: 
+
 ```
 version: 2.1
 orbs:
@@ -19,6 +21,9 @@ jobs:
     steps:
       - checkout
           submodules: true # This is the key line!
+      
+      - run: git submodule sync
+      - run: git submodule update --init
 
       - node/install-packages:
           cache-path: node_modules # Simplified cache path
