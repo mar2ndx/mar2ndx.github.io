@@ -64,13 +64,13 @@ def process_markdown_file(filepath):
                     key, value = line.split(":", 1)
                     key = key.strip()
                     value = value.strip()
-                    if key == "tags":
-                        try:
-                            metadata[key] = eval(value)
-                        except:
-                            metadata[key] = []
-                    else:
-                        metadata[key] = value
+                    # if key == "tags":
+                    #     try:
+                    #         metadata[key] = eval(value)
+                    #     except:
+                    #         metadata[key] = []
+                    # else:
+                    metadata[key] = value
 
         # Set default values if fields are missing
         if "title" not in metadata:
