@@ -89,12 +89,8 @@ include:
 exclude:
 ignore:
 
-# https://github.com/rankangkang/hexo-theme-typo
-theme: typo
+theme: obsidian
 
 # Deployment
 ## Docs: https://hexo.io/docs/one-command-deployment
 deploy:
-  type: git
-  repo: https://github.com/mar2ndx/mar2ndx.github.io.git
-  branch: gh-pages
