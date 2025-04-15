@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+
+
+
+
+<title>【Tech】 Chromebook Tutorial 3 - Install GalliumOS | Tech blog</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const pagebody = document.getElementsByTagName('body')[0]
+
+            function setTheme(status) {
+
+                if (status === 'dark') {
+                    window.sessionStorage.theme = 'dark'
+                    pagebody.classList.add('dark-theme');
+
+                } else if (status === 'light') {
+                    window.sessionStorage.theme = 'light'
+                    pagebody.classList.remove('dark-theme');
+                }
+            };
+
+            setTheme(window.sessionStorage.theme)
+        })();
+    </script>
+
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">Tech Blog</a></div>
+            <div class="menu navbar-right">
+                
+                <a class="menu-item" href="/archives">Posts</a>
+                
+                <a class="menu-item" href="/category">Categories</a>
+                
+                <a class="menu-item" href="/tag">Tags</a>
+                
+                <a class="menu-item" href="/about">About</a>
+                
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">Tech Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">
+                    <svg class="menu-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M4.5 17.27q-.213 0-.356-.145T4 16.768t.144-.356t.356-.143h15q.213 0 .356.144q.144.144.144.357t-.144.356t-.356.143zm0-4.77q-.213 0-.356-.144T4 11.999t.144-.356t.356-.143h15q.213 0 .356.144t.144.357t-.144.356t-.356.143zm0-4.77q-.213 0-.356-.143Q4 7.443 4 7.23t.144-.356t.356-.143h15q.213 0 .356.144T20 7.23t-.144.356t-.356.144z"/></svg>
+                    <svg class="close-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Material Symbols Light by Google - https://github.com/google/material-design-icons/blob/master/LICENSE --><path fill="currentColor" d="m12 12.708l-5.246 5.246q-.14.14-.344.15t-.364-.15t-.16-.354t.16-.354L11.292 12L6.046 6.754q-.14-.14-.15-.344t.15-.364t.354-.16t.354.16L12 11.292l5.246-5.246q.14-.14.345-.15q.203-.01.363.15t.16.354t-.16.354L12.708 12l5.246 5.246q.14.14.15.345q.01.203-.15.363t-.354.16t-.354-.16z"/></svg>
+                </div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                <a class="menu-item" href="/archives">Posts</a>
+                
+                <a class="menu-item" href="/category">Categories</a>
+                
+                <a class="menu-item" href="/tag">Tags</a>
+                
+                <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if (toggleMenu.classList.contains("active")) {
+            toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        } else {
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    var tocbot_timer;
+    var DEPTH_MAX = 6; // 为 6 时展开所有
+    var tocbot_default_config = {
+        tocSelector: '.tocbot-list',
+        contentSelector: '.post-content',
+        headingSelector: 'h1, h2, h3, h4, h5',
+        orderedList: false,
+        scrollSmooth: true,
+        onClick: extend_click,
+    };
+
+    function extend_click() {
+        clearTimeout(tocbot_timer);
+        tocbot_timer = setTimeout(function() {
+            tocbot.refresh(obj_merge(tocbot_default_config, {
+                hasInnerContainers: true
+            }));
+        }, 420); // 这个值是由 tocbot 源码里定义的 scrollSmoothDuration 得来的
+    }
+
+    document.ready(function() {
+        tocbot.init(obj_merge(tocbot_default_config, {
+            collapseDepth: 1
+        }));
+    });
+
+    function expand_toc() {
+        var b = document.querySelector('.tocbot-toc-expand');
+        var expanded = b.getAttribute('data-expanded');
+        expanded ? b.removeAttribute('data-expanded') : b.setAttribute('data-expanded', true);
+        tocbot.refresh(obj_merge(tocbot_default_config, {
+            collapseDepth: expanded ? 1 : DEPTH_MAX
+        }));
+        b.innerText = expanded ? 'Expand all' : 'Collapse all';
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+    function obj_merge(target, source) {
+        for (var item in source) {
+            if (source.hasOwnProperty(item)) {
+                target[item] = source[item];
+            }
+        }
+        return target;
+    }
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">【Tech】 Chromebook Tutorial 3 - Install GalliumOS</h1>
+            
+                <div class="post-meta">
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">March 28, 2022&nbsp;&nbsp;0:00:00</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/unknown/">unknown</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h1 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h1><p>There are 2 ways to do a fresh installation of GalliumOS on Chromebook:</p>
+<ol>
+<li><strong>Traditional Mode</strong> - replace ChromeOS entirely. Need a USD drive. </li>
+<li><strong>chrx Mode</strong> - install from ChromeOS command line.</li>
+</ol>
+<p>The master guide is on <strong><a target="_blank" rel="noopener" href="https://wiki.galliumos.org/Installing">wiki.galliumos.org</a></strong>, or there’s another <a target="_blank" rel="noopener" href="https://wiki.galliumos.org/Installing/New_To_Linux">simpler guide for beginners</a>.</p>
+<h1 id="一、Traditional-installtion"><a href="#一、Traditional-installtion" class="headerlink" title="一、Traditional installtion"></a>一、Traditional installtion</h1><ol>
+<li><p>Go to <strong><a href="chrome://system">chrome:&#x2F;&#x2F;system</a></strong>, and look for <strong>hardware_class</strong>. For my case it says “Akali” and “C5B-A4B-xxxxxxxx”</p>
+<p> <img src="/images/tech/galliumos-install-1.jpg"></p>
+</li>
+<li><p>Go to <a target="_blank" rel="noopener" href="https://wiki.galliumos.org/Hardware_Compatibility">https://wiki.galliumos.org/Hardware_Compatibility</a> and check against your hardware class. I got <strong>“Intel Kaby Lake”</strong>.</p>
+</li>
+<li><p>Go to <a target="_blank" rel="noopener" href="https://galliumos.org/download">https://galliumos.org/download</a> and download ISO of your version. </p>
+</li>
+<li><p>Enabling Developer Mode (Esc+F3(refresh)+Power), and reboot.</p>
+</li>
+<li><p>Enable Legacy Mode booting.</p>
+<ol>
+<li><p>With your ChromeOS booted, press [Ctrl+Alt+T] and get a terminal (“crosh”) window</p>
+</li>
+<li><p>Run: <strong>‘shell’</strong></p>
+</li>
+<li><p>Then:</p>
+<p> sudo crossystem dev_boot_legacy&#x3D;1</p>
+</li>
+<li><p>If you have seen an error, simply skip and continue. (Reference: <a target="_blank" rel="noopener" href="https://www.reddit.com/r/chrultrabook/comments/o9538s/trying_to_boot_from_usb_what_is_dev_boot_altfw_as/">https://www.reddit.com/r/chrultrabook/comments/o9538s/trying_to_boot_from_usb_what_is_dev_boot_altfw_as/</a>)</p>
+</li>
+</ol>
+</li>
+<li><p>Disable WP (write protection). Check your device on <a target="_blank" rel="noopener" href="https://mrchromebox.tech/#devices">this MrChromebox</a> page to decide how you going to do it. In my case I use <a target="_blank" rel="noopener" href="https://wiki.mrchromebox.tech/Firmware_Write_Protect#Hardware_Write_Protection">the CR50 method</a></p>
+<ul>
+<li>If you still not sure, check out this video: <a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=EGZ6KfjEPP0">https://www.youtube.com/watch?v=EGZ6KfjEPP0</a></li>
+</ul>
+</li>
+<li><p>Check WP status, At <strong>crosh&gt;</strong></p>
+<pre><code> sudo sh
+ flashrom --wp-status
+</code></pre>
+<p> <img src="/images/tech/galliumos-install-2.jpg"></p>
+</li>
+<li><p>Update Firmware. Press <strong>[Ctrl+Alt+T]</strong> to get a terminal (“crosh”) window, then type in “<strong>shell</strong>“</p>
+<ul>
+<li><p>Decide if you wish to <a target="_blank" rel="noopener" href="https://wiki.galliumos.org/Firmware">update RW_LEGACY or install Full Firmware&#x2F;UEFI</a></p>
+</li>
+<li><p>Run: </p>
+<pre><code>  cd; curl -LO https://mrchromebox.tech/firmware-util.sh &amp;&amp; sudo bash firmware-util.sh
+</code></pre>
+<p>  In case Github not accissible, try this link: </p>
+<pre><code>  cd; curl -LO https://mar2ndx.github.io/files/mrchromebox/firmware-util.sh &amp;&amp; sudo bash firmware-util.sh
+</code></pre>
+</li>
+</ul>
+</li>
+<li><p>At promp, first you need to set GBB Flags (here is <a target="_blank" rel="noopener" href="https://mrchromebox.tech/#fwscript">an explanation of why</a>).</p>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://wiki.galliumos.org/Installing">Important: If you choose an ISO install of GalliumOS</a> (thus removing ChromeOS), and choose to use the Legacy Boot Mode of the stock firmware (ie, with the stock or updated RW_LEGACY firmware), and <strong><a target="_blank" rel="noopener" href="https://wiki.galliumos.org/Firmware#crossystem">you allow your battery to drain completely</a></strong>, you might have a problem booting GalliumOS. This is due to the Developer Mode boot flag enabling Legacy Boot mode being reset when power is lost - see crossystem flags.</p>
+<p>Google Binary Block (GBB) flags are firmware level settings stored directly in the firmware flash chip itself in a read-only (RO) area</p>
+<p>I’ve made this mistake before. Had to do an entire factory restore of ChromeOS.</p>
+</blockquote>
+</li>
+<li><p>To set GBB, under ChromeOS at chronos@localhost &#x2F; $ prompt, run this: </p>
+<pre><code> cd; curl -LO mrchromebox.tech/firmware-util.sh
+ sudo install -Dt /usr/local/bin -m 755 firmware-util.sh
+ sudo firmware-util.sh
+</code></pre>
+<p> Or under Linux: </p>
+<pre><code> cd; curl -LO https://mrchromebox.tech/firmware-util.sh &amp;&amp; sudo bash firmware-util.sh
+</code></pre>
+<p> <strong>Very important</strong>: you MUST execute this command <strong>as a normal&#x2F;non-root user</strong>.</p>
+<p> <img src="/images/tech/galliumos-install-3.jpg"></p>
+</li>
+<li><p>Next, continue to use the same <strong>firmware-util.sh</strong> script to install firmware. Should be simple enough. </p>
+<p> Then, plugin the GalliumOS installation disk into USD, and reboot. </p>
+</li>
+<li><p>Now start <strong>the actual installation process</strong> of GalliumOS!</p>
+</li>
+<li><p>Burn the ISO using <a target="_blank" rel="noopener" href="https://www.balena.io/etcher/">BalenaEtcher</a>. I used my old Mac to do the job. </p>
+</li>
+<li><p>Keep your USB drive plugged-in before rebooting. On the “<strong>OS verification is OFF</strong>“ screen, press <strong>Ctrl + L</strong></p>
+</li>
+<li><p>Install GalliumOS (I recommend using the English mode + Wiki connected to install).</p>
+</li>
+<li><p>You may or may not need to press Ctrl + L every time you boot the system, depending on which fireware script you chose to install.</p>
+</li>
+</ol>
+<h2 id="Important-Power-Drain"><a href="#Important-Power-Drain" class="headerlink" title="[Important] Power Drain"></a>[Important] Power Drain</h2><p>如果电脑突然没电了，你的 Chromebook 无法启动，而是哔哔很大的两声，这说明你的 dev_boot_legacy flag 被 GBB 给 unset 成 0 了。</p>
+<p>Sorry to tell you, 你只能恢复原 ChromeOS，然后重来一次了。你的数据都没了。</p>
+<p>没别的办法，你猜我怎么知道的？ </p>
+<p>Reference：</p>
+<blockquote>
+<p>Important: If you choose an ISO install of GalliumOS (thus removing ChromeOS), and choose to use the Legacy Boot Mode of the stock firmware (ie, with the stock or updated RW_LEGACY firmware), and you allow your battery to drain completely, you might have a problem booting GalliumOS. This is due to the Developer Mode boot flag enabling Legacy Boot mode being reset when power is lost - see crossystem flags.</p>
+<p><a target="_blank" rel="noopener" href="https://wiki.galliumos.org/Firmware#crossystem">https://wiki.galliumos.org/Firmware#crossystem</a></p>
+</blockquote>
+<p>How to fix: <a target="_blank" rel="noopener" href="https://chromium.googlesource.com/chromiumos/platform/vboot/+/master/_vboot_reference/firmware/include/gbb_header.h">必须改 GBB</a>，但是不建议直接改 c++ 代码，因为是只读的。最便捷的方法是使用 <strong>MrChromebox’s <a target="_blank" rel="noopener" href="https://mrchromebox.tech/#fwscript">ChromeOS firmware utility script</a></strong>.</p>
+<h1 id="二、chrx-installation"><a href="#二、chrx-installation" class="headerlink" title="二、chrx installation"></a>二、chrx installation</h1><p>这种模式很好，因为 ChromeOS 被原本保留了。恢复起来也很方便。</p>
+<p>主要问题就是硬盘太小。低端Chromebook 普遍采用 32G 的 flash drive。装 ChromeOS 使用一大半，GalliumOS 占用 7-8G，空间就没了。</p>
+<h1 id="Troubleshooting"><a href="#Troubleshooting" class="headerlink" title="Troubleshooting"></a>Troubleshooting</h1><h2 id="开机画面（dev-mode）键盘选项"><a href="#开机画面（dev-mode）键盘选项" class="headerlink" title="开机画面（dev mode）键盘选项"></a>开机画面（dev mode）键盘选项</h2><ul>
+<li><strong>[Ctrl+D]</strong> to boot ChromeOS in <strong>Developer Mode</strong>, or</li>
+<li><strong>[Ctrl+L]</strong> to boot <strong>Legacy Mode</strong> (usually used for Linux, after installing)</li>
+<li>[Ctrl+U] to boot a ChromeOS (or ChromiumOS) image from USB (you’ll never need to use this)</li>
+<li>[TAB] for some boot configuration information</li>
+</ul>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>Permalink:</span>
+                        <span><a href="https://mar2ndx.github.io/2022/03/28/unclemartian-chromebook-3-install-galliumos/">https://mar2ndx.github.io/2022/03/28/unclemartian-chromebook-3-install-galliumos/</a></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2019 <a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc/4.0/">CC-BY-NC-4.0</a> LICENSE</span>
+                    </p>
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY</strong>?</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/ubuntu/"># ubuntu</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2022/03/29/unclemartian-chromebook-4-use-galliumos/">【Tech】 Chromebook Tutorial 4 - Using GalliumOS</a>
+            
+            
+            <a class="next" rel="next" href="/2022/03/26/unclemartian-chromebook-2-linux-crostini/">【Tech】 Chromebook Tutorial 2 - Linux (Crostini)</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+            </div>
+            <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>©  | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+
+</html>

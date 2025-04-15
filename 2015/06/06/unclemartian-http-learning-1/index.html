@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+
+
+
+
+<title>【Tech】 HTTP learning notes (1/3) all about http | Tech blog</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const pagebody = document.getElementsByTagName('body')[0]
+
+            function setTheme(status) {
+
+                if (status === 'dark') {
+                    window.sessionStorage.theme = 'dark'
+                    pagebody.classList.add('dark-theme');
+
+                } else if (status === 'light') {
+                    window.sessionStorage.theme = 'light'
+                    pagebody.classList.remove('dark-theme');
+                }
+            };
+
+            setTheme(window.sessionStorage.theme)
+        })();
+    </script>
+
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">Tech Blog</a></div>
+            <div class="menu navbar-right">
+                
+                <a class="menu-item" href="/archives">Posts</a>
+                
+                <a class="menu-item" href="/category">Categories</a>
+                
+                <a class="menu-item" href="/tag">Tags</a>
+                
+                <a class="menu-item" href="/about">About</a>
+                
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">Tech Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">
+                    <svg class="menu-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M4.5 17.27q-.213 0-.356-.145T4 16.768t.144-.356t.356-.143h15q.213 0 .356.144q.144.144.144.357t-.144.356t-.356.143zm0-4.77q-.213 0-.356-.144T4 11.999t.144-.356t.356-.143h15q.213 0 .356.144t.144.357t-.144.356t-.356.143zm0-4.77q-.213 0-.356-.143Q4 7.443 4 7.23t.144-.356t.356-.143h15q.213 0 .356.144T20 7.23t-.144.356t-.356.144z"/></svg>
+                    <svg class="close-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Material Symbols Light by Google - https://github.com/google/material-design-icons/blob/master/LICENSE --><path fill="currentColor" d="m12 12.708l-5.246 5.246q-.14.14-.344.15t-.364-.15t-.16-.354t.16-.354L11.292 12L6.046 6.754q-.14-.14-.15-.344t.15-.364t.354-.16t.354.16L12 11.292l5.246-5.246q.14-.14.345-.15q.203-.01.363.15t.16.354t-.16.354L12.708 12l5.246 5.246q.14.14.15.345q.01.203-.15.363t-.354.16t-.354-.16z"/></svg>
+                </div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                <a class="menu-item" href="/archives">Posts</a>
+                
+                <a class="menu-item" href="/category">Categories</a>
+                
+                <a class="menu-item" href="/tag">Tags</a>
+                
+                <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if (toggleMenu.classList.contains("active")) {
+            toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        } else {
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    var tocbot_timer;
+    var DEPTH_MAX = 6; // 为 6 时展开所有
+    var tocbot_default_config = {
+        tocSelector: '.tocbot-list',
+        contentSelector: '.post-content',
+        headingSelector: 'h1, h2, h3, h4, h5',
+        orderedList: false,
+        scrollSmooth: true,
+        onClick: extend_click,
+    };
+
+    function extend_click() {
+        clearTimeout(tocbot_timer);
+        tocbot_timer = setTimeout(function() {
+            tocbot.refresh(obj_merge(tocbot_default_config, {
+                hasInnerContainers: true
+            }));
+        }, 420); // 这个值是由 tocbot 源码里定义的 scrollSmoothDuration 得来的
+    }
+
+    document.ready(function() {
+        tocbot.init(obj_merge(tocbot_default_config, {
+            collapseDepth: 1
+        }));
+    });
+
+    function expand_toc() {
+        var b = document.querySelector('.tocbot-toc-expand');
+        var expanded = b.getAttribute('data-expanded');
+        expanded ? b.removeAttribute('data-expanded') : b.setAttribute('data-expanded', true);
+        tocbot.refresh(obj_merge(tocbot_default_config, {
+            collapseDepth: expanded ? 1 : DEPTH_MAX
+        }));
+        b.innerText = expanded ? 'Expand all' : 'Collapse all';
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+    function obj_merge(target, source) {
+        for (var item in source) {
+            if (source.hasOwnProperty(item)) {
+                target[item] = source[item];
+            }
+        }
+        return target;
+    }
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">【Tech】 HTTP learning notes (1/3) all about http</h1>
+            
+                <div class="post-meta">
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">June 6, 2015&nbsp;&nbsp;0:00:00</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/unknown/">unknown</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h1 id="图解-http-读书笔记"><a href="#图解-http-读书笔记" class="headerlink" title="_图解 http_读书笔记"></a>_图解 http_读书笔记</h1><p><em><a target="_blank" rel="noopener" href="http://www.amazon.co.jp/HTTP%E3%81%AE%E6%95%99%E7%A7%91%E6%9B%B8-%E4%B8%8A%E9%87%8E-%E5%AE%A3/dp/479812625X">HTTP の教科書</a></em> by Tricorder CEO 上野宣</p>
+<h1 id="Foundamentals"><a href="#Foundamentals" class="headerlink" title="Foundamentals"></a>Foundamentals</h1><h2 id="1989-birth-of-HTTP"><a href="#1989-birth-of-HTTP" class="headerlink" title="1989, birth of HTTP"></a>1989, birth of HTTP</h2><p><a target="_blank" rel="noopener" href="http://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol#History">Tim Berners-Lee first proposed the “WorldWideWeb” project in 1989</a> — now known as the World Wide Web. The first version of the protocol had only one method, namely GET, which would request a page from a server.</p>
+<p>1991, HTTP&#x2F;0.9 现在的HTTP其实含有HTTP1.0之前版本的意思,因此被称为HTTP&#x2F;0.9。</p>
+<p>1996 HTTP&#x2F;1.0, rfc1945. widely used today. </p>
+<p>1997 HTTP&#x2F;1.1, rfc2068, and later released updates with rfc2616. </p>
+<p>today, HTTP&#x2F;2.0 is under dev.</p>
+<p>1994 - 2000 is the time for Browser War between IE and Netscape Navigator. </p>
+<p>2004 - now, the war started again as Mozilla released Firefox. </p>
+<h2 id="HTTP-versions"><a href="#HTTP-versions" class="headerlink" title="HTTP versions"></a>HTTP versions</h2><p>HTTP&#x2F;1.0 defined GET, POST and HEAD methods and HTTP&#x2F;1.1 added 5 new methods: OPTIONS, PUT, DELETE, TRACE and CONNECT. </p>
+<p>In HTTP&#x2F;0.9 and 1.0, the connection is closed after a single request&#x2F;response pair. In HTTP&#x2F;1.1 a keep-alive-mechanism was introduced, where a connection could be reused for more than one request. (client does not need to re-negotiate the TCP 3-Way-Handshake connection after the first request)</p>
+<blockquote>
+<p>当年 HTTP 协议的出现主要是为了解决文本传输的难题。由于协议本 身非常简单,于是在此基础上设想了很多应用方法并投入了实际使用。现 在 HTTP 协议已经超出了 Web 这个框架的局限,被运用到了各种场景里。</p>
+</blockquote>
+<h1 id="TCP-IP"><a href="#TCP-IP" class="headerlink" title="TCP&#x2F;IP"></a>TCP&#x2F;IP</h1><ol>
+<li>application layer</li>
+<li>transport (tcp&#x2F;udp) layer</li>
+<li>internet (ip) layer</li>
+<li>data link (ethernet&#x2F;fddi) layer</li>
+</ol>
+<h2 id="应用层"><a href="#应用层" class="headerlink" title="应用层"></a>应用层</h2><p>应用层决定了向用户提供应用服务时通信的活动。</p>
+<p>TCP&#x2F;IP 协议族内预存了各类通用的应用服务。比如,FTP(File Transfer Protocol,文件传输协议)和 DNS(Domain Name System, 域名系统)服务就是其中两类。</p>
+<p>HTTP 协议也处于该层。</p>
+<h2 id="传输层"><a href="#传输层" class="headerlink" title="传输层"></a>传输层</h2><p>传输层提供处于网络连接中的两台计算机之间的数据传输。</p>
+<h2 id="网络层"><a href="#网络层" class="headerlink" title="网络层"></a>网络层</h2><p>网络层用来处理在网络上流动的数据包。</p>
+<p>数据包是网络传输的最小数据单位。该层规定了通过怎样的路径(所谓的传输路线)到达对 方计算机,并把数据包传送给对方。 </p>
+<p>与对方计算机之间通过多台计算机或网络设备进行传输时,网络层所起的作用就是在众多的选项内选择一条传输路线。</p>
+<h2 id="链路层-又名数据链路层"><a href="#链路层-又名数据链路层" class="headerlink" title="链路层(又名数据链路层)"></a>链路层(又名数据链路层)</h2><p>用来处理连接网络的硬件部分。包括控制操作系统、硬件的设备驱 动、NIC(Network Interface Card,网络适配器,即网卡),及光纤等</p>
+<p>{&lt;1&gt;}<img src="https://dl.dropboxusercontent.com/u/23764314/ghost_immortalfish/Screen%20Shot%202015-06-06%20at%2012.33.28%20AM.png"></p>
+<h2 id="more-on-IP"><a href="#more-on-IP" class="headerlink" title="more on IP"></a>more on IP</h2><p>IP 协议的作用是把各种数据包传送给对方。</p>
+<p>IP 地址指明了节点被分配到的地址,MAC 地址是指网卡所属的固 定地址。IP 地址可以和 MAC 地址进行配对。IP 地址可变换,但 MAC 地址基本上不会更改。</p>
+<h3 id="IP-间的通信依赖-MAC-地址。"><a href="#IP-间的通信依赖-MAC-地址。" class="headerlink" title="IP 间的通信依赖 MAC 地址。"></a>IP 间的通信依赖 MAC 地址。</h3><p>经过多台计算机和网络设备中转才 能连接到对方。而在进行中转时,会利用下一站中转设备的 MAC 地址 来搜索下一个中转目标。</p>
+<p>这时,会采用 ARP 协议(Address Resolution Protocol)。ARP 是一种用以解析地址的协议,根据通信方的 IP 地址就可以反查出对应的 MAC 地址。</p>
+<h3 id="routing"><a href="#routing" class="headerlink" title="routing"></a>routing</h3><p>在到达通信目标前的中转过程中,那些计算机和路由器等网络设备 只能获悉很粗略的传输路线。<br>这种机制称为路由选择(routing),有点像快递公司的送货过程。</p>
+<h2 id="more-on-TCP-and-DNS"><a href="#more-on-TCP-and-DNS" class="headerlink" title="more on TCP and DNS"></a>more on TCP and DNS</h2><p>为了准确无误地将数据送达目标处,TCP 协议采用了三次握手 (three-way handshaking)策略。</p>
+<p>用 TCP 协议把数据包送出去后,TCP 不会对传送后的情况置之不理,它一定会向对方确认是否成功送达。握 手过程中使用了 TCP 的标志(flag)——SYN(synchronize)和 ACK( acknowledgement)。</p>
+<p>DNS(Domain Name System)服务是和 HTTP 协议一样位于应用层</p>
+<h2 id="dry-run"><a href="#dry-run" class="headerlink" title="dry run"></a>dry run</h2><p>{&lt;2&gt;}<img src="https://dl.dropboxusercontent.com/u/23764314/ghost_immortalfish/Screen%20Shot%202015-06-06%20at%2012.53.44%20AM.png"></p>
+<h1 id="the-basics-of-HTTP-protocol"><a href="#the-basics-of-HTTP-protocol" class="headerlink" title="the basics of HTTP protocol"></a>the basics of HTTP protocol</h1><p>在两台计算机之间使用 HTTP 协议通信时,在一条通信线路上必定 有一端是客户端,另一端则是服务器端。</p>
+<p>有时候,按实际情况,两台计算机角色可能会互换。但就仅从一条通信路线来说,服务器端和客户端的角色是 确定的。</p>
+<h2 id="request"><a href="#request" class="headerlink" title="request"></a>request</h2><p>{&lt;3&gt;}<img src="https://dl.dropboxusercontent.com/u/23764314/ghost_immortalfish/Screen%20Shot%202015-06-06%20at%2012.58.05%20AM.png"></p>
+<h2 id="response"><a href="#response" class="headerlink" title="response"></a>response</h2><p>{&lt;4&gt;}<img src="https://dl.dropboxusercontent.com/u/23764314/ghost_immortalfish/Screen%20Shot%202015-06-06%20at%2012.58.11%20AM.png"></p>
+<h2 id="stateless"><a href="#stateless" class="headerlink" title="stateless"></a>stateless</h2><p>HTTP 是一种不保存状态,即无状态(stateless)协议。</p>
+<p>HTTP&#x2F;1.1 虽然是无状态协议,但为了实现期望的保持状态功能, 于是引入了 Cookie 技术。有了 Cookie 再用 HTTP 协议通信,就可以管 理状态了。</p>
+<h2 id="请求-URI-定位资源"><a href="#请求-URI-定位资源" class="headerlink" title="请求 URI 定位资源"></a>请求 URI 定位资源</h2><p>In request header, we specify either the full path or the relative path. </p>
+<p>{&lt;5&gt;}<img src="https://dl.dropboxusercontent.com/u/23764314/ghost_immortalfish/Screen%20Shot%202015-06-06%20at%201.00.49%20AM.png"></p>
+<h2 id="other-than-GET-method"><a href="#other-than-GET-method" class="headerlink" title="other than GET method"></a>other than GET method</h2><p>POST: 功能与 GET 很相似,但 POST 的主要目的并不是获取响应的主体内容。</p>
+<p>PUT: 传输文件</p>
+<p>HEAD: 和 GET 方法一样,只是不返回报文主体部分。用于确认 URI 的有效性及资源更新的日期时间等。</p>
+<p>DELETE: HTTP&#x2F;1.1 的 DELETE 方法本身和 PUT 方法一样不带验证机 制,所以一般的 Web 网站也不使用 DELETE 方法。当配合 Web 应用程 序的验证机制,或遵守 REST 标准时还是有可能会开放使用的。</p>
+<p>OPTIONS: 查询针对请求 URI 指定的资源支持的方法。</p>
+<p>and TRACE, CONNECT.</p>
+<p>{&lt;6&gt;}<img src="https://dl.dropboxusercontent.com/u/23764314/ghost_immortalfish/Screen%20Shot%202015-06-06%20at%201.07.22%20AM.png"></p>
+<h2 id="HTTP-persistent-connection"><a href="#HTTP-persistent-connection" class="headerlink" title="HTTP persistent connection"></a>HTTP persistent connection</h2><p>{&lt;7&gt;}<img src="https://dl.dropboxusercontent.com/u/23764314/ghost_immortalfish/Screen%20Shot%202015-06-06%20at%202.53.44%20AM.png"></p>
+<p>随着 HTTP 的普及,文档中包含大量图片的 情况多了起来。每次的请求都会造成无谓的 TCP 连接建立和断开, 增加通信量的开销。</p>
+<p>HTTP&#x2F;1.1 和一部分的 HTTP&#x2F;1.0 想出 了持久连接(HTTP Persistent Connections,也称为 HTTP keep-alive 或 HTTP connection reuse)的方法。持久连接的特点是,只要任意一端没 有明确提出断开连接,则保持 TCP 连接状态。</p>
+<p>{&lt;8&gt;}<img src="https://dl.dropboxusercontent.com/u/23764314/ghost_immortalfish/Screen%20Shot%202015-06-06%20at%202.55.45%20AM.png"></p>
+<p>Under HTTP 1.0, there is <a target="_blank" rel="noopener" href="http://en.wikipedia.org/wiki/HTTP_persistent_connection#HTTP_1.0">no official specification for how keepalive operates</a>. It was, in essence, added to an existing protocol. If the client supports keep-alive, it adds an additional header to the request:</p>
+<pre><code>Connection: Keep-Alive
+</code></pre>
+<p>In HTTP 1.1, all connections are considered persistent unless declared otherwise.</p>
+<h2 id="Cookie"><a href="#Cookie" class="headerlink" title="Cookie"></a>Cookie</h2><p>Cookie 会根据从服务器端发送的响应报文内的一个叫做 Set-Cookie 的首部字段信息,通知客户端保存 Cookie。</p>
+<p>当下次客户端再往该服务器 发送请求时,客户端会自动在请求报文中加入 Cookie 值后发送出去。</p>
+<p>{&lt;9&gt;}<img src="https://dl.dropboxusercontent.com/u/23764314/ghost_immortalfish/Screen%20Shot%202015-06-06%20at%203.25.58%20AM.png"></p>
+<h1 id="Inside-a-HTTP-message"><a href="#Inside-a-HTTP-message" class="headerlink" title="Inside a HTTP message"></a>Inside a HTTP message</h1><p>HTTP 报文大致可分为报文首部和报文主体两块。两者由 <strong>最初出现的空行(CR+LF)来划分</strong>。</p>
+<p>通常,并不一定要有报文主体。</p>
+<p>{&lt;10&gt;}<img src="https://dl.dropboxusercontent.com/u/23764314/ghost_immortalfish/Screen%20Shot%202015-06-06%20at%203.29.47%20AM.png"></p>
+<h2 id="message-vs-entity"><a href="#message-vs-entity" class="headerlink" title="message vs. entity"></a>message vs. entity</h2><p>HTTP 报文的主体用于传输请求或响应的实体主体。</p>
+<pre><code>HTTP-message   = Request | Response     ; HTTP/1.1 messages
+</code></pre>
+<p>A HTTP-message has &gt;&#x3D;0 message-headers and may have ONE message-body:</p>
+<pre><code>  generic-message = start-line
+                    *(message-header CRLF)
+                     CRLF
+                     [ message-body ]
+</code></pre>
+<p>通常,报文主体等于实体主体。只有当传输中进行编码操作时,实体主体的内容发生变化,才导致它和报文主体产生差异。</p>
+<p>So not every HTTP-message has a message-body. But if it has a message-body, then that’s also the entity-body:</p>
+<pre><code>  message-body = entity-body
+               | &lt;entity-body encoded as per Transfer-Encoding&gt;
+</code></pre>
+<h2 id="HTTP-compression"><a href="#HTTP-compression" class="headerlink" title="HTTP compression"></a>HTTP compression</h2><p>HTTP data is compressed before it is sent from the server: </p>
+<ol>
+<li>compliant browsers will announce what methods are supported</li>
+<li>browsers that do not support compliant compression method will download uncompressed data. </li>
+<li>The most common compression schemes include gzip and Deflate</li>
+</ol>
+<h2 id="Chunked-transfer-encoding"><a href="#Chunked-transfer-encoding" class="headerlink" title="Chunked transfer encoding"></a>Chunked transfer encoding</h2><p>Only in version 1.1 of HTTP.</p>
+<p>在传输大容量数据时,通过把数据分割 成多块,能够让浏览器逐步显示页面。</p>
+<p>这种把实体主体分块的功能称为分块传输编码(Chunked Transfer Coding)。</p>
+<h2 id="multipart"><a href="#multipart" class="headerlink" title="multipart"></a>multipart</h2><p>HTTP 协议中也采纳了多部分对象集合,发送的一份报文 主体内可含有多类型实体。通常是在图片或文本文件等上传时使用。</p>
+<p><a target="_blank" rel="noopener" href="http://www.w3.org/TR/html401/interact/forms.html#h-17.13.4.2">The following example illustrates “multipart&#x2F;form-data” encoding</a>. Suppose we have the following form:</p>
+<pre><code>&lt;FORM action=&quot;http://server.com/cgi/handle&quot;
+       enctype=&quot;multipart/form-data&quot;
+       method=&quot;post&quot;&gt;
+   &lt;P&gt;
+   What is your name? &lt;INPUT type=&quot;text&quot; name=&quot;submit-name&quot;&gt;&lt;BR&gt;
+   What files are you sending? &lt;INPUT type=&quot;file&quot; name=&quot;files&quot;&gt;&lt;BR&gt;
+   &lt;INPUT type=&quot;submit&quot; value=&quot;Send&quot;&gt; &lt;INPUT type=&quot;reset&quot;&gt;
+&lt;/FORM&gt;
+</code></pre>
+<p>If the user enters “Larry” in the text input, and selects the text file “file1.txt”, the user agent might send back the following data:</p>
+<pre><code>Content-Type: multipart/form-data; boundary=AaB03x
+
+--AaB03x
+Content-Disposition: form-data; name=&quot;submit-name&quot;
+
+Larry
+--AaB03x
+Content-Disposition: form-data; name=&quot;files&quot;; filename=&quot;file1.txt&quot;
+Content-Type: text/plain
+
+... contents of file1.txt ...
+--AaB03x--
+</code></pre>
+<p>使用 boundary 字符串来划分多部分对象集合指明的各类实体。在 boundary 字符串指定的各个实体的起始行之前插入“–”标记</p>
+<h2 id="HTTP-Range-Requests"><a href="#HTTP-Range-Requests" class="headerlink" title="HTTP Range Requests"></a>HTTP Range Requests</h2><p>指定范围发送的 请求叫做范围请求(Range Request)。</p>
+<p>对一份 10 000 字节大小的资源,如果使用范围请求,可以只请求 5001~10 000 字节内的资源。</p>
+<p><a target="_blank" rel="noopener" href="http://en.wikipedia.org/wiki/Byte_serving">Clients which request byte-serving might do so</a> in cases in which a large file has been only partially delivered and a limited portion of the file is needed in a particular range. </p>
+<p>In the HTTP&#x2F;1.0 standard, clients were only able to request an entire document. </p>
+<h2 id="Content-negotiation"><a href="#Content-negotiation" class="headerlink" title="Content negotiation"></a>Content negotiation</h2><p>当浏览器的默认语言为英语或中文,访问相同 URI 的 Web 页面时, 则会显示对应的英语版或中文版的 Web 页面。</p>
+<p>{&lt;11&gt;}<img src="https://dl.dropboxusercontent.com/u/23764314/ghost_immortalfish/Screen%20Shot%202015-06-06%20at%2011.30.18%20AM.png"></p>
+<p>Content negotiation makes it possible to serve different versions of a document (or more generally, a resource representation) at the same URI, so that user agents can specify which version fit their capabilities the best. </p>
+<h1 id="Status-codes-in-HTTP"><a href="#Status-codes-in-HTTP" class="headerlink" title="Status codes in HTTP"></a>Status codes in HTTP</h1><ol>
+<li>1xx Informational</li>
+<li>2xx Success</li>
+<li>3xx Redirection</li>
+<li>4xx Client Error</li>
+<li>5xx Server Error</li>
+</ol>
+<p>Read more at <a target="_blank" rel="noopener" href="http://www.w3.org/Protocols/HTTP/HTRESP.html">w3.org</a></p>
+<p>{&lt;12&gt;}<img src="https://dl.dropboxusercontent.com/u/23764314/ghost_immortalfish/Screen%20Shot%202015-06-06%20at%201.36.46%20PM.png"></p>
+<h2 id="HTTP-301"><a href="#HTTP-301" class="headerlink" title="HTTP 301"></a>HTTP 301</h2><p>当 301、302、303 响应状态码返回时,几乎所有的浏览器都会把 POST 改成 GET,并删除请求报文内的主体,之后请求会自动再次发送。</p>
+<p>301、302 标准是禁止将 POST 方法改变成 GET 方法的,但实际使用 时大家都会这么做。</p>
+<p>Google recommends using a 301 redirect to change the URL of a page as it is shown in search engine results.</p>
+<h1 id="web-server"><a href="#web-server" class="headerlink" title="web server"></a>web server</h1><p>HTTP&#x2F;1.1 规范允许一台 HTTP 服务器搭建多个 Web 站点。</p>
+<p>即使物理层面只有一台服务器,但只要使用虚拟主机 (VPS) 的功能,则可 以假想已具有多台服务器。</p>
+<p>{&lt;13&gt;}<img src="https://dl.dropboxusercontent.com/u/23764314/ghost_immortalfish/Screen%20Shot%202015-06-06%20at%202.07.04%20PM.png"></p>
+<p>在相同的 IP 地址下,由于虚拟主机可以寄存多个不同主机名和域 名的 Web 网站,因此在发送 HTTP 请求时,必须在 Host 首部内完整指 定主机名或域名的 URI。</p>
+<h2 id="代理"><a href="#代理" class="headerlink" title="代理"></a>代理</h2><p>代理是一种有转发功能的应用程序,它扮演了位于服务器和客户端 “中间人”的角色,接收由客户端发送的请求并转发给服务器,同时也接收服务器返回的响应并转发给客户端。</p>
+<p>{&lt;14&gt;}<img src="https://dl.dropboxusercontent.com/u/23764314/ghost_immortalfish/Screen%20Shot%202015-06-06%20at%202.32.34%20PM.png"></p>
+<p>there’re mainly 2 kinds of proxy:</p>
+<ol>
+<li><p>缓存代理</p>
+<p> 代理转发响应时,缓存代理(Caching Proxy)会预先将资源的副本 (缓存)保存在代理服务器上。</p>
+<p> 当代理再次接收到对相同资源的请求时,就将之前缓存的资源作为响应返回。</p>
+</li>
+<li><p>透明代理</p>
+<p> 转发请求或响应时,不对报文做任何加工的代理类型被称为透明代 理(Transparent Proxy)。反之,对报文内容进行加工的代理被称为非透明代理。</p>
+</li>
+</ol>
+<h2 id="网关"><a href="#网关" class="headerlink" title="网关"></a>网关</h2><p>网关是转发其他服务器通信数据的服务器,接收从客户端发送来的 请求时,它就像自己拥有资源的源服务器一样对请求进行处理。</p>
+<p>有时客户端可能都不会察觉,自己的通信目标是一个网关。</p>
+<p>{&lt;15&gt;}<img src="https://dl.dropboxusercontent.com/u/23764314/ghost_immortalfish/Screen%20Shot%202015-06-06%20at%202.38.42%20PM.png"></p>
+<p>网关的工作机制和代理十分相似。而网关能使通信线路上的服务器 提供非 HTTP 协议服务。(eg. 连接数据库,使用 SQL 语句查询数据。另外,在 Web 购物网站上进行信用卡结算时,网关可以和信用卡结算系统联动。)</p>
+<h2 id="隧道"><a href="#隧道" class="headerlink" title="隧道"></a>隧道</h2><p>HTTP tunneling is a technique by which communications performed using various network protocols are encapsulated using the HTTP protocol. </p>
+<p>{&lt;16&gt;}<img src="https://dl.dropboxusercontent.com/u/23764314/ghost_immortalfish/Screen%20Shot%202015-06-06%20at%202.47.52%20PM.png"></p>
+<p>隧道可按要求建立起一条与其他服务器的通信线路,届时使用 SSL等加密手段进行通信。隧道的目的是确保客户端能与服务器进行安全的 通信。</p>
+<p>隧道本身不会去解析 HTTP 请求。隧道会在通信双方断开连接时结束。</p>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>Permalink:</span>
+                        <span><a href="https://mar2ndx.github.io/2015/06/06/unclemartian-http-learning-1/">https://mar2ndx.github.io/2015/06/06/unclemartian-http-learning-1/</a></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2019 <a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc/4.0/">CC-BY-NC-4.0</a> LICENSE</span>
+                    </p>
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY</strong>?</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/technology/"># technology</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2015/06/08/pre-2017-2015-06-08-linux-and-tcp-ports/">[Design] Linux and TCP ports </a>
+            
+            
+            <a class="next" rel="next" href="/2015/06/06/unclemartian-http-learning-2/">【Tech】 HTTP learning notes (2/3) security</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+            </div>
+            <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>©  | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+
+</html>

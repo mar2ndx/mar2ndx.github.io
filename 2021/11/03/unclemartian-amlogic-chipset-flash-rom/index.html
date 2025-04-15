@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+
+
+
+
+<title>【Tech】 Amlogic 晶晨芯片刷机教程 | Tech blog</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const pagebody = document.getElementsByTagName('body')[0]
+
+            function setTheme(status) {
+
+                if (status === 'dark') {
+                    window.sessionStorage.theme = 'dark'
+                    pagebody.classList.add('dark-theme');
+
+                } else if (status === 'light') {
+                    window.sessionStorage.theme = 'light'
+                    pagebody.classList.remove('dark-theme');
+                }
+            };
+
+            setTheme(window.sessionStorage.theme)
+        })();
+    </script>
+
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">Tech Blog</a></div>
+            <div class="menu navbar-right">
+                
+                <a class="menu-item" href="/archives">Posts</a>
+                
+                <a class="menu-item" href="/category">Categories</a>
+                
+                <a class="menu-item" href="/tag">Tags</a>
+                
+                <a class="menu-item" href="/about">About</a>
+                
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">Tech Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">
+                    <svg class="menu-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M4.5 17.27q-.213 0-.356-.145T4 16.768t.144-.356t.356-.143h15q.213 0 .356.144q.144.144.144.357t-.144.356t-.356.143zm0-4.77q-.213 0-.356-.144T4 11.999t.144-.356t.356-.143h15q.213 0 .356.144t.144.357t-.144.356t-.356.143zm0-4.77q-.213 0-.356-.143Q4 7.443 4 7.23t.144-.356t.356-.143h15q.213 0 .356.144T20 7.23t-.144.356t-.356.144z"/></svg>
+                    <svg class="close-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Material Symbols Light by Google - https://github.com/google/material-design-icons/blob/master/LICENSE --><path fill="currentColor" d="m12 12.708l-5.246 5.246q-.14.14-.344.15t-.364-.15t-.16-.354t.16-.354L11.292 12L6.046 6.754q-.14-.14-.15-.344t.15-.364t.354-.16t.354.16L12 11.292l5.246-5.246q.14-.14.345-.15q.203-.01.363.15t.16.354t-.16.354L12.708 12l5.246 5.246q.14.14.15.345q.01.203-.15.363t-.354.16t-.354-.16z"/></svg>
+                </div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                <a class="menu-item" href="/archives">Posts</a>
+                
+                <a class="menu-item" href="/category">Categories</a>
+                
+                <a class="menu-item" href="/tag">Tags</a>
+                
+                <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if (toggleMenu.classList.contains("active")) {
+            toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        } else {
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    var tocbot_timer;
+    var DEPTH_MAX = 6; // 为 6 时展开所有
+    var tocbot_default_config = {
+        tocSelector: '.tocbot-list',
+        contentSelector: '.post-content',
+        headingSelector: 'h1, h2, h3, h4, h5',
+        orderedList: false,
+        scrollSmooth: true,
+        onClick: extend_click,
+    };
+
+    function extend_click() {
+        clearTimeout(tocbot_timer);
+        tocbot_timer = setTimeout(function() {
+            tocbot.refresh(obj_merge(tocbot_default_config, {
+                hasInnerContainers: true
+            }));
+        }, 420); // 这个值是由 tocbot 源码里定义的 scrollSmoothDuration 得来的
+    }
+
+    document.ready(function() {
+        tocbot.init(obj_merge(tocbot_default_config, {
+            collapseDepth: 1
+        }));
+    });
+
+    function expand_toc() {
+        var b = document.querySelector('.tocbot-toc-expand');
+        var expanded = b.getAttribute('data-expanded');
+        expanded ? b.removeAttribute('data-expanded') : b.setAttribute('data-expanded', true);
+        tocbot.refresh(obj_merge(tocbot_default_config, {
+            collapseDepth: expanded ? 1 : DEPTH_MAX
+        }));
+        b.innerText = expanded ? 'Expand all' : 'Collapse all';
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+    function obj_merge(target, source) {
+        for (var item in source) {
+            if (source.hasOwnProperty(item)) {
+                target[item] = source[item];
+            }
+        }
+        return target;
+    }
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">【Tech】 Amlogic 晶晨芯片刷机教程</h1>
+            
+                <div class="post-meta">
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">November 3, 2021&nbsp;&nbsp;9:00:00</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/unknown/">unknown</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>晶晨(Amlogic)芯片有很多种设备。我玩过4种(只有前两者刷Armbian成功)：</p>
+<ol>
+<li><strong>Phicomm N1</strong>（S905D &#x2F; 2G）</li>
+<li><strong>玩客云</strong>（S805 &#x2F; 1G）</li>
+<li>CM201-1 魔百盒（S905L &#x2F; 1G）</li>
+<li>CM2000 红</li>
+</ol>
+<p>其中每个设备都可以刷3种系统：</p>
+<ol>
+<li>Android for TV</li>
+<li>Armbian for Linux</li>
+<li>Emuelec for gaming</li>
+</ol>
+<h1 id="结果"><a href="#结果" class="headerlink" title="结果"></a>结果</h1><p>CM201-1 魔百盒这个机器，启动 Armbian 一直没问题，但是无论换什么 dtb，Armbian 都无法 boot。所以，就当电视盒子吧，还挺好用的。</p>
+<blockquote>
+<p>这个帖子提到一个奇淫巧技，不知道能不能用，摘抄如下：</p>
+<p>使用adb shell reboot update发现启动失败，多次尝试也是如此。</p>
+<p>。。。受到启发，把启动盘根目录下的aml_autoscript.zip改名为update.zip,输入adb shell reboot update命令后直接引导进入armbian</p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/u012481946/article/details/113774089">https://blog.csdn.net/u012481946/article/details/113774089</a></p>
+</blockquote>
+<p>CM2000 这个机器，不但无法刷 Armbian，连Android底包都坏了。重刷之后可以使用TV box 功能，但是无 Wifi，插线用。</p>
+<p>wky是最容易刷的。我在其中一个上面装了 Armbian 跑同步盘，十分稳定。</p>
+<p>N1有个问题，就是Android底包经常被弄坏（Armbian正常可启动）。只要重刷一下 Android 系统就好了。</p>
+<blockquote>
+<p>为了刷n1，我弄坏了好几个u盘。而且好像最近买的这一批，只有32G可用于 Armbian，8G的一个都没成功。不知道为什么。</p>
+</blockquote>
+<h1 id="N1刷机"><a href="#N1刷机" class="headerlink" title="N1刷机"></a>N1刷机</h1><h2 id="Android"><a href="#Android" class="headerlink" title="Android"></a>Android</h2><p>对于 n1 盒子来说，使用这个Android底包就行：<strong>斐讯盒子N1_YYFROM夏杰语音实用版</strong></p>
+<p><a target="_blank" rel="noopener" href="http://www.yyfrom.com/cms/yyfrom/product/2021-7-3/166.html">http://www.yyfrom.com/cms/yyfrom/product/2021-7-3/166.html</a></p>
+<p>刷机很简单。（需要去设备管理器种调整一下usb驱动，参考 <a target="_blank" rel="noopener" href="https://post.smzdm.com/p/awkdzqvk/%EF%BC%89">https://post.smzdm.com/p/awkdzqvk/）</a></p>
+<p>要注意2点：</p>
+<ol>
+<li>Usb burning tool 软件中，先按“开始”，再连接 usb，否则 n1 连上直接就断开。</li>
+<li>一定要取消“擦除flash”和“擦除bootloader”。参考 <a target="_blank" rel="noopener" href="https://post.smzdm.com/p/ax025099/">https://post.smzdm.com/p/ax025099/</a></li>
+</ol>
+<p>这个底包无法卸载 带广告的HDP。我用adb等进去，发现这个app装在 &#x2F;system&#x2F;app&#x2F; 里面了，不知道怎么卸载。算了。</p>
+<p><img src="/images/tech/usb-burning-tool-n1.jpg"></p>
+<p>参考：<a target="_blank" rel="noopener" href="https://post.smzdm.com/p/a25gpgx7/">https://post.smzdm.com/p/a25gpgx7/</a></p>
+<h2 id="EmuElec"><a href="#EmuElec" class="headerlink" title="EmuElec"></a>EmuElec</h2><p>EmuELEC是专门为晶晨S905，S912以为更强的S922x&#x2F;S905x2设计的系统。N1的高性价比加上周围随手可得的附件，成本基本可以控制在￥200左右，但却可以通过EmuELEC打造成一台拥有十几种机型几千个游戏的游戏平台，比国内很多人在安卓上使用老旧内核，效能极低，操控延迟很高的小鸡模拟器强大的多。</p>
+<p>系统自带了多种游戏机，涵盖了Atari(雅达利) ，FC（NES任天堂），SNES（超级任天堂），N64(任天堂64)，GB，GBA，GBC（任天堂Gameboy家族），NDS（任天堂DS），PC Engine（NEC的家用游戏机），MD（世嘉Megadrive），DC（世嘉Dreamcast），PS(Sony Playstation)，PSP（Play Station Portable）以及各种复古街机版。游戏更是可以根据存储容量达到几千个。</p>
+<p>得利于底层驱动的优化，在这么一台不到￥100的主机上，双倍渲染解析度玩PSP的《怪物猎人3HD》效果棒极了，比PSP本体玩效果都棒。</p>
+<p>玩游戏玩腻了，通过系统中Advanced Options（增强选项）最下面的“返回安卓系统”则可以切换回N1盒子内部的安卓系统 。当然拔掉EmuELEC的系统U盘，重启盒子也可直接回到盒子内部的安卓系统。</p>
+<p>安卓系统下各种视频播放软件比如优酷，爱艺奇以及B站在2G Ram的4核ARM Cortex-A53 1.5GHz处理器下运行毫无压力，加载以及播放速度也在5G或者千兆有线的加持下非常迅速。装一个Kodi观看NAS或者移动硬盘中的4K蓝光原盘的效果棒极了。</p>
+<p>除了N1，你还可以选择魔巧盒Q5。除了配置和颜值比N1低了一些，装EmuELEC的话差别不大，只是因为是1G ram，当安卓电视盒子的话反而有些不太给力。</p>
+<blockquote>
+<p>Emuelec(xxxELEC之类的系统)与Armbian不兼容，启动过ELEC就启动不了Armbian了，反之可以。</p>
+<p>所以ELEC对boot环境具有破坏性，只能想办法恢复原来的boot环境，重新刷机可以解决。</p>
+</blockquote>
+<p>刷机过程，参考这里：</p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/milton/p/11883811.html">https://www.cnblogs.com/milton/p/11883811.html</a></p>
+<h3 id="什么是-CoreELEC？"><a href="#什么是-CoreELEC？" class="headerlink" title="什么是 CoreELEC？"></a>什么是 CoreELEC？</h3><p>CoreELEC is a ‘Just enough OS’ Linux distribution based on Kodi1 technology for popular Amlogic hardware</p>
+<p>CoreELEC是一个小巧的Linux发行版系统，从LibreELEC分离出来，是专为Amlogic（晶晨）芯片开发的Linux与Kodi集成的媒体中心系统。它的界面就是Kodi的界面，可以独立运行于U盘或TF卡。可最大限度的利用硬件资源，流畅的播放视频，100G的4K视频在低配设备上也能顺利播放。另外CoreELEC可以完美输出杜比全景声和dtsx，低端的安卓则不行。各种音频完美直通，无论是ac3、dts还是次世代音轨truehd、dtshd，包括atmos、dts-x等各种音轨都可以完美直通到功放解码。</p>
+<p>Coreelec是专门面向Amlogic芯片设备适配的，推荐s905、s912、s922系列的盒子安装使用，例如：斐讯N1、章鱼星球。</p>
+<h2 id="Armbian"><a href="#Armbian" class="headerlink" title="Armbian"></a>Armbian</h2><p>Armbian 经常把 Android系统搞坏。哎。</p>
+<p>另外，试用了桌面版的 Debian 9，实在是没什么可用性，而且有时候无法自动连接 Wifi。不建议玩儿。</p>
+<p>最佳的固件就是 5.77版本的 Debian stretch。</p>
+<p>5.99 &#x2F; 20.10 版本我没成功过。</p>
+<h1 id="WKY刷机"><a href="#WKY刷机" class="headerlink" title="WKY刷机"></a>WKY刷机</h1><p>参见另一篇《Debian 9 (Armbian) on N1&#x2F;Wky 使用教程》</p>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>Permalink:</span>
+                        <span><a href="https://mar2ndx.github.io/2021/11/03/unclemartian-amlogic-chipset-flash-rom/">https://mar2ndx.github.io/2021/11/03/unclemartian-amlogic-chipset-flash-rom/</a></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2019 <a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc/4.0/">CC-BY-NC-4.0</a> LICENSE</span>
+                    </p>
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY</strong>?</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/ubuntu/"># ubuntu</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2021/11/04/unclemartian-install-joplin-linux/">【Tech】 Install Joplin on Linux</a>
+            
+            
+            <a class="next" rel="next" href="/2021/10/19/unclemartian-install-openmediavault/">【Tech】 Install OpenMediaVault on Debian</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+            </div>
+            <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>©  | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+
+</html>

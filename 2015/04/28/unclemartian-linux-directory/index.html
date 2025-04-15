@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+
+
+
+
+<title>【Tech】 Linux Directory Structure | Tech blog</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const pagebody = document.getElementsByTagName('body')[0]
+
+            function setTheme(status) {
+
+                if (status === 'dark') {
+                    window.sessionStorage.theme = 'dark'
+                    pagebody.classList.add('dark-theme');
+
+                } else if (status === 'light') {
+                    window.sessionStorage.theme = 'light'
+                    pagebody.classList.remove('dark-theme');
+                }
+            };
+
+            setTheme(window.sessionStorage.theme)
+        })();
+    </script>
+
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">Tech Blog</a></div>
+            <div class="menu navbar-right">
+                
+                <a class="menu-item" href="/archives">Posts</a>
+                
+                <a class="menu-item" href="/category">Categories</a>
+                
+                <a class="menu-item" href="/tag">Tags</a>
+                
+                <a class="menu-item" href="/about">About</a>
+                
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">Tech Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">
+                    <svg class="menu-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M4.5 17.27q-.213 0-.356-.145T4 16.768t.144-.356t.356-.143h15q.213 0 .356.144q.144.144.144.357t-.144.356t-.356.143zm0-4.77q-.213 0-.356-.144T4 11.999t.144-.356t.356-.143h15q.213 0 .356.144t.144.357t-.144.356t-.356.143zm0-4.77q-.213 0-.356-.143Q4 7.443 4 7.23t.144-.356t.356-.143h15q.213 0 .356.144T20 7.23t-.144.356t-.356.144z"/></svg>
+                    <svg class="close-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Material Symbols Light by Google - https://github.com/google/material-design-icons/blob/master/LICENSE --><path fill="currentColor" d="m12 12.708l-5.246 5.246q-.14.14-.344.15t-.364-.15t-.16-.354t.16-.354L11.292 12L6.046 6.754q-.14-.14-.15-.344t.15-.364t.354-.16t.354.16L12 11.292l5.246-5.246q.14-.14.345-.15q.203-.01.363.15t.16.354t-.16.354L12.708 12l5.246 5.246q.14.14.15.345q.01.203-.15.363t-.354.16t-.354-.16z"/></svg>
+                </div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                <a class="menu-item" href="/archives">Posts</a>
+                
+                <a class="menu-item" href="/category">Categories</a>
+                
+                <a class="menu-item" href="/tag">Tags</a>
+                
+                <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if (toggleMenu.classList.contains("active")) {
+            toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        } else {
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    var tocbot_timer;
+    var DEPTH_MAX = 6; // 为 6 时展开所有
+    var tocbot_default_config = {
+        tocSelector: '.tocbot-list',
+        contentSelector: '.post-content',
+        headingSelector: 'h1, h2, h3, h4, h5',
+        orderedList: false,
+        scrollSmooth: true,
+        onClick: extend_click,
+    };
+
+    function extend_click() {
+        clearTimeout(tocbot_timer);
+        tocbot_timer = setTimeout(function() {
+            tocbot.refresh(obj_merge(tocbot_default_config, {
+                hasInnerContainers: true
+            }));
+        }, 420); // 这个值是由 tocbot 源码里定义的 scrollSmoothDuration 得来的
+    }
+
+    document.ready(function() {
+        tocbot.init(obj_merge(tocbot_default_config, {
+            collapseDepth: 1
+        }));
+    });
+
+    function expand_toc() {
+        var b = document.querySelector('.tocbot-toc-expand');
+        var expanded = b.getAttribute('data-expanded');
+        expanded ? b.removeAttribute('data-expanded') : b.setAttribute('data-expanded', true);
+        tocbot.refresh(obj_merge(tocbot_default_config, {
+            collapseDepth: expanded ? 1 : DEPTH_MAX
+        }));
+        b.innerText = expanded ? 'Expand all' : 'Collapse all';
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+    function obj_merge(target, source) {
+        for (var item in source) {
+            if (source.hasOwnProperty(item)) {
+                target[item] = source[item];
+            }
+        }
+        return target;
+    }
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">【Tech】 Linux Directory Structure</h1>
+            
+                <div class="post-meta">
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">April 28, 2015&nbsp;&nbsp;0:00:00</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/unknown/">unknown</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h1 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h1><h2 id="a-brief-introduction"><a href="#a-brief-introduction" class="headerlink" title="a brief introduction"></a>a brief introduction</h2><ol>
+<li>bin - user binary</li>
+<li>boot - boot loader</li>
+<li>dev - device (manipulate your hard drives)</li>
+<li>etc - config files</li>
+<li>home - user home dir except root</li>
+<li>initrd.img </li>
+<li>lib - system library</li>
+<li>lib64</li>
+<li>lost+found</li>
+<li>media - removable devices (CD, USB etc)</li>
+<li>mnt - mount file systems</li>
+<li>opt - optional (eg. desktop environment)</li>
+<li>proc - process info</li>
+<li>root - root user’s home</li>
+<li>run</li>
+<li>sbin - system binary (runnable only by root)</li>
+<li>srv - service data</li>
+<li>sys</li>
+<li>tmp - temporary (delete on restart)</li>
+<li>usr - Unix System Resources (user programs)<ol>
+<li>usr&#x2F;bin - user programs</li>
+<li>usr&#x2F;lib - user system lib</li>
+<li>usr&#x2F;local -  programs that’s <strong>manually compiled</strong> rather than install from package</li>
+<li>usr&#x2F;sbin - root programs</li>
+</ol>
+</li>
+<li>var - variables, application data (eg. MySQL db, cached files)</li>
+</ol>
+<p>Reference: <cite>Linux Directory Structure (File System Structure) Explained with Examples</cite><a target="_blank" rel="noopener" href="http://www.thegeekstuff.com/2010/09/linux-file-system-structure/">1</a></p>
+<h1 id="Some-important-folders"><a href="#Some-important-folders" class="headerlink" title="Some important folders"></a>Some important folders</h1><h2 id="bin-sbin-usr-bin-usr-sbin"><a href="#bin-sbin-usr-bin-usr-sbin" class="headerlink" title="bin, sbin, usr&#x2F;bin, usr&#x2F;sbin"></a>bin, sbin, usr&#x2F;bin, usr&#x2F;sbin</h2><p><strong>bin&#x2F;</strong> stores commands needed during boot-up that might be needed by normal users. eg. cat, tar…</p>
+<blockquote>
+<p>Applications <strong>such as Firefox</strong> are stored in &#x2F;usr&#x2F;bin, while important system programs and utilities such as the <strong>bash shell</strong> are located in &#x2F;bin. </p>
+</blockquote>
+<p><strong>sbin&#x2F;</strong> is like bin but commands are not intended for normal users. Commands run by LINUX. eg. ifconfig, fdisk…</p>
+<p><strong>&#x2F;usr&#x2F;bin</strong> is all user commands, while <strong>&#x2F;usr&#x2F;sbin</strong> is system admin commands not needed on the root filesystem. e.g. most server programs.</p>
+<h2 id="proc"><a href="#proc" class="headerlink" title="proc"></a>proc</h2><p>This filesystem is not on a disk. Exists in the kernels imagination (virtual). </p>
+<p>It holds information about kernel parameters and system configuration.</p>
+<h2 id="usr"><a href="#usr" class="headerlink" title="usr"></a>usr</h2><p><strong>&#x2F;usr</strong> usually contains by far the largest share of data on a system. Hence, this is <a target="_blank" rel="noopener" href="http://www.tldp.org/LDP/Linux-Filesystem-Hierarchy/html/usr.html">one of the most important directories</a> in the system as it contains all the <strong>user binaries, their documentation, libraries, header files</strong>, etc…. </p>
+<p>Reference: <a target="_blank" rel="noopener" href="http://www.comptechdoc.org/os/linux/usersguide/linux_ugfilestruct.html">Linux Directory Structure</a></p>
+<h1 id="A-brief-history"><a href="#A-brief-history" class="headerlink" title="A brief history"></a>A brief history</h1><blockquote>
+<p>Originally, there was &#x2F;bin for programs, &#x2F;dev for device files and &#x2F;lib for extra executable code and &#x2F;usr for user data. </p>
+</blockquote>
+<blockquote>
+<p>The source code was also often provided somewhere under &#x2F;usr.</p>
+</blockquote>
+<blockquote>
+<p>And there were a few files in the operating system that didn’t fit in any of the existing categories. This included <strong>a passwd file containing users’ passwords</strong>, and <strong>an mtab file written by mount</strong>. </p>
+</blockquote>
+<blockquote>
+<p>At first, there was no connotation that files in <strong>&#x2F;etc</strong> were configuration files. In these very early days, if you wanted to customize something, you’d be recompiling that part of the system. As Unix got more powerful, there were more and more things you could do without recompiling. As Unix got used more widely, there were more and more things people wanted to do, and they found ways of doing them without going through the trouble of recompiling. </p>
+</blockquote>
+<blockquote>
+<p>So <strong>&#x2F;etc</strong> filled up with more and more text files that people could and did customize, hence it gradually became the configuration directory.</p>
+</blockquote>
+<blockquote>
+<p>With the creation of <strong>&#x2F;sbin</strong> to contain programs intended only for the system administrator, <strong>&#x2F;etc</strong> ended up containing only text files, many of which can be customized by the system administrator. </p>
+</blockquote>
+<p>Reference: <a target="_blank" rel="noopener" href="http://unix.stackexchange.com/a/56172">Answer by Gilles on StackExchange</a></p>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>Permalink:</span>
+                        <span><a href="https://mar2ndx.github.io/2015/04/28/unclemartian-linux-directory/">https://mar2ndx.github.io/2015/04/28/unclemartian-linux-directory/</a></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2019 <a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc/4.0/">CC-BY-NC-4.0</a> LICENSE</span>
+                    </p>
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY</strong>?</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/technology/"># technology</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2015/04/30/unclemartian-nginx-tutorial/">【Tech】 Nginx tutorial</a>
+            
+            
+            <a class="next" rel="next" href="/2015/04/27/unclemartian-ghost-guide-vps/">【Tech】 Quick setup guide of Ghost on VPS</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+            </div>
+            <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>©  | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+
+</html>

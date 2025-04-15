@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+
+
+
+
+<title>【Tech】 Chromebook Tutorial 4 - Using GalliumOS | Tech blog</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const pagebody = document.getElementsByTagName('body')[0]
+
+            function setTheme(status) {
+
+                if (status === 'dark') {
+                    window.sessionStorage.theme = 'dark'
+                    pagebody.classList.add('dark-theme');
+
+                } else if (status === 'light') {
+                    window.sessionStorage.theme = 'light'
+                    pagebody.classList.remove('dark-theme');
+                }
+            };
+
+            setTheme(window.sessionStorage.theme)
+        })();
+    </script>
+
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">Tech Blog</a></div>
+            <div class="menu navbar-right">
+                
+                <a class="menu-item" href="/archives">Posts</a>
+                
+                <a class="menu-item" href="/category">Categories</a>
+                
+                <a class="menu-item" href="/tag">Tags</a>
+                
+                <a class="menu-item" href="/about">About</a>
+                
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">Tech Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">
+                    <svg class="menu-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M4.5 17.27q-.213 0-.356-.145T4 16.768t.144-.356t.356-.143h15q.213 0 .356.144q.144.144.144.357t-.144.356t-.356.143zm0-4.77q-.213 0-.356-.144T4 11.999t.144-.356t.356-.143h15q.213 0 .356.144t.144.357t-.144.356t-.356.143zm0-4.77q-.213 0-.356-.143Q4 7.443 4 7.23t.144-.356t.356-.143h15q.213 0 .356.144T20 7.23t-.144.356t-.356.144z"/></svg>
+                    <svg class="close-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Material Symbols Light by Google - https://github.com/google/material-design-icons/blob/master/LICENSE --><path fill="currentColor" d="m12 12.708l-5.246 5.246q-.14.14-.344.15t-.364-.15t-.16-.354t.16-.354L11.292 12L6.046 6.754q-.14-.14-.15-.344t.15-.364t.354-.16t.354.16L12 11.292l5.246-5.246q.14-.14.345-.15q.203-.01.363.15t.16.354t-.16.354L12.708 12l5.246 5.246q.14.14.15.345q.01.203-.15.363t-.354.16t-.354-.16z"/></svg>
+                </div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                <a class="menu-item" href="/archives">Posts</a>
+                
+                <a class="menu-item" href="/category">Categories</a>
+                
+                <a class="menu-item" href="/tag">Tags</a>
+                
+                <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if (toggleMenu.classList.contains("active")) {
+            toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        } else {
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    var tocbot_timer;
+    var DEPTH_MAX = 6; // 为 6 时展开所有
+    var tocbot_default_config = {
+        tocSelector: '.tocbot-list',
+        contentSelector: '.post-content',
+        headingSelector: 'h1, h2, h3, h4, h5',
+        orderedList: false,
+        scrollSmooth: true,
+        onClick: extend_click,
+    };
+
+    function extend_click() {
+        clearTimeout(tocbot_timer);
+        tocbot_timer = setTimeout(function() {
+            tocbot.refresh(obj_merge(tocbot_default_config, {
+                hasInnerContainers: true
+            }));
+        }, 420); // 这个值是由 tocbot 源码里定义的 scrollSmoothDuration 得来的
+    }
+
+    document.ready(function() {
+        tocbot.init(obj_merge(tocbot_default_config, {
+            collapseDepth: 1
+        }));
+    });
+
+    function expand_toc() {
+        var b = document.querySelector('.tocbot-toc-expand');
+        var expanded = b.getAttribute('data-expanded');
+        expanded ? b.removeAttribute('data-expanded') : b.setAttribute('data-expanded', true);
+        tocbot.refresh(obj_merge(tocbot_default_config, {
+            collapseDepth: expanded ? 1 : DEPTH_MAX
+        }));
+        b.innerText = expanded ? 'Expand all' : 'Collapse all';
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+    function obj_merge(target, source) {
+        for (var item in source) {
+            if (source.hasOwnProperty(item)) {
+                target[item] = source[item];
+            }
+        }
+        return target;
+    }
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">【Tech】 Chromebook Tutorial 4 - Using GalliumOS</h1>
+            
+                <div class="post-meta">
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">March 29, 2022&nbsp;&nbsp;0:00:00</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/unknown/">unknown</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h1 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h1><p><strong><a target="_blank" rel="noopener" href="https://wiki.galliumos.org/Welcome_to_the_GalliumOS_Wiki">GalliumOS</a></strong> is built solely for Chromebooks.</p>
+<p>这个 Linux 系统是基于 Ubuntu 18.04 (bionic) 的。</p>
+<h1 id="GalliumOS-Basics-系统配置"><a href="#GalliumOS-Basics-系统配置" class="headerlink" title="GalliumOS Basics 系统配置"></a>GalliumOS Basics 系统配置</h1><h2 id="用户权限"><a href="#用户权限" class="headerlink" title="用户权限"></a>用户权限</h2><p>Give yourself <strong>‘su’</strong> previlege!</p>
+<p>在 Users Settings 中，把 Account Type 改为 Administrator. </p>
+<p>不换源的话，language 和 fcitx 安装会出问题。</p>
+<p><img src="/images/tech/TODO.png"></p>
+<h2 id="HiDPI"><a href="#HiDPI" class="headerlink" title="HiDPI"></a>HiDPI</h2><p>Most simply way: <strong>Go to Settings Manager &gt; Appearance &gt; Fonts &gt; Custom DPI setting and change from 96 to</strong>:</p>
+<ul>
+<li>144 in you are on external (1080p) display</li>
+<li>192 if you are on 2K laptop screen</li>
+</ul>
+<p>There is <a target="_blank" rel="noopener" href="https://jeromewu.github.io/how-to-fix-hidpi-issues-in-gulliam-os-3.1/">a script to automate this process</a>, I made it simple by hosting a copy <a href="/files/fix-hidpi-in-galliumos-3.1.sh">here</a></p>
+<pre><code>sh fix-hidpi-in-galliumos-3.1.sh
+</code></pre>
+<p>Next, change the right bottom battery icon: </p>
+<pre><code>vi ~/.config/gtk-3.0/gtk.css
+</code></pre>
+<p>File content:</p>
+<pre><code>#xfce4-power-manager-plugin * &#123;
+    -gtk-icon-transform: scale(0.38);
+&#125;
+</code></pre>
+<p>However, based on my experience, changing <strong>&#x2F;etc&#x2F;profile.d&#x2F;gdkscale.sh</strong> doesn’t work very properly. </p>
+<h3 id="Update-March-30-2022"><a href="#Update-March-30-2022" class="headerlink" title="Update March 30, 2022"></a>Update March 30, 2022</h3><p>I found there is additional issues with scaling. Thus this is my conclusion: </p>
+<ol>
+<li>如果是双屏幕，dpi不同，最好的办法就是改分辨率，反正笔记本屏幕也不是主力屏。<br> （我将 CB713-1W 的屏幕改成 1400 x 900 ，配合 1080p 的外显使用）</li>
+<li>其实样式可以直接到 Appearance-&gt;Fonts 里面，DPI 改成 96 或者 144</li>
+<li>去 Window Manager 里，可改窗口样式。</li>
+<li>for more：<a target="_blank" rel="noopener" href="https://v1.marksolters.com/programming/2016/05/13/pixel-gallium.html">https://v1.marksolters.com/programming/2016/05/13/pixel-gallium.html</a></li>
+</ol>
+<h2 id="声音"><a href="#声音" class="headerlink" title="声音"></a>声音</h2><p>看了很多 Kaby Lake 如何 fix audio 的帖子：</p>
+<ol>
+<li><a target="_blank" rel="noopener" href="https://www.reddit.com/r/chrultrabook/comments/r6v4j2/audio_on_kaby_lake_device_acer_chromebook_13_cb713/">https://www.reddit.com/r/chrultrabook/comments/r6v4j2/audio_on_kaby_lake_device_acer_chromebook_13_cb713/</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.reddit.com/r/GalliumOS/comments/gk5bpg/no_sound_with_galliumos_31_kabylake_14da0011dx/">https://www.reddit.com/r/GalliumOS/comments/gk5bpg/no_sound_with_galliumos_31_kabylake_14da0011dx/</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/GalliumOS/galliumos-distro/issues/536">https://github.com/GalliumOS/galliumos-distro/issues/536</a></li>
+</ol>
+<p>最终决定：直接用外接显示器上的声卡吧！</p>
+<p>（可插耳机）</p>
+<h2 id="换源-Change-source"><a href="#换源-Change-source" class="headerlink" title="换源 Change source"></a>换源 Change source</h2><pre><code>cd /etc/apt/
+vi sources.list
+</code></pre>
+<p>The aliyun source:</p>
+<pre><code>deb http://mirrors.aliyun.com/ubuntu/ bionic main restricted universe multiverse
+deb-src http://mirrors.aliyun.com/ubuntu/ bionic main restricted universe multiverse
+
+deb http://mirrors.aliyun.com/ubuntu/ bionic-security main restricted universe multiverse
+deb-src http://mirrors.aliyun.com/ubuntu/ bionic-security main restricted universe multiverse
+
+deb http://mirrors.aliyun.com/ubuntu/ bionic-updates main restricted universe multiverse
+deb-src http://mirrors.aliyun.com/ubuntu/ bionic-updates main restricted universe multiverse
+
+deb http://mirrors.aliyun.com/ubuntu/ bionic-proposed main restricted universe multiverse
+deb-src http://mirrors.aliyun.com/ubuntu/ bionic-proposed main restricted universe multiverse
+
+deb http://mirrors.aliyun.com/ubuntu/ bionic-backports main restricted universe multiverse
+deb-src http://mirrors.aliyun.com/ubuntu/ bionic-backports main restricted universe multiverse
+</code></pre>
+<h2 id="输入法：fcitx"><a href="#输入法：fcitx" class="headerlink" title="输入法：fcitx"></a>输入法：fcitx</h2><p>首先，下载搜狗：</p>
+<p><a target="_blank" rel="noopener" href="https://pinyin.sogou.com/linux/">https://pinyin.sogou.com/linux/</a></p>
+<p>Go to “Language Support” 或者“语言支持”，添加“中文”，并且把输入法设置成：fcitx。</p>
+<p><img src="/images/tech/galliumos-fcitx-sogoupinyin.png"></p>
+<p>然后：</p>
+<pre><code>sudo dpkg -i sogoupinyin_2.4.0.3469_amd64.deb
+</code></pre>
+<p>如果缺依赖，就：</p>
+<pre><code>sudo apt -f install
+</code></pre>
+<p>这时候仍然可能会失败，报以下错：<strong>installing sogoupinyin would break fcitx-ui-qimpanel</strong>。这个原因是<a target="_blank" rel="noopener" href="https://www.bbsmax.com/A/MyJxmX4p5n/">搜狗拼音安装包中含有fcitx-ui-qimpanel，与系统已有的fcitx-ui-qimpanel产生了冲突</a>，所以，删除 fcitx-ui-qimpanel。</p>
+<pre><code>sudo apt-get remove fcitx-ui-qimpanel
+</code></pre>
+<p>后来，再安装sogou，或者先安sogou后安locale包，再重启机器，总之就好了。版本号：搜狗个人版 4.0.0.1605 （2022年3月）。</p>
+<h1 id="Install-Software"><a href="#Install-Software" class="headerlink" title="Install Software"></a>Install Software</h1><h2 id="Chrome-VSCode"><a href="#Chrome-VSCode" class="headerlink" title="Chrome, VSCode"></a>Chrome, VSCode</h2><p>Just download and install:</p>
+<ol>
+<li><a target="_blank" rel="noopener" href="https://www.google.cn/chrome/">https://www.google.cn/chrome/</a></li>
+<li><a target="_blank" rel="noopener" href="https://code.visualstudio.com/">https://code.visualstudio.com/</a></li>
+</ol>
+<h2 id="Install-MySQL-Workbench"><a href="#Install-MySQL-Workbench" class="headerlink" title="Install MySQL Workbench"></a>Install MySQL Workbench</h2><p>Workbench 最近版是 Workbench 8.0.28，但是不支持 bionic。</p>
+<p>故选择<a target="_blank" rel="noopener" href="https://downloads.mysql.com/archives/get/p/8/file/mysql-workbench-community_8.0.22-1ubuntu18.04_amd64.deb">mysql-workbench-community_8.0.22-1ubuntu18.04_amd64.deb</a></p>
+<p>先安依赖：</p>
+<pre><code>sudo apt install libzip4
+sudo dpkg -i mysql-workbench-community_8.0.22-1ubuntu18.04_amd64.deb
+</code></pre>
+<p>就好了。</p>
+<h2 id="Spotify"><a href="#Spotify" class="headerlink" title="Spotify"></a>Spotify</h2><p>According to the <a target="_blank" rel="noopener" href="https://www.spotify.com/us/download/linux/">official tutorial</a>:</p>
+<pre><code>curl -sS https://download.spotify.com/debian/pubkey_5E3C45D7B312C643.gpg | sudo apt-key add - 
+echo &quot;deb http://repository.spotify.com stable non-free&quot; | sudo tee /etc/apt/sources.list.d/spotify.list
+</code></pre>
+<p>Then you can install the Spotify client:</p>
+<pre><code>sudo apt-get update &amp;&amp; sudo apt-get install spotify-client
+spotify
+</code></pre>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>Permalink:</span>
+                        <span><a href="https://mar2ndx.github.io/2022/03/29/unclemartian-chromebook-4-use-galliumos/">https://mar2ndx.github.io/2022/03/29/unclemartian-chromebook-4-use-galliumos/</a></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2019 <a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc/4.0/">CC-BY-NC-4.0</a> LICENSE</span>
+                    </p>
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY</strong>?</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/ubuntu/"># ubuntu</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2022/04/01/unclemartian-debian-9-10-minimal/">【Tech】 Debian 9/10 minimal</a>
+            
+            
+            <a class="next" rel="next" href="/2022/03/28/unclemartian-chromebook-3-install-galliumos/">【Tech】 Chromebook Tutorial 3 - Install GalliumOS</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+            </div>
+            <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>©  | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+
+
+
+
+<title>【Tech】 VPN / Trojan on Ubuntu / Linux | Tech blog</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const pagebody = document.getElementsByTagName('body')[0]
+
+            function setTheme(status) {
+
+                if (status === 'dark') {
+                    window.sessionStorage.theme = 'dark'
+                    pagebody.classList.add('dark-theme');
+
+                } else if (status === 'light') {
+                    window.sessionStorage.theme = 'light'
+                    pagebody.classList.remove('dark-theme');
+                }
+            };
+
+            setTheme(window.sessionStorage.theme)
+        })();
+    </script>
+
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">Tech Blog</a></div>
+            <div class="menu navbar-right">
+                
+                <a class="menu-item" href="/archives">Posts</a>
+                
+                <a class="menu-item" href="/category">Categories</a>
+                
+                <a class="menu-item" href="/tag">Tags</a>
+                
+                <a class="menu-item" href="/about">About</a>
+                
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">Tech Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">
+                    <svg class="menu-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M4.5 17.27q-.213 0-.356-.145T4 16.768t.144-.356t.356-.143h15q.213 0 .356.144q.144.144.144.357t-.144.356t-.356.143zm0-4.77q-.213 0-.356-.144T4 11.999t.144-.356t.356-.143h15q.213 0 .356.144t.144.357t-.144.356t-.356.143zm0-4.77q-.213 0-.356-.143Q4 7.443 4 7.23t.144-.356t.356-.143h15q.213 0 .356.144T20 7.23t-.144.356t-.356.144z"/></svg>
+                    <svg class="close-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Material Symbols Light by Google - https://github.com/google/material-design-icons/blob/master/LICENSE --><path fill="currentColor" d="m12 12.708l-5.246 5.246q-.14.14-.344.15t-.364-.15t-.16-.354t.16-.354L11.292 12L6.046 6.754q-.14-.14-.15-.344t.15-.364t.354-.16t.354.16L12 11.292l5.246-5.246q.14-.14.345-.15q.203-.01.363.15t.16.354t-.16.354L12.708 12l5.246 5.246q.14.14.15.345q.01.203-.15.363t-.354.16t-.354-.16z"/></svg>
+                </div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                <a class="menu-item" href="/archives">Posts</a>
+                
+                <a class="menu-item" href="/category">Categories</a>
+                
+                <a class="menu-item" href="/tag">Tags</a>
+                
+                <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if (toggleMenu.classList.contains("active")) {
+            toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        } else {
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    var tocbot_timer;
+    var DEPTH_MAX = 6; // 为 6 时展开所有
+    var tocbot_default_config = {
+        tocSelector: '.tocbot-list',
+        contentSelector: '.post-content',
+        headingSelector: 'h1, h2, h3, h4, h5',
+        orderedList: false,
+        scrollSmooth: true,
+        onClick: extend_click,
+    };
+
+    function extend_click() {
+        clearTimeout(tocbot_timer);
+        tocbot_timer = setTimeout(function() {
+            tocbot.refresh(obj_merge(tocbot_default_config, {
+                hasInnerContainers: true
+            }));
+        }, 420); // 这个值是由 tocbot 源码里定义的 scrollSmoothDuration 得来的
+    }
+
+    document.ready(function() {
+        tocbot.init(obj_merge(tocbot_default_config, {
+            collapseDepth: 1
+        }));
+    });
+
+    function expand_toc() {
+        var b = document.querySelector('.tocbot-toc-expand');
+        var expanded = b.getAttribute('data-expanded');
+        expanded ? b.removeAttribute('data-expanded') : b.setAttribute('data-expanded', true);
+        tocbot.refresh(obj_merge(tocbot_default_config, {
+            collapseDepth: expanded ? 1 : DEPTH_MAX
+        }));
+        b.innerText = expanded ? 'Expand all' : 'Collapse all';
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+    function obj_merge(target, source) {
+        for (var item in source) {
+            if (source.hasOwnProperty(item)) {
+                target[item] = source[item];
+            }
+        }
+        return target;
+    }
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">【Tech】 VPN / Trojan on Ubuntu / Linux</h1>
+            
+                <div class="post-meta">
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">September 14, 2021&nbsp;&nbsp;10:00:00</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/unknown/">unknown</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h1 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h1><p>2 softwares to run Trojan: </p>
+<ol>
+<li>Trojan client : <a target="_blank" rel="noopener" href="https://github.com/trojan-gfw/trojan">https://github.com/trojan-gfw/trojan</a></li>
+<li>Qv2ray : <a target="_blank" rel="noopener" href="https://github.com/Qv2ray/Qv2ray">https://github.com/Qv2ray/Qv2ray</a></li>
+</ol>
+<h2 id="trojan-vpn-and-ssr-的区别"><a href="#trojan-vpn-and-ssr-的区别" class="headerlink" title="trojan, vpn and ssr 的区别"></a>trojan, vpn and ssr 的区别</h2><p>TODO</p>
+<h1 id="Trojan"><a href="#Trojan" class="headerlink" title="Trojan"></a>Trojan</h1><h2 id="Install-trojan-client-on-Ubuntu"><a href="#Install-trojan-client-on-Ubuntu" class="headerlink" title="Install trojan client on Ubuntu"></a>Install trojan client on Ubuntu</h2><p>For 18.10 &amp; 19.04</p>
+<pre><code>sudo add-apt-repository ppa:greaterfire/trojan
+sudo apt-get update
+sudo apt-get install trojan
+</code></pre>
+<p>For &gt;&#x3D; 19.04 </p>
+<pre><code>sudo apt-get install trojan
+</code></pre>
+<p>On Manjaro:</p>
+<pre><code>sudo pacman -S trojan
+</code></pre>
+<p>Reference: <a target="_blank" rel="noopener" href="https://github.com/trojan-gfw/trojan/wiki/Binary-&-Package-Distributions">Binary &amp; Package Distributions · trojan-gfw&#x2F;trojan Wiki</a></p>
+<h2 id="Trojan-client-config"><a href="#Trojan-client-config" class="headerlink" title="Trojan client config"></a>Trojan client config</h2><p>Put config.json under &#x2F;etc&#x2F;trojan&#x2F;config.json (for Arch) 或者 &#x2F;usr&#x2F;local&#x2F;trojan&#x2F;config.json (for Ubuntu)</p>
+<pre><code>sudo mv /etc/trojan/config.json /etc/trojan/config.json.backup
+sudo vi /etc/trojan/config.json
+</code></pre>
+<p>To test that trojan is working, run the one-time command:</p>
+<pre><code>/usr/local/trojan/trojan -c /usr/local/trojan/config.json
+</code></pre>
+<h2 id="Run-on-system-daemon"><a href="#Run-on-system-daemon" class="headerlink" title="Run on system daemon"></a>Run on system daemon</h2><p>Simply, enable trojan：</p>
+<pre><code>systemctl enable trojan
+systemctl start trojan
+</code></pre>
+<p>If trojan service isn’t available: </p>
+<pre><code>cd /etc/systemd/system/
+sudo vi trojan.service
+</code></pre>
+<p>Input: </p>
+<pre><code>[Unit]
+Description=trojan
+Documentation=man:trojan(1) https://trojan-gfw.github.io/trojan/config https://trojan-gfw.github.io/trojan/
+After=network.target
+
+[Service]
+Type=simple
+StandardError=journal
+User=nobody
+AmbientCapabilities=CAP_NET_BIND_SERVICE
+ExecStart=/usr/local/trojan/trojan -c /usr/local/trojan/config.json
+ExecReload=/bin/kill -HUP $MAINPID
+Restart=on-failure
+RestartSec=3s
+
+[Install]
+WantedBy=multi-user.target
+</code></pre>
+<p>Then add to auto-run and config system-wide alias: </p>
+<pre><code>systemctl enable trojan
+</code></pre>
+<p>Optionally, add alias for quick run: </p>
+<pre><code>sudo vi ~/.bashrc
+# add the following line:
+alias trojan=&#39;/usr/local/trojan/trojan -c /usr/local/trojan/config.json&#39;
+</code></pre>
+<p>Above, configed trojan successfully on system level. Welcome to beyound the wall. </p>
+<h2 id="Browser-config"><a href="#Browser-config" class="headerlink" title="Browser config"></a>Browser config</h2><p>Next step, download SwitchyOmega for Chrome and Firefox, config SOCKS5</p>
+<p>Download url: <a target="_blank" rel="noopener" href="https://github.com/FelisCatus/SwitchyOmega/releases">https://github.com/FelisCatus/SwitchyOmega/releases</a></p>
+<p>Local file: </p>
+<ol>
+<li><a href="https://mar2ndx.github.io/files/proxy_switchyomega-2.5.20-an+fx.xpi">https://mar2ndx.github.io/files/proxy_switchyomega-2.5.20-an+fx.xpi</a></li>
+<li><a href="https://mar2ndx.github.io/files/SwitchyOmega_Chromium.crx">https://mar2ndx.github.io/files/SwitchyOmega_Chromium.crx</a></li>
+</ol>
+<p>Go to switchyomega config and set (default) to “SOCKS5” protocol and “127.0.0.1” server, “1080” port. </p>
+<p>Done! </p>
+<h2 id="Known-Issue"><a href="#Known-Issue" class="headerlink" title="Known Issue"></a>Known Issue</h2><p>If you see “unknown protocol” error, then you have mis-configed <strong>http</strong> instead of <strong>socks5</strong>. </p>
+<h1 id="Qv2ray"><a href="#Qv2ray" class="headerlink" title="Qv2ray"></a>Qv2ray</h1><p>Qv2ray仅需下载以下三件套：</p>
+<ol>
+<li><p>Main app: <a target="_blank" rel="noopener" href="https://github.com/Qv2ray/Qv2ray/releases">https://github.com/Qv2ray/Qv2ray/releases</a></p>
+</li>
+<li><p>Trojan plugin: <a target="_blank" rel="noopener" href="https://github.com/Qv2ray/QvPlugin-Trojan/releases/tag/v3.0.0-pre3">https://github.com/Qv2ray/QvPlugin-Trojan/releases/tag/v3.0.0-pre3</a></p>
+<ol>
+<li>注意：trojan plugin 和 qv2ray 版本必须对应</li>
+</ol>
+</li>
+<li><p>v2core: <a target="_blank" rel="noopener" href="https://github.com/v2fly/v2ray-core/releases">https://github.com/v2fly/v2ray-core/releases</a></p>
+<ol>
+<li>或者 <a target="_blank" rel="noopener" href="https://github.com/v2ray/v2ray-core/releases">https://github.com/v2ray/v2ray-core/releases</a></li>
+<li>注意选择：v2ray-linux-64.zip</li>
+</ol>
+</li>
+</ol>
+<h1 id="After-installation"><a href="#After-installation" class="headerlink" title="After installation"></a>After installation</h1><h2 id="Troubleshoot"><a href="#Troubleshoot" class="headerlink" title="Troubleshoot"></a>Troubleshoot</h2><h3 id="Check-IP-address"><a href="#Check-IP-address" class="headerlink" title="Check IP address"></a>Check IP address</h3><pre><code>curl ifconfig.me
+</code></pre>
+<h3 id="Test-VPN"><a href="#Test-VPN" class="headerlink" title="Test VPN"></a>Test VPN</h3><p>Test whether proxy &#x2F; trojan really works</p>
+<pre><code>curl google.com
+echo $https_proxy
+</code></pre>
+<h2 id="Use-another-machine-as-proxy"><a href="#Use-another-machine-as-proxy" class="headerlink" title="Use another machine as proxy"></a>Use another machine as proxy</h2><p>假如 somehow 你的机器无法 config proxy，你可以使用另一台机器：</p>
+<ol>
+<li>在公用机器上 Config Qv2ray: 监听地址 &#x3D; 0.0.0.0</li>
+</ol>
+<p><img src="/images/tech/qv2ray-listen-address.png"></p>
+<ol start="2">
+<li><p>在私人机器上 Set manual proxy: </p>
+<p> Proxy: （公用机器的地址，比如 192.168.31.105）<br> Port: 8889</p>
+</li>
+</ol>
+<h2 id="Terminal-proxy"><a href="#Terminal-proxy" class="headerlink" title="Terminal proxy"></a>Terminal proxy</h2><p>对于 Qv2ray: </p>
+<pre><code>export http_proxy=http://127.0.0.1:8889
+export https_proxy=http://127.0.0.1:8889
+</code></pre>
+<p>或者：</p>
+<pre><code>export http_proxy=http://127.0.0.1:8889
+export https_proxy=socks5://127.0.0.1:1089
+</code></pre>
+<p>然后加入 alias：</p>
+<pre><code>sudo vi ~/.bashrc
+</code></pre>
+<p>Content：</p>
+<pre><code>alias fanqiang=&#39;export http_proxy=http://127.0.0.1:8889 &amp;&amp; export https_proxy=socks5://127.0.0.1:1089&#39;
+</code></pre>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>Permalink:</span>
+                        <span><a href="https://mar2ndx.github.io/2021/09/14/unclemartian-ubuntu-vpn-trojan/">https://mar2ndx.github.io/2021/09/14/unclemartian-ubuntu-vpn-trojan/</a></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2019 <a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc/4.0/">CC-BY-NC-4.0</a> LICENSE</span>
+                    </p>
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY</strong>?</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/ubuntu/"># ubuntu</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2021/09/27/unclemartian-cheap-nas-machines-compare/">【Tech】 不足百元的 Nas 矿渣机对比</a>
+            
+            
+            <a class="next" rel="next" href="/2021/09/13/unclemartian-ubuntu-mount-apfs/">【Tech】 Mount APFS</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+            </div>
+            <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>©  | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+
+</html>
