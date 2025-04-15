@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    [Design] Big Data Storage  丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">[Design] Big Data Storage </div>
+  <div class="post-meta">
+    <div class="date">2015 January 6th</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><p><a target="_blank" rel="noopener" href="http://www.mitbbs.com/article/JobHunting/32580869_0.html">ref</a></p>
+<h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><p><strong>Given 1 trillion messages</strong> on fb and each message has at max 10 words.</p>
+<p>How do you build the <strong>index table</strong> and how many machines do you need on the <strong>cluster</strong> to store the index table?</p>
+<h3 id="One-possible-answer"><a href="#One-possible-answer" class="headerlink" title="One possible answer"></a>One possible answer</h3><p>Total data &#x3D; 1 trillion _ 10 words _ 6 bytes &#x2F; word &#x3D; 60TB &#x3D; one small NetApp box</p>
+<p><strong>Index by hashed userid</strong>; will distribute traffic effectively across servers; cache active users recent messages in memory.</p>
+<p><a target="_blank" rel="noopener" href="http://www.glassdoor.com/Interview/Given-a-set-of-n-jobs-with-start-time-end-time-cost-find-a-subset-so-that-no-2-jobs-overlap-and-the-cost-is-maximum-QTN_440168.htm">Cannot use Netapp box</a>. From what I read in FB engg blog, they have all the info in main memory of server.</p>
+<p>Total data &#x3D; 1 trillion _ 10 words _ 6 bytes &#x2F; word &#x3D; 60TB + 1TB for Indexes.</p>
+<p>Considering servers have 64 GB ram. 61 GB usable to store index, 1000 servers.</p>
+<h4 id="For-more-information"><a href="#For-more-information" class="headerlink" title="For more information"></a>For more information</h4><p>Read 2 other posts: <strong>[Design] Distributed hash table</strong> and <strong>[Design] Cloud, Grid and Cluster</strong>.</p>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

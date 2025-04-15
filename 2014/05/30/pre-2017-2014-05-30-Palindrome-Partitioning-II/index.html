@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    [LeetCode 132] Palindrome Partitioning II 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">[LeetCode 132] Palindrome Partitioning II</div>
+  <div class="post-meta">
+    <div class="date">2014 May 30th</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><p><a target="_blank" rel="noopener" href="https://oj.leetcode.com/problems/palindrome-partitioning-ii/">link</a></p>
+<div class="question-content">
+            <p></p><p>
+Given a string <i>s</i>, partition <i>s</i> such that every substring of the partition is a palindrome.
+</p>
+<p>
+Return the minimum cuts needed for a palindrome partitioning of <i>s</i>.
+</p>
+<p>
+For example, given <i>s</i> = <code>"aab"</code>,<br>
+Return <code>1</code> since the palindrome partitioning <code>["aa","b"]</code> could be produced using 1 cut.
+</p><p></p>
+          </div>
+
+<h3 id="Stats"><a href="#Stats" class="headerlink" title="Stats"></a>Stats</h3><table border="2">
+	<tr>
+		<td>Frequency</td>
+		<td bgcolor="yellow">3</td>
+	</tr>
+	<tr>
+		<td>Difficulty</td>
+		<td bgcolor="red">4</td>
+	</tr>
+	<tr>
+		<td>Adjusted Difficulty</td>
+		<td bgcolor="red">5</td>
+	</tr>
+	<tr>
+		<td>Time to use</td>
+		<td bgcolor="red">--------</td>
+	</tr>
+</table>
+
+<p>Ratings&#x2F;Color &#x3D; 1(white) 2(lime) 3(yellow) 4&#x2F;5(red)</p>
+<h3 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h3><p><strong>This is DP, but not traditional DP question</strong></p>
+<h4 id="IT-IS-DOUBLE-DP"><a href="#IT-IS-DOUBLE-DP" class="headerlink" title="IT IS DOUBLE DP!"></a>IT IS DOUBLE DP!</h4><p>It is very hard for me to even understand the solution, but <strong>I have found a great analysis from <a target="_blank" rel="noopener" href="http://blog.sina.com.cn/s/blog_b9285de20101iwqt.html">peking2’s blog</a></strong>.</p>
+<blockquote>
+<p>这题一般人一看就是 DP，DP 公式也很容易推出，算是一道简单的 DP。</p>
+</blockquote>
+<blockquote>
+<p>dp(i) &#x3D; min( 1+dp(j+1), if substring(i,j) is palindrome)</p>
+</blockquote>
+<blockquote>
+<p>从以上的分析时间复杂度为 O(n^3), 主要是因为检查回文也需要 O(n)的时间。因此这题有意思的一点就是如何降低时间复杂度到 O(n^2)？</p>
+</blockquote>
+<blockquote>
+<p><strong>其实这题是两个 DP 混杂在了一起</strong>，这也是这道题最有意思的地方。另外一个 DP 就是跟检查回文有关了，公式如下</p>
+</blockquote>
+<blockquote>
+<p>dp(i)(j)&#x3D;true if s(i)&#x3D;&#x3D;s(j) &amp;&amp; dp(i+1)(j-1)</p>
+</blockquote>
+<blockquote>
+<p>也就是说，你要检查一个回文只需要知道头尾的字符相等，并且中间的字串已经成为了回文即可。O(1)复杂度。</p>
+</blockquote>
+<p><strong>A more detailed analysis is available in <a target="_blank" rel="noopener" href="http://fisherlei.blogspot.sg/2013/03/leetcode-palindrome-partitioning-ii.html">this blog</a></strong>.</p>
+<blockquote cite="http://fisherlei.blogspot.sg/2013/03/leetcode-palindrome-partitioning-ii.html">
+
+<pre><code>&lt;b&gt;[Thoughts]&lt;/b&gt;
+&lt;br&gt;凡是求最优解的，一般都是走DP的路线。这一题也不例外。首先求dp函数，
+&lt;br&gt;
+&lt;br&gt;定义函数
+&lt;br&gt;D[i,n] = 区间[i,n]之间最小的cut数，n为字符串长度
+&lt;br&gt;
+&lt;br&gt;&amp;nbsp;a &amp;nbsp; b &amp;nbsp; a &amp;nbsp; b &amp;nbsp; b &amp;nbsp; b &amp;nbsp; a &amp;nbsp; b &amp;nbsp; b &amp;nbsp; a &amp;nbsp; b &amp;nbsp; a
+&lt;br&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;i &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;n
+&lt;br&gt;如果现在求[i,n]之间的最优解？应该是多少？简单看一看，至少有下面一个解
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;&amp;nbsp;a &amp;nbsp; b &amp;nbsp; a &amp;nbsp; b &amp;nbsp; b &amp;nbsp; b &amp;nbsp; a &amp;nbsp; b &amp;nbsp; b &amp;nbsp; a &amp;nbsp; b &amp;nbsp; a
+&lt;br&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;i &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;
+&lt;span style=&quot;color: red;&quot;&gt;j&lt;/span&gt;&amp;nbsp;
+&lt;span style=&quot;color: red;&quot;&gt;j+1&lt;/span&gt;&amp;nbsp; &amp;nbsp; n
+&lt;br&gt;
+&lt;br&gt;此时 &amp;nbsp;D[i,n] = min(D[i, j] + D[j+1,n]) &amp;nbsp;i&amp;lt;=j &amp;lt;n。这是个二维的函数，实际写代码时维护比较麻烦。所以要转换成一维DP。如果每次，从i往右扫描，每找到一个回文就算一次DP的话，就可以转换为
+&lt;br&gt;D[i] = 区间[i,n]之间最小的cut数，n为字符串长度， 则,
+&lt;br&gt;
+&lt;br&gt;D[i] = min(1+D[j+1] ) &amp;nbsp; &amp;nbsp;i&amp;lt;=j &amp;lt;n
+&lt;br&gt;
+&lt;br&gt;有个转移函数之后，一个问题出现了，就是如何判断[i,j]是否是回文？每次都从i到j比较一遍？太浪费了，这里也是一个DP问题。
+&lt;br&gt;定义函数
+&lt;br&gt;P[i][j] = true if [i,j]为回文
+&lt;br&gt;
+&lt;br&gt;那么
+&lt;br&gt;P[i][j] = str[i] == str[j] &amp;amp;&amp;amp; P[i+1][j-1];
+&lt;br&gt;
+</code></pre>
+</blockquote>
+
+<h3 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h3><p>The coding is not easy, especially <strong>when 2 DP are written in 1 for-loop</strong>.</p>
+<p>I wrote many times until I finally achieved the nice and concise solution that you see below.</p>
+<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><p><strong>Doing everything in 1 loop</strong>, not an intuitive code.</p>
+<pre><code>public int minCut(String s) &#123;
+    int len = s.length();
+    if (len &lt;= 1) return 0;
+    boolean[][] pl = new boolean[len][len];
+    int[] dp = new int[len];
+    for (int i = len-1; i &gt;= 0; i --) &#123;
+        dp[i] = Integer.MAX_VALUE;
+        for (int j = i; j &lt; len; j ++) &#123;
+            // first set pl[][], then update dp[i]
+            if (j - i &lt;= 1) pl[i][j] = s.charAt(i) == s.charAt(j);
+            else pl[i][j] = s.charAt(i) == s.charAt(j) &amp; pl[i+1][j-1];
+            if (pl[i][j]) &#123;
+                if (j == len-1) dp[i] = 0;
+                else
+                    dp[i] = Math.min(dp[i], dp[j+1] + 1);
+            &#125;
+        &#125;
+    &#125;
+    return dp[0];
+&#125;
+</code></pre>
+<p><strong>Updated on July 18th, 2014</strong>, written by me.</p>
+<pre><code>boolean[][] map = null;
+
+public int minCut(String s) &#123;
+    if (s == null || s.length() == 0) &#123;
+        return 0;
+    &#125;
+    map = getMap(s);
+    int len = s.length();
+    int[] dp = new int[len + 1];
+    dp[0] = -1;
+    for (int i = 0; i &lt; len; i++) &#123;
+        dp[i+1] = Integer.MAX_VALUE;
+        for (int j = 0; j &lt;= i; j++) &#123;
+            if (map[j][i]) &#123;
+                dp[i+1] = Math.min(dp[i+1], dp[j] + 1);
+            &#125;
+        &#125;
+    &#125;
+    return dp[len];
+&#125;
+
+private boolean[][] getMap(String s) &#123;
+	int len = s.length();
+	boolean[][] map = new boolean[len][len];
+	for (int i = len - 1; i &gt;= 0; i--) &#123;
+		for (int j = 0; j &lt; len; j++) &#123;
+			if (i &gt; j) &#123;
+			    continue;
+			&#125; else if (i == j) &#123;
+			    map[i][j] = true;
+			&#125; else &#123;
+			    if (i + 1 == j) &#123;
+			        map[i][j] = s.charAt(i) == s.charAt(j);
+			    &#125; else &#123;
+			        map[i][j] = s.charAt(i) == s.charAt(j) &amp;&amp; map[i+1][j-1];
+			    &#125;
+			&#125;
+		&#125;
+	&#125;
+	return map;
+&#125;
+</code></pre>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

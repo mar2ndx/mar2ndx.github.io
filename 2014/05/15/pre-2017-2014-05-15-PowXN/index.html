@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    [LeetCode 50] Pow(x, n) 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">[LeetCode 50] Pow(x, n)</div>
+  <div class="post-meta">
+    <div class="date">2014 May 15th</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><p><a target="_blank" rel="noopener" href="http://oj.leetcode.com/problems/powx-n/">link</a></p>
+<div class="question-content">
+            <p></p><p>Implement pow(<i>x</i>, <i>n</i>).
+</p><p></p>
+          </div>
+
+<h3 id="Stats"><a href="#Stats" class="headerlink" title="Stats"></a>Stats</h3><table border="2">
+	<tr>
+		<td>Frequency</td>
+		<td bgcolor="red">5</td>
+	</tr>
+	<tr>
+		<td>Difficulty</td>
+		<td bgcolor="yellow">3</td>
+	</tr>
+	<tr>
+		<td>Adjusted Difficulty</td>
+		<td bgcolor="yellow">3</td>
+	</tr>
+	<tr>
+		<td>Time to use</td>
+		<td bgcolor="yellow">----------</td>
+	</tr>
+</table>
+
+<p>Ratings&#x2F;Color &#x3D; 1(white) 2(lime) 3(yellow) 4&#x2F;5(red)</p>
+<h3 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h3><p><strong>This question have many interesting solutions</strong>. The bottom line is solving in O(lgn) time.</p>
+<p>First approach, we can <strong>keep cumulating power(x, 2 ^ n)</strong>.</p>
+<p>Second approach, <strong>divide and conquer</strong> which is explained in <a target="_blank" rel="noopener" href="http://fisherlei.blogspot.sg/2012/12/leetcode-powx-n.html">this blog</a> and <a target="_blank" rel="noopener" href="https://github.com/yuanx/leetcode/blob/master/Pow.java">this code</a>.</p>
+<p>Read code below.</p>
+<h3 id="My-code"><a href="#My-code" class="headerlink" title="My code"></a>My code</h3><p>code 1, divide and conquer</p>
+<pre><code>public class Solution &#123;
+    public double pow(double x, int n) &#123;
+        if (n == 0) &#123;
+            return 1;
+        &#125; else if (n &lt; 0) &#123;
+            if (n == Integer.MIN_VALUE) &#123;
+                // since the negate of Integer.MIN_VALUE overflows...
+                return (1 / x) / pow(x, Integer.MAX_VALUE);
+            &#125; else &#123;
+                return 1 / pow(x, -1 * n);
+            &#125;
+        &#125; else if (n % 2 == 0) &#123;
+            return pow(x * x, n / 2);
+        &#125; else &#123;
+            return x * pow(x, n - 1);
+        &#125;
+    &#125;
+&#125;
+</code></pre>
+<p>code 2, divide and conquer</p>
+<pre><code>public double pow(double x, int n) &#123;
+    if (n &lt; 0) return 1 / helper(x, 0-n);
+    else return helper(x, n);
+&#125;
+
+private double helper(double x, int n) &#123;
+    if (n == 0) return 1;
+    double half = helper(x, n / 2);
+    return n % 2 == 1 ? x * half * half : half * half;
+&#125;
+</code></pre>
+<p>code 3</p>
+<pre><code>public double pow(double x, int n) &#123;
+    if (n == 0) return 1;
+    if (n == 2) return x * x;
+
+    if (n % 2 == 0) return pow(pow(x, n / 2), 2);
+    else if (n &gt; 0) return x * pow(pow(x, n / 2), 2);
+    else return 1 / x * pow(pow(x, n / 2), 2);
+&#125;
+</code></pre>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

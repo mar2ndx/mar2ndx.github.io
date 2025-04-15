@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    [LeetCode 81] Search in Rotated Sorted Array II 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">[LeetCode 81] Search in Rotated Sorted Array II</div>
+  <div class="post-meta">
+    <div class="date">2014 May 22nd</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><p><a target="_blank" rel="noopener" href="https://oj.leetcode.com/problems/search-in-rotated-sorted-array-ii/">link</a></p>
+<div class="question-content">
+            <p></p><p>Follow up for "Search in Rotated Sorted Array":<br>
+What if <i>duplicates</i> are allowed?</p>
+
+<p>Would this affect the run-time complexity? How and why?</p>
+
+<p>Write a function to determine if a given target is in the array.</p><p></p>
+          </div>
+
+<h3 id="Stats"><a href="#Stats" class="headerlink" title="Stats"></a>Stats</h3><table border="2">
+	<tr>
+		<td>Frequency</td>
+		<td bgcolor="yellow">3</td>
+	</tr>
+	<tr>
+		<td>Difficulty</td>
+		<td bgcolor="red">5</td>
+	</tr>
+	<tr>
+		<td>Adjusted Difficulty</td>
+		<td bgcolor="red">4</td>
+	</tr>
+	<tr>
+		<td>Time to use</td>
+		<td bgcolor="red">--------</td>
+	</tr>
+</table>
+
+<p>Ratings&#x2F;Color &#x3D; 1(white) 2(lime) 3(yellow) 4&#x2F;5(red)</p>
+<h3 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h3><p><strong>This one is based on the solution of previous question</strong>.</p>
+<p>The previous question is already very difficult, both the logic and coding part. However, if you solve previous question by yourself, you will do this one easily.</p>
+<p>I will pick the 2nd piece of code in previous question, and modify it to solve this problem.</p>
+<blockquote>
+<p>Solution for previous question:</p>
+</blockquote>
+<pre><code>public int search(int[] A, int target) &#123;
+    int left = 0;
+    int right = A.length - 1;
+    while (left &lt;= right) &#123;
+        int mid = (left + right) / 2;
+        if (target == A[mid]) return mid;
+        if (A[left] &lt;= A[mid]) &#123;
+            if (A[left] &lt;= target &amp;&amp; target &lt;= A[mid]) right = mid;
+            else left = mid + 1;
+        &#125; else &#123;
+            if (A[mid] &lt;= target &amp;&amp; target &lt;= A[right]) left = mid;
+            else right = mid - 1;
+        &#125;
+    &#125;
+    return -1;
+&#125;
+</code></pre>
+<h3 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h3><p><strong>My solution is to skip all duplicated numbers</strong> before the while-loop.</p>
+<p><strong>The most standard solution is left-pointer incremental</strong>. A good code is written from <a target="_blank" rel="noopener" href="http://www.cnblogs.com/feiling/p/3231196.html">this blog</a>.</p>
+<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><p><strong>First, my solution</strong></p>
+<pre><code>public boolean search(int[] A, int target) &#123;
+    int len = A.length, L = 0, R = len - 1;
+    if (A[L] == A[R]) &#123;
+        int duplicate = A[R];
+        if (duplicate == target) return true;
+        while (L &lt; len &amp;&amp; A[L] == duplicate) L ++;
+        while (R &gt;= 0 &amp;&amp; A[R] == duplicate) R --;
+    &#125;
+    while (L &lt;= R) &#123;
+        // Avoid overflow, same as M=(L+R)/2
+        int M = L + ((R - L) / 2);
+        if (A[M] == target) return true;
+        // the bottom half is sorted
+        if (A[L] &lt;= A[M])
+            if (A[L] &lt;= target &amp;&amp; target &lt; A[M]) R = M - 1;
+            else L = M + 1;
+        // the upper half is sorted
+        else
+            if (A[M] &lt; target &amp;&amp; target &lt;= A[R]) L = M + 1;
+            else R = M - 1;
+    &#125;
+    return false;
+&#125;
+</code></pre>
+<p><strong>Second, standard solution</strong></p>
+<pre><code>public boolean search(int[] A, int target) &#123;
+    int len = A.length, L = 0, R = len - 1;
+    while (L &lt;= R) &#123;
+        int M = L + ((R - L) / 2);
+        if (A[M] == target) return true;
+        if (A[L] &lt; A[M])
+            if (A[L] &lt;= target &amp;&amp; target &lt; A[M]) R = M - 1;
+            else L = M + 1;
+        else if (A[L] &gt; A[M])
+            if (A[M] &lt; target &amp;&amp; target &lt;= A[R]) L = M + 1;
+            else R = M - 1;
+        else L ++;
+    &#125;
+    return false;
+&#125;
+</code></pre>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

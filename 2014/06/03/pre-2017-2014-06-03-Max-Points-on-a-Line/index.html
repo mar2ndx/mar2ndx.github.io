@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    [LeetCode 149] Max Points on a Line 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">[LeetCode 149] Max Points on a Line</div>
+  <div class="post-meta">
+    <div class="date">2014 June 3rd</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><p><a target="_blank" rel="noopener" href="https://oj.leetcode.com/problems/max-points-on-a-line/">link</a></p>
+<div class="question-content bg-color bg-img font-color">
+            <p class="font-color"></p><p class="font-color">Given <i>n</i> points on a 2D plane, find the maximum number of points that lie on the same straight line.</p><p class="font-color"></p>
+          </div>
+
+<h3 id="Stats"><a href="#Stats" class="headerlink" title="Stats"></a>Stats</h3><table border="2">
+	<tr>
+		<td>Adjusted Difficulty</td>
+		<td bgcolor="red">5</td>
+	</tr>
+	<tr>
+		<td>Time to use</td>
+		<td bgcolor="red">--------</td>
+	</tr>
+</table>
+
+<p>Ratings&#x2F;Color &#x3D; 1(white) 2(lime) 3(yellow) 4&#x2F;5(red)</p>
+<h3 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h3><p><strong>This is a difficult coding question</strong>.</p>
+<p>The idea is simple. For n points, there are n * (n-1) lines. Check slopes and then count total, we would get the answer.</p>
+<p>However, coding of this idea is very difficult.</p>
+<h3 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h3><p><strong>Firstly, there are 2 special cases when calculating the slope</strong>. The 2 points may locate in same position. And when point1.x &#x3D; point2.x, slope &#x3D; infinity. It’s easy to omit these 2 cases and result in mistake.</p>
+<p>Secondly, when we count, we declare 2 variables: samePointNumber and maxPointCountWithSameSlope. <strong>It’s very important to initialize both values to 1 instead of 0</strong>! Why? Because these values just can’t be 0. I failed my 2nd version code when input &#x3D; {(0,0), (0,0)}, the program shows result of 0, instead of 2.</p>
+<p><strong>Thirdly, about what data structure to use for counting</strong>. There is a discussion about this at <a target="_blank" rel="noopener" href="https://oj.leetcode.com/discuss/2573/better-way-to-use-hashmap-for-this-question">here</a></p>
+<blockquote>
+<ol>
+<li>storing the vertical slopes as Double.NaN. That allows Double to represent every slope uniquely as (y&#x2F;x).</li>
+<li>It is unsafe using floating points to make a hash, and -0.0 !&#x3D; 0.0</li>
+</ol>
+</blockquote>
+<p>It’s great that using <strong>Double.NaN</strong>, it saves us time and effort to count vertical points. Second point is very valid, but it turns out that using HashMap&lt;Double, Integer&gt; can AC.</p>
+<p>P.S. It is always not a good practise to use Double as hash key. See <a target="_blank" rel="noopener" href="http://stackoverflow.com/questions/1074781/double-in-hashmap">here</a>.</p>
+<p><strong>Fourthly, I made a mistake here</strong>:</p>
+<blockquote>
+<p>double slope &#x3D; (p.y - q.y) &#x2F; (p.x - q.x);</p>
+</blockquote>
+<p>And it’s wrong. Why? Note that <strong>Point.x and Point.y are both integers</strong>. Integer division will return integer. We must cast it.</p>
+<blockquote>
+<p>double slope &#x3D; (double) (p.y - q.y) &#x2F; (p.x - q.x);</p>
+</blockquote>
+<p><strong>Last, OMG I wish this is last, but not least, we can reduce execution time to half</strong> by checking only the points with larger index than the anchor point (that’s the name for ‘current point’). Good idea, right?</p>
+<p>One more thing, <strong>how to iterate thru the HashMap</strong> (value only)? There is an easy way:</p>
+<pre><code>for (Integer a : map.values()) &#123;
+    a;
+&#125;
+</code></pre>
+<p>That’s all I’ve found for now.</p>
+<p><strong>Updated on Aug 12th, 2014</strong></p>
+<p>Based on the solution given in CC150 v4 Q10.6 on Page 199, it’s a <strong>proper way to solve with HashMap&lt;Line, Integer&gt;</strong> instead of using HashMap&lt;Double, Integer&gt;.</p>
+<p>The reason is mentioned, it’s ‘<strong>unsafe using floating points to make a hash</strong>‘.</p>
+<p>Note that if we were to write our own ‘Line’ class, <strong>we must override the 2 methods</strong>:</p>
+<ol>
+<li>public int hashCode() {}</li>
+<li>public boolean equals(Object o) {}</li>
+</ol>
+<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><p><strong>written by me, Version3 using HashMap</strong></p>
+<pre><code>public int maxPoints(Point[] points) &#123;
+	if (points.length &lt;= 1)
+		return points.length;
+	HashMap&lt;Double, Integer&gt; map = null;
+	int totalMax = 0;
+	for (Point p : points) &#123;
+		int samePoint = 1;
+		map = new HashMap&lt;Double, Integer&gt;();
+		for (Point q : points) &#123;
+			if (q == p || p.x &gt; q.x) &#123;
+			&#125; else if (p.x == q.x &amp;&amp; p.y == q.y) &#123;
+				samePoint++;
+			&#125; else &#123;
+				double slope = Double.NaN;
+				if (p.x != q.x) &#123;
+					slope = (double) (p.y - q.y) / (p.x - q.x);
+				&#125;
+				if (!map.containsKey(slope)) &#123;
+					map.put(slope, 1);
+				&#125;
+				map.put(slope, map.get(slope) + 1);
+			&#125;
+		&#125;
+		int pointMax = 1;
+		for (Integer a : map.values()) &#123;
+			pointMax = Math.max(pointMax, a);
+		&#125;
+		totalMax = Math.max(totalMax, pointMax + samePoint - 1);
+	&#125;
+	return totalMax;
+&#125;
+</code></pre>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

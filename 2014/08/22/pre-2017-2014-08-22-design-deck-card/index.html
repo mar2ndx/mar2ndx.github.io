@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    [CC150v5] 8.1 Design a Generic Deck of Cards 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">[CC150v5] 8.1 Design a Generic Deck of Cards</div>
+  <div class="post-meta">
+    <div class="date">2014 August 22nd</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><blockquote>
+<p>Design a Generic Deck of Cards</p>
+</blockquote>
+<h3 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h3><p>A simple design:</p>
+<pre><code>enum Suit &#123;
+	HEART, DIAMOND, SPADES, CLUBS;
+&#125;
+
+class Deck &#123;
+	List&lt;Card&gt; deck;
+&#125;
+
+class Card &#123;
+	Suit suit;
+	int num;
+&#125;
+</code></pre>
+<p>A more complex design:</p>
+<pre><code>enum Suit &#123;
+	HEART, DIAMOND, SPADES, CLUBS;
+&#125;
+
+class Deck&lt;T extends Card&gt; &#123;
+	List&lt;Card&gt; deck;
+
+	public void shuffle() &#123;
+	&#125;;
+&#125;
+
+abstract class Card &#123;
+	boolean available;
+	Suit suit;
+	int num;
+
+	public boolean isAvailable() &#123;
+		return available;
+	&#125;;
+&#125;
+
+class Hand&lt;T extends Card&gt; &#123;
+	List&lt;Card&gt; cards;
+
+	public int score() &#123;
+		int score = 0;
+		for (Card c : cards) &#123;
+			score += c.num;
+		&#125;
+		return score;
+	&#125;
+
+	public void addCard(T card) &#123;
+		cards.add(card);
+	&#125;
+&#125;
+
+// Now use the above generic Data Structure to make a
+// Blackjack Game
+class Blackjack extends Hand&lt;BlackJackCard&gt; &#123;
+&#125;
+
+class BlackJackCard extends Card &#123;
+&#125;
+</code></pre>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

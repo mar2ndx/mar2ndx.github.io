@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    [NineChap 4.2] Linked List Additional 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">[NineChap 4.2] Linked List Additional</div>
+  <div class="post-meta">
+    <div class="date">2014 June 18th</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><h2 id="Question-list"><a href="#Question-list" class="headerlink" title="Question list"></a>Question list</h2><ol>
+<li><p><strong><a href="/question/2014-06-17-Union-and-intersection-of-linked-list">Union and Intersection of two Linked Lists</a></strong></p>
+</li>
+<li><p><strong><a href="/leetcode/2014-05-30-Insertion-Sort-List">Insertion Sort List</a></strong> - difficult</p>
+</li>
+<li><p><strong><a href="/leetcode/2014-05-28-Flatten-Binary-Tree-to-Linked-List">Flatten Binary Tree to Linked List</a></strong></p>
+</li>
+<li><p><strong><a href="/leetcode/2014-05-26-Convert-Sorted-List-to-Binary-Search-Tree">Convert Sorted List to Binary Search Tree</a></strong></p>
+</li>
+<li><p><strong><a href="/leetcode/2014-05-19-Rotate-List">Rotate List</a></strong></p>
+</li>
+<li><p><strong><a href="/leetcode/2014-05-02-Remove-Nth-Node-From-End-of-List">Remove Nth Node From End of List</a></strong></p>
+</li>
+<li><p><strong><a href="/leetcode/2014-06-03-LRU-Cache">LRU Cache </a></strong></p>
+</li>
+<li><p><strong><a href="/leetcode/2014-05-11-Reverse-Nodes-in-k-Group">Reverse Nodes in k-Groups</a></strong></p>
+</li>
+<li><p><strong><a href="/leetcode/2014-05-09-Swap-Nodes-in-Pairs">Swap Nodes in Pairs</a></strong></p>
+</li>
+</ol>
+<h2 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h2><p><strong>Union and Intersection of two Linked Lists</strong></p>
+<p>Think about the idea only.</p>
+<p><strong>Insertion Sort List</strong></p>
+<pre><code>public ListNode insertionSortList(ListNode head) &#123;
+    if (head == null) &#123;
+        return null;
+    &#125;
+    ListNode dummy = new ListNode(0);
+    ListNode cur = head;
+    while (cur != null) &#123;
+        // insert cur into correct pos
+        ListNode pos = dummy;
+        while (pos.next != null &amp;&amp; pos.next.val &lt; cur.val) &#123;
+            pos = pos.next;
+        &#125;
+        ListNode temp = cur.next;
+        cur.next = pos.next;
+        pos.next = cur;
+        cur = temp;
+    &#125;
+    return dummy.next;
+&#125;
+</code></pre>
+<p><strong>Flatten Binary Tree to Linked List</strong></p>
+<p>I forgot to set “root.left &#x3D; null” again, which result in long-time debugging. This is a very common and very silly mistake that I really should avoid.</p>
+<pre><code>public void flatten(TreeNode root) &#123;
+    root = helper(root);
+&#125;
+
+private TreeNode helper(TreeNode node) &#123;
+    if (node == null) &#123;
+        return null;
+    &#125; else if (node.left == null &amp;&amp; node.right == null) &#123;
+        return node;
+    &#125; else if (node.left == null) &#123;
+        return helper(node.right);
+    &#125; else if (node.right == null) &#123;
+        node.right = node.left;
+        node.left = null;
+        return helper(node.right);
+    &#125; else &#123;
+        TreeNode tempRight = node.right;
+        node.right = node.left;
+        node.left = null;
+        TreeNode leftTail = helper(node.right);
+        leftTail.right = tempRight;
+        return helper(tempRight);
+    &#125;
+&#125;
+</code></pre>
+<p><strong>Convert Sorted List to Binary Search Tree</strong></p>
+<p>This is the Mock Interview question. My solution is:</p>
+<pre><code>public TreeNode sortedListToBST(ListNode listHead) &#123;
+    if (listHead == null) &#123;
+        return null;
+    &#125;
+    if (listHead.next == null) &#123;
+        return new TreeNode(listHead.val);
+    &#125;
+    ListNode listFirstHalf = listHead;
+    ListNode listPreMid = findMiddle(listHead);
+    ListNode listSecondHalf = null;
+    if (listPreMid.next != null) &#123;
+        listSecondHalf = listPreMid.next.next;
+    &#125;
+    TreeNode head = new TreeNode(listPreMid.next.val);
+    listPreMid.next = null;
+    head.left = sortedListToBST(listFirstHalf);
+    head.right = sortedListToBST(listSecondHalf);
+    return head;
+&#125;
+
+private ListNode findMiddle(ListNode listHead) &#123;
+    if (listHead == null) &#123;
+        return null;
+    &#125;
+    ListNode slow = listHead;
+    ListNode fast = listHead.next;
+    while (fast != null &amp;&amp; fast.next != null&amp;&amp; fast.next.next != null) &#123;
+        slow = slow.next;
+        fast = fast.next.next;
+    &#125;
+    return slow;
+&#125;
+</code></pre>
+<p>This is not a good answer, cuz I have to findMid in each recursion.</p>
+<p>The best solution is, use a global variable and 2 numbers to simplify this process. Code:</p>
+<pre><code>ListNode cur = null;
+
+public TreeNode sortedListToBST(ListNode head) &#123;
+	if (head == null) &#123;
+		return null;
+	&#125;
+	cur = head;
+	int k = 0;
+	ListNode p = head;
+	while (p != null) &#123;
+		k++;
+		p = p.next;
+	&#125;
+	return build(0, k - 1);
+&#125;
+
+private TreeNode build(int start, int end) &#123;
+	if (start &gt; end) &#123;
+		return null;
+	&#125;
+	int mid = start + (end - start) / 2;
+	TreeNode leftBranch = build(start, mid - 1);
+	TreeNode head = new TreeNode(cur.val);
+	cur = cur.next;
+	head.left = leftBranch;
+	head.right = build(mid + 1, end);
+	return head;
+&#125;
+</code></pre>
+<p><strong>Rotate List</strong></p>
+<p>Naive solution:</p>
+<pre><code>public ListNode rotateRight(ListNode head, int n) &#123;
+    if (head == null) &#123;
+        return null;
+    &#125;
+    ListNode p = head;
+    for (int i = 0; i &lt; n; i++) &#123;
+        if (p.next == null) &#123;
+            p = head;
+        &#125; else &#123;
+            p = p.next;
+        &#125;
+    &#125;
+	ListNode q = head;
+	while (p.next != null) &#123;
+		p = p.next;
+		q = q.next;
+	&#125;
+	p.next = head;
+	ListNode newHead = q.next;
+	q.next = null;
+	return newHead;
+&#125;
+</code></pre>
+<p>Make a circular list:</p>
+<pre><code>public ListNode rotateRight(ListNode head, int n) &#123;
+    if (head == null) &#123;
+        return null;
+    &#125;
+	ListNode p = head;
+	int k = 1;
+	while (p.next != null) &#123;
+		k++;
+		p = p.next;
+	&#125;
+	p.next = head;
+	int steps = k - (n % k);
+	for (int i = 0; i &lt; steps; i++) &#123;
+		p = p.next;
+	&#125;
+	head = p.next;
+	p.next = null;
+	return head;
+&#125;
+</code></pre>
+<p><strong>Remove Nth Node From End of List</strong></p>
+<pre><code>public ListNode removeNthFromEnd(ListNode head, int n) &#123;
+    if (head == null || n == 0) &#123;
+		return null;
+	&#125;
+	ListNode dummy = new ListNode(0);
+	dummy.next = head;
+	ListNode right = dummy;
+	for (int i = 0; i &lt; n; i++) &#123;
+		right = right.next;
+	&#125;
+	ListNode left = dummy;
+	while (right.next != null) &#123;
+		left = left.next;
+		right = right.next;
+	&#125;
+	left.next = left.next.next;
+	return dummy.next;
+&#125;
+</code></pre>
+<p><strong>LRU Cache</strong></p>
+<p>I solved it in the original post.</p>
+<p><strong>Reverse Nodes in k-Groups</strong></p>
+<pre><code>public ListNode reverseKGroup(ListNode head, int k) &#123;
+    ListNode p = head;
+    int count = 0;
+    while (p != null) &#123;
+        p = p.next;
+        count++;
+    &#125;
+    return helper(head, k, count);
+&#125;
+
+public ListNode helper(ListNode head, int k, int count) &#123;
+    if (head == null || k &lt; 1 || count &lt; k) &#123;
+        return head;
+    &#125;
+    ListNode result = null;
+    ListNode cur = head;
+    for (int i = 0; i &lt; k; i++) &#123;
+        if (cur == null) break;
+        ListNode temp = cur.next;
+        cur.next = result;
+        result = cur;
+        cur = temp;
+    &#125;
+    head.next = helper(cur, k, count - k);
+    return result;
+&#125;
+</code></pre>
+<p><strong>Swap Nodes in Pairs</strong></p>
+<pre><code>public ListNode swapPairs(ListNode head) &#123;
+    if (head == null || head.next == null) &#123;
+        return head;
+    &#125;
+    ListNode result = head.next;
+    ListNode temp = head.next.next;
+    result.next = head;
+    head.next = swapPairs(temp);
+    return result;
+&#125;
+</code></pre>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

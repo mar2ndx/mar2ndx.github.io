@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    [LintCode] Majority Number II 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">[LintCode] Majority Number II</div>
+  <div class="post-meta">
+    <div class="date">2014 June 28th</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><p><a target="_blank" rel="noopener" href="http://www.lintcode.com/en/problem/majority-number-ii/">link</a></p>
+<blockquote>
+<p>Given an array of integers, the majority number is the number that occurs more than 1&#x2F;3 of the size of the array. Find it.</p>
+</blockquote>
+<blockquote>
+<p>Note: There is only one majority number in the array</p>
+</blockquote>
+<blockquote>
+<p>Example: For [1, 2, 1, 2, 1, 3, 3] return 1</p>
+</blockquote>
+<h3 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h3><p>Similar to ‘Majority Number’, but a little more difficult.</p>
+<p><strong>Instead of keeping 1 value for checking, now keep 2 values</strong>. If the new number is same as any of the 2 values, decrease the count. If the new number is a totally new one, decrease both. The coding is a bit difficult and lengthy.</p>
+<p>Note that 2 values are found in the end, do another iteration thru the array, and find the correct result from these 2 values.</p>
+<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><pre><code>public int majorityNumber(ArrayList&lt;Integer&gt; nums) &#123;
+    // write your code
+    if (nums == null || nums.size() &lt; 3) &#123;
+        return -1;
+    &#125;
+    int num1 = nums.get(0);
+    int p = 1;
+    int len = nums.size();
+    while (p &lt; len &amp;&amp; nums.get(p) == num1) &#123;
+        p++;
+    &#125;
+    int num2 = nums.get(p);
+    int count1 = p;
+    int count2 = 1;
+    for (int i = p + 1; i &lt; len; i++) &#123;
+        if (nums.get(i) == num1) &#123;
+            count1++;
+        &#125; else if (nums.get(i) == num2) &#123;
+            count2++;
+        &#125; else &#123;
+            // a totally different value
+            if (count1 == 0) &#123;
+                num1 = nums.get(i);
+                count1++;
+            &#125; else if (count2 == 0) &#123;
+                num2 = nums.get(i);
+                count2++;
+            &#125; else &#123;
+                count1--;
+                count2--;
+            &#125;
+        &#125;
+    &#125;
+    if (count1 == 0 &amp;&amp; count2 == 0) &#123;
+        return -1;
+    &#125; else if (count1 == 0) &#123;
+        return num2;
+    &#125; else if (count2 == 0) &#123;
+        return num1;
+    &#125; else &#123;
+        // it&#39;s gotta be either num1 or num2
+        int count = 0;
+        for (Integer n: nums) &#123;
+            if (n == num1) &#123;
+                count ++;
+            &#125;
+        &#125;
+        if (count &gt;= len / 3 + 1) &#123;
+            return num1;
+        &#125; else &#123;
+            return num2;
+        &#125;
+    &#125;
+&#125;
+</code></pre>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

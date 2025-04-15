@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    430. Flatten a Multilevel Doubly Linked List 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">430. Flatten a Multilevel Doubly Linked List</div>
+  <div class="post-meta">
+    <div class="date">2022 November 11th</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><p>Link: <a target="_blank" rel="noopener" href="https://leetcode.cn/problems/flatten-a-multilevel-doubly-linked-list/">https://leetcode.cn/problems/flatten-a-multilevel-doubly-linked-list/</a></p>
+<h1 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h1><p>difficulty: mid<br>adj diff: 3</p>
+<pre><code>You are given a doubly linked list, which contains nodes that have a next pointer, a previous pointer, and an additional child pointer. This child pointer may or may not point to a separate doubly linked list, also containing these special nodes. These child lists may have one or more children of their own, and so on, to produce a multilevel data structure as shown in the example below.
+
+Given the head of the first level of the list, flatten the list so that all the nodes appear in a single-level, doubly linked list. Let curr be a node with a child list. The nodes in the child list should appear after curr and before curr.next in the flattened list.
+
+Return the head of the flattened list. The nodes in the list must have all of their child pointers set to null.
+
+ 
+
+Example 1:
+
+
+Input: head = [1,2,3,4,5,6,null,null,null,7,8,9,10,null,null,11,12]
+Output: [1,2,3,7,8,11,12,9,10,4,5,6]
+Explanation: The multilevel linked list in the input is shown.
+After flattening the multilevel linked list it becomes:
+
+Example 2:
+
+
+Input: head = [1,2,null,3]
+Output: [1,3,2]
+Explanation: The multilevel linked list in the input is shown.
+After flattening the multilevel linked list it becomes:
+
+Example 3:
+
+Input: head = []
+Output: []
+Explanation: There could be empty list in the input.
+ 
+
+Constraints:
+
+The number of Nodes will not exceed 1000.
+1 &lt;= Node.val &lt;= 105
+ 
+
+How the multilevel linked list is represented in test cases:
+
+We use the multilevel linked list from Example 1 above:
+
+1---2---3---4---5---6--NULL
+        |
+        7---8---9---10--NULL
+            |
+            11--12--NULL
+The serialization of each level is as follows:
+
+[1,2,3,4,5,6,null]
+[7,8,9,10,null]
+[11,12,null]
+To serialize all levels together, we will add nulls in each level to signify no node connects to the upper node of the previous level. The serialization becomes:
+
+[1,    2,    3, 4, 5, 6, null]
+            |
+[null, null, 7,    8, 9, 10, null]
+                |
+[            null, 11, 12, null]
+Merging the serialization of each level and removing trailing nulls we obtain:
+
+[1,2,3,4,5,6,null,null,null,7,8,9,10,null,null,11,12]
+</code></pre>
+<p>对于每一个 node，和 node.next，做深度优先搜索。</p>
+<p>dfs 一定需要记录的是尾巴节点 tail node。代码有一点点难写。</p>
+<h1 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h1><p>千万别忘了 someNode.next &#x3D; xxx 之后，紧接着 someNode.prev &#x3D; xxx</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">    public Node flatten(Node head) &#123;</span><br><span class="line">        if (head != null) &#123;</span><br><span class="line">            flattenAndReturnTail(head);</span><br><span class="line">        &#125;</span><br><span class="line">        return head;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    private Node flattenAndReturnTail(Node node) &#123;</span><br><span class="line">        if (node.child == null) &#123;</span><br><span class="line">            if (node.next == null) &#123;</span><br><span class="line">                return node;</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                return flattenAndReturnTail(node.next);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            Node childTail = flattenAndReturnTail(node.child);</span><br><span class="line">            childTail.next = node.next;</span><br><span class="line">            if (node.next != null)</span><br><span class="line">            node.next.prev = childTail;</span><br><span class="line"></span><br><span class="line">            node.next = node.child;</span><br><span class="line">            node.child.prev = node;</span><br><span class="line"></span><br><span class="line">            node.child = null;</span><br><span class="line">            return flattenAndReturnTail(childTail);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

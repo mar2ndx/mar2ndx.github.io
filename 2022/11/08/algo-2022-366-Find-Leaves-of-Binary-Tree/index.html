@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    366. Find Leaves of Binary Tree 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">366. Find Leaves of Binary Tree</div>
+  <div class="post-meta">
+    <div class="date">2022 November 8th</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><p>Link: <a target="_blank" rel="noopener" href="https://leetcode.cn/problems/find-leaves-of-binary-tree/">https://leetcode.cn/problems/find-leaves-of-binary-tree/</a></p>
+<h1 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h1><p>difficulty: mid<br>adj diff: 4</p>
+<pre><code>Given the root of a binary tree, collect a tree&#39;s nodes as if you were doing this:
+
+Collect all the leaf nodes.
+Remove all the leaf nodes.
+Repeat until the tree is empty.
+
+Example 1:
+Input: root = [1,2,3,4,5]
+Output: [[4,5,3],[2],[1]]
+Explanation:
+[[3,5,4],[2],[1]] and [[3,4,5],[2],[1]] are also considered correct answers since per each level it does not matter the order on which elements are returned.
+Example 2:
+
+Input: root = [1]
+Output: [[1]]
+
+Constraints:
+
+The number of nodes in the tree is in the range [1, 100].
+-100 &lt;= Node.val &lt;= 100
+</code></pre>
+<p>这个题不简单。主要是：从上往下扫的时候，先看到 root，后看到 leaf，这怎么 build 结果链条啊？</p>
+<p>这个思路是：猜测这个 node 在 result list 的哪一层。我们暂且把这个 index 称为 leafLevel。</p>
+<p>看代码吧，很短。</p>
+<h1 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">    public List&lt;List&lt;Integer&gt;&gt; findLeaves(TreeNode root) &#123;</span><br><span class="line">        List&lt;List&lt;Integer&gt;&gt; ans = new ArrayList&lt;List&lt;Integer&gt;&gt;();</span><br><span class="line">        testDepth(ans, root);</span><br><span class="line">        return ans;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    private int testDepth(List&lt;List&lt;Integer&gt;&gt; ans, TreeNode node) &#123;</span><br><span class="line">        if (node == null) return 0;</span><br><span class="line">        int leafLevel = 1 + Math.max(testDepth(ans, node.left), testDepth(ans, node.right));</span><br><span class="line">        if (ans.size() &lt; leafLevel) &#123;</span><br><span class="line">            // because the traverse always bottom-up, so it&#x27;s safe to add to the end</span><br><span class="line">            ans.add(new LinkedList&lt;Integer&gt;());</span><br><span class="line">        &#125;</span><br><span class="line">        ans.get(leafLevel - 1).add(node.val);</span><br><span class="line">        return leafLevel;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

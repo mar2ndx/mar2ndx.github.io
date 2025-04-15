@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    380. Insert Delete GetRandom O(1) 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">380. Insert Delete GetRandom O(1)</div>
+  <div class="post-meta">
+    <div class="date">2024 July 16th</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><p>Link: <a target="_blank" rel="noopener" href="https://leetcode.cn/problems/insert-delete-getrandom-o1/">https://leetcode.cn/problems/insert-delete-getrandom-o1/</a></p>
+<h1 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h1><p>difficulty: mid<br>adj diff: 4</p>
+<pre><code>Implement the RandomizedSet class:
+
+    RandomizedSet() Initializes the RandomizedSet object.
+    bool insert(int val) Inserts an item val into the set if not present. Returns true if the item was not present, false otherwise.
+    bool remove(int val) Removes an item val from the set if present. Returns true if the item was present, false otherwise.
+    int getRandom() Returns a random element from the current set of elements (it&#39;s guaranteed that at least one element exists when this method is called). Each element must have the same probability of being returned.
+
+You must implement the functions of the class such that each function works in average O(1) time complexity.
+
+ 
+
+Example 1:
+
+Input
+[&quot;RandomizedSet&quot;, &quot;insert&quot;, &quot;remove&quot;, &quot;insert&quot;, &quot;getRandom&quot;, &quot;remove&quot;, &quot;insert&quot;, &quot;getRandom&quot;]
+[[], [1], [2], [2], [], [1], [2], []]
+Output
+[null, true, false, true, 2, true, false, 2]
+
+Explanation
+RandomizedSet randomizedSet = new RandomizedSet();
+randomizedSet.insert(1); // Inserts 1 to the set. Returns true as 1 was inserted successfully.
+randomizedSet.remove(2); // Returns false as 2 does not exist in the set.
+randomizedSet.insert(2); // Inserts 2 to the set, returns true. Set now contains [1,2].
+randomizedSet.getRandom(); // getRandom() should return either 1 or 2 randomly.
+randomizedSet.remove(1); // Removes 1 from the set, returns true. Set now contains [2].
+randomizedSet.insert(2); // 2 was already in the set, so return false.
+randomizedSet.getRandom(); // Since 2 is the only number in the set, getRandom() will always return 2.
+
+ 
+
+Constraints:
+
+    -231 &lt;= val &lt;= 231 - 1
+    At most 2 * 105 calls will be made to insert, remove, and getRandom.
+    There will be at least one element in the data structure when getRandom is called.
+</code></pre>
+<p>这题有一点难。</p>
+<p>思路：一个array + 一个 map。</p>
+<p>其中，map存贮的是 { value -&gt; index } 这个 pair。</p>
+<p>remove 一个数字的时候，把 array 尾部的元素拿到 remove的那个地方。</p>
+<h1 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h1><p>直接看代码吧。</p>
+<pre><code>class RandomizedSet &#123;
+
+    int[] array = new int[200000];
+    // map is a k-v pair of &#123; value -&gt; index &#125;
+    Map&lt;Integer, Integer&gt; map = new HashMap&lt;Integer, Integer&gt;();
+
+    int size;
+    Random random = new Random();
+
+    public RandomizedSet() &#123;&#125;
+    
+    public boolean insert(int val) &#123;
+        if (map.containsKey(val)) &#123;
+            return false;
+        &#125;
+        map.put(val, size);
+        array[size++] = val;
+        return true;
+    &#125;
+    
+    public boolean remove(int val) &#123;
+        if (!map.containsKey(val)) &#123;
+            return false;
+        &#125;
+        int removeIndex = map.remove(val);
+        array[removeIndex] = array[--size];
+        if (removeIndex != size) &#123;
+            // this is a special case, be cautious
+            map.put(array[removeIndex], removeIndex);
+        &#125;
+        return true;
+    &#125;
+    
+    public int getRandom() &#123;
+        return array[random.nextInt(size)];
+    &#125;
+&#125;
+</code></pre>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

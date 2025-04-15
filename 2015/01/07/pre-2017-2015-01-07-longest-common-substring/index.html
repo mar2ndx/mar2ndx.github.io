@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    [Question] Longest Common Substring  丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">[Question] Longest Common Substring </div>
+  <div class="post-meta">
+    <div class="date">2015 January 7th</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><p><a target="_blank" rel="noopener" href="http://www.geeksforgeeks.org/longest-common-substring/">link</a></p>
+<blockquote>
+<p>Given two strings ‘X’ and ‘Y’, find the length of the longest common substring. </p>
+</blockquote>
+<blockquote>
+<p>For example, if the given strings are “GeeksforGeeks” and “GeeksQuiz”, the output should be 5 as longest common substring is “Geeks”. </p>
+</blockquote>
+<h3 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h3><p>This question is to be distinguished from <strong>[LintCode] Longest Common Subsequence</strong>. </p>
+<p>The solution is DP, too. Even the code is similar. Read my code below. </p>
+<p><strong>Updated on Jan 26th, 2015</strong>: there is another approach using <strong>Suffix Array</strong>, suggested by <a target="_blank" rel="noopener" href="http://www.geeksforgeeks.org/suffix-tree-application-5-longest-common-substring-2/">this post</a> - but wait! Do not try to read that article, because you won’t easily understand its explanations. I will summarize it in simple English: </p>
+<ol>
+<li>Concatenate String X with a “#” sign, and String Y with a “$” sign. </li>
+<li>Build a suffix tree using both strings</li>
+<li>find out node with <strong>both “$” and “#” as child</strong>.</li>
+</ol>
+<p>In the case of (X &#x3D; xabxa, and Y &#x3D; babxba), the branch “abx” would be the deepest node that qualifies. Thus the result. Code is not written. </p>
+<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><pre><code>public String LCSubstr(String s, String t) &#123;
+	int longest = 0;
+	int tPos = -1;
+
+	// dp[i][j] represents the LCSubstr ending at position i and j
+	int[][] dp = new int[t.length() + 1][s.length() + 1];
+	for (int i = 1; i &lt;= t.length(); i++) &#123;
+		for (int j = 1; j &lt;= s.length(); j++) &#123;
+			if (t.charAt(i - 1) == s.charAt(j - 1)) &#123;
+				dp[i][j] = dp[i - 1][j - 1] + 1;
+				if (dp[i][j] &gt; longest) &#123;
+					longest = dp[i][j];
+					tPos = i;
+				&#125;
+			&#125;
+		&#125;
+	&#125;
+	return t.substring(tPos - longest, tPos);
+&#125;
+</code></pre>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

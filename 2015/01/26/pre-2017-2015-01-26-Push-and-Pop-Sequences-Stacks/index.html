@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    [Question] Push and Pop Sequences of Stacks 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">[Question] Push and Pop Sequences of Stacks</div>
+  <div class="post-meta">
+    <div class="date">2015 January 26th</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><p><a target="_blank" rel="noopener" href="http://codercareer.blogspot.sg/2011/11/no-21-push-and-pop-sequences-of-stacks.html">link</a></p>
+<blockquote>
+<p>Given two integer sequences, one of which is the push sequence of a stack, please check whether the other sequence is a corresponding pop sequence or not.</p>
+</blockquote>
+<blockquote>
+<p>For example, if 1, 2, 3, 4, 5 is a push sequence, 4, 5, 3, 2, 1 is a corresponding pop sequence, but the sequence 4, 3, 5, 1, 2 is not.</p>
+</blockquote>
+<h3 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h3><p>Refer to <a target="_blank" rel="noopener" href="http://stackoverflow.com/a/17828345">this answer</a>:</p>
+<blockquote>
+<p>Construct the stack:</p>
+<p>For each number X in the pop order:</p>
+</blockquote>
+<pre><code>If this number is not the same as the top of the stack (or the stack is empty),
+push numbers from the push order until you pushed X.
+
+If you pushed all numbers and didn&#39;t find X, there&#39;s no way to get the pop order.
+
+Pop X
+</code></pre>
+<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><pre><code>public boolean validSequence(int[] input, int[] sequenc) &#123;
+	// keep a pointer p in the input[] array
+	int len = input.length;
+	int p = 0;
+	Stack&lt;Integer&gt; stack = new Stack&lt;Integer&gt;();
+
+	int i = 0;
+	while (i &lt; len) &#123;
+		if (stack.isEmpty()) &#123;
+			// just push an element to stack
+			stack.push(input[p++]);
+		&#125; else &#123;
+			// stack got elements, then check top one
+			if (stack.peek() == sequenc[i]) &#123;
+				// seq found, proceed to next number in seq
+				stack.pop();
+				i++;
+			&#125; else &#123;
+				// did not find seq, keep pushing to stack until done
+				if (p == len) &#123;
+					return false;
+				&#125; else &#123;
+					stack.push(input[p++]);
+				&#125;
+			&#125;
+		&#125;
+	&#125;
+	return i == len; // or just return true;
+&#125;
+</code></pre>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

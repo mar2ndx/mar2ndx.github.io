@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    [LeetCode Plus] Searching a 2D Sorted Matrix 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">[LeetCode Plus] Searching a 2D Sorted Matrix</div>
+  <div class="post-meta">
+    <div class="date">2014 June 10th</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><p><a target="_blank" rel="noopener" href="http://leetcode.com/2010/10/searching-2d-sorted-matrix.html">link</a></p>
+<blockquote>
+<p class="font-color">Write an efficient algorithm that searches for a value in an <i>n</i> x <i>m</i> table (two-dimensional array). This table is sorted along the rows and columns — that is,</p><p class="font-color">Table[i][j] ≤ Table[i][j + 1], <br>Table[i][j] ≤ Table[i + 1][j]</p>
+</blockquote>
+
+<h3 id="Related-questions"><a href="#Related-questions" class="headerlink" title="Related questions"></a>Related questions</h3><p><strong><a href="/leetcode/2014-05-21-Search-a-2D-Matrix">Search a 2D Matrix</a></strong>.</p>
+<p><strong><a href="/leetcode_plus/2014-06-10-Searching-a-2D-Sorted-Matrix">Searching a 2D Sorted Matrix</a></strong>.</p>
+<p><strong><a href="/question/2014-06-14-Count-negative-in-2D-Sorted-Matrix">Count negative in a 2D Sorted Matrix</a></strong>.</p>
+<h3 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h3><p>This is a extremely high-freq question. Almost every company will ask.</p>
+<p>This question is not to be confused with <strong><a href="/leetcode/2014-05-21-Search-a-2D-Matrix">Search a 2D Matrix</a></strong>.</p>
+<p><strong>Solution One: Step-wise Linear Search</strong>. Standard solution.</p>
+<p>Time &#x3D; O(n). Worse case 2n steps.</p>
+<p>Note that <strong>this is the best solution</strong>!</p>
+<p><img src="/images/search_2D_matrix_1.png"></p>
+<blockquote>
+<p>begin with the upper right corner, we traverse one step to the left or bottom. For example, the picture below shows the traversed path (the red line) when we search for 13.</p>
+</blockquote>
+<pre><code>Essentially, each step we are able to eliminate either a row or a column.
+</code></pre>
+<p><strong>Solution Two: Quad Partition 四分法</strong>.</p>
+<p>Time &#x3D; O(n^1.58). Analysis can be found in the original question post.</p>
+<p><img src="/images/search_2D_matrix_2.png"></p>
+<p>Basic idea is like binary search - get mid and divide. We can then discard 1&#x2F;4 of the matrix. For example: search for 6, we can discard the bottom right sub-matrix.</p>
+<p><strong>Solution Three: Diagonal-based binary partition</strong>. This is based on previous solution, but better.</p>
+<p>Time &#x3D; O(nlgn).</p>
+<p><img src="/images/search_2D_matrix_3.png"></p>
+<p>This is a good solution, but it would fail in a non-square matrix, so…</p>
+<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><p><strong>step-wise linear search</strong></p>
+<pre><code>bool stepWise(int mat[][N_MAX], int N, int target,
+              int &amp;row, int &amp;col) &#123;
+  if (target &lt; mat[0][0] || target &gt; mat[N-1][N-1]) return false;
+  row = 0;
+  col = N-1;
+  while (row &lt;= N-1 &amp;&amp; col &gt;= 0) &#123;
+    if (mat[row][col] &lt; target)
+      row++;
+    else if (mat[row][col] &gt; target)
+      col--;
+    else
+      return true;
+  &#125;
+  return false;
+&#125;
+</code></pre>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

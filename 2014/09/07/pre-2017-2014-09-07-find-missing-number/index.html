@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    [CC150v4] 5.7 Find Missing Number  丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">[CC150v4] 5.7 Find Missing Number </div>
+  <div class="post-meta">
+    <div class="date">2014 September 7th</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><blockquote>
+<p>An array A[1…n] contains all the integers from 0 to n except for one number which is missing. In this problem, we cannot access an entire integer in A with a single operation.</p>
+</blockquote>
+<blockquote>
+<p>The elements of A are represented in binary, and the only operation we can use to access them is “fetch the jth bit of A[i]”, which takes constant time. Write code to find the missing integer. Can you do it in O(n) time?</p>
+</blockquote>
+<h3 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h3><p><strong>This is a difficult bit operation question</strong>.</p>
+<p>The main thing to understand is, for a particular bit:</p>
+<blockquote>
+<p>if the bit value of the removed number is 0, then count(0) &lt;&#x3D; count(1)</p>
+</blockquote>
+<blockquote>
+<p>if the bit value of the removed number is 1, then count(0) &gt; count(1)</p>
+</blockquote>
+<p>By using this principle, we can easily find the missing value for each bit.</p>
+<p><strong>However, we must know when to stop checking</strong>. For example:</p>
+<blockquote>
+<p>input: 000, 001, 011</p>
+</blockquote>
+<p>We know that the last bit is 0, second last is 1. We shall stop here and return the result “010”. If we did not stop, the result value would be “110”, which is wrong. How this is handled is by <strong>passing only half of the input list each time</strong>, and we also add one condition at the beginning:</p>
+<pre><code>if (list.size() == 0)
+	return 0;
+</code></pre>
+<p>By doing this, we always limit the input list to a smaller range, until we finish finding all bits.</p>
+<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><p><strong>hard to write</strong></p>
+<pre><code>public static int findMissing(List&lt;BitInteger&gt; list) &#123;
+	return helper(list, BitInteger.INTEGER_SIZE - 1);
+&#125;
+
+private static int helper(List&lt;BitInteger&gt; list, int col) &#123;
+	if (list.size() == 0)
+		return 0;
+	List&lt;BitInteger&gt; zeroList = new ArrayList&lt;BitInteger&gt;();
+	List&lt;BitInteger&gt; oneList = new ArrayList&lt;BitInteger&gt;();
+	for (BitInteger bit : list) &#123;
+		if (bit.fetch(col) == 0) &#123;
+			zeroList.add(bit);
+		&#125; else &#123;
+			oneList.add(bit);
+		&#125;
+	&#125;
+	if (zeroList.size() &lt;= oneList.size()) &#123;
+		// this means the missing value contains a 0
+		return helper(zeroList, col - 1) &lt;&lt; 1;
+	&#125; else &#123;
+		// the missing value contains 1
+		return helper(oneList, col - 1) &lt;&lt; 1 | 1;
+	&#125;
+&#125;
+</code></pre>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

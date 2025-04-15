@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    [LeetCode 34] Search for a Range 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">[LeetCode 34] Search for a Range</div>
+  <div class="post-meta">
+    <div class="date">2014 May 12th</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><p><a target="_blank" rel="noopener" href="http://oj.leetcode.com/problems/search-for-a-range/">link</a></p>
+<div class="question-content">
+            <p></p><p>Given a sorted array of integers, find the starting and ending position of a given target value.</p>
+
+<p>Your algorithm's runtime complexity must be in the order of <i>O</i>(log <i>n</i>).</p>
+
+<p>If the target is not found in the array, return <code>[-1, -1]</code>.</p>
+
+<p>
+For example,<br>
+Given <code>[5, 7, 7, 8, 8, 10]</code> and target value 8,<br>
+return <code>[3, 4]</code>.
+</p><p></p>
+          </div>
+
+<h3 id="Stats"><a href="#Stats" class="headerlink" title="Stats"></a>Stats</h3><table border="2">
+	<tr>
+		<td>Frequency</td>
+		<td bgcolor="yellow">3</td>
+	</tr>
+	<tr>
+		<td>Difficulty</td>
+		<td bgcolor="red">4</td>
+	</tr>
+	<tr>
+		<td>Adjusted Difficulty</td>
+		<td bgcolor="red">4</td>
+	</tr>
+	<tr>
+		<td>Time to use</td>
+		<td bgcolor="lime">----------</td>
+	</tr>
+</table>
+
+<p>Ratings&#x2F;Color &#x3D; 1(white) 2(lime) 3(yellow) 4&#x2F;5(red)</p>
+<h3 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h3><p><strong>The key to solve this problem is binary search</strong>. Previously my solution is to find the element first, then check left bound and right bound respectively. In worst case, this will take O(n) time. This method, though, will pass OJ, but is not an optimized solution.</p>
+<p><strong>First solution is from <a target="_blank" rel="noopener" href="http://xixiaogualu.blogspot.sg/2013/09/search-for-range.html">this blog</a></strong>. Using binary search to search twice - once for left bound, and once for right bound. Code is below.</p>
+<p><strong>Second solution is from <a target="_blank" rel="noopener" href="http://rleetcode.blogspot.sg/2014/02/search-for-range-java.html">this blog</a></strong>. This idea is still using binary search, also search twice, but a more tricky manner. Instead of searching the number, it searches (number - 0.5) and (number + 0.5).</p>
+<h3 id="My-code"><a href="#My-code" class="headerlink" title="My code"></a>My code</h3><p>Solution 1</p>
+<pre><code>public class Solution &#123;
+    public int[] searchRange(int[] A, int target) &#123;
+        int[] ans = new int[] &#123;-1, -1&#125;;
+        if (A == null || A.length == 0) &#123;
+            return ans;
+        &#125;
+        int len = A.length;
+        int left = 0, right = len - 1;
+        while (left &lt; right) &#123;
+            int mid = left + (right - left) / 2;
+            if (A[mid] &gt;= target) &#123;
+                right = mid;
+            &#125; else &#123;
+                left = mid + 1;
+            &#125;
+        &#125;
+        if (A[left] == target) &#123;
+            ans[0] = left;
+        &#125; else &#123;
+            return ans;
+        &#125;
+        left = 0;
+        right = len - 1;
+        while (left &lt; right) &#123;
+            int mid = left + (right - left + 1) / 2;
+            if (A[mid] &lt;= target) &#123;
+                left = mid;
+            &#125; else &#123;
+                right = mid - 1;
+            &#125;
+        &#125;
+        ans[1] = right;
+        return ans;
+    &#125;
+&#125;
+</code></pre>
+<p>Solution 2</p>
+<pre><code>public int[] searchRange(int[] A, int target) &#123;
+    if (A == null) return null;
+    int[] result = &#123; -1, -1 &#125;;
+    int low = binarySearch(A, target - 0.5);
+    // Be care for there , low&gt;=A.length must be checked
+    if (low &gt;= A.length || A[low] != target) return result;
+    result[0] = low;
+    result[1] = binarySearch(A, target + 0.5) - 1;
+    return result;
+&#125;
+
+public int binarySearch(int[] A, double t) &#123;
+    int low = 0, high = A.length - 1;
+    while (low &lt;= high) &#123;
+        int m = (low + high) / 2;
+        if (A[m] &lt; t) low = m + 1;
+        if (A[m] &gt; t) high = m - 1;
+    &#125;
+    return low;
+&#125;
+</code></pre>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

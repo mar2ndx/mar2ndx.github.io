@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    [LeetCode 13] Roman to Integer 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">[LeetCode 13] Roman to Integer</div>
+  <div class="post-meta">
+    <div class="date">2014 April 30th</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><p><a target="_blank" rel="noopener" href="http://oj.leetcode.com/problems/roman-to-integer/">link</a></p>
+<div class="question-content">
+            <p></p><p>Given a roman numeral, convert it to an integer.</p>
+
+<p>Input is guaranteed to be within the range from 1 to 3999.</p><p></p>
+</div>
+
+<h3 id="Stats"><a href="#Stats" class="headerlink" title="Stats"></a>Stats</h3><table border="2">
+	<tr>
+		<td>Frequency</td>
+		<td bgcolor="red">4</td>
+	</tr>
+	<tr>
+		<td>Diffficulty</td>
+		<td bgcolor="lime">2</td>
+	</tr>
+	<tr>
+		<td>Adjusted Difficulty</td>
+		<td bgcolor="lime">2</td>
+	</tr>
+	<tr>
+		<td>Time to use</td>
+		<td bgcolor="lime">----------</td>
+	</tr>
+</table>
+
+<p>Ratings&#x2F;Color &#x3D; 1(white) 2(lime) 3(yellow) 4&#x2F;5(red)</p>
+<h3 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h3><p>This question is easier than <strong>[LeetCode 12] Integer to Roman</strong>.</p>
+<p>The basic idea is to <strong>read 2 char (as pre and cur) and then check</strong>. If pre &gt; cur, then OK, just do the addition. If pre &lt; cur, we need to subtract (2 * pre) from the result.</p>
+<p>The code is easy and concise if you have the idea.</p>
+<h3 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h3><p>The code explains itself.</p>
+<h3 id="My-code"><a href="#My-code" class="headerlink" title="My code"></a>My code</h3><pre><code>public class Solution &#123;
+    public int romanToInt(String s) &#123;
+        if (s == null || s.length() == 0) &#123;
+            return 0;
+        &#125;
+        int ans = 0;
+        int pre = 0;
+        int cur = 0;
+        for (int i = 0; i &lt; s.length(); i++) &#123;
+            cur = getNum(s.charAt(i));
+            if (i == 0 || pre &gt;= cur) &#123;
+                ans += cur;
+            &#125; else &#123;
+                ans += cur - (2 * pre);
+            &#125;
+            pre = cur;
+        &#125;
+        return ans;
+    &#125;
+
+    private int getNum(char a)&#123;
+        switch(a)&#123;
+            case &#39;I&#39;: return 1;
+            case &#39;V&#39;: return 5;
+            case &#39;X&#39;: return 10;
+            case &#39;L&#39;: return 50;
+            case &#39;C&#39;: return 100;
+            case &#39;D&#39;: return 500;
+            case &#39;M&#39;: return 1000;
+        &#125;
+        return 0;
+    &#125;
+&#125;
+</code></pre>
+<p>We can also do only adding. Someone posted the code in <a target="_blank" rel="noopener" href="http://yucoding.blogspot.sg/2013/05/leetcode-question-87-roman-to-interger.html">here</a>. Read it ONLY if you are interested.</p>
+<pre><code>class Solution &#123;
+public:
+    int romanToInt(string s) &#123;
+        // 4:IV, 9:IX, 40:XL, 90:XC, 400:CD, 900:CM,
+        // 1:I, 10:X, 100:C, 1000:M
+        int res=0;
+        char pre = &#39; &#39;;
+        for(int i=0;i&lt;s.size();i++)&#123;
+            if (s[i]==&#39;M&#39; &amp;&amp; pre!=&#39;C&#39;) &#123;res+=1000;&#125;
+            if (s[i]==&#39;C&#39; &amp;&amp; pre!=&#39;X&#39;) &#123;res+=100;&#125;
+            if (s[i]==&#39;X&#39; &amp;&amp; pre!=&#39;I&#39;) &#123;res+=10;&#125;
+
+            if (s[i]==&#39;M&#39; &amp;&amp; pre==&#39;C&#39;) &#123;res+=800;&#125;
+            if (s[i]==&#39;C&#39; &amp;&amp; pre==&#39;X&#39;) &#123;res+=80;&#125;
+            if (s[i]==&#39;X&#39; &amp;&amp; pre==&#39;I&#39;) &#123;res+=8;&#125;
+
+            if (s[i]==&#39;I&#39; ) &#123;res+=1;&#125;
+
+            if (s[i]==&#39;V&#39; &amp;&amp; pre!=&#39;I&#39;)&#123;res+=5;&#125;
+            if (s[i]==&#39;L&#39; &amp;&amp; pre!=&#39;X&#39;)&#123;res+=50;&#125;
+            if (s[i]==&#39;D&#39; &amp;&amp; pre!=&#39;C&#39;)&#123;res+=500;&#125;
+
+            if (s[i]==&#39;V&#39; &amp;&amp; pre==&#39;I&#39;)&#123;res+=3;&#125;
+            if (s[i]==&#39;L&#39; &amp;&amp; pre==&#39;X&#39;)&#123;res+=30;&#125;
+            if (s[i]==&#39;D&#39; &amp;&amp; pre==&#39;C&#39;)&#123;res+=300;&#125;
+
+            pre = s[i];
+        &#125;
+        return res;
+    &#125;
+&#125;;
+</code></pre>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

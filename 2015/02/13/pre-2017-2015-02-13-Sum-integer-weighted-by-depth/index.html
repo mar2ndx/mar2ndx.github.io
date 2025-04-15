@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    [LinkedIn] Sum of integer weighted by depth  丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">[LinkedIn] Sum of integer weighted by depth </div>
+  <div class="post-meta">
+    <div class="date">2015 February 13th</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><p><a target="_blank" rel="noopener" href="http://www.careercup.com/question?id=5139875124740096">link</a></p>
+<pre><code>/**
+* Given a nested list of integers, returns the sum of all integers in the list weighted by their depth
+* For example, given the list &#123;(1,1),2,(1,10)&#125; the function should return 10 (four 1&#39;s at depth 2, one 2 at depth 1)
+* Given the list &#123;1,&#123;4,&#123;6&#125;&#125;&#125; the function should return 27 (one 1 at depth 1, one 4 at depth 2, and one 6 at depth 3)
+*/
+public int depthSum (List&lt;NestedInteger&gt; input)
+&#123; // ur implementation here&#125;
+
+
+**
+* This is the interface that represents nested lists.
+* You should not implement it, or speculate about its implementation.
+*/
+public interface NestedInteger
+&#123;
+/** @return true if this NestedInteger holds a single integer, rather than a nested list */
+boolean isInteger();
+
+/** @return the single integer that this NestedInteger holds, if it holds a single integer
+* Return null if this NestedInteger holds a nested list */
+Integer getInteger();
+
+/** @return the nested list that this NestedInteger holds, if it holds a nested list
+* Return null if this NestedInteger holds a single integer */
+List&lt;NestedInteger&gt; getList();
+&#125;
+</code></pre>
+<h3 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h3><p>DFS recurse.</p>
+<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><p>The algo:</p>
+<pre><code>public int depthSum(List&lt;NestedInteger&gt; input, int weight) &#123;
+	// ur implementation here
+	int sum = 0;
+	for (NestedInteger ni : input) &#123;
+		if (ni.isInteger()) &#123;
+			sum += ni.getInteger() * weight;
+		&#125; else &#123;
+			sum += depthSum(ni.getList(), weight + 1);
+		&#125;
+	&#125;
+	return sum;
+&#125;
+</code></pre>
+<p>Interface and Impl:</p>
+<pre><code>/*
+ * This is the interface that represents nested lists. You should not implement
+ * it, or speculate about its implementation.
+ */
+interface NestedInteger &#123;
+    /**
+     * @return true if this NestedInteger holds a single integer, rather than a
+     *         nested list
+     */
+    boolean isInteger();
+
+    /**
+     * @return the single integer that this NestedInteger holds, if it holds a
+     *         single integer Return null if this NestedInteger holds a nested
+     *         list
+     */
+    Integer getInteger();
+
+    /**
+     * @return the nested list that this NestedInteger holds, if it holds a
+     *         nested list Return null if this NestedInteger holds a single
+     *         integer
+     */
+    List&lt;NestedInteger&gt; getList();
+&#125;
+
+class NestedIntegerImpl implements NestedInteger &#123;
+
+    int num;
+    List&lt;NestedInteger&gt; list = new ArrayList&lt;NestedInteger&gt;();
+
+    public NestedIntegerImpl(int number) &#123;
+        num = number;
+        list = null;
+    &#125;
+
+    public NestedIntegerImpl(List&lt;NestedInteger&gt; inputList) &#123;
+        num = -1;
+        list = inputList;
+    &#125;
+
+    @Override
+    public boolean isInteger() &#123;
+        return list == null;
+    &#125;
+
+    @Override
+    public Integer getInteger() &#123;
+        if (isInteger()) &#123;
+            return num;
+        &#125;
+        return -1;
+    &#125;
+
+    @Override
+    public List&lt;NestedInteger&gt; getList() &#123;
+        return list;
+    &#125;
+&#125;
+</code></pre>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

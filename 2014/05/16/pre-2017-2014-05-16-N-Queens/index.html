@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    [LeetCode 51] N-Queens  丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">[LeetCode 51] N-Queens </div>
+  <div class="post-meta">
+    <div class="date">2014 May 16th</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><p><a target="_blank" rel="noopener" href="http://oj.leetcode.com/problems/n-queens/">link</a></p>
+<div class="question-content">
+            <p></p><p>The <i>n</i>-queens puzzle is the problem of placing <i>n</i> queens on an <i>n</i>×<i>n</i> chessboard such that no two queens attack each other.</p>
+
+<p><img src="http://www.leetcode.com/wp-content/uploads/2012/03/8-queens.png"></p>
+
+<p>Given an integer <i>n</i>, return all distinct solutions to the <i>n</i>-queens puzzle.</p>
+
+<p>Each solution contains a distinct board configuration of the <i>n</i>-queens' placement, where <code>'Q'</code> and <code>'.'</code> both indicate a queen and an empty space respectively.</p>
+
+<p>For example,<br>
+There exist two distinct solutions to the 4-queens puzzle:</p>
+<pre>[
+ [".Q..",  // Solution 1
+  "...Q",
+  "Q...",
+  "..Q."],
+
+<p>[“..Q.”, &#x2F;&#x2F; Solution 2<br>“Q…”,<br>“…Q”,<br>“.Q..”]<br>]</p>
+<p></pre><p></p><br>          </div></p>
+<h3 id="Stats"><a href="#Stats" class="headerlink" title="Stats"></a>Stats</h3><table border="2">
+	<tr>
+		<td>Frequency</td>
+		<td bgcolor="yellow">3</td>
+	</tr>
+	<tr>
+		<td>Difficulty</td>
+		<td bgcolor="red">4</td>
+	</tr>
+	<tr>
+		<td>Adjusted Difficulty</td>
+		<td bgcolor="red">4</td>
+	</tr>
+	<tr>
+		<td>Time to use</td>
+		<td bgcolor="yellow">----------</td>
+	</tr>
+</table>
+
+<p>Ratings&#x2F;Color &#x3D; 1(white) 2(lime) 3(yellow) 4&#x2F;5(red)</p>
+<h3 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h3><p><strong>This is one of the most classic problems of NP</strong> (to be precise, NP-hard).</p>
+<p>A lot of NP problems are be solved using similar approach, for example: <strong>Sudoku, Combinations, Combination Sum, Permutation, Work Break II, Palindrome Partitioning</strong>…</p>
+<p>I posted my code below. It is very standard solution.</p>
+<h3 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h3><p>My solution is similar to the one written in <a target="_blank" rel="noopener" href="http://blog.csdn.net/linhuanmars/article/details/20667175">this post</a>.</p>
+<h3 id="My-code"><a href="#My-code" class="headerlink" title="My code"></a>My code</h3><pre><code>public class Solution &#123;
+    public List&lt;String[]&gt; solveNQueens(int n) &#123;
+        List&lt;String[]&gt; ans = new ArrayList&lt;String[]&gt;();
+        if (n &lt;= 0) &#123;
+            return ans;
+        &#125;
+        int[] map = new int[n];
+        helper(ans, map, 0, n);
+        return ans;
+    &#125;
+
+    private void helper(List&lt;String[]&gt; ans, int[] map, int row, int n) &#123;
+        if (row == n) &#123;
+            ans.add(convert(map, n));
+            return;
+        &#125;
+        for (int i = 0; i &lt; n; i++) &#123;
+            map[row] = i;
+            // check if map[row] conflicts with any row above
+            boolean valid = true;
+            for (int k = 0; k &lt; row; k++) &#123;
+                if (Math.abs(map[k] - map[row]) == row - k || map[k] == map[row]) &#123;
+                    // not valid!
+                    valid = false;
+                    break;
+                &#125;
+            &#125;
+            if (valid) &#123;
+                helper(ans, map, row + 1, n);
+            &#125;
+        &#125;
+    &#125;
+
+    private String[] convert(int[] map, int n) &#123;
+        String[] strs = new String[n];
+        for (int i = 0; i &lt; n; i++) &#123;
+            StringBuilder str = new StringBuilder();
+            for (int a = 0; a &lt; map[i]; a++) &#123;
+                str.append(&#39;.&#39;);
+            &#125;
+            str.append(&#39;Q&#39;);
+            for (int a = map[i] + 1; a &lt; n; a++) &#123;
+                str.append(&#39;.&#39;);
+            &#125;
+            strs[i] = str.toString();
+        &#125;
+        return strs;
+    &#125;
+&#125;
+</code></pre>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

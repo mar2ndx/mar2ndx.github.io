@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    [Google] Generate Request ID  丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">[Google] Generate Request ID </div>
+  <div class="post-meta">
+    <div class="date">2015 January 27th</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><p><a target="_blank" rel="noopener" href="http://www.careercup.com/question?id=5169800024162304">link</a></p>
+<blockquote>
+<p>Design a system to <strong>return an unique ID for each request</strong>.</p>
+</blockquote>
+<blockquote>
+<p>(For most of requests, the ID value should increase as time goes, the system should handle 1000 requests per second at least. )</p>
+</blockquote>
+<blockquote>
+<p>Note: <strong>Timestamps</strong> alone is not valid since there might be multiple requests with same timestamps.</p>
+</blockquote>
+<h3 id="Idea-1"><a href="#Idea-1" class="headerlink" title="Idea 1"></a>Idea 1</h3><h4 id="Generating-UUID"><a href="#Generating-UUID" class="headerlink" title="Generating UUID"></a>Generating UUID</h4><p><strong>A universally unique identifier (UUID)</strong> is an identifier standard used in software construction. A UUID is simply a 128-bit value.</p>
+<p>Generating unique IDs is easy. All modern OS’es have that functionality built in.</p>
+<p><strong>Detail</strong>: UUIDs may be generated from a combination of <strong>system time stamp, CPU&#x2F;system ID</strong>, NIC MAC addresses, HBA WWNs, server id etc.</p>
+<h4 id="Clarifications"><a href="#Clarifications" class="headerlink" title="Clarifications"></a>Clarifications</h4><p>Let’s assume the following:</p>
+<ol>
+<li><p>What’s the length of the ID?</p>
+<p>&lt;&#x3D; 128 bits. In that case I’ll choose the standard 128 bit UUID format.</p>
+</li>
+<li><p>The requirement states the system should handle 1000 request&#x2F;s at least.</p>
+</li>
+<li><p>What’s the average request rate?</p>
+<p>1000 &lt; avg req. rate &lt; 10,000</p>
+</li>
+<li><p>What’s the max. burst rate the system must handle?</p>
+<p>&lt; 1,000,000</p>
+</li>
+<li><p>What’s the max. latency (wait time) for a request?</p>
+<p>1 ms</p>
+</li>
+</ol>
+<h4 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h4><p>It’s a classical consumer-producer problem.</p>
+<p>In this case we have many consumers of UUIDs and one producer. Let’s assume the OS provides an API to generate UUIDs and the max. running time of the API is 1ms.</p>
+<ol>
+<li><p>Pre-allocate 2 Mio UUIDs into an array &#x2F; stack&#x2F; heap (depending on implementation) structure.</p>
+</li>
+<li><p>If no overhead 2 Mio UUIDs would take ~ 32MB of RAM. Not a problem on today’s server system with many GB of RAM, but may be a problem on an embedded system.</p>
+</li>
+<li><p>2 Mio UUIDs ensures system can handle burst rate.</p>
+</li>
+<li><p>The solution needs to ensure that its pool of UUIDs doesn’t run out as consumers request them and they are replenished.</p>
+</li>
+</ol>
+<h3 id="Idea-2"><a href="#Idea-2" class="headerlink" title="Idea 2"></a>Idea 2</h3><p>This question is quite open-ended.</p>
+<p>For starter, how about <strong>appending random(N) to the timestamp</strong>? N can be large enough to make collisions unlikely. If each server has an ID we can also include it to further reduce collisions.</p>
+<p>If IDs must be unique, then I suppose you can <strong>design a counter</strong> that will return an ID and increment it at the same time. You will then <strong>need mutex to access this counter</strong>.</p>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

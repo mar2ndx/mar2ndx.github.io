@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    [LeetCode 45] Jump Game II  丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">[LeetCode 45] Jump Game II </div>
+  <div class="post-meta">
+    <div class="date">2014 May 14th</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><p><a target="_blank" rel="noopener" href="http://oj.leetcode.com/problems/jump-game-ii/">link</a></p>
+<div class="question-content">
+<p></p><p>
+Given an array of non-negative integers, you are initially positioned at the first index of the array.
+</p>
+<p>
+Each element in the array represents your maximum jump length at that position. 
+</p>
+<p>
+Your goal is to reach the last index in the minimum number of jumps.
+</p>
+
+<p>
+For example:<br>
+Given array A = <code>[2,3,1,1,4]</code>
+</p>
+<p>
+The minimum number of jumps to reach the last index is <code>2</code>. (Jump <code>1</code> step from index 0 to 1, then <code>3</code> steps to the last index.)
+</p><p></p>
+</div>
+
+<h3 id="Stats"><a href="#Stats" class="headerlink" title="Stats"></a>Stats</h3><table border="2">
+	<tr>
+		<td>Frequency</td>
+		<td bgcolor="lime">2</td>
+	</tr>
+	<tr>
+		<td>Difficulty</td>
+		<td bgcolor="red">4</td>
+	</tr>
+	<tr>
+		<td>Adjusted Difficulty</td>
+		<td bgcolor="yellow">3</td>
+	</tr>
+	<tr>
+		<td>Time to use</td>
+		<td bgcolor="yellow">--------</td>
+	</tr>
+</table>
+
+<p>Ratings&#x2F;Color &#x3D; 1(white) 2(lime) 3(yellow) 4&#x2F;5(red)</p>
+<h3 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h3><p><strong>This is a DP problem</strong>. But we do not have to save all values into a DP array.</p>
+<p><strong>A analysis of DP solution</strong> from <a target="_blank" rel="noopener" href="http://eric-yuan.me/leetcode-jump-game-ii/">this blog</a> explains it very well:</p>
+<blockquote>
+<p>Search forward, and see for each node of array, what is the current maximum place we can reach, and every time we reach a local maximum, we add counter by 1, if we can reach the terminal, just return the counter.</p>
+</blockquote>
+<p>It’s easy to get “time limit exceed” if you solve this problem like a traditional DP question.</p>
+<p>So <strong>I come up with a solution using 2 pointers</strong>: ‘left’ and ‘right’ that denotes the boundary that can be jumps to within a certain number of jumps. What I need to do is updating the 2 pointers and increase the counter for number of jumps.</p>
+<h3 id="My-code"><a href="#My-code" class="headerlink" title="My code"></a>My code</h3><p>traditional DP</p>
+<pre><code>public class Solution &#123;
+    public int jump(int[] A) &#123;
+        int len = A.length;
+        if (len &lt;= 1) return 0;
+        int[] dp = new int[len];
+        if (A[0] == 0) return 0;
+        int cur = 1;
+        for (int i = 0; i &lt; len; i ++) &#123;
+            if (i != 0 &amp;&amp; dp[i] == 0)
+                return 0;
+            // array dp represent the steps to reach point i
+            for (; cur &lt; len &amp;&amp; cur &lt;= i + A[i]; cur ++) &#123;
+                dp[cur] = dp[i] + 1;
+            &#125;
+            if (dp[len - 1] != 0)
+                return dp[len - 1];
+        &#125;
+        return 0;
+    &#125;
+&#125;
+</code></pre>
+<p>DP without array (recommended)</p>
+<pre><code>public class Solution &#123;
+    public int jump(int[] A) &#123;
+        if (A == null || A.length &lt;= 1) &#123;
+            return 0;
+        &#125;
+        int len = A.length;
+        // note that this is a DP question, but considering the required out,
+        // we do not need dp array (i.e.)
+        // int[] dp = new int[len];
+
+        int jumps = 0;
+        int left = 0;
+        int right = 0;
+
+        while (right &lt; len) &#123;
+            int reachable = right;
+            jumps++;
+            for (int i = left; i &lt;= right; i++) &#123;
+                reachable = Math.max(reachable, i + A[i]);
+            &#125;
+            if (reachable == right) &#123;
+                // unable to jump forward
+                return -1;
+            &#125;
+            if (reachable &gt;= len - 1) &#123;
+                return jumps;
+            &#125; else &#123;
+                left = right + 1;
+                right = reachable;
+            &#125;
+        &#125;
+        return -1;
+    &#125;
+&#125;
+</code></pre>
+<p>non-DP</p>
+<pre><code>public class Solution &#123;
+    public int jump(int[] A) &#123;
+        if (A == null || A.length &lt;= 1) &#123;
+            return 0;
+        &#125;
+        int len = A.length;
+        // note that this is a DP question, but considering the required out,
+        // we do not need dp array (i.e.)
+        // int[] dp = new int[len];
+
+        int jumps = 0;
+        int left = 0;
+        int right = 0;
+
+        while (right &lt; len) &#123;
+            int reachable = right;
+            jumps++;
+            for (int i = left; i &lt;= right; i++) &#123;
+                reachable = Math.max(reachable, i + A[i]);
+            &#125;
+            if (reachable == right) &#123;
+                // unable to jump forward
+                return -1;
+            &#125;
+            if (reachable &gt;= len - 1) &#123;
+                return jumps;
+            &#125; else &#123;
+                left = right + 1;
+                right = reachable;
+            &#125;
+        &#125;
+        return -1;
+    &#125;
+&#125;
+</code></pre>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

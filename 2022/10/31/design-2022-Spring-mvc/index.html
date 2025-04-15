@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    SpringMVC learning notes 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">SpringMVC learning notes</div>
+  <div class="post-meta">
+    <div class="date">2022 October 31st</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><h1 id="Spring-MVC"><a href="#Spring-MVC" class="headerlink" title="Spring MVC"></a>Spring MVC</h1><h1 id="Getting-Started"><a href="#Getting-Started" class="headerlink" title="Getting Started"></a>Getting Started</h1><h2 id="B-S-vs-C-S"><a href="#B-S-vs-C-S" class="headerlink" title="B&#x2F;S vs C&#x2F;S"></a>B&#x2F;S vs C&#x2F;S</h2><p>C&#x2F;S架构，已经过时了。</p>
+<p>B&#x2F;S架构 –&gt; web应用。</p>
+<h2 id="其中的-S-web-application"><a href="#其中的-S-web-application" class="headerlink" title="其中的 S &#x3D; web application"></a>其中的 S &#x3D; web application</h2><p>JavaEE 制定了一套规范，很简单实现了 B&#x2F;S 的沟通（结构处理）。</p>
+<blockquote>
+<p>这套规范，就是servlet。“服务器端 小程序”</p>
+</blockquote>
+<p>Java开发 web应用：需要遵循__三层架构__：</p>
+<ol>
+<li>表现层</li>
+<li>业务层</li>
+<li>持久层</li>
+</ol>
+<p>Spring MVC 只跟 1. 表现层 有关。</p>
+<h2 id="web应用-三层架构"><a href="#web应用-三层架构" class="headerlink" title="web应用 三层架构"></a>web应用 三层架构</h2><h3 id="1-表现层（web层）"><a href="#1-表现层（web层）" class="headerlink" title="1 表现层（web层）"></a>1 表现层（web层）</h3><p>web层，跟browser打交道。</p>
+<ol>
+<li>接收 http request</li>
+<li>http 响应 response</li>
+<li>以及：分发请求</li>
+</ol>
+<p>继续细分的话：</p>
+<ol>
+<li>展示层：jsp</li>
+<li>控制层：controller，struts2 那种action</li>
+</ol>
+<p>表现层的设计，通常使用 MVC设计模型（这里的MVC和其他层没有关系）。</p>
+<h3 id="2-业务层（service层）"><a href="#2-业务层（service层）" class="headerlink" title="2 业务层（service层）"></a>2 业务层（service层）</h3><p>也就是 service 层。</p>
+<p>web层依赖service，但是service层不依赖web。</p>
+<p>负责业务逻辑</p>
+<h3 id="3-持久层（dao层）"><a href="#3-持久层（dao层）" class="headerlink" title="3 持久层（dao层）"></a>3 持久层（dao层）</h3><p>跟DB有关的一切，也就是dao层。</p>
+<p>也就是jdbc，mybatis。</p>
+<p>跟service层无关系。</p>
+<h2 id="MVC-设计模式"><a href="#MVC-设计模式" class="headerlink" title="MVC 设计模式"></a>MVC 设计模式</h2><p>MVC <strong>不是</strong> JavaEE 的23 种设计模式之一。</p>
+<p>只是针对：__表现层__的。</p>
+<h3 id="1-Model"><a href="#1-Model" class="headerlink" title="1 Model"></a>1 Model</h3><p>不仅是数据存储。其实，分两种：</p>
+<ol>
+<li>业务模型</li>
+<li>数据模型</li>
+</ol>
+<h3 id="2-View"><a href="#2-View" class="headerlink" title="2 View"></a>2 View</h3><p>通常的jsp，通常是根据model创建的。</p>
+<h3 id="3-Controller"><a href="#3-Controller" class="headerlink" title="3 Controller"></a>3 Controller</h3><p>控制：数据流向。</p>
+<p>流向哪个业务处理 class。</p>
+<h1 id="Spring-MVC-1"><a href="#Spring-MVC-1" class="headerlink" title="Spring MVC"></a>Spring MVC</h1><p>“一个轻量级的web框架。”</p>
+<h2 id="跟Spring-的关系和区别"><a href="#跟Spring-的关系和区别" class="headerlink" title="跟Spring 的关系和区别"></a>跟Spring 的关系和区别</h2><p>Spring MVC 是 Spring Framework 的一部分。</p>
+<ul>
+<li>Spring Framework<ul>
+<li>Core</li>
+<li>AOP<ul>
+<li>DAO</li>
+<li>ORM</li>
+</ul>
+</li>
+<li>JEE</li>
+<li>Web<ul>
+<li>Spring MVC 在这里</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>可见，Spring MVC 是 Spring 下面的 Web 模块的一个成员。</p>
+<h3 id="支持Spring的MVC-框架"><a href="#支持Spring的MVC-框架" class="headerlink" title="支持Spring的MVC 框架"></a>支持Spring的MVC 框架</h3><p>Spring MVC 不是唯一的。还有 Struts1（小众） 和 Struts2。</p>
+<h3 id="特点"><a href="#特点" class="headerlink" title="特点"></a>特点</h3><p>RestFul 的支持好，所以 微服务 喜欢用。</p>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

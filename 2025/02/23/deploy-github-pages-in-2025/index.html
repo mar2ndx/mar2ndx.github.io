@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    Deploy Github Pages in Year 2025 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">Deploy Github Pages in Year 2025</div>
+  <div class="post-meta">
+    <div class="date">2025 February 23rd</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><p>I have a love-hate relationship with Github Pages. </p>
+<p>For it’s free, stable and deployed automatic with git, but also for it’s complexity when switching laptops, and its inaccessibility in mainland China. </p>
+<p>Here’s how to do it anyways:</p>
+<h2 id="Setup-a-Hexo"><a href="#Setup-a-Hexo" class="headerlink" title="Setup a Hexo"></a>Setup a Hexo</h2><pre><code>pnpm install -g hexo
+hexo --version
+hexo init tech-blog
+cd tech-blog/
+pnpm i
+hexo server
+cd themes/
+git clone https://github.com/xbmlz/hexo-theme-maple.git maple
+</code></pre>
+<p>Change blog config at: .&#x2F;_config.yml</p>
+<h2 id="Commit-master"><a href="#Commit-master" class="headerlink" title="Commit master"></a>Commit master</h2><pre><code>git remote add origin https://github.com/mar2ndx/mar2ndx.github.io.git
+git push -u origin master
+</code></pre>
+<p>This would fail, you need to go to <a target="_blank" rel="noopener" href="https://github.com/settings/personal-access-tokens">https://github.com/settings/personal-access-tokens</a> and add a new access token.</p>
+<p>You need to choose <strong>Repository permissions</strong> and <strong>Account permissions</strong>.</p>
+<p><img src="/images/github-pages-1-access-token-github.png"></p>
+<p>Choose “Contents” and “Pages” under <strong>Repository permissions</strong>. Nothing under <strong>Account permissions</strong>.</p>
+<p>Then change remote origin like this:</p>
+<pre><code>git remote set-url origin https://the_user_name:the_github_token@github.com/mar2ndx/mar2ndx.github.io.git
+git push -u origin master
+</code></pre>
+<h2 id="Commit-gh-pages"><a href="#Commit-gh-pages" class="headerlink" title="Commit gh-pages"></a>Commit gh-pages</h2><p>Change config first:</p>
+<pre><code>deploy:
+type: git
+repo: https://github.com/mar2ndx/mar2ndx.github.io.git
+branch: gh-pages
+</code></pre>
+<p>Install <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo-deployer-git">hexo-deployer-git</a>:</p>
+<pre><code>pnpm install hexo-deployer-git --save
+</code></pre>
+<p>Should work now:</p>
+<pre><code>hexo clean
+hexo g
+hexo d
+</code></pre>
+<p><img src="/images/github-pages-2-hexo-deploy.png"></p>
+<p>Lastly, change the deploy branch at <a target="_blank" rel="noopener" href="https://github.com/mar2ndx/mar2ndx.github.io/settings/pages">https://github.com/mar2ndx/mar2ndx.github.io/settings/pages</a></p>
+<p><img src="/images/github-pages-3-pages-source-branch.png"></p>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

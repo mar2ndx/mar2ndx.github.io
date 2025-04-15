@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    [Java OOP] Template method pattern (abstract class)  丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">[Java OOP] Template method pattern (abstract class) </div>
+  <div class="post-meta">
+    <div class="date">2015 October 23rd</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><h1 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h1><p><strong><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Template_method_pattern">Template method pattern</a> is a behavioral design pattern</strong> that defines the program skeleton of an algorithm in a method, called template method, which <strong>defers some steps to subclasses</strong>.</p>
+<p>It lets one <strong>redefine</strong> certain steps of an algorithm without changing the algorithm’s structure.</p>
+<h2 id="Usage"><a href="#Usage" class="headerlink" title="Usage"></a>Usage</h2><p>The template method is used in frameworks, where each implements the invariant parts of a domain’s architecture.</p>
+<h2 id="Example-in-Java"><a href="#Example-in-Java" class="headerlink" title="Example in Java"></a>Example in Java</h2><p>Refer to <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Template_method_pattern#Example_in_Java">code from WIKI</a>:</p>
+<pre><code>/**
+ * An abstract class that is common to several games in
+ * which players play against the others, but only one is
+ * playing at a given time.
+ */
+
+abstract class Game &#123;
+ /* Hook methods. Concrete implementation may differ in each subclass*/
+    protected int playersCount;
+    abstract void initializeGame();
+    abstract void makePlay(int player);
+    abstract boolean endOfGame();
+    abstract void printWinner();
+
+    /* A template method : */
+    public final void playOneGame(int playersCount) &#123;
+        this.playersCount = playersCount;
+        initializeGame();
+        int j = 0;
+        while (!endOfGame()) &#123;
+            makePlay(j);
+            j = (j + 1) % playersCount;
+        &#125;
+        printWinner();
+    &#125;
+&#125;
+
+//Now we can extend this class in order
+//to implement actual games:
+
+class Monopoly extends Game &#123;
+
+    /* Implementation of necessary concrete methods */
+    void initializeGame() &#123;
+        // Initialize players
+        // Initialize money
+    &#125;
+    void makePlay(int player) &#123;
+        // Process one turn of player
+    &#125;
+    boolean endOfGame() &#123;
+        // Return true if game is over
+        // according to Monopoly rules
+    &#125;
+    void printWinner() &#123;
+        // Display who won
+    &#125;
+    /* Specific declarations for the Monopoly game. */
+
+    // ...
+&#125;
+
+class Chess extends Game &#123;
+
+    /* Implementation of necessary concrete methods */
+    void initializeGame() &#123;
+        // Initialize players
+        // Put the pieces on the board
+    &#125;
+    void makePlay(int player) &#123;
+        // Process a turn for the player
+    &#125;
+    boolean endOfGame() &#123;
+        // Return true if in Checkmate or
+        // Stalemate has been reached
+    &#125;
+    void printWinner() &#123;
+        // Display the winning player
+    &#125;
+    /* Specific declarations for the chess game. */
+
+    // ...
+&#125;
+</code></pre>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

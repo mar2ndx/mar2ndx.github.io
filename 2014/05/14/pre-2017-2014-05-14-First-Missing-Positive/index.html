@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    [LeetCode 41] First Missing Positive 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">[LeetCode 41] First Missing Positive</div>
+  <div class="post-meta">
+    <div class="date">2014 May 14th</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><p><a target="_blank" rel="noopener" href="http://oj.leetcode.com/problems/first-missing-positive/">link</a></p>
+<div class="question-content">
+            <p></p><p>
+Given an unsorted integer array, find the first missing positive integer.
+</p>
+
+<p>
+For example,<br>
+Given <code>[1,2,0]</code> return <code>3</code>,<br>
+and <code>[3,4,-1,1]</code> return <code>2</code>.
+</p>
+
+<p>
+Your algorithm should run in <i>O</i>(<i>n</i>) time and uses constant space.
+</p><p></p>
+          </div>
+
+<h3 id="Stats"><a href="#Stats" class="headerlink" title="Stats"></a>Stats</h3><table border="2">
+	<tr>
+		<td>Frequency</td>
+		<td bgcolor="lime">2</td>
+	</tr>
+	<tr>
+		<td>Difficulty</td>
+		<td bgcolor="red">5</td>
+	</tr>
+	<tr>
+		<td>Adjusted Difficulty</td>
+		<td bgcolor="red">4</td>
+	</tr>
+	<tr>
+		<td>Time to use</td>
+		<td bgcolor="yellow">--------</td>
+	</tr>
+</table>
+
+<p>Ratings&#x2F;Color &#x3D; 1(white) 2(lime) 3(yellow) 4&#x2F;5(red)</p>
+<h3 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h3><p><strong>This is a very difficult question</strong>!</p>
+<p>The tricky part of this question is the limit in space&#x2F;time. If we sort and check, the space is constent, but time is increased.</p>
+<p>The key is to <strong>make use of the position index of the array</strong>.</p>
+<h3 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h3><p><strong>Make sure that (i)th item of the array stores value (i+1)</strong>. The image below and the quoted text from <a target="_blank" rel="noopener" href="http://tianrunhe.wordpress.com/2012/07/15/finding-the-1st-missing-positive-int-in-an-array-first-missing-positive/">this blog</a> are very good explanations.</p>
+<p><img src="/images/first_missing_pos.jpg"></p>
+<blockquote>
+<p>The idea is simple. What is the most desired array we want to see? Something like [1,2,3] then we know 4 is missing, or [1, 8, 3, 4] then we know 2 is missing. In other word, “all the numbers are in their correct positions”.</p>
+<p>What are correct positions? For any i, A[i] &#x3D; i+1. So our goal is to rearrange those numbers (in place) to their correct positions.</p>
+<p>We then need to decide how to arrange them. Let’s take the [3, 4, -1, 1] as an example. The 1st number, 3, we know it should stay in position 2. So we swap A[0] &#x3D; 3 with A[2]. We then get [-1, 4, 3, 1]. We can’t do anything about -1 so we leave it there. The 2nd number, 4, we know it should sit in A[3]. So we swap A[1] &#x3D; 4 with A[3]. We then get [-1, 1, 3, 4]. Now 1 should stay in A[0], so we keep swapping and we get [1, -1, 3, 4]. Notice now every positive number is staying in their correct position (A[0]&#x3D;1, A[2]&#x3D;3 and A[3]&#x3D;4). We then need one more scan to find out 2 is missing.</p>
+</blockquote>
+<h3 id="My-code"><a href="#My-code" class="headerlink" title="My code"></a>My code</h3><pre><code>public class Solution &#123;
+    public int firstMissingPositive(int[] A) &#123;
+        if (A == null || A.length == 0) &#123;
+            return 1;
+        &#125;
+        int len = A.length;
+        int p = 0;
+        while (p &lt; len) &#123;
+            if (A[p] == p + 1) &#123;
+                // the number is in its correct position~
+                p++;
+                continue;
+            &#125; else if (A[p] &lt;= 0 || A[p] &gt; len) &#123;
+                // the number is out of range, leave it alone then.
+                p++;
+                continue;
+            &#125; else if (A[p] == A[A[p] - 1]) &#123;
+                // this is an important case!!! I missed it just now~
+                p++;
+                continue;
+            &#125;
+            swop(A, p, A[p] - 1);
+        &#125;
+        // now check and find the first number that is not in correct position
+        p = 0;
+        while (p &lt; len) &#123;
+            if (A[p] != p + 1) &#123;
+                return p + 1;
+            &#125;
+            p++;
+        &#125;
+        return p + 1;
+    &#125;
+
+    private void swop(int[] A, int x, int y) &#123;
+        int temp = A[x];
+        A[x] = A[y];
+        A[y] = temp;
+    &#125;
+&#125;
+</code></pre>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

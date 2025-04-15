@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    [Design] Difference between HTTP protocol and TCP protocol  丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">[Design] Difference between HTTP protocol and TCP protocol </div>
+  <div class="post-meta">
+    <div class="date">2015 January 19th</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><p><a target="_blank" rel="noopener" href="http://www.quora.com/What-is-the-difference-between-HTTP-protocol-and-TCP-protocol">ref</a></p>
+<h3 id="Short-Version"><a href="#Short-Version" class="headerlink" title="Short Version"></a>Short Version</h3><p>TCP is a <strong>transport-layer</strong> protocol, and HTTP is an <strong>application-layer</strong> protocol that runs over TCP.</p>
+<h3 id="The-layers"><a href="#The-layers" class="headerlink" title="The layers"></a>The layers</h3><p>At the very bottom of the network stack is the <strong>physical layer</strong>. This is where electrical signals or light pulses or radio waves actually transmit information from place to place. The physical layer doesn’t really have protocols, but instead has standards for voltages, frequencies, and other physical properties. You can transmit information directly this way, but you need a lot of power or a dedicated line, and without higher layers you won’t be able to share bandwidth.</p>
+<p>The next layer up is the <strong>link layer</strong>. This layer covers communication with devices that share a physical communications medium. Here, protocols like Ethernet, 802.11a&#x2F;b&#x2F;g&#x2F;n, and Token Ring specify how to handle multiple concurrent accesses to the physical medium and how to direct traffic to one device instead of another. In a typical home network, this is how your computer talks to your home “router.”</p>
+<p>The third layer is the <strong>network layer</strong>. In the majority of cases, this is dominated by Internet Protocol (IP). This is where the magic of the Internet happens, and you get to talk to a computer halfway around the world, without needing to know where it is. Routers handle directing your traffic from your local network to the network where the other computer lives, where its own link layer handles getting the packets to the right computer.</p>
+<p>Now we are getting somewhere. We can talk to a computer somewhere around the world, but that computer is running lots of different programs. How should it know which one to deliver your message to? The <strong>transport layer</strong> takes care of this, usually with <strong>port numbers</strong>. The two most popular transport layer protocols are TCP and UDP. TCP does a lot of interesting things to smooth over the rough spots of network-layer packet-switched communication like reordering packets, retransmitting lost packets, etc. UDP is more unreliable, but has less overhead.</p>
+<p>So we’ve connected your browser to the web server software on the other end, but how does the server know what page you want? How can you post a question or an answer? These are things that <strong>application-layer</strong> protocols handle. For <strong>web traffic</strong>, this is the HyperText Transfer Protocol (HTTP). There are thousands of application-layer protocols: SMTP, IMAP, and POP3 for email; XMPP, IRC, ICQ for chat; Telnet, SSH, RDP for remote administration; etc.</p>
+<p>Ref: <a target="_blank" rel="noopener" href="http://qr.ae/3pnJK">http://qr.ae/3pnJK</a></p>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

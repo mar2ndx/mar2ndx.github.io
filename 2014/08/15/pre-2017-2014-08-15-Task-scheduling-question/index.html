@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    [Facebook] Task Scheduling Question  丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">[Facebook] Task Scheduling Question </div>
+  <div class="post-meta">
+    <div class="date">2014 August 15th</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><p><a target="_blank" rel="noopener" href="http://www.itint5.com/oj/#10">link</a></p>
+<blockquote>
+<p>有n个任务需要完成（编号1到n），任务之间有一些依赖关系，如果任务a依赖于任务b和c，那么只有当任务b和任务c完成之后才能完成任务a。给定所有的依赖关系，判断这些任务是否能够完成。如果能够完成，请给出一个合法的任务完成序列。</p>
+</blockquote>
+<blockquote>
+<p>样例：</p>
+<p>n&#x3D;5</p>
+<p>1-&gt;2,3</p>
+<p>3-&gt;4</p>
+<p>上述样例中任务1依赖于任务2和任务3，任务3依赖于任务4，那么存在合法的任务完成序列4,3,2,1,5</p>
+</blockquote>
+<h3 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h3><p><strong>Classic topology sorting</strong>, refer to <a target="_blank" rel="noopener" href="http://www.itint5.com/discuss/8/%E4%BB%BB%E5%8A%A1%E8%B0%83%E5%BA%A6java%E7%A8%8B%E5%BA%8F">this nice answer</a>. </p>
+<h3 id="My-Code"><a href="#My-Code" class="headerlink" title="My Code"></a>My Code</h3><pre><code>public int[] myJobSchedulerWithoutQueue(Map&lt;Integer, List&lt;Integer&gt;&gt; deps,
+		int n) &#123;
+	int[] ans = new int[n];
+
+	int[] depCount = new int[n];
+	// eg. job 1 depends on job 2 and 3, thus depCount[1-1] = 2
+	Map&lt;Integer, List&lt;Integer&gt;&gt; graph = new HashMap&lt;Integer, List&lt;Integer&gt;&gt;();
+	// graph would be reversed version of deps, used for topology sorting
+	// eg. 2 would point to 1, and 3 would points to 1
+	for (int i : deps.keySet()) &#123;
+		depCount[i - 1] = deps.get(i).size();
+		for (int j : deps.get(i)) &#123;
+			// add (j, i) pair into graph
+			if (!graph.containsKey(j)) &#123;
+				graph.put(j, new ArrayList&lt;Integer&gt;());
+			&#125;
+			graph.get(j).add(i);
+		&#125;
+	&#125;
+	// now we got depCount[] and graph ready, let&#39;s rock
+	int sorted = 0;
+	while (sorted != n) &#123;
+		// first find a &#39;p&#39; so that depCount[p] = 0
+		int p = 0;
+		while (p &lt; n &amp;&amp; depCount[p] != 0) &#123;
+			p++;
+		&#125;
+		if (p == n) &#123;
+			// unable to find a new node to sort, sorting failed
+			break;
+		&#125;
+		// remember p is only the index, the value should be +1
+		int val = p + 1;
+		ans[sorted++] = val;
+		depCount[p] = -1;
+		if (graph.containsKey(val)) &#123;
+			for (int i : graph.get(val)) &#123;
+				depCount[i - 1]--;
+			&#125;
+		&#125;
+	&#125;
+	if (sorted == n)
+		return ans; // sort sucess
+	else
+		return null; // sort failed
+&#125;
+</code></pre>
+<p>The following is very similar implementation, but using a Queue to store temporary nodes. </p>
+<pre><code>public int[] myJobSchedulerWithQueue(Map&lt;Integer, List&lt;Integer&gt;&gt; deps, int n) &#123;
+	int[] ans = new int[n];
+
+	int[] depCount = new int[n];
+	// eg. job 1 depends on job 2 and 3, thus depCount[1-1] = 2
+	Map&lt;Integer, List&lt;Integer&gt;&gt; graph = new HashMap&lt;Integer, List&lt;Integer&gt;&gt;();
+	// graph would be reversed version of deps, used for topology sorting
+	// eg. 2 would point to 1, and 3 would points to 1
+	for (int i : deps.keySet()) &#123;
+		depCount[i - 1] = deps.get(i).size();
+		for (int j : deps.get(i)) &#123;
+			// add (j, i) pair into graph
+			if (!graph.containsKey(j)) &#123;
+				graph.put(j, new ArrayList&lt;Integer&gt;());
+			&#125;
+			graph.get(j).add(i);
+		&#125;
+	&#125;
+	// now we got depCount[] and graph ready, let&#39;s rock
+	int sorted = 0;
+	Queue&lt;Integer&gt; queue = new LinkedList&lt;Integer&gt;();
+	while (sorted != n) &#123;
+		for (int i = 0; i &lt; depCount.length; i++) &#123;
+			if (depCount[i] == 0) &#123;
+				queue.offer(i + 1);
+				depCount[i] = -1;
+			&#125;
+		&#125;
+		if (queue.isEmpty()) &#123;
+			break; // sorting failed
+		&#125;
+		int val = queue.poll();
+		ans[sorted++] = val;
+		if (graph.containsKey(val)) &#123;
+			for (int i : graph.get(val)) &#123;
+				depCount[i - 1]--;
+			&#125;
+		&#125;
+	&#125;
+	if (sorted == n)
+		return ans; // sort sucess
+	else
+		return null; // sort failed
+&#125;
+</code></pre>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

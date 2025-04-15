@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    1153. String Transforms Into Another String 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">1153. String Transforms Into Another String</div>
+  <div class="post-meta">
+    <div class="date">2022 November 8th</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><p>Link: <a target="_blank" rel="noopener" href="https://leetcode.cn/problems/string-transforms-into-another-string/">https://leetcode.cn/problems/string-transforms-into-another-string/</a></p>
+<h1 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h1><p>difficulty: high<br>adj diff: 3</p>
+<pre><code>Given two strings str1 and str2 of the same length, determine whether you can transform str1 into str2 by doing zero or more conversions.
+
+In one conversion you can convert all occurrences of one character in str1 to any other lowercase English character.
+
+Return true if and only if you can transform str1 into str2.
+
+Example 1:
+
+Input: str1 = &quot;aabcc&quot;, str2 = &quot;ccdee&quot;
+Output: true
+Explanation: Convert &#39;c&#39; to &#39;e&#39; then &#39;b&#39; to &#39;d&#39; then &#39;a&#39; to &#39;c&#39;. Note that the order of conversions matter.
+Example 2:
+
+Input: str1 = &quot;leetcode&quot;, str2 = &quot;codeleet&quot;
+Output: false
+Explanation: There is no way to transform str1 to str2.
+
+Constraints:
+
+1 &lt;= str1.length == str2.length &lt;= 104
+str1 and str2 contain only lowercase English letters.
+</code></pre>
+<h1 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">public boolean canConvert(String str1, String str2) &#123;</span><br><span class="line">    int len = str1.length();</span><br><span class="line">    if (len != str2.length()) return false;</span><br><span class="line">    if (str2.equals(str1)) return true;</span><br><span class="line"></span><br><span class="line">    Map&lt;Character, Character&gt; map = new HashMap&lt;Character, Character&gt;();</span><br><span class="line">    Set&lt;Character&gt; set=new HashSet&lt;&gt;();</span><br><span class="line"></span><br><span class="line">    for (int i = 0; i &lt; len; i++) &#123;</span><br><span class="line">        char c1 = str1.charAt(i);</span><br><span class="line">        char c2 = str2.charAt(i);</span><br><span class="line"></span><br><span class="line">        // first, check s1 -&gt; s2 letter mapping are correct, no distored positions.</span><br><span class="line">        if (map.containsKey(c1)) &#123;</span><br><span class="line">            if (map.get(c1) != c2) &#123;</span><br><span class="line">                return false;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            map.put(c1, c2);</span><br><span class="line">        &#125;</span><br><span class="line">        // Very important: check s2, if all 26 letters apear or not!</span><br><span class="line">        set.add(c2);</span><br><span class="line">    &#125;</span><br><span class="line">    return set.size() &lt; 26;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

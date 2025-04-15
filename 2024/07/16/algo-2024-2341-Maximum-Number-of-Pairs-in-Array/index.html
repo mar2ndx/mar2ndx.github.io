@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    2341. Maximum Number of Pairs in Array 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">2341. Maximum Number of Pairs in Array</div>
+  <div class="post-meta">
+    <div class="date">2024 July 16th</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><p>Link: <a target="_blank" rel="noopener" href="https://leetcode.cn/problems/maximum-number-of-pairs-in-array/description/">2341. Maximum Number of Pairs in Array</a></p>
+<h1 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h1><p>difficulty: easy<br>adj diff: ?</p>
+<pre><code>You are given a 0-indexed integer array nums. In one operation, you may do the following:
+
+Choose two integers in nums that are equal.
+Remove both integers from nums, forming a pair.
+The operation is done on nums as many times as possible.
+
+Return a 0-indexed integer array answer of size 2 where answer[0] is the number of pairs that are formed and answer[1] is the number of leftover integers in nums after doing the operation as many times as possible.
+
+Example 1:
+
+Input: nums = [1,3,2,1,3,2,2]
+Output: [3,1]
+Explanation:
+Form a pair with nums[0] and nums[3] and remove them from nums. Now, nums = [3,2,3,2,2].
+Form a pair with nums[0] and nums[2] and remove them from nums. Now, nums = [2,2,2].
+Form a pair with nums[0] and nums[1] and remove them from nums. Now, nums = [2].
+No more pairs can be formed. A total of 3 pairs have been formed, and there is 1 number leftover in nums.
+Example 2:
+
+Input: nums = [1,1]
+Output: [1,0]
+Explanation: Form a pair with nums[0] and nums[1] and remove them from nums. Now, nums = [].
+No more pairs can be formed. A total of 1 pair has been formed, and there are 0 numbers leftover in nums.
+Example 3:
+
+Input: nums = [0]
+Output: [0,1]
+Explanation: No pairs can be formed, and there is 1 number leftover in nums.
+</code></pre>
+<h1 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h1><p>简单的使用 Map&lt;Integer, Boolean&gt; 就行。</p>
+<pre><code>public int[] numberOfPairs(int[] nums) &#123;
+    Set&lt;Integer&gt; set = new HashSet&lt;Integer&gt;();
+    int dups = 0, remain = 0;
+    for (int num: nums) &#123;
+        if (set.contains(num)) &#123;
+            set.remove(num);
+            remain--;
+            dups++;
+        &#125; else &#123;
+            set.add(num);
+            remain++;
+        &#125;
+    &#125;
+    return new int[] &#123;
+        dups,
+        remain
+    &#125;;
+&#125;
+</code></pre>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

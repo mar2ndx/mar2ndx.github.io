@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    [LeetCode 152] Maximum Product Subarray  丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">[LeetCode 152] Maximum Product Subarray </div>
+  <div class="post-meta">
+    <div class="date">2015 April 7th</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/maximum-product-subarray/">link</a></p>
+<div class="question-content">
+              <p></p><p>
+Find the contiguous subarray within an array (containing at least one number) which has the largest product.
+</p>
+
+<p>
+For example, given the array <code>[2,3,-2,4]</code>,<br>
+the contiguous subarray <code>[2,3]</code> has the largest product = <code>6</code>.
+</p><p></p>
+              
+<pre><code>            &lt;div id=&quot;tags&quot; class=&quot;btn btn-xs btn-warning&quot;&gt;Show Tags&lt;/div&gt;
+            &lt;span class=&quot;hide&quot;&gt;
+              
+              &lt;a class=&quot;btn btn-xs btn-primary&quot; href=&quot;/tag/array/&quot;&gt;Array&lt;/a&gt;
+              
+              &lt;a class=&quot;btn btn-xs btn-primary&quot; href=&quot;/tag/dynamic-programming/&quot;&gt;Dynamic Programming&lt;/a&gt;
+              
+            &lt;/span&gt;
+          
+        &lt;/div&gt;
+</code></pre>
+<h3 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h3><p><strong>This is a pretty difficult question</strong>. It’s hard to write bug-free solution if you have never practised before. </p>
+<p>So the first idea that comes to me is the case of array element &#x3D; 0. Why this case? cuz the maximum subarray MUST NOT CONTAIN 0 unless the input is like {-1, 0, -1}. So we could divide array from 0s and calculate max sum seperately. This idea is good, though a little difficult in coding. Read it <a target="_blank" rel="noopener" href="http://www.geeksforgeeks.org/maximum-product-subarray/">here</a> or <a target="_blank" rel="noopener" href="https://shepherdyuan.wordpress.com/2014/07/23/linkedin-maximum-sumproduct-subarray/">here</a>. </p>
+<h3 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h3><p>After a bit exploration, I found a must easier apporach, thanks to <a target="_blank" rel="noopener" href="http://blog.csdn.net/linhuanmars/article/details/39537283">code ganker</a> and <a target="_blank" rel="noopener" href="http://yucoding.blogspot.sg/2014/10/leetcode-quesion-maximum-product.html">Yu</a>. The idea is to simply ALWAYS CALCULATE preMax and preMin by using MAX&#x2F;MIN(Val1, Val2, Val3) method.  </p>
+<h3 id="My-Code"><a href="#My-Code" class="headerlink" title="My Code"></a>My Code</h3><pre><code>public class Solution &#123;
+    public int maxProduct(int[] A) &#123;
+        if (A == null || A.length == 0) &#123;
+            return 0;
+        &#125; else if (A.length == 1) &#123;
+            return A[0];
+        &#125;
+
+        int preMax = A[0];
+        int preMin = A[0];
+        int max = A[0];
+
+        for (int i = 1; i &lt; A.length; i++) &#123;
+            int temp = preMin;
+            preMin = Math.min(Math.min(preMin * A[i], preMax * A[i]), A[i]);
+            preMax = Math.max(Math.max(temp * A[i], preMax * A[i]), A[i]);
+            max = Math.max(max, preMax);
+        &#125;
+
+        return max;
+    &#125;
+&#125;
+</code></pre>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    [LintCode] Segment Tree Build  丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">[LintCode] Segment Tree Build </div>
+  <div class="post-meta">
+    <div class="date">2015 October 13th</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><p><a target="_blank" rel="noopener" href="http://www.lintcode.com/en/problem/segment-tree-build/">link</a></p>
+<blockquote>
+<p>The structure of Segment Tree is a binary tree which each node has two attributes start and end denote an segment &#x2F; interval.</p>
+</blockquote>
+<blockquote>
+<p>start and end are both integers, they should be assigned in following rules:</p>
+</blockquote>
+<blockquote>
+<p>The root’s start and end is given by build method.<br>The left child of node A has start&#x3D;A.left, end&#x3D;(A.left + A.right) &#x2F; 2.<br>The right child of node A has start&#x3D;(A.left + A.right) &#x2F; 2 + 1, end&#x3D;A.right.<br>if start equals to end, there will be no children for this node.</p>
+</blockquote>
+<blockquote>
+<p>Implement a build method with two parameters start and end, so that we can create a corresponding segment tree with every node has the correct start and end value, return the root of this segment tree.</p>
+</blockquote>
+<h3 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h3><p>A simple top-down run through.</p>
+<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><pre><code>/**
+ * Definition of SegmentTreeNode:
+ * public class SegmentTreeNode &#123;
+ *     public int start, end;
+ *     public SegmentTreeNode left, right;
+ *     public SegmentTreeNode(int start, int end) &#123;
+ *         this.start = start, this.end = end;
+ *         this.left = this.right = null;
+ *     &#125;
+ * &#125;
+ */
+public class Solution &#123;
+    /**
+     *@param start, end: Denote an segment / interval
+     *@return: The root of Segment Tree
+     */
+    public SegmentTreeNode build(int start, int end) &#123;
+        // write your code here
+        if (start &gt; end) &#123;
+            return null;
+        &#125;
+        SegmentTreeNode node = new SegmentTreeNode(start, end);
+        if (start &lt; end) &#123;
+            node.left = build(start, (start + end) / 2);
+            node.right = build((start + end) / 2 + 1, end);
+        &#125;
+        return node;
+    &#125;
+&#125;
+</code></pre>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

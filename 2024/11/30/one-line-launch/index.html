@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    One-line launch anything from Mac OS 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">One-line launch anything from Mac OS</div>
+  <div class="post-meta">
+    <div class="date">2024 November 30th</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><p>Consider you have a monorepo with Next.js frontend and FastAPI backend:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">gitww/</span><br><span class="line">├── backend-fastapi/</span><br><span class="line">├── frontend-nextjs/</span><br></pre></td></tr></table></figure>
+
+<h2 id="1-Run-Backend-FastAPI"><a href="#1-Run-Backend-FastAPI" class="headerlink" title="1. Run Backend (FastAPI)"></a>1. Run Backend (FastAPI)</h2><p><code>run-backend.sh</code></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> -ne <span class="string">&quot;\033]0;gitww-backend\007&quot;</span></span><br><span class="line"><span class="built_in">cd</span> /usr/local/hub/gitww/backend-fastapi</span><br><span class="line">docker compose up -d</span><br><span class="line">poetry install</span><br><span class="line">poetry run uvicorn app.main:app --host 0.0.0.0 --port 3463 --reload</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-Run-Frontend-Next-js"><a href="#2-Run-Frontend-Next-js" class="headerlink" title="2. Run Frontend (Next.js)"></a>2. Run Frontend (Next.js)</h2><p><code>run-frontend.sh</code></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> -ne <span class="string">&quot;\033]0;gitww-frontend\007&quot;</span></span><br><span class="line"><span class="built_in">cd</span> /usr/local/hub/gitww/frontend-nextjs</span><br><span class="line">pnpm install</span><br><span class="line">pnpm dev</span><br></pre></td></tr></table></figure>
+<h3 id="Permissions"><a href="#Permissions" class="headerlink" title="Permissions"></a>Permissions</h3><p>You must add ‘x’ permission to the scripts, in order to run on Mac:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">chmod</span> +x /usr/local/hub/gitww/backend-fastapi/run-backend.sh</span><br><span class="line"><span class="built_in">chmod</span> +x /usr/local/hub/gitww/frontend-nextjs/run-frontend.sh</span><br></pre></td></tr></table></figure>
+
+<p>Now, test:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">open -a iTerm /usr/local/hub/gitww/frontend-nextjs/run-frontend.sh \</span><br><span class="line">&amp; open -a iTerm /usr/local/hub/gitww/backend-fastapi/run-backend.sh</span><br></pre></td></tr></table></figure>
+
+<p>Important to note that, <strong>you launched 2 iTerm with 1 line, with the help of <code>&amp;</code>.</strong></p>
+<h2 id="3-One-line-Launch"><a href="#3-One-line-Launch" class="headerlink" title="3. One-line Launch"></a>3. One-line Launch</h2><p>Make a top-level script:</p>
+<p><code>run-gitww.sh</code></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">cursor /usr/local/hub/gitww/ \</span><br><span class="line">&amp; open -a iTerm /usr/local/hub/gitww/frontend-nextjs/run-frontend.sh \</span><br><span class="line">&amp; open -a iTerm /usr/local/hub/gitww/backend-fastapi/run-backend.sh \</span><br><span class="line">&amp; open <span class="string">&quot;http://localhost:3462/&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="4-Alias"><a href="#4-Alias" class="headerlink" title="4. Alias"></a>4. Alias</h2><p>Edit your <code>vi ~/.zshrc</code> or <code>vi ~/.bashrc</code>:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">alias</span> gitww=<span class="string">&quot;zsh /usr/local/hub/gitww/run-gitww.sh&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>Or, if you don’t mind long command:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">alias</span> gitww=<span class="string">&quot;cursor /usr/local/hub/gitww/ &amp;&amp; open -a iTerm /usr/local/hub/gitww/frontend-nextjs/run-frontend.sh &amp;&amp; open -a iTerm /usr/local/hub/gitww/backend-fastapi/run-backend.sh &amp;&amp; open &#x27;http://localhost:3462/&#x27;&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>Now, simply run <code>gitww</code> to launch frontend, backend, Chrome, and Cursor.</p>
+<h1 id="Final-Notes"><a href="#Final-Notes" class="headerlink" title="Final Notes"></a>Final Notes</h1><p><code>&amp;</code> &#x3D; run parallelly.</p>
+<ul>
+<li><p><code>run-gitww.sh</code> must be <strong>1-line command with <code>&amp;</code> concatenation</strong>. </p>
+<ul>
+<li>Need everything to be launched simultaneously.</li>
+</ul>
+</li>
+<li><p><code>run-backend.sh</code> and <code>run-frontend.sh</code> are multi-step commands</p>
+<ul>
+<li>It’s mimicing a human’s workflow.</li>
+</ul>
+</li>
+</ul>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

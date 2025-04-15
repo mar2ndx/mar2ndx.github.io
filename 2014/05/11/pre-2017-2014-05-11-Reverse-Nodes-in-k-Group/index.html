@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    [LeetCode 25] Reverse Nodes in k-Groups  丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">[LeetCode 25] Reverse Nodes in k-Groups </div>
+  <div class="post-meta">
+    <div class="date">2014 May 11th</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><p><a target="_blank" rel="noopener" href="http://oj.leetcode.com/problems/reverse-nodes-in-k-group/">link</a></p>
+<div class="question-content">
+<p></p><p>
+Given a linked list, reverse the nodes of a linked list <i>k</i> at a time and return its modified list.
+</p>
+
+<p>
+If the number of nodes is not a multiple of <i>k</i> then left-out nodes in the end should remain as it is.</p>
+
+<p>You may not alter the values in the nodes, only nodes itself may be changed.</p>
+
+<p>Only constant memory is allowed.</p>
+
+<p>
+For example,<br>
+Given this linked list: <code>1-&gt;2-&gt;3-&gt;4-&gt;5</code>
+</p>
+
+<p>
+For <i>k</i> = 2, you should return: <code>2-&gt;1-&gt;4-&gt;3-&gt;5</code>
+</p>
+
+<p>
+For <i>k</i> = 3, you should return: <code>3-&gt;2-&gt;1-&gt;4-&gt;5</code>
+</p><p></p>
+</div>
+
+<h3 id="Stats"><a href="#Stats" class="headerlink" title="Stats"></a>Stats</h3><table border="2">
+	<tr>
+		<td>Frequency</td>
+		<td bgcolor="lime">2</td>
+	</tr>
+	<tr>
+		<td>Difficulty</td>
+		<td bgcolor="red">4</td>
+	</tr>
+	<tr>
+		<td>Adjusted Difficulty</td>
+		<td bgcolor="red">4</td>
+	</tr>
+	<tr>
+		<td>Time to use</td>
+		<td bgcolor="yellow">----------</td>
+	</tr>
+</table>
+
+<p>Ratings&#x2F;Color &#x3D; 1(white) 2(lime) 3(yellow) 4&#x2F;5(red)</p>
+<h3 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h3><p><strong>The problem is solved in 2 steps</strong>. First, get the next k-group. If remaining items is less than k, terminate the program. Otherwise, reserve this k-group and keep going.</p>
+<p>To solve this question is very tricky. <strong>We need to be clear about this: 4 nodes need to be kept track of</strong>: 2 elements before and after the k-group, and 2 elements within the k-group.</p>
+<p><strong>The difficult point is while and after reverse the k-group</strong>, how to maintain the ‘pre’ node and future ‘pre’ node correctly.</p>
+<h3 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h3><p>Use Linkedlist Template from NineChap to solve.</p>
+<pre><code>public class Solution &#123;
+    public ListNode reverseKGroup(ListNode head, int k) &#123;
+        if (k &lt;= 1 || head == null) &#123;
+            return head;
+        &#125;
+        ListNode nextGroup = head;
+        for (int i = 0; i &lt; k; i++) &#123;
+            if (nextGroup == null) &#123;
+                // there isn&#39;t k nodes in this list
+                return head;
+            &#125;
+            nextGroup = nextGroup.next;
+        &#125;
+        // now we&#39;re sure the list have at least k nodes
+        // reverse this list (by re-connecting the next pointer k times)
+        ListNode newHead = head;
+        ListNode tail = null;
+        for (int i = 0; i &lt; k; i++) &#123;
+            ListNode temp = newHead.next;
+            newHead.next = tail;
+            tail = newHead;
+            newHead = temp;
+        &#125;
+        // now newHead is pointing to the actual new head
+        // temp (which is not accessable here) is same as nextGroup
+        // last step, reconnect everything and call recursion method
+        head.next = reverseKGroup(nextGroup, k);
+        return tail;
+    &#125;
+&#125;
+</code></pre>
+<p><strong>Updated Oct 29, 2022</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">public ListNode reverseKGroup(ListNode head, int k) &#123;</span><br><span class="line">    ListNode node = head;</span><br><span class="line">    int p = 0;</span><br><span class="line">    while (p &lt; k) &#123;</span><br><span class="line">        if (node == null) break;</span><br><span class="line">        node = node.next;</span><br><span class="line">        p++;</span><br><span class="line">    &#125;</span><br><span class="line">    if (p &lt; k) return head;</span><br><span class="line"></span><br><span class="line">    ListNode nextGroup = node;</span><br><span class="line">    node = head;</span><br><span class="line">    ListNode tail = null;</span><br><span class="line">    for (int i = 0; i &lt; k; i++) &#123;</span><br><span class="line">        ListNode temp = node.next;</span><br><span class="line">        node.next = tail;</span><br><span class="line">        tail = node;</span><br><span class="line">        node = temp;</span><br><span class="line">    &#125;</span><br><span class="line">    head.next = reverseKGroup(nextGroup, k);</span><br><span class="line">    return tail;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

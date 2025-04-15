@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    445. Add Two Numbers II 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">445. Add Two Numbers II</div>
+  <div class="post-meta">
+    <div class="date">2024 July 16th</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><p>Link: <a target="_blank" rel="noopener" href="https://leetcode.cn/problems/add-two-numbers/description/">445. Add Two Numbers II</a></p>
+<h1 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h1><p>difficulty: mid<br>adj diff: ?</p>
+<pre><code>You are given two non-empty linked lists representing two non-negative integers. The most significant digit comes first and each of their nodes contains a single digit. Add the two numbers and return the sum as a linked list.
+
+You may assume the two numbers do not contain any leading zero, except the number 0 itself.
+
+Example 1:
+
+Input: l1 = [7,2,4,3], l2 = [5,6,4]
+Output: [7,8,0,7]
+Example 2:
+
+Input: l1 = [2,4,3], l2 = [5,6,4]
+Output: [8,0,7]
+Example 3:
+
+Input: l1 = [0], l2 = [0]
+Output: [0]
+
+Constraints:
+
+The number of nodes in each linked list is in the range [1, 100].
+0 &lt;= Node.val &lt;= 9
+It is guaranteed that the list represents a number that does not have leading zeros.    
+
+Follow up: Could you solve it without reversing the input lists?
+</code></pre>
+<h1 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h1><p>两种办法：</p>
+<ol>
+<li><p>三次链表反转，具体代码参考 <a href="https://mar2ndx.github.io/2022/10/08/algo-2022-206-Reverse-Linked-List/">https://mar2ndx.github.io/2022/10/08/algo-2022-206-Reverse-Linked-List/</a></p>
+</li>
+<li><p>用Stack，更加推荐，代码简单。</p>
+</li>
+</ol>
+<p>方法2，如下：</p>
+<pre><code>public ListNode addTwoNumbers(ListNode l1, ListNode l2) &#123;
+    Stack&lt;Integer&gt; s1 = new Stack&lt;Integer&gt;();
+    Stack&lt;Integer&gt; s2 = new Stack&lt;Integer&gt;();
+    while (l1 != null) &#123;
+        s1.push(l1.val);
+        l1 = l1.next;
+    &#125;
+    while (l2 != null) &#123;
+        s2.push(l2.val);
+        l2 = l2.next;
+    &#125;
+    int carry = 0;
+    ListNode ans = new ListNode();
+
+    while (!s1.isEmpty() || !s2.isEmpty()) &#123;
+        int sum = carry + 
+            (s1.isEmpty() ? 0 : s1.pop()) +
+            (s2.isEmpty() ? 0 : s2.pop());
+        ans.val = sum % 10;
+        carry = sum / 10;
+        ListNode tmp = new ListNode();
+        tmp.next = ans;
+        ans = tmp;
+    &#125;
+
+    if (carry &gt; 0) ans.val = carry;
+    else ans = ans.next;
+    return ans;
+&#125;
+</code></pre>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    [LeetCode 151] Reverse Words in a String 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">[LeetCode 151] Reverse Words in a String</div>
+  <div class="post-meta">
+    <div class="date">2014 June 3rd</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><p><a target="_blank" rel="noopener" href="https://oj.leetcode.com/problems/reverse-words-in-a-string/">link</a></p>
+<div class="question-content bg-color bg-img font-color">
+<p class="font-color"></p><p class="font-color">
+Given an input string, reverse the string word by word.
+</p>
+
+<p class="font-color">
+For example,<br>
+Given s = "<code>the sky is blue</code>",<br>
+return "<code>blue is sky the</code>".
+</p>
+
+<div>
+<b>Clarification:</b>
+
+<p class="font-color">
+</p><ul class="bg-color bg-img font-color">
+<li>What constitutes a word?<br>
+A sequence of non-space characters constitutes a word.</li>
+<li>Could the input string contain leading or trailing spaces?<br>
+Yes. However, your reversed string should not contain leading or trailing spaces.</li>
+<li>How about multiple spaces between two words?<br>
+Reduce them to a single space in the reversed string.</li>
+</ul>
+<p class="font-color"></p>
+</div><p class="font-color"></p>
+          </div>
+
+<h3 id="Stats"><a href="#Stats" class="headerlink" title="Stats"></a>Stats</h3><table border="2">
+	<tr>
+		<td>Adjusted Difficulty</td>
+		<td bgcolor="yellow">3</td>
+	</tr>
+	<tr>
+		<td>Time to use</td>
+		<td bgcolor="yellow">--------</td>
+	</tr>
+</table>
+
+<p>Ratings&#x2F;Color &#x3D; 1(white) 2(lime) 3(yellow) 4&#x2F;5(red)</p>
+<h3 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h3><p><strong>This is an very classic question</strong>, and there is a very nice solution.</p>
+<h3 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h3><p><strong>First solution is read each character from the back, and insert each word into answer String</strong>. I used this method, and passed in 2 attempts. I have always been afriad of string question, and this time it gave me an easy time.</p>
+<p>I post my code below. Altough it can be better if I use StringBuilder. Most blog&#x2F;forum would give this solution including <a target="_blank" rel="noopener" href="https://oj.leetcode.com/discuss/3378/is-my-solution-good-enough">this one</a>.</p>
+<p>However, previous solution uses extra space. <strong>We can do it in-place suggested by <a target="_blank" rel="noopener" href="http://stackoverflow.com/a/1009174">this post</a></strong>.</p>
+<blockquote cite="http://stackoverflow.com/a/1009174">
+    <p class="font-color">Reverse the entire string, then reverse the letters of each individual word.</p>
+
+<pre><code>&lt;p class=&quot;font-color&quot;&gt;After the first pass the string will be&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;s1 = &quot;Z Y X si eman yM&quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p class=&quot;font-color&quot;&gt;and after the second pass it will be&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;s1 = &quot;Z Y X is name My&quot;
+&lt;/code&gt;&lt;/pre&gt;
+</code></pre>
+</blockquote>
+
+<p>There are 2 things to note.</p>
+<p><strong>One, the edge cases</strong> are easily omitted, like all-space input, double-space in between, and a lot more.</p>
+<p><strong>Two, The Clarification part is extremely helpful</strong> for writing a bug-free solution. It’s always better to clarify further about what the question is ask. For example, can we use <strong>String.split()</strong> and <strong>String.substring()</strong>? (normally we would better not to) Can we use any extra space? That decides weather we copy by substring or by character.</p>
+<p>In conclusion, <strong>this is an easy question that’s not easy to get correct answer</strong>. Practise more! And since this is the last post of Leetcode questions, my focus from tomorrow onwards will be shifted to “CC150”. Thanks for reading!</p>
+<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><p><strong>My code</strong>. pointer solution.</p>
+<pre><code>public String reverseWords(String s) &#123;
+	if (s.length() == 0) return &quot;&quot;;
+	int p = s.length() - 1;
+	// p points to the last non-space character
+	String ans = &quot;&quot;;
+	while (p &gt;= 0) &#123;
+		int j = p;
+		while (j &gt;= 0 &amp;&amp; s.charAt(j) != &#39; &#39;) &#123;
+			j --;
+		&#125;
+		ans += s.substring(j + 1, p + 1) + &quot; &quot;;
+		p = j;
+		while (p &gt;= 0 &amp;&amp; s.charAt(p) == &#39; &#39;) &#123;
+			p--;
+		&#125;
+	&#125;
+	return ans.trim();
+&#125;
+</code></pre>
+<p><strong>Updated on Sep 12th</strong>: updated with 3-step-reverse method.</p>
+<pre><code>public String reverseWords(String s) &#123;
+    if (s == null || s.length() == 0) &#123;
+        return s;
+    &#125;
+    StringBuilder ans = new StringBuilder();
+    int len = s.length();
+    int p = len - 1;
+    while (p &gt;= 0) &#123;
+        while (p &gt;= 0 &amp;&amp; s.charAt(p) == &#39; &#39;) &#123;
+            p--;
+        &#125;
+        if (p == -1) &#123;
+            break;
+        &#125;
+        StringBuilder word = new StringBuilder();
+        while (p &gt;= 0 &amp;&amp; s.charAt(p) != &#39; &#39;) &#123;
+            word.append(s.charAt(p));
+            p--;
+        &#125;
+        if (ans.length() == 0) &#123;
+            ans.append(word.reverse().toString());
+        &#125; else &#123;
+            ans.append(&quot; &quot; + word.reverse().toString());
+        &#125;
+    &#125;
+    return ans.toString();
+&#125;
+</code></pre>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

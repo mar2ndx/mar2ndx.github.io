@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    [LeetCode 111] Minimum Depth of Binary Tree 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">[LeetCode 111] Minimum Depth of Binary Tree</div>
+  <div class="post-meta">
+    <div class="date">2014 May 25th</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><p><a target="_blank" rel="noopener" href="https://oj.leetcode.com/problems/minimum-depth-of-binary-tree/">link</a></p>
+<div class="question-content">
+            <p></p><p>Given a binary tree, find its minimum depth.</p>
+
+<p>The minimum depth is the number of nodes along the shortest path from the root node down to the nearest leaf node.</p><p></p>
+          </div>
+
+<h3 id="Stats"><a href="#Stats" class="headerlink" title="Stats"></a>Stats</h3><table border="2">
+	<tr>
+		<td>Frequency</td>
+		<td bgcolor="white">1</td>
+	</tr>
+	<tr>
+		<td>Difficulty</td>
+		<td bgcolor="white">1</td>
+	</tr>
+	<tr>
+		<td>Adjusted Difficulty</td>
+		<td bgcolor="yellow">3</td>
+	</tr>
+	<tr>
+		<td>Time to use</td>
+		<td bgcolor="white">--------</td>
+	</tr>
+</table>
+
+<p>Ratings&#x2F;Color &#x3D; 1(white) 2(lime) 3(yellow) 4&#x2F;5(red)</p>
+<h3 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h3><p><strong>There are various ways to solve this question.</strong></p>
+<p>Eg. DFS, BFS, queue and so on.</p>
+<h3 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h3><p>I have nothing to say with the code.</p>
+<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><pre><code>public int minDepth(TreeNode root) &#123;
+    if (root == null) return 0;
+    return helper(root, Integer.MAX_VALUE, 1);
+&#125;
+
+private int helper(TreeNode node, int min, int level) &#123;
+    if (node == null || level &gt;= min)
+        return min;
+    if (node.left == null &amp;&amp; node.right == null)
+        return level;
+    min = helper(node.left, min, level + 1);
+    min = helper(node.right, min, level + 1);
+    return min;
+&#125;
+</code></pre>
+<p><strong>Updated on June 10th, this question is better solved with the Divide &amp; Conquer template</strong>! <a target="_blank" rel="noopener" href="http://answer.ninechapter.com/solutions/minimum-depth-of-binary-tree/">link</a></p>
+<pre><code>public int minDepth(TreeNode root) &#123;
+    if (root == null) &#123;
+		return 0;
+	&#125;
+	return checkLeaf(root);
+&#125;
+
+private int checkLeaf(TreeNode node) &#123;
+    if (node == null) &#123;
+        return Integer.MAX_VALUE;
+    &#125;
+	if (node.left == null &amp;&amp; node.right == null) &#123;
+		return 1;
+	&#125;
+	int ll = checkLeaf(node.left);
+	int rr = checkLeaf(node.right);
+	return 1 + Math.min(ll, rr);
+&#125;
+</code></pre>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

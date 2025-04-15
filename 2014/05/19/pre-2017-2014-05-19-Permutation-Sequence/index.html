@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    [LeetCode 60] Permutation Sequence 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">[LeetCode 60] Permutation Sequence</div>
+  <div class="post-meta">
+    <div class="date">2014 May 19th</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><p><a target="_blank" rel="noopener" href="http://oj.leetcode.com/problems/permutation-sequence/">link</a></p>
+<div class="question-content">
+            <p></p><p>The set <code>[1,2,3,…,<i>n</i>]</code> contains a total of <i>n</i>! unique permutations.</p>
+
+<p>By listing and labeling all of the permutations in order,<br>
+We get the following sequence (ie, for <i>n</i> = 3):
+</p><ol>
+<li><code>"123"</code></li>
+<li><code>"132"</code></li>
+<li><code>"213"</code></li>
+<li><code>"231"</code></li>
+<li><code>"312"</code></li>
+<li><code>"321"</code></li>
+</ol>
+<p></p>
+
+<p>Given <i>n</i> and <i>k</i>, return the <i>k</i><sup>th</sup> permutation sequence.</p>
+
+<p><b>Note:</b> Given <i>n</i> will be between 1 and 9 inclusive.</p><p></p>
+          </div>
+
+<h3 id="Stats"><a href="#Stats" class="headerlink" title="Stats"></a>Stats</h3><table border="2">
+	<tr>
+		<td>Frequency</td>
+		<td bgcolor="white">1</td>
+	</tr>
+	<tr>
+		<td>Difficulty</td>
+		<td bgcolor="red">5</td>
+	</tr>
+	<tr>
+		<td>Adjusted Difficulty</td>
+		<td bgcolor="red">4</td>
+	</tr>
+	<tr>
+		<td>Time to use</td>
+		<td bgcolor="red">----------</td>
+	</tr>
+</table>
+
+<p>Ratings&#x2F;Color &#x3D; 1(white) 2(lime) 3(yellow) 4&#x2F;5(red)</p>
+<h3 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h3><p><strong>This is a math problem</strong>. Trying to solve it using <strong>DFS</strong> like in “Permutation” or “N queen” will get time limit exceed exception.</p>
+<p><a target="_blank" rel="noopener" href="http://fisherlei.blogspot.sg/2013/04/leetcode-permutation-sequence-solution.html">This blog</a> have a very good explanation of the math solution.</p>
+<blockquote cite="http://fisherlei.blogspot.sg/2013/04/leetcode-permutation-sequence-solution.html">
+    <div>
+        <br>[Thoughts]
+        <br>两个解法。
+        <br>第一，DFS
+        <br>递归遍历所有可能，然后累加计算，直至到K为止。
+        <br>
+        <br>第二，数学解法。
+        <br>
+        <br>假设有n个元素，第K个permutation是
+        <br>a1, a2, a3, ..... &nbsp; ..., an
+        <br>那么a1是哪一个数字呢？
+        <br>
+        <br>那么这里，我们把a1去掉，那么剩下的permutation为
+        <br>a2, a3, .... .... an, 共计n-1个元素。 n-1个元素共有(n-1)!组排列，那么这里就可以知道
+        <br>
+        <br>设变量K1 = K
+        <br>a1 = K1 / (n-1)!
+        <br>
+        <br>同理，a2的值可以推导为
+        <br>a2 = K2 / (n-2)!
+        <br>K2 = K1 % (n-1)!
+        <br>&nbsp;.......
+        <br>a(n-1) = K(n-1) / 1!
+        <br>K(n-1) = K(n-2) /2!
+        <br>
+        <br>an = K(n-1)
+    </div>
+</blockquote>
+
+<h3 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h3><p><strong>I have written a math recursive solution</strong> and code is below. It’s very straight-forward.</p>
+<p>There is also <strong>direct math solution</strong>. However, how to handle the removal of elements from the unmatched list is a tough problem. <strong>I saw a lot of people using swap to do it</strong>, but I don’t like this idea because of the bad readability of code.</p>
+<p><strong>Finally I found a readable code from <a target="_blank" rel="noopener" href="http://xiaochongzhang.me/blog/?p=693">this blog</a></strong>. It’s a very good solution.</p>
+<h3 id="My-code"><a href="#My-code" class="headerlink" title="My code"></a>My code</h3><p><strong>updated on my birthday this year</strong></p>
+<pre><code>public String getPermutation(int n, int k) &#123;
+    int index = k - 1;
+    List&lt;Integer&gt; nums = new ArrayList&lt;Integer&gt;();
+    for (int i = 1; i &lt;= n; i++) &#123;
+        nums.add(i);
+    &#125;
+    String ans = &quot;&quot;;
+    for (int i = n - 1; i &gt;= 1; i--) &#123;
+        int fact = factorial(i);
+        int nextIndex = index / fact;
+        index = index % fact;
+        ans += nums.remove(nextIndex);
+    &#125;
+    ans += nums.get(0);
+    return ans;
+&#125;
+
+private int factorial(int x) &#123;
+    if (x == 0) return 0;
+    int ans = 1;
+    for (int i = 2; i &lt;= x; i++) &#123;
+        ans *= i;
+    &#125;
+    return ans;
+&#125;
+</code></pre>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

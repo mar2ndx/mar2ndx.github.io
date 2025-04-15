@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    [LeetCode Plus] Sliding Window Maximum  丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">[LeetCode Plus] Sliding Window Maximum </div>
+  <div class="post-meta">
+    <div class="date">2014 July 27th</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><p><a target="_blank" rel="noopener" href="http://leetcode.com/2011/01/sliding-window-maximum.html">link</a></p>
+<blockquote>
+<p>A long array A[] is given to you. There is a sliding window of size w which is moving from the very left of the array to the very right. You can only see the w numbers in the window. Each time the sliding window moves rightwards by one position. Following is an example:<br>The array is [1, 3, -1, -3, 5, 3, 6, 7], and w is 3.</p>
+</blockquote>
+<pre><code>Window position                Max
+---------------               -----
+[1  3  -1] -3  5  3  6  7       3
+ 1 [3  -1  -3] 5  3  6  7       3
+ 1  3 [-1  -3  5] 3  6  7       5
+ 1  3  -1 [-3  5  3] 6  7       5
+ 1  3  -1  -3 [5  3  6] 7       6
+ 1  3  -1  -3  5 [3  6  7]      7
+</code></pre>
+<blockquote>
+<p>Input: A long array A[], and a window width w</p>
+</blockquote>
+<blockquote>
+<p>Output: An array B[], B[i] is the maximum value of from A[i] to A[i+w-1]</p>
+</blockquote>
+<h3 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h3><p><strong>The  naive approach is using a Heap</strong>. This time complexity is O(n*logn). However, there is a better way using a (double-ended) queue. </p>
+<p><strong>We do not need to <a target="_blank" rel="noopener" href="http://n00tc0d3r.blogspot.sg/2013/04/sliding-window-maximum.html">keep all numbers</a></strong>. For example, suppose numbers in a window of size 4 are (1, 3, -1, 2). Obviously, no matter what next numbers are, 1 and -1 are never going to be a maximal as the window moving. The queue should look like (3, 2) in this case.</p>
+<h3 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h3><ol>
+<li>When moves to a new number, iterate through back of the queue, removes all numbers that are not greater than the new one, and then insert the new one to the back.</li>
+<li>FindMax only need to take the first one of the queue.</li>
+<li>To remove a number outside the window, only compare whether the current index is greater than the front of queue. If so, remove it.</li>
+</ol>
+<p><a target="_blank" rel="noopener" href="http://leetcode.com/2011/01/sliding-window-maximum.html">A natural way</a> most people would think is to try to maintain the queue size the same as the window’s size. Try to break away from this thought and think out of the box. </p>
+<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><p>written by me</p>
+<pre><code>public int[] slidingWindowMax(int[] array, int w) &#123;
+	int[] ans = new int[array.length - w + 1];
+	List&lt;Integer&gt; q = new LinkedList&lt;Integer&gt;();
+	// Queue stores indices of array, and values are in decreasing order.
+	// In this way, the top element in queue is the max in window
+	for (int i = 0; i &lt; array.length; i++) &#123;
+		// 1. remove element from head until first number within window
+		if (!q.isEmpty() &amp;&amp; q.get(0) + w &lt;= i) &#123;
+			// it&#39;s OK to change &#39;while&#39; to &#39;if&#39; in the line above
+			// cuz we actually remove 1 element at most
+			q.remove(0);
+		&#125;
+		// 2. before inserting i into queue, remove from the tail of the
+		// queue indices with smaller value they array[i]
+		while (!q.isEmpty() &amp;&amp; array[q.get(q.size() - 1)] &lt;= array[i]) &#123;
+			q.remove(q.size() - 1);
+		&#125;
+		q.add(i);
+		// 3. set the max value in the window (always the top number in
+		// queue)
+		if (i + 1 &gt;= w) &#123;
+			ans[i + 1 - w] = array[q.get(0)];
+		&#125;
+	&#125;
+	return ans;
+&#125;
+</code></pre>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

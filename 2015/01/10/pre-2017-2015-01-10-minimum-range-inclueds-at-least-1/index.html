@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    [Amazon] Mininum Range that includes at least One  丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">[Amazon] Mininum Range that includes at least One </div>
+  <div class="post-meta">
+    <div class="date">2015 January 10th</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><p><a target="_blank" rel="noopener" href="http://www.careercup.com/question?id=5103437989543936">link</a></p>
+<blockquote>
+<p>There are many sorted arrays. Find a minimum range, so that in each array there’s at least one integer within this range.</p>
+</blockquote>
+<h3 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h3><p><strong>Min-heap</strong>. <a target="_blank" rel="noopener" href="http://www.careercup.com/question?id=16759664">source</a></p>
+<blockquote>
+<p>There are k lists of sorted integers. Make a min heap of size k containing 1 element from each list. Keep track of min and max element and calculate the range.</p>
+</blockquote>
+<blockquote>
+<p>In min heap, minimum element is at top. Delete the minimum element and another element instead of that from the same list to which minimum element belong. Repeat the process till any one of the k list gets empty.</p>
+</blockquote>
+<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><pre><code>public void printMinRange(int[][] input) &#123;
+	Comparator&lt;Pointer&gt; compr = new HeapComparator(input);
+	// Note that we pass in &#39;input&#39; arrays to the comparator
+	PriorityQueue&lt;Pointer&gt; heap = new PriorityQueue&lt;Pointer&gt;(SIZE, compr);
+
+	int maxVal = Integer.MIN_VALUE;
+	for (int i = 0; i &lt; SIZE; i++) &#123;
+		heap.add(new Pointer(i, 0));
+		// insert the head of each array into the heap
+		maxVal = Math.max(maxVal, input[i][0]);
+		// keep additional value to keep track of the max value in heap
+	&#125;
+
+	int left = 0;
+	int right = Integer.MAX_VALUE;
+	while (heap.size() == SIZE) &#123;
+		Pointer p = heap.remove();
+		// first, update the range
+		if (maxVal - input[p.index][p.position] &lt; right - left) &#123;
+			right = maxVal;
+			left = input[p.index][p.position];
+		&#125;
+		// then, push the next element after &#39;p&#39; to the heap
+		// meanwhile, update &#39;maxVal&#39;
+		if (p.position + 1 &lt; input[p.index].length) &#123;
+			Pointer nextP = new Pointer(p.index, p.position + 1);
+			heap.add(nextP);
+			maxVal = Math.max(maxVal, input[nextP.index][nextP.position]);
+		&#125;
+		// when &#39;p&#39; is the last element in the row, terminate loop
+	&#125;
+	System.out.println(&quot;Left boundary: &quot; + left);
+	System.out.println(&quot;Right boundary: &quot; + right);
+&#125;
+
+class HeapComparator implements Comparator&lt;Pointer&gt; &#123;
+
+	int[][] arrays = null;
+
+	public HeapComparator(int[][] input) &#123;
+		arrays = input;
+	&#125;
+
+	public int compare(Pointer p1, Pointer p2) &#123;
+		return arrays[p1.index][p1.position]
+				- arrays[p2.index][p2.position];
+	&#125;
+&#125;
+
+class Pointer &#123;
+	int index, position;
+
+	public Pointer(int x, int y) &#123;
+		index = x;
+		position = y;
+	&#125;
+&#125;
+</code></pre>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    [Java OOP] Can abstract class have constructor  丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">[Java OOP] Can abstract class have constructor </div>
+  <div class="post-meta">
+    <div class="date">2015 February 9th</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><h1 id="A-short-answer"><a href="#A-short-answer" class="headerlink" title="A short answer"></a>A short answer</h1><p>In Java, all classes must have a constructor.</p>
+<h2 id="Can-abstract-class-have-constructor"><a href="#Can-abstract-class-have-constructor" class="headerlink" title="Can abstract class have constructor"></a>Can abstract class have constructor</h2><p><a target="_blank" rel="noopener" href="http://www.mitbbs.com/article_t/JobHunting/32257933.html">Yes, it can</a>. However, if we create an instance using it, it’s error.</p>
+<p>Consider <a target="_blank" rel="noopener" href="http://www.geeksforgeeks.org/abstract-classes-in-java/">this example</a>:</p>
+<pre><code>abstract class Base &#123;
+    Base() &#123; System.out.println(&quot;Base Constructor Called&quot;); &#125;
+    abstract void fun();
+&#125;
+
+class Derived extends Base &#123;
+    Derived() &#123; System.out.println(&quot;Derived Constructor Called&quot;); &#125;
+    void fun() &#123; System.out.println(&quot;Derived fun() called&quot;); &#125;
+&#125;
+
+class Main &#123;
+    public static void main(String args[]) &#123;
+       Derived d = new Derived();
+    &#125;
+&#125;
+</code></pre>
+<p>Output:</p>
+<pre><code>Base Constructor Called
+Derived Constructor Called
+</code></pre>
+<h2 id="More-info-on-constructor"><a href="#More-info-on-constructor" class="headerlink" title="More info on constructor:"></a>More info on constructor:</h2><p>The <a target="_blank" rel="noopener" href="http://stackoverflow.com/a/261159">constructor in an abstract class</a>:</p>
+<ol>
+<li>is used when you want to perform some initialization</li>
+<li>you may define more than one constructor (with different arguments)</li>
+<li>if you don’t define a constructor, then the compiler will automatically generate one for you.</li>
+<li>your subclass constructor <strong>have to call a constructor</strong> from the abstract class</li>
+<li>you can define all your constructors protected (cuz making them public is pointless)</li>
+</ol>
+<p>For more on abstract class, read <strong>[Java OOP] Template method pattern</strong>.</p>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

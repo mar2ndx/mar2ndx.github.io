@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    [Google] Orthogonal Traverse the Map (`) 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">[Google] Orthogonal Traverse the Map (`)</div>
+  <div class="post-meta">
+    <div class="date">2014 August 16th</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><p><a target="_blank" rel="noopener" href="http://www.itint5.com/oj/#22">link</a></p>
+<blockquote>
+<p>有一个 n*m（n 和 m 都不超过 50）的棋盘，有 k 个目标格子需要访问。需要访问的格子的横纵坐标存放在数组 x[]和 y[]中(0&lt;&#x3D;x[i]&lt;n, 0&lt;&#x3D;y[i]&lt;m)。</p>
+</blockquote>
+<blockquote>
+<p>遍历的规则为：</p>
+<p>每一步只能从一个目标格子水平或者竖直跳跃移动到另一个目标格子。</p>
+<p>连续的两步必须形成直角。即如果前一步是水平移动，那么下一步只能竖直移动。</p>
+<p>问是否存在一种遍历顺序，使得每个目标格子有且仅被访问一次。</p>
+</blockquote>
+<blockquote>
+<p>样例：k&#x3D;8, x&#x3D;[0, 0, 0, 0, 2, 2, 4, 4], y&#x3D;[0, 2, 4, 6, 4, 6, 2, 4],对应于下图中 A, B, C, D, F, E, G, H 8 个目标格子，存在满足条件的遍历 A-&gt;D-&gt;E-&gt;F-&gt;C-&gt;B-&gt;G-&gt;H。</p>
+</blockquote>
+<p><img src="/images/orthogonal-map.jpg"></p>
+<h3 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h3><blockquote>
+<p>n,m 的棋盘，<a target="_blank" rel="noopener" href="http://www.itint5.com/discuss/22/%E7%9B%B4%E8%A7%92%E8%B7%AF%E7%BA%BF%E9%81%8D%E5%8E%86%E6%A3%8B%E7%9B%98">建一个包含 n+m 个顶点的图 G</a>（为了方便说明，类似二分图将其分为两列，左边 n 个顶点，右边 m 个顶点，分别代表 n 行和 n 列）。</p>
+</blockquote>
+<blockquote>
+<p>对于目标格子(i,j)，左边第 i 个顶点和右边第 j 个顶点连一条边。最后的问题其实就是问转换之后的图 G 是否存在欧拉欧拉回路或者欧拉路径。</p>
+</blockquote>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

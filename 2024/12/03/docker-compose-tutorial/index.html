@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    Docker compose tutorial 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">Docker compose tutorial</div>
+  <div class="post-meta">
+    <div class="date">2024 December 3rd</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><p>Let’s start with a simple example.</p>
+<h2 id="Example-1-Postgres"><a href="#Example-1-Postgres" class="headerlink" title="Example 1: Postgres"></a>Example 1: Postgres</h2><p><code>docker-compose.yml</code>:</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">version:</span> <span class="string">&#x27;3.8&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="attr">name:</span> <span class="string">project_name</span> <span class="comment"># Container Name</span></span><br><span class="line"><span class="attr">services:</span></span><br><span class="line">  <span class="attr">postgres:</span> <span class="comment"># Service Name</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">postgres:latest</span></span><br><span class="line">    <span class="attr">container_name:</span> <span class="string">dushexuezhang-postgres</span> <span class="comment"># This isn&#x27;t important</span></span><br><span class="line">    <span class="attr">environment:</span></span><br><span class="line">      <span class="attr">POSTGRES_USER:</span> <span class="string">TODO</span></span><br><span class="line">      <span class="attr">POSTGRES_PASSWORD:</span> <span class="string">TODO</span></span><br><span class="line">      <span class="attr">POSTGRES_DB:</span> <span class="string">TODO</span></span><br><span class="line">    <span class="attr">ports:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">&quot;5458:5432&quot;</span></span><br><span class="line">    <span class="attr">volumes:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">persist_data:/var/lib/postgresql/data</span></span><br><span class="line">    <span class="attr">restart:</span> <span class="string">unless-stopped</span></span><br><span class="line"></span><br><span class="line"><span class="attr">volumes:</span></span><br><span class="line">  <span class="attr">persist_data:</span></span><br><span class="line">    <span class="attr">name:</span> <span class="string">dushe_postgres_data</span> <span class="comment"># This can be shared between containers</span></span><br><span class="line">    <span class="attr">driver:</span> <span class="string">local</span></span><br></pre></td></tr></table></figure>
+
+<p>Note that:</p>
+<ol>
+<li>Make sure to set <code>name</code>, otherwise, Docker will use folder name as container name.</li>
+<li><code>postgres</code> is the service name, displayed under ‘project_name’ in Docker Desktop. A container can have multiple services.</li>
+<li>ports: <local_port>:<container_port>, that means your postgres runs on localhost:5458.</li>
+<li>volumes is used to persist data.<ul>
+<li><code>persist_data</code> is an identifier for the volume. It’s like an alias.</li>
+<li><code>name</code> is the actual name of the Docker volume, which will be displayed in Docker Desktop.</li>
+</ul>
+</li>
+</ol>
+<h2 id="On-Volume-name"><a href="#On-Volume-name" class="headerlink" title="On Volume name"></a>On Volume name</h2><p>If you do not specify a <code>name</code>, Docker will use <code>[project_name]_[service_name]_data</code> as the volume name. For example, <code>dushexuezhang_postgres_data</code>. So, I recommend setting a <code>name</code> for your volume.</p>
+<p>If you reuse the same <code>name</code> as another container, Docker will reuse the same volume, essentially you get same DB data.</p>
+<h2 id="Docker-commands"><a href="#Docker-commands" class="headerlink" title="Docker commands"></a>Docker commands</h2><p>To see all containers, run <code>docker ps</code>.</p>
+<p>To see all images, run <code>docker images</code>.</p>
+<p>To see all volumes, run <code>docker volume ls</code>.</p>
+<p>To remove orphaned volumes, run <code>docker volume prune</code>.</p>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

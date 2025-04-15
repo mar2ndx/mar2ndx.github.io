@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    [Design] Distributed Caching - memcached  丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">[Design] Distributed Caching - memcached </div>
+  <div class="post-meta">
+    <div class="date">2015 January 24th</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><h3 id="What-is-Memcached"><a href="#What-is-Memcached" class="headerlink" title="What is Memcached?"></a>What is Memcached?</h3><p><a target="_blank" rel="noopener" href="http://memcached.org/">Memcached</a> is an <strong>in-memory key-value store for small chunks of arbitrary data</strong> (strings, objects) from results of database calls, API calls, or page rendering.</p>
+<ol>
+<li>Free &amp; open source</li>
+<li>high-performance, distributed memory object caching system</li>
+<li>generic in nature</li>
+<li>intended for use in speeding up dynamic web applications by alleviating database load</li>
+</ol>
+<p>Definition from <a target="_blank" rel="noopener" href="http://en.wikipedia.org/wiki/Memcached">wiki</a>:</p>
+<blockquote>
+<p>Memcached is a <strong>general-purpose distributed memory caching system</strong>. It is often used to speed up dynamic database-driven websites by <strong>caching data and objects in RAM</strong> to reduce the number of times an <strong>external data source</strong> (such as a database or API) must be read.</p>
+</blockquote>
+<h3 id="Who-uses-Memcached"><a href="#Who-uses-Memcached" class="headerlink" title="Who uses Memcached?"></a>Who uses Memcached?</h3><ol>
+<li>Facebook</li>
+<li>YouTube</li>
+<li>Twitter</li>
+<li>Amazon</li>
+<li>Reddit</li>
+<li>Yahoo</li>
+<li>Zynga</li>
+</ol>
+<h3 id="Why-Memcached"><a href="#Why-Memcached" class="headerlink" title="Why Memcached?"></a>Why Memcached?</h3><p>Run memcached on one or more hosts and then use the shared cache to store objects. Because each host’s RAM is storing information, the access speed <a target="_blank" rel="noopener" href="http://www.blogs.zeenor.com/category/interview-questions/page/9">will be much faster than</a> having to load the information from disk. This can provide <strong>a significant performance boost in retrieving data</strong> versus loading the data natively from a database.</p>
+<p>Also, because the cache is just a repository for information, you can use the cache to store <strong>any data, including complex structures</strong> that would normally require a significant amount of effort to create, but in <strong>a ready-to-use format</strong>, helping to reduce the load on your MySQL servers.</p>
+<h3 id="FAQ"><a href="#FAQ" class="headerlink" title="FAQ"></a>FAQ</h3><p><strong>What is Memcached?</strong></p>
+<p><a target="_blank" rel="noopener" href="http://www.web-technology-experts-notes.in/2014/09/memcached-interview-questions-and-answers.html">It is component</a> which stored the data temporary for 1 Hour&#x2F; 6 Hour&#x2F;1 Day etc. When we integrate the Memcached with our application, performance of application increased.</p>
+<p>Memcached is open source, high-performance distributed memory object used for caching so that execution can be enhanced at nth level.</p>
+<p><strong>Where Memcached can be used?</strong></p>
+<p>• Social Networking -&gt; Profile Caching</p>
+<p>• Content Aggregation -&gt; HTML&#x2F; Page Caching</p>
+<p>• Ad targeting -&gt; Cookie&#x2F;profile tracking</p>
+<p>• Relationship -&gt; Session caching</p>
+<p>• E-commerce -&gt; Session and HTML caching</p>
+<p>• Location-based services -&gt; Data-base query scaling</p>
+<p>• Gaming and entertainment -&gt; Session caching</p>
+<p><strong>Why use Memcached?</strong></p>
+<p>• Speed up application processes</p>
+<p>• It determines what to store and what not to</p>
+<p>• Reduce the number of retrieval requests to the database</p>
+<p>• Cuts down the I&#x2F;O ( Input&#x2F;Output) access (hard disk)</p>
+<p><strong>In what condition does retrieving cache fail?</strong></p>
+<p>• Memory allocated for the cache is exhausted</p>
+<p>• Item from cache is deleted</p>
+<p>• Individual item in the cache is expired</p>
+<p><strong>What is the drawback of Memcached?</strong></p>
+<p>• It is not a persistent data store</p>
+<p>• Not a database</p>
+<p>• It is not an application specific</p>
+<p>• It cannot cache large object</p>
+<p><strong>Give more details about memcached failures</strong></p>
+<p><a target="_blank" rel="noopener" href="http://programmers.stackexchange.com/a/187101">Memcached servers</a> are indeed independent of each other. Memcached server is just an efficient key-value store implemented as in-memory hash table.</p>
+<p><strong>What makes memcached distributed is the client</strong>, which in most implementations can connect to a pool of servers. Typical implementations use consistent hashing, which means that when you add or remove server to&#x2F;from a pool of N servers, you only have to remap 1&#x2F;N keys.</p>
+<p>Typically keys are <strong>not duplicated</strong> on various hosts, as memcached is <strong>not meant to be persistent store</strong> and gives no guarantees that your value will persist (for example when running out of assigned memory, memcached server drops least recently used (LRU) elements). Thus it’s assumed that your application should handle missing keys.</p>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

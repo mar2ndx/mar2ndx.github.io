@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    [Amazon] Longest Repeating Substring  丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">[Amazon] Longest Repeating Substring </div>
+  <div class="post-meta">
+    <div class="date">2015 January 11th</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><p><a target="_blank" rel="noopener" href="http://www.careercup.com/question?id=9182781">link</a></p>
+<blockquote>
+<p>Finding the longest repeated substring. </p>
+</blockquote>
+<blockquote>
+<p>Example: “banana” &#x3D;&#x3D;&gt; “ana”</p>
+</blockquote>
+<h3 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h3><p>There are 2 solutions: Suffix array, and Suffix tree. </p>
+<p><strong>1. Suffix array</strong>. Simple code, explained <a target="_blank" rel="noopener" href="http://www.careercup.com/question?id=9182781">here</a>.</p>
+<blockquote>
+<p>Bentley’s programming pearl book has the simplest implementation (less than 15 lines code) which sort all suffix, and then check common prefix length among adjacent suffix. The time complexity is O(n^2logn) for sorting the suffix (which has avg length of O(n)). </p>
+</blockquote>
+<p>A detailed step-by-step <a target="_blank" rel="noopener" href="http://nriverwang.blogspot.com/2013/04/longest-repeated-substring.html">explanation</a>: </p>
+<pre><code>str = banana, its suffixes are:
+banana
+anana
+nana
+ana
+na
+a
+</code></pre>
+<p>after sort, the suffix array looks like:</p>
+<pre><code>a
+ana
+anana
+banana
+na
+nana
+</code></pre>
+<p>Then for each two adjacent suffixes, check the length of the common prefix.</p>
+<p>The answer is “ana” (if overlapping is allowed, otherwise, should be “an”). </p>
+<p><strong>2. Suffix tree</strong>. Suggest by <a target="_blank" rel="noopener" href="http://qr.ae/6W9yJ">this post</a>, Or <a target="_blank" rel="noopener" href="http://www.careercup.com/question?id=9182781">this</a>:</p>
+<blockquote>
+<p>a good solution is to create a suffix tree for the given word and then find the deepest internal node in that tree (node with at least 2 descendants under it)…</p>
+</blockquote>
+<p>For a nice PPT presentation about suffix tree, look <a target="_blank" rel="noopener" href="https://www.cs.cmu.edu/~ckingsf/bioinfo-lectures/suffixtrees.pdf">here</a>. </p>
+<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><p>Suffix array approach. </p>
+<pre><code>public String longestRepeat(String input) &#123;
+	int len = input.length();
+	String[] suffixArray = new String[len];
+	for (int i = 0; i &lt; len; i++) &#123;
+		suffixArray[i] = input.substring(i);
+	&#125;
+	// now sort the suffix array
+	Arrays.sort(suffixArray);
+	String longest = &quot;&quot;;
+	// start to compare neighborhood suffixes, and check LCP
+	for (int i = 0; i &lt; suffixArray.length - 1; i++) &#123;
+		String lcp = longestCommonPrefix(suffixArray[i], suffixArray[i + 1]);
+		if (lcp.length() &gt; longest.length()) &#123;
+			longest = lcp;
+		&#125;
+	&#125;
+	return longest;
+&#125;
+
+private String longestCommonPrefix(String s1, String s2) &#123;
+	int p = 0;
+	while (p &lt; s1.length() &amp;&amp; p &lt; s2.length()) &#123;
+		if (s1.charAt(p) != s2.charAt(p)) &#123;
+			break;
+		&#125;
+		p++;
+	&#125;
+	return s1.substring(0, p);
+&#125;
+</code></pre>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    [LeetCode 7] Reverse Integer  丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">[LeetCode 7] Reverse Integer </div>
+  <div class="post-meta">
+    <div class="date">2014 April 28th</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><p><a target="_blank" rel="noopener" href="http://oj.leetcode.com/problems/reverse-integer/">link</a></p>
+<div class="question-content">
+<p></p><p>Reverse digits of an integer.</p>
+
+<p style="font-family:monospace">
+<b>Example1:</b> x =  123, return  321<br>
+<b>Example2:</b> x = -123, return -321
+</p>
+
+<div class="spoilers"><b>Have you thought about this?</b>
+<p>Here are some good questions to ask before coding. Bonus points for you if you have already thought through this!</p>
+<p>If the integer's last digit is 0, what should the output be? ie, cases such as 10, 100.</p>
+<p>Did you notice that the reversed integer might overflow? Assume the input is a 32-bit integer, then the reverse of 1000000003 overflows. How should you handle such cases?</p>
+<p>Throw an exception? Good, but what if throwing an exception is not an option? You would then have to re-design the function (ie, add an extra parameter).</p>
+</div><p></p>
+</div>
+
+<h3 id="Stats"><a href="#Stats" class="headerlink" title="Stats"></a>Stats</h3><table border="2">
+	<tr>
+		<td>Frequency</td>
+		<td bgcolor="yellow">3</td>
+	</tr>
+	<tr>
+		<td>Diffficulty</td>
+		<td bgcolor="lime">2</td>
+	</tr>
+	<tr>
+		<td>Adjusted Difficulty</td>
+		<td bgcolor="lime">2</td>
+	</tr>
+	<tr>
+		<td>Time to use</td>
+		<td bgcolor="yellow">----------</td>
+	</tr>
+</table>
+
+<p>Ratings&#x2F;Color &#x3D; 1(white) 2(lime) 3(yellow) 4&#x2F;5(red)</p>
+<h3 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h3><p><strong>There’re 2 points that are tricky.</strong></p>
+<p><strong>First, overflow issue</strong>. Look at the following overflow case for Java int:</p>
+<pre><code>+300,000,000 * 10 returns -1294967296
++600,000,000 * 10 returns +1705032704
+-300,000,000 * 10 returns +1294967296
+-600,000,000 * 10 returns -1705032704
+note that max integer is 2,147,483,647
+</code></pre>
+<p>We can observe that if overflow happens, <strong>the result is definitely wrong</strong>. The result can be either positive or negative.</p>
+<p>So, from just +&#x2F;- sign of the result, we can’t identify an overflow (then how to solve this problem??).</p>
+<p><strong>Another interesting thing to note: we actually do not need to handle negative sign</strong>. The sign can be preserved during the conversion. Read <a target="_blank" rel="noopener" href="http://fisherlei.blogspot.sg/2012/12/leetcode-reverse-integer.html">this post</a> for more.</p>
+<p>Without considering overflow, the following code can (almost) work fine:</p>
+<pre><code>public int reverse2(int x) &#123;
+    int reverse = 0;
+    while (x != 0) &#123;
+        reverse = reverse * 10 + x % 10;
+        x /= 10;
+    &#125;
+    return reverse;
+&#125;
+</code></pre>
+<h3 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h3><p><strong>Two solutions</strong>: 1. use long data type. 2. check if ret &gt; 214748364 or ret &lt; –214748364 before multiplying by 10.</p>
+<h3 id="My-code"><a href="#My-code" class="headerlink" title="My code"></a>My code</h3><p>First, using long type to avoid overflow.</p>
+<pre><code>public class Solution &#123;
+    public int reverse(int x) &#123;
+        int sign = 1;
+        long abs = x;
+        long rev = 0;
+        if (x &lt; 0) &#123;
+            sign = -1;
+            abs = 0 - abs;
+        &#125;
+        // now remove numbers from abs one by one
+        // and put these numbers into rev
+        while (abs != 0) &#123;
+            rev *= 10;
+            rev += abs % 10;
+            abs /= 10;
+        &#125;
+        if (rev &gt; Integer.MAX_VALUE) &#123;
+            return 0;
+        &#125; else &#123;
+            return sign * (int) rev;
+        &#125;
+    &#125;
+&#125;
+</code></pre>
+<p>Second, do boundary check in every step. Suggested by Leetcode official book.</p>
+<p>Note that max integer is 2,147,483,647</p>
+<pre><code>public class Solution &#123;
+
+    public int reverse(int x) &#123;
+        int ret = 0;
+        while (x != 0) &#123;
+            // handle overflow/underflow
+            if (Math.abs(ret) &gt; 214748364) &#123;
+                return 0;
+            &#125;
+            ret = ret * 10 + x % 10;
+            x /= 10;
+        &#125;
+        return ret;
+    &#125;
+&#125;
+</code></pre>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

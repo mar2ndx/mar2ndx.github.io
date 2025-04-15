@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    [LeetCode 165] Compare Version Numbers  丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">[LeetCode 165] Compare Version Numbers </div>
+  <div class="post-meta">
+    <div class="date">2015 April 12th</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/compare-version-numbers/">link</a></p>
+<div class="question-content">
+              <p></p><p>Compare two version numbers <i>version1</i> and <i>version2</i>.<br>
+If <i>version1</i> &gt; <i>version2</i> return 1, if <i>version1</i> &lt; <i>version2</i> return -1, otherwise return 0.</p>
+
+<p>You may assume that the version strings are non-empty and contain only digits and the <code>.</code> character.<br>
+The <code>.</code> character does not represent a decimal point and is used to separate number sequences.<br>
+For instance, <code>2.5</code> is not "two and a half" or "half way to version three", it is the fifth second-level revision of the second first-level revision.</p>
+
+<p>Here is an example of version numbers ordering:</p>
+<pre>0.1 &lt; 1.1 &lt; 1.2 &lt; 13.37</pre>
+
+<p><b>Credits:</b><br>Special thanks to <a target="_blank" rel="noopener" href="https://oj.leetcode.com/discuss/user/ts">@ts</a> for adding this problem and creating all test cases.</p><p></p>
+              
+<pre><code>            &lt;div id=&quot;tags&quot; class=&quot;btn btn-xs btn-warning&quot;&gt;Show Tags&lt;/div&gt;
+            &lt;span class=&quot;hide&quot;&gt;
+              
+              &lt;a class=&quot;btn btn-xs btn-primary&quot; href=&quot;/tag/string/&quot;&gt;String&lt;/a&gt;
+              
+            &lt;/span&gt;
+          
+        &lt;/div&gt;
+</code></pre>
+<h3 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h3><p>I’ve seen a couple of interesting ideas on other people’s blogs, including <a target="_blank" rel="noopener" href="http://www.programcreek.com/2014/03/leetcode-compare-version-numbers-java/">one</a> that uses String.split() to convert input to an array, and <a target="_blank" rel="noopener" href="http://www.meetqun.com/thread-3331-1-1.html">this one</a> which uses 2 pointers to compare. </p>
+<p>My solution might seem more intuitive for some. See below for my solution. </p>
+<h3 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h3><p>The idea is to identify what the current number is (before end of string, or before the next ‘.’). If there’s no more string, value &#x3D; 0, so the case of (1.0, 1) essentially equals. Without further ado, let’s look at the code. </p>
+<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><pre><code>public class Solution &#123;
+    public int compareVersion(String version1, String version2) &#123;
+        if (version1 == null || version2 == null) &#123;
+            return 0;
+        &#125;
+        return helper(version1, version2);
+    &#125;
+
+    private int helper(String v1, String v2) &#123;
+        if (v1.length() == 0 &amp;&amp; v2.length() == 0) &#123;
+            return 0;
+        &#125;
+
+        int num1 = 0;
+        int num2 = 0;
+
+        if (v1.length() != 0) &#123;
+            int p1 = 0;
+            while (p1 &lt; v1.length() &amp;&amp; v1.charAt(p1) != &#39;.&#39;) &#123;
+                p1++;
+            &#125;
+            num1 = Integer.parseInt(v1.substring(0, p1));
+            if (p1 &lt; v1.length()) p1++;
+            v1 = v1.substring(p1);
+        &#125;
+
+        if (v2.length() != 0) &#123;
+            int p2 = 0;
+            while (p2 &lt; v2.length() &amp;&amp; v2.charAt(p2) != &#39;.&#39;) &#123;
+                p2++;
+            &#125;
+            num2 = Integer.parseInt(v2.substring(0, p2));
+            if (p2 &lt; v2.length()) p2++;
+            v2 = v2.substring(p2);
+        &#125;
+
+        if (num1 != num2) &#123;
+            return (num1 - num2) / Math.abs(num1 - num2);
+        &#125; else &#123;
+            return helper(v1, v2);
+        &#125;
+    &#125;
+&#125;
+</code></pre>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

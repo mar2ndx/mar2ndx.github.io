@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    [LeetCode 80] Remove Duplicates from Sorted Array II 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">[LeetCode 80] Remove Duplicates from Sorted Array II</div>
+  <div class="post-meta">
+    <div class="date">2014 May 22nd</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><p><a target="_blank" rel="noopener" href="https://oj.leetcode.com/problems/remove-duplicates-from-sorted-array-ii/">link</a></p>
+<div class="question-content">
+            <p></p><p>
+Follow up for "Remove Duplicates":<br>
+What if duplicates are allowed at most <i>twice</i>?</p>
+
+<p>
+For example,<br>
+Given sorted array A = <code>[1,1,1,2,2,3]</code>,
+</p>
+<p>
+Your function should return length = <code>5</code>, and A is now <code>[1,1,2,2,3]</code>.
+</p><p></p>
+          </div>
+
+<h3 id="Stats"><a href="#Stats" class="headerlink" title="Stats"></a>Stats</h3><table border="2">
+	<tr>
+		<td>Frequency</td>
+		<td bgcolor="lime">2</td>
+	</tr>
+	<tr>
+		<td>Difficulty</td>
+		<td bgcolor="lime">2</td>
+	</tr>
+	<tr>
+		<td>Adjusted Difficulty</td>
+		<td bgcolor="yellow">3</td>
+	</tr>
+	<tr>
+		<td>Time to use</td>
+		<td bgcolor="lime">----------</td>
+	</tr>
+</table>
+
+<p>Ratings&#x2F;Color &#x3D; 1(white) 2(lime) 3(yellow) 4&#x2F;5(red)</p>
+<h3 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h3><p><strong>This is an easy question</strong></p>
+<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><p><strong>my first code</strong></p>
+<pre><code>public int removeDuplicates(int[] A) &#123;
+    if (A.length == 0) return 0;
+    int insert = 1, pre = 0, cur = 1, count = 1;
+    while (cur &lt; A.length) &#123;
+        if (A[pre] == A[cur]) &#123;
+            if (count == 1) &#123;
+                count = 2;
+                A[insert] = A[pre];
+                insert++;
+                pre++;
+            &#125;
+        &#125; else if (A[pre] != A[cur]) &#123;
+            count = 1;
+            A[insert++] = A[cur];
+            pre = cur;
+        &#125;
+        cur ++;
+    &#125;
+    return insert;
+&#125;
+</code></pre>
+<p><strong>my second code</strong></p>
+<pre><code>public int removeDuplicates(int[] A) &#123;
+    int len = A.length;
+    if (len &lt; 3) return len;
+    int left = 0, right = 0;
+    boolean dup = false;
+    while (right &lt; len) &#123;
+        if (right == 0 || A[right] != A[right - 1]) &#123;
+            A[left ++] = A[right ++];
+            dup = false;
+        &#125; else if (! dup) &#123;
+            A[left ++] = A[right ++];
+            dup = true;
+        &#125; else right ++;
+    &#125;
+    return left;
+&#125;
+</code></pre>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

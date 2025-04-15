@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    [Google] Million Phone Numbers 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">[Google] Million Phone Numbers</div>
+  <div class="post-meta">
+    <div class="date">2014 August 7th</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><h3 id="Question-1"><a href="#Question-1" class="headerlink" title="Question 1"></a>Question 1</h3><p><a target="_blank" rel="noopener" href="http://www.glassdoor.com/Interview/How-would-you-store-1-million-phone-numbers-QTN_456.htm">link</a></p>
+<blockquote>
+<p>How would you store 1 million phone numbers?</p>
+</blockquote>
+<h3 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h3><p>BitMap.</p>
+<blockquote>
+<p>The key here is that 1 million phone numbers will be within some range, likely 10 million or so. 10 million bits &#x3D; 10^7 bits ~ 0.12 GB. Just have a bit array where the first bit being set implies that the first phone number is set (e.g., 10 000 000) and the last bit indicates the last phone number (10 999 999). If you find a number in the list, just set the appropriate bit. You now have a bit vector of size 1million bits, sorted, and to check for a particular number, you just check whether the corresponding bit is set.</p>
+</blockquote>
+<h3 id="Question-2"><a href="#Question-2" class="headerlink" title="Question 2"></a>Question 2</h3><p><a target="_blank" rel="noopener" href="http://www.careercup.com/question?id=7997766">link</a></p>
+<blockquote>
+<p>How would you sort 1 million phone numbers?</p>
+</blockquote>
+<h3 id="Solution-1"><a href="#Solution-1" class="headerlink" title="Solution"></a>Solution</h3><p>BitMap or radix sort, both are O(n) complexity.</p>
+<p>Read more <a target="_blank" rel="noopener" href="http://www.vex.net/~trebla/compsci/sorting-phone-numbers.html">here</a>.</p>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

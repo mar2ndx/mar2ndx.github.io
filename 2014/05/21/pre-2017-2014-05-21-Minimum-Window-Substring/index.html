@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    [LeetCode 76] Minimum Window Substring 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">[LeetCode 76] Minimum Window Substring</div>
+  <div class="post-meta">
+    <div class="date">2014 May 21st</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><p><a target="_blank" rel="noopener" href="https://oj.leetcode.com/problems/minimum-window-substring/">link</a></p>
+<div class="question-content">
+            <p></p><p>
+Given a string S and a string T, find the minimum window in S which will contain all the characters in T in complexity O(n).
+</p>
+
+<p>
+For example,<br>
+<b>S</b> = <code>"ADOBECODEBANC"</code><br>
+<b>T</b> = <code>"ABC"</code><br>
+</p>
+<p>
+Minimum window is <code>"BANC"</code>.
+</p>
+
+<p>
+<b>Note:</b><br>
+If there is no such window in S that covers all characters in T, return the emtpy string <code>""</code>.
+</p>
+<p>
+If there are multiple such windows, you are guaranteed that there will always be only one unique minimum window in S.
+</p><p></p>
+          </div>
+
+<h3 id="Stats"><a href="#Stats" class="headerlink" title="Stats"></a>Stats</h3><table border="2">
+	<tr>
+		<td>Frequency</td>
+		<td bgcolor="lime">2</td>
+	</tr>
+	<tr>
+		<td>Difficulty</td>
+		<td bgcolor="red">4</td>
+	</tr>
+	<tr>
+		<td>Adjusted Difficulty</td>
+		<td bgcolor="red">5</td>
+	</tr>
+	<tr>
+		<td>Time to use</td>
+		<td bgcolor="red">----------</td>
+	</tr>
+</table>
+
+<p>Ratings&#x2F;Color &#x3D; 1(white) 2(lime) 3(yellow) 4&#x2F;5(red)</p>
+<h3 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h3><p><strong>This is a very difficult string matching question</strong>.</p>
+<p>The sliding window solution is very well explained in <a target="_blank" rel="noopener" href="http://leetcode.com/2010/11/finding-minimum-window-in-s-which.html">this post</a> (the best solution).</p>
+<blockquote cite="http://fisherlei.blogspot.sg/2013/01/leetcode-simplify-path.html">
+    <p>To help illustrate this approach, I use a different example: <b>S</b> = “<b>acbbaca</b>” and <b>T</b> = “<b>aba</b>“. The idea is mainly based on the help of two pointers (begin and end position of the window) and two tables (<i>needToFind </i>and <i>hasFound</i>) while traversing <b>S</b>. <i>needToFind</i> stores the total count of a character in <b>T</b> and <i>hasFound</i> stores the total count of a character met so far. We also use a <i>count</i> variable to store the total characters in <b>T</b> that’s met so far (not counting characters where hasFound[<i>x</i>]<i> </i>exceeds needToFind[<i>x</i>]). When count equals <b>T</b>‘s length, we know a valid window is found.</p><p>Each time we advance the end pointer (pointing to an element <i>x</i>), we increment hasFound[<i>x</i>] by one. We also increment <i>count </i>by one if hasFound[<i>x</i>] is less than or equal to needToFind[<i>x</i>]. Why? When the constraint is met (that is, <i>count</i> equals to <b>T</b>‘s size), we immediately advance begin pointer as far right as possible while maintaining the constraint.</p><p>How do we check if it is maintaining the constraint? Assume that begin points to an element <i>x</i>, we check if hasFound[<i>x</i>] is greater than needToFind[<i>x</i>]. If it is, we can decrement hasFound[<i>x</i>] by one and advancing begin pointer without breaking the constraint. On the other hand, if it is not, we stop immediately as advancing begin pointer breaks the window constraint.</p><p>Finally, we check if the minimum window length is less than the current minimum. Update the current minimum if a new minimum is found.</p><p>Essentially, the algorithm finds the first window that satisfies the constraint, then continue maintaining the constraint throughout.</p><p></p><div class="separator" style="clear: both; text-align: center;"><a target="_blank" rel="noopener" href="http://2.bp.blogspot.com/_UElib2WLeDE/TOBuvjG6exI/AAAAAAAACYE/uludVXtJ8OY/s1600/sliding.gif" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"><img border="0" height="83" src="http://2.bp.blogspot.com/_UElib2WLeDE/TOBuvjG6exI/AAAAAAAACYE/uludVXtJ8OY/s400/sliding.gif" width="400"></a></div><div style="text-align: center;"><span style="font-size: x-small;">i) <b>S</b> = “<b>acbbaca</b>” and <b>T</b> = “<b>aba</b>“.<br></span></div><p></p><div class="separator" style="clear: both; text-align: center;"><a target="_blank" rel="noopener" href="http://4.bp.blogspot.com/_UElib2WLeDE/TOBvHRLbOAI/AAAAAAAACYI/38QLgUIMePU/s1600/sliding_2.gif" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"><img border="0" height="79" src="http://4.bp.blogspot.com/_UElib2WLeDE/TOBvHRLbOAI/AAAAAAAACYI/38QLgUIMePU/s400/sliding_2.gif" width="400"></a></div><div style="text-align: center;"><span style="font-size: x-small;">ii) The first minimum window is found. Notice that we cannot advance begin pointer as hasFound['a'] == needToFind['a'] == 2. Advancing would mean breaking the constraint.<br></span></div><p></p><div class="separator" style="clear: both; text-align: center;"><a target="_blank" rel="noopener" href="http://3.bp.blogspot.com/_UElib2WLeDE/TOBvLH1aLcI/AAAAAAAACYM/pbJLl7qoduo/s1600/sliding_3.gif" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"><img border="0" height="79" src="http://3.bp.blogspot.com/_UElib2WLeDE/TOBvLH1aLcI/AAAAAAAACYM/pbJLl7qoduo/s400/sliding_3.gif" width="400"></a></div><div style="text-align: center;"><span style="font-size: x-small;">iii) The second window is found. begin pointer still points to the first element ‘a’. hasFound['a'] (<b>3</b>) is greater than needToFind['a'] (<b>2</b>). We decrement hasFound['a'] by one and advance begin pointer to the right.<br></span></div><p></p><div class="separator" style="clear: both; text-align: center;"><a target="_blank" rel="noopener" href="http://2.bp.blogspot.com/_UElib2WLeDE/TOBvOljpz0I/AAAAAAAACYQ/TxuWgWGTOF4/s1600/sliding_4.gif" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"><img border="0" height="79" src="http://2.bp.blogspot.com/_UElib2WLeDE/TOBvOljpz0I/AAAAAAAACYQ/TxuWgWGTOF4/s400/sliding_4.gif" width="400"></a></div><div style="text-align: center;"><span style="font-size: x-small;">iv) We skip ‘c’ since it is not found in <b>T</b>. Begin pointer now points to ‘b’. hasFound['b'] (<b>2</b>) is greater than needToFind['b'] (<b>1</b>). We decrement hasFound['b'] by one and advance begin pointer to the right.<br></span></div><p></p><div class="separator" style="clear: both; text-align: center;"><a target="_blank" rel="noopener" href="http://2.bp.blogspot.com/_UElib2WLeDE/TOBvSOl6RdI/AAAAAAAACYU/R4O1dPXVvBQ/s1600/sliding_5.gif" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"><img border="0" height="79" src="http://2.bp.blogspot.com/_UElib2WLeDE/TOBvSOl6RdI/AAAAAAAACYU/R4O1dPXVvBQ/s400/sliding_5.gif" width="400"></a></div><div style="text-align: center;"><span style="font-size: x-small;">v) Begin pointer now points to the next ‘b’. hasFound['b'] (1) is equal to needToFind['b'] (1). We stop immediately and this is our newly found minimum window.<br></span></div><p>Both the begin and end pointers can advance at most <i>N</i> steps (where <i>N</i> is <b>S</b>‘s size) in the worst case, adding to a total of 2<i>N</i> times. Therefore, the run time complexity must be in <i>O</i>(<i>N</i>).</p>
+</blockquote>
+
+<h3 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h3><p>Best code is from <a target="_blank" rel="noopener" href="http://answer.ninechapter.com/solutions/minimum-window-substring/">this post</a>.</p>
+<p>First of all, keep a HashMap to store all letters and occurrance. Then declare a ‘count’ variable. This is an important varaible. It helps us to check whether we have successfully achieve at least 1 window. After we found the first window, the ‘count’ variable shall always equals to total number of letters in ‘T’.</p>
+<p>Now the looping part. Basically we assume that the window end at one point, and we find the correct starting position and calculate corresponding length.</p>
+<p>The coding part is very difficult. Try to practise more.</p>
+<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><p><strong>Updated on July 7th</strong>, code:</p>
+<pre><code>public String minWindow(String S, String T) &#123;
+    HashMap&lt;Character, Integer&gt; map = new HashMap&lt;Character, Integer&gt;();
+    HashMap&lt;Character, Integer&gt; map2 = new HashMap&lt;Character, Integer&gt;();
+    for (Character ch: T.toCharArray()) &#123;
+        if (map.containsKey(ch)) &#123;
+            map.put(ch, map.get(ch) + 1);
+        &#125; else &#123;
+            map.put(ch, 1);
+            map2.put(ch, 0);
+        &#125;
+    &#125;
+    int count = 0;
+    int start = 0;
+    int end = 0;
+    String result = &quot;&quot;;
+    while (end &lt; S.length()) &#123;
+        char cur = S.charAt(end);
+        if (!map.containsKey(cur)) &#123;
+            end++;
+            continue;
+        &#125;
+        map2.put(cur, map2.get(cur) + 1);
+        if (map2.get(cur) &lt;= map.get(cur)) &#123;
+            count++;
+        &#125;
+
+        if (count == T.length()) &#123;
+            // locate start point
+            while(true) &#123;
+                char ll = S.charAt(start);
+                if (!map.containsKey(ll)) &#123;
+                    start++;
+                    continue;
+                &#125;
+                if (map2.get(ll) &gt; map.get(ll)) &#123;
+                    map2.put(ll, map2.get(ll) - 1);
+                    start++;
+                    continue;
+                &#125; else &#123;
+                    break;
+                &#125;
+            &#125;
+            if (result.equals(&quot;&quot;) || result.length() &gt; end - start + 1) &#123;
+                result = S.substring(start, end + 1);
+            &#125;
+        &#125;
+        end++;
+    &#125;
+    return result;
+&#125;
+</code></pre>
+<p><strong>Updated on July 19th</strong>, rewrite the code changing all while-loop to for-loop:</p>
+<pre><code>public String minWindow(String S, String T) &#123;
+    if (S.length() &lt; T.length()) &#123;
+        return &quot;&quot;;
+    &#125;
+    HashMap&lt;Character, Integer&gt; map = new HashMap&lt;Character, Integer&gt;();
+    HashMap&lt;Character, Integer&gt; found = new HashMap&lt;Character, Integer&gt;();
+    for (Character ch: T.toCharArray()) &#123;
+        if (map.containsKey(ch)) &#123;
+            map.put(ch, map.get(ch) + 1);
+        &#125; else &#123;
+            map.put(ch, 1);
+            found.put(ch, 0);
+        &#125;
+    &#125;
+
+    String window = S;
+    int count = 0;
+    int start  = 0;
+
+    char[] letters = S.toCharArray();
+    for (int i = 0; i &lt; letters.length; i++) &#123;
+        char ch  = letters[i];
+        if (!map.containsKey(ch)) &#123;
+            continue;
+        &#125;
+        if (found.get(ch) &lt; map.get(ch)) &#123;
+            count++;
+        &#125;
+        found.put(ch, found.get(ch) + 1);
+        if (count == T.length()) &#123;
+            // update the start pointer
+            for (; start &lt;= i; start++) &#123;
+                char sChar = letters[start];
+                if (!map.containsKey(sChar)) &#123;
+                    continue;
+                &#125;
+                if (found.get(sChar) &lt;= map.get(sChar)) &#123;
+                    break;
+                &#125; else &#123;
+                    found.put(sChar, found.get(sChar) - 1);
+                &#125;
+            &#125;
+            if (window.length() &gt; i - start + 1) &#123;
+                window = S.substring(start, i + 1);
+            &#125;
+        &#125;
+    &#125;
+    return count == T.length() ? window : &quot;&quot;;
+&#125;
+</code></pre>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

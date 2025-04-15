@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    MyBatis and SSM (Spring/SpringMVC/MyBatis) 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">MyBatis and SSM (Spring/SpringMVC/MyBatis)</div>
+  <div class="post-meta">
+    <div class="date">2022 November 1st</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><h1 id="MyBatis"><a href="#MyBatis" class="headerlink" title="MyBatis"></a>MyBatis</h1><p>MyBatis是一个持久层框架（persistence framework), 封装了JDBC的原装代码：</p>
+<ol>
+<li>定制化SQL</li>
+<li>存储过程</li>
+<li>高级映射</li>
+</ol>
+<blockquote>
+<p>Persistence framework 也是 Object-Relational Mapping (ORM) 工具。</p>
+<p>MyBatis provides a mapping engine that maps SQL results to object trees in a declarative way. </p>
+</blockquote>
+<h2 id="软件开发3层：SSM框架"><a href="#软件开发3层：SSM框架" class="headerlink" title="软件开发3层：SSM框架"></a>软件开发3层：SSM框架</h2><ol>
+<li>表现层 SpringMVC</li>
+<li>业务层 Spring</li>
+<li>持久层 MyBatis</li>
+</ol>
+<h2 id="SSM框架"><a href="#SSM框架" class="headerlink" title="SSM框架"></a>SSM框架</h2><p>SSM框架是spring MVC ，spring和mybatis框架的整合，是标准的MVC模式，将整个系统划分为表现层，controller层，service层，DAO层四层，使用spring MVC负责请求的转发和视图管理，spring实现业务对象管理，mybatis作为数据对象的持久化引擎</p>
+<p>相比于之前的SSH（Spring+Struts+Hibernate），SSM更加轻量化和灵活，是目前业界主流的Java Web开发框架。</p>
+<h2 id="Spring"><a href="#Spring" class="headerlink" title="Spring"></a>Spring</h2><p>简单来说，Spring是一个轻量级的控制反转（IoC）和面向切面（AOP）的容器框架。</p>
+<h2 id="SpringMVC"><a href="#SpringMVC" class="headerlink" title="SpringMVC"></a>SpringMVC</h2><p>SpringMVC把传统的模型层被拆分为了业务层(Service)和数据访问层（DAO,Data Access Object）。</p>
+<h2 id="MyBatis-1"><a href="#MyBatis-1" class="headerlink" title="MyBatis"></a>MyBatis</h2><p>MyBatis 是一款优秀的Java持久层框架(persistence framework)，它支持定制化 SQL、存储过程以及高级映射。MyBatis 消除了几乎所有的JDBC代码和参数的手工设置以及结果集的检索。MyBatis 使用简单的 XML配置文件或注解，将接口和 Java 的POJOs（Plain Old Java Objects，普通的 Java对象）映射成数据库中的记录。</p>
+<h2 id="MyBatis-缓存"><a href="#MyBatis-缓存" class="headerlink" title="MyBatis 缓存"></a>MyBatis 缓存</h2><p>一级缓存：sql session级别的。eg 同一个 findUserById（），多次调用，只要之间没有过数据写入操作，就可以直接调用缓存。</p>
+<p>二级缓存：是Mapper（namespace）级别。默认不开启（因为crud概率很高，所以缓存意义不大）。</p>
+<p>如果要开启二级缓存，则 class 需要 implements Sezerialzed。</p>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

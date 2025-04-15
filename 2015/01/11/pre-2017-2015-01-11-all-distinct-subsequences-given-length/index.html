@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    [Question] All distinct subsequences with given length  丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">[Question] All distinct subsequences with given length </div>
+  <div class="post-meta">
+    <div class="date">2015 January 11th</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><p><a target="_blank" rel="noopener" href="http://11011110.livejournal.com/254164.html">link</a></p>
+<blockquote>
+<p>Find a polynomial-time algorithm that takes a string of length n, and a number k, output the number of distinct k-character subsequences.</p>
+</blockquote>
+<blockquote>
+<p>For instance, input “food” and number k&#x3D;2, output should be 4. There are four distinct 2-character subsequences of “food”: “fo”, “fd”, “oo”, and “od”.</p>
+</blockquote>
+<h3 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h3><p>Similar to <strong>[Question] Number of distinct sub-sequence</strong>, we solve this problem with DP. The dp equation is a bit difficult to write. </p>
+<p>The idea come from comment from <a target="_blank" rel="noopener" href="http://11011110.livejournal.com/254164.html">gareth_rees</a>: </p>
+<blockquote>
+<p>Let θ(S, k) be the number of distinct k-character subsequences in the string S of length n. </p>
+</blockquote>
+<blockquote>
+<p>Clearly θ(S, k) &#x3D; 1 if n &#x3D; k or k &#x3D; 0 </p>
+</blockquote>
+<blockquote>
+<p>and θ(S, k) &#x3D; 0 if n &lt; k. </p>
+</blockquote>
+<blockquote>
+<p>Otherwise, <strong>choose 1 unique char from S</strong>, and deduct k by 1, then do the DP calculation with the remaining part of S. </p>
+</blockquote>
+<p>Look at this example: </p>
+<pre><code>θ(&quot;food&quot;, 2) = θ(&quot;ood&quot;, 1) + θ(&quot;od&quot;, 1) + θ(&quot;&quot;, 1)
+= (θ(&quot;od&quot;, 0) + θ(&quot;&quot;, 0)) + (θ(&quot;d&quot;, 0) + θ(&quot;&quot;, 0)) + 0
+= (1 + 1) + (1 + 1)
+= 4
+</code></pre>
+<p><strong>“food” is divided into 3 parts</strong>. First part we choose “f” to be the first char, thus the value is θ(“ood”, 1). Second part we choose “o”, and final part we choose “d”. </p>
+<p><strong>Note that when we choose a char, it must never have been chosen before</strong>. In case of “food”, we only choose ‘f’, ‘o’, ‘d’ once for each. </p>
+<p>This is a very difficult DP question, but the explanation really makes the answer easier. Read my implementation below. </p>
+<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><pre><code>public int countSubSeq(String input, int k) &#123;
+	// assuming all input chars are small letter
+	return choose(input, 0, k);
+&#125;
+
+private int choose(String input, int start, int numChar) &#123;
+	int charLeft = input.length() - start;
+	if (charLeft == numChar || numChar == 0) &#123;
+		return 1;
+	&#125; else if (charLeft &lt; numChar || numChar &lt; 0) &#123;
+		return 0;
+	&#125;
+	// now numChar is smaller than charLeft, and larger than 0
+	// start to pick a char (which is at first appearance)
+	int total = 0;
+	HashSet&lt;Character&gt; chosen = new HashSet&lt;Character&gt;();
+	while (start &lt; input.length()) &#123;
+		char currentChar = input.charAt(start);
+		if (!chosen.contains(currentChar)) &#123;
+			// pick the char pointer by &#39;start&#39;
+			total += choose(input, start + 1, numChar - 1);
+			chosen.add(currentChar);
+		&#125;
+		start++;
+	&#125;
+	return total;
+&#125;
+</code></pre>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

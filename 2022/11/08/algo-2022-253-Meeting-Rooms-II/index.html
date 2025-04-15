@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    253. Meeting Rooms II 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">253. Meeting Rooms II</div>
+  <div class="post-meta">
+    <div class="date">2022 November 8th</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><p>Link: <a target="_blank" rel="noopener" href="https://leetcode.cn/problems/meeting-rooms-ii/">https://leetcode.cn/problems/meeting-rooms-ii/</a></p>
+<h1 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h1><p>difficulty: mid<br>adj diff: 3</p>
+<pre><code>Given an array of meeting time intervals intervals where intervals[i] = [starti, endi], return the minimum number of conference rooms required.
+
+Example 1:
+
+Input: intervals = [[0,30],[5,10],[15,20]]
+Output: 2
+Example 2:
+
+Input: intervals = [[7,10],[2,4]]
+Output: 1
+
+Constraints:
+
+1 &lt;= intervals.length &lt;= 104
+0 &lt;= starti &lt; endi &lt;= 106
+</code></pre>
+<p>思路其实不难：那就是，我不在乎 「开始 time - 结束 time」时间的绑定关系。</p>
+<p>我只需要知道如下逻辑：</p>
+<ol>
+<li>3:10AM 有 meeting 开始了，room++</li>
+<li>3:12AM 有 meeting 开始了，room++</li>
+<li>3:13AM 有 meeting 结束了，room–</li>
+<li>3:15AM 有 meeting 开始了，room++</li>
+</ol>
+<p>以下的代码是做了一个新的 data strucuture。</p>
+<p>其实完全没必要，两个 array list 就行：one for meeting start_time, one for end_time. 然后双指针扫。</p>
+<h1 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h1><p>我的代码。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">public int minMeetingRooms(int[][] intervals) &#123;</span><br><span class="line">	MeetingTime[] timeList = new MeetingTime[intervals.length * 2];</span><br><span class="line">	int p = 0;</span><br><span class="line">	for (int[] meeting: intervals) &#123;</span><br><span class="line">		timeList[p++] = new MeetingTime(meeting[0], 1);</span><br><span class="line">		timeList[p++] = new MeetingTime(meeting[1], -1);</span><br><span class="line">	&#125;</span><br><span class="line">	Arrays.sort(timeList);</span><br><span class="line">	int roomsRequired = 0;</span><br><span class="line">	int maxRequired = 0;</span><br><span class="line">	for (MeetingTime time: timeList) &#123;</span><br><span class="line">		roomsRequired += time.startOrEnd;</span><br><span class="line">		maxRequired = Math.max(maxRequired, roomsRequired);</span><br><span class="line">	&#125;</span><br><span class="line">	return maxRequired;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class MeetingTime implements Comparable&lt;MeetingTime&gt; &#123;</span><br><span class="line">	int time;</span><br><span class="line">	int startOrEnd; // startOrEnd = 1 means start, startOrEnd = -1 means end</span><br><span class="line"></span><br><span class="line">	public MeetingTime(int a, int b) &#123;</span><br><span class="line">		time = a;</span><br><span class="line">		startOrEnd = b;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	public int compareTo(MeetingTime m) &#123;</span><br><span class="line">		if (time == m.time) &#123;</span><br><span class="line">			return startOrEnd - m.startOrEnd;</span><br><span class="line">		&#125; else &#123;</span><br><span class="line">			return time - m.time;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>代码思路源自：<a target="_blank" rel="noopener" href="https://leetcode.cn/problems/meeting-rooms-ii/solution/hui-yi-shi-ii-by-leetcode/">https://leetcode.cn/problems/meeting-rooms-ii/solution/hui-yi-shi-ii-by-leetcode/</a></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">public int minMeetingRooms(int[][] intervals) &#123;</span><br><span class="line">    int len = intervals.length;</span><br><span class="line">    Integer[] startTimeArray = new Integer[len];</span><br><span class="line">    Integer[] endTimeArray = new Integer[len];</span><br><span class="line"></span><br><span class="line">    // build startTimeArray and endTimeArray</span><br><span class="line">    for (int i = 0; i &lt; len; i++) &#123;</span><br><span class="line">        startTimeArray[i] = intervals[i][0];</span><br><span class="line">        endTimeArray[i] = intervals[i][1];</span><br><span class="line">    &#125;</span><br><span class="line">    Arrays.sort(startTimeArray);</span><br><span class="line">    Arrays.sort(endTimeArray);</span><br><span class="line"></span><br><span class="line">    // 2 pointers: p for startTimeArray, q for endTimeArray</span><br><span class="line">    int p = 0;</span><br><span class="line">    int q = 0;</span><br><span class="line">    int usedRooms = 0;</span><br><span class="line">    int maxRooms = 0;</span><br><span class="line"></span><br><span class="line">    while (p &lt; len) &#123;</span><br><span class="line">        if (endTimeArray[q] &lt;= startTimeArray[p]) &#123;</span><br><span class="line">            // a meeting is finished at this time</span><br><span class="line">            usedRooms--;</span><br><span class="line">            q++;</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            usedRooms++;</span><br><span class="line">            p++;</span><br><span class="line">        &#125;</span><br><span class="line">        maxRooms = Math.max(maxRooms, usedRooms);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    return maxRooms;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

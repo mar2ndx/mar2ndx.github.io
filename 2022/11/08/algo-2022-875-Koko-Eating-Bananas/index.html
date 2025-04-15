@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    875. Koko Eating Bananas 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">875. Koko Eating Bananas</div>
+  <div class="post-meta">
+    <div class="date">2022 November 8th</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><p>Link: <a target="_blank" rel="noopener" href="https://leetcode.cn/problems/koko-eating-bananas/">https://leetcode.cn/problems/koko-eating-bananas/</a></p>
+<h1 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h1><p>difficulty: mid<br>adj diff: 4</p>
+<pre><code>Koko loves to eat bananas. There are n piles of bananas, the ith pile has piles[i] bananas. The guards have gone and will come back in h hours.
+
+Koko can decide her bananas-per-hour eating speed of k. Each hour, she chooses some pile of bananas and eats k bananas from that pile. If the pile has less than k bananas, she eats all of them instead and will not eat any more bananas during this hour.
+
+Koko likes to eat slowly but still wants to finish eating all the bananas before the guards return.
+
+Return the minimum integer k such that she can eat all the bananas within h hours.
+
+Example 1:
+
+Input: piles = [3,6,7,11], h = 8
+Output: 4
+
+Example 2:
+
+Input: piles = [30,11,23,4,20], h = 5
+Output: 30
+
+Example 3:
+
+Input: piles = [30,11,23,4,20], h = 6
+Output: 23
+
+Constraints:
+
+	1 &lt;= piles.length &lt;= 104
+	piles.length &lt;= h &lt;= 109
+	1 &lt;= piles[i] &lt;= 109
+</code></pre>
+<p>koko 吃香蕉，比较经典又特殊的一类 二分搜索 问题。</p>
+<h1 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">public int minEatingSpeed(int[] piles, int h) &#123;</span><br><span class="line">    Arrays.sort(piles);</span><br><span class="line">    int len = piles.length;</span><br><span class="line">    if (h &lt; len) return -1;</span><br><span class="line">    int minSpeed = Integer.MAX_VALUE;</span><br><span class="line">    int min = 1;</span><br><span class="line">    int max = piles[len - 1];</span><br><span class="line">    while (min &lt; max) &#123;</span><br><span class="line">        int speed = min + (max - min) / 2;</span><br><span class="line">        int hours = 0;</span><br><span class="line">        // eat mid number per hours, from len piles</span><br><span class="line">        for (Integer i: piles) &#123;</span><br><span class="line">            hours += (i - 1) / speed + 1;</span><br><span class="line">        &#125;</span><br><span class="line">        if (hours &lt;= h) &#123;</span><br><span class="line">            // finish earning within h time, next time eat slower</span><br><span class="line">            minSpeed = Math.min(minSpeed, speed);</span><br><span class="line">            max = speed;</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            // need to eat more</span><br><span class="line">            min = speed + 1;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    return minSpeed == Integer.MAX_VALUE ? piles[len - 1] : minSpeed;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

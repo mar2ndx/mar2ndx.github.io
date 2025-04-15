@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    [Question] Topology Sort  丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">[Question] Topology Sort </div>
+  <div class="post-meta">
+    <div class="date">2014 June 27th</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><p><a target="_blank" rel="noopener" href="http://en.wikipedia.org/wiki/Topological_sorting">link</a></p>
+<blockquote>
+<p>Topological ordering of a directed graph is a linear ordering of its vertices such that <strong>for every directed edge uv from vertex u to vertex v, u comes before v in the ordering</strong>.</p>
+</blockquote>
+<blockquote>
+<p>A topological ordering is possible if and only if the graph has no directed cycles, that is, if it is a <strong>directed acyclic graph (DAG)</strong>.</p>
+</blockquote>
+<h3 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h3><p>Canonical application of toposort is to schedule tasks with dependency (project management etc.) It’s also used for computing formulas, logic synthesis, order of compilation (‘make’ command) and data serialization.</p>
+<p><img src="/images/topology_sort_example.png"></p>
+<h3 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h3><p>The usual algorithms have <strong>linear run-time</strong>, i.e. O(V + E).</p>
+<blockquote>
+<p>First step is to find a list of “start nodes” which have no incoming edges. Then insert them into a set S and delete it. At least one such node must exist in an <strong>directed acyclic graph</strong>. From a university <a target="_blank" rel="noopener" href="https://courses.cs.washington.edu/courses/cse326/03wi/lectures/RaoLect20.pdf">lecture</a>.</p>
+</blockquote>
+<p>From Wiki:</p>
+<pre><code>L ← Empty list that will contain the sorted elements
+S ← Set of all nodes with no incoming edges
+while S is non-empty do
+    remove a node n from S
+    add n to tail of L
+    for each node m with an edge e from n to m do
+        remove edge e from the graph
+        if m has no other incoming edges then
+            insert m into S
+if graph has edges then
+    return error (graph has at least one cycle)
+else
+    return L (a topologically sorted order)
+</code></pre>
+<p>If the graph is a DAG, <strong>a solution will be contained in the list L</strong> (the solution is not necessarily unique). Otherwise, the graph must have at least one cycle and therefore <strong>a topological sorting is impossible</strong>.</p>
+<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><p>The solution comes from <a target="_blank" rel="noopener" href="http://codereview.stackexchange.com/questions/44689/topological-sort-in-java">here</a>.</p>
+<p>![](&#x2F;images&#x2F;topology_sort.png 250 250)</p>
+<pre><code>public class Graph &#123;
+    private int vertices;
+    private Set&lt;Node&gt; nodes = new HashSet&lt;Node&gt;();
+
+    public Graph(int vertices) &#123;
+        this.vertices = vertices;
+    &#125;
+
+    public void addVertex(Node node) &#123;
+        this.nodes.add(node);
+    &#125;
+
+    public Set&lt;Node&gt; topologicalSort() &#123;
+        Queue&lt;Node&gt; q = new LinkedList&lt;Node&gt;();
+        Set&lt;Node&gt; topoSort = new LinkedHashSet&lt;Node&gt;();
+        int vertexProcessesCtr = 0;
+        for (Node m : this.nodes) &#123;
+            vertexProcessesCtr = addToQueue(m, topoSort, vertexProcessesCtr, q);
+        &#125;
+        while (!q.isEmpty()) &#123;
+            Node m = q.poll();
+            for (Node child : m.getAdjacenctNode()) &#123;
+                int indeq = child.getInDegree() - 1;
+                child.setInDegree(indeq);
+                vertexProcessesCtr = addToQueue(child, topoSort,
+                        vertexProcessesCtr, q);
+            &#125;
+        &#125;
+        if (vertexProcessesCtr &gt; this.vertices) &#123;
+            System.out.println();
+        &#125;
+        return topoSort;
+    &#125;
+
+    private int addToQueue(Node node, Set&lt;Node&gt; topoSort, int vertexProcess,
+            Queue&lt;Node&gt; q) &#123;
+        if (node.getInDegree() == 0) &#123;
+            q.add(node);
+            topoSort.add(node);
+            return vertexProcess + 1;
+        &#125;
+        return vertexProcess;
+    &#125;
+
+    public static void main(String[] args) &#123;
+        Graph g = new Graph(8);
+
+        Node TEN = new Node(&quot;10&quot;);
+        Node ELEVEN = new Node(&quot;11&quot;);
+        Node TWO = new Node(&quot;2&quot;);
+        Node THREE = new Node(&quot;3&quot;);
+        Node FIVE = new Node(&quot;5&quot;);
+        Node SEVEN = new Node(&quot;7&quot;);
+        Node EIGHT = new Node(&quot;8&quot;);
+        Node NINE = new Node(&quot;9&quot;);
+
+        SEVEN.AdjacenctNode.add(ELEVEN);
+        ELEVEN.inDegree++;
+        SEVEN.AdjacenctNode.add(EIGHT);
+        EIGHT.inDegree++;
+        FIVE.AdjacenctNode.add(ELEVEN);
+        ELEVEN.inDegree++;
+        THREE.AdjacenctNode.add(EIGHT);
+        EIGHT.inDegree++;
+        THREE.AdjacenctNode.add(TEN);
+        TEN.inDegree++;
+        ELEVEN.AdjacenctNode.add(TEN);
+        TEN.inDegree++;
+        ELEVEN.AdjacenctNode.add(TWO);
+        TWO.inDegree++;
+        ELEVEN.AdjacenctNode.add(NINE);
+        NINE.inDegree++;
+        EIGHT.AdjacenctNode.add(NINE);
+        NINE.inDegree++;
+
+        g.nodes.add(TWO);
+        g.nodes.add(THREE);
+        g.nodes.add(FIVE);
+        g.nodes.add(SEVEN);
+        g.nodes.add(EIGHT);
+        g.nodes.add(NINE);
+
+        System.out.println(&quot;Now calling the topologial sorts&quot;);
+        Set&lt;Node&gt; result = g.topologicalSort();
+        for (Node node : result) &#123;
+            System.out.println(node.data + &quot; &quot;);
+        &#125;
+    &#125;
+&#125;
+
+class Node &#123;
+    public String data;
+    public int dist;
+    public int inDegree;
+    LinkedList&lt;Node&gt; AdjacenctNode = new LinkedList&lt;Node&gt;();
+
+    public void addAdjNode(final Node Child) &#123;
+        AdjacenctNode.add(Child);
+        Child.inDegree++;
+    &#125;
+
+    public Node(String data) &#123;
+        super();
+        this.data = data;
+    &#125;
+
+    public int getInDegree() &#123;
+        return inDegree;
+    &#125;
+
+    public void setInDegree(int inDegree) &#123;
+        this.inDegree = inDegree;
+    &#125;
+
+    public LinkedList&lt;Node&gt; getAdjacenctNode() &#123;
+        return AdjacenctNode;
+    &#125;
+&#125;
+</code></pre>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    [Java OOP] Override/overload Java main method  丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">[Java OOP] Override/overload Java main method </div>
+  <div class="post-meta">
+    <div class="date">2014 December 22nd</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><h3 id="Can-we-overload-main-method-in-Java"><a href="#Can-we-overload-main-method-in-Java" class="headerlink" title="Can we overload main method in Java?"></a>Can we overload main method in Java?</h3><p>Can. But only <strong>public static void main(String[] args)</strong> will be used when <a target="_blank" rel="noopener" href="http://stackoverflow.com/questions/3759315/can-we-overload-the-main-method-in-java">your class is launched by the JVM</a>.</p>
+<p>You can call other <strong>main() method</strong> yourself from code.</p>
+<p>Eg.</p>
+<pre><code>class Simple&#123;
+  public static void main(int a)&#123;
+  System.out.println(a);
+  &#125;
+
+  public static void main(String args[])&#123;
+  System.out.println(&quot;main() method invoked&quot;);
+  main(10);
+  &#125;
+&#125;
+</code></pre>
+<p>output:</p>
+<pre><code>main() method invoked
+10
+</code></pre>
+<h3 id="Can-we-override-main-method-in-Java"><a href="#Can-we-override-main-method-in-Java" class="headerlink" title="Can we override main method in Java?"></a>Can we override main method in Java?</h3><p>No.</p>
+<p><a target="_blank" rel="noopener" href="http://stackoverflow.com/questions/9083876/override-main-method">MAIN is a class method</a>. Hence, it does not makes sense to “override” it (or any static method). The concept of “overriding” is only for instance methods.</p>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

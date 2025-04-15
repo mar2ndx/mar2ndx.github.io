@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    [NineChap 9] Big Date, System Design and Resume (`) 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">[NineChap 9] Big Date, System Design and Resume (`)</div>
+  <div class="post-meta">
+    <div class="date">2014 June 30th</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><h2 id="Resume"><a href="#Resume" class="headerlink" title="Resume"></a>Resume</h2><ol>
+<li>Do not write anything unrelated to CS. </li>
+<li>Do not write too long - 1 or 2 pages are fine. Senior engineer 3 pages. </li>
+<li>Do not write low GPA</li>
+<li>Never ever write “proficient in anything”</li>
+</ol>
+<h2 id="Big-Data"><a href="#Big-Data" class="headerlink" title="Big Data"></a>Big Data</h2><p>Most classic question is “Frequent items” (refer to July’s blog). </p>
+<h3 id="Find-top-k-hot-queries-in-a-daily-access-log-of-Google"><a href="#Find-top-k-hot-queries-in-a-daily-access-log-of-Google" class="headerlink" title="Find top k hot queries in a daily access log of Google."></a>Find top k hot queries in a daily access log of Google.</h3><p>Variation:</p>
+<ol>
+<li>k &#x3D; 1 vs k &#x3D; 100000 - majority numbers</li>
+<li>low RAM vs sufficient RAM</li>
+<li>single machine vs multiple machines</li>
+<li>accurate vs inaccurate</li>
+</ol>
+<p>Sufficient RAM</p>
+<ol>
+<li>HashTable + Heap (min-heap)</li>
+<li>Time O(n * logk), Space O(n)</li>
+</ol>
+<p>Low RAM</p>
+<ol>
+<li>Split into 1000 (i.e. LOG&#x2F;M) files by hash(query) % 1000</li>
+<li>Using HashTable + Heap to get top k for each files</li>
+<li>Collect 1000 top k queries and get global top k</li>
+<li>This method requires a lot of disk access and r&#x2F;w, still slow.</li>
+</ol>
+<p>Inaccurate (reduce memory from O(n) to O(k))</p>
+<ol>
+<li>Hash Count (only need to know this one)<br> Limit the size of HashMap. The bigger the RAM, the more accurate is the result. </li>
+<li>Space Saving</li>
+<li>Lossy Counting</li>
+<li>Sticky Sampling</li>
+<li>Count Sketch</li>
+</ol>
+<p>Bloom Filter</p>
+<ol>
+<li>Regular bloom filter - use 4 线性无关 formula</li>
+<li>Counting bloom filter - support delete</li>
+<li>Better DS than HashMap, but can loose some accuracy</li>
+</ol>
+<p>Trie</p>
+<p>Bitmap</p>
+<p>Find all unique queries - use bigmap to store 3 types of states</p>
+<h2 id="System-Design"><a href="#System-Design" class="headerlink" title="System Design"></a>System Design</h2><h3 id="Design-a-short-url-system"><a href="#Design-a-short-url-system" class="headerlink" title="Design a short url system"></a>Design a short url system</h3><ol>
+<li>Cache</li>
+</ol>
+<blockquote>
+<p>to store hot urls</p>
+</blockquote>
+<ol>
+<li>Load Balance</li>
+</ol>
+<blockquote>
+<p>Too many click in short time</p>
+</blockquote>
+<ol>
+<li>Storage balance</li>
+</ol>
+<blockquote>
+<p>Hash value of an url and then store in<br>individual machine</p>
+<p>Expansibility?</p>
+</blockquote>
+<ol>
+<li>Consistent Hash</li>
+</ol>
+<blockquote>
+<p>Node, can increase # of machines to store information</p>
+</blockquote>
+<blockquote>
+<p>Migration process</p>
+</blockquote>
+<ol>
+<li>Router</li>
+</ol>
+<blockquote>
+<p>check which machine response my query</p>
+<p>light-weight calculations</p>
+<p>what is router is down?</p>
+</blockquote>
+<ol>
+<li>Locale</li>
+</ol>
+<blockquote>
+<p>url frequently access by China, then put the url storage in Beijing</p>
+</blockquote>
+<h3 id="Need-to-know-Design-patterns"><a href="#Need-to-know-Design-patterns" class="headerlink" title="Need-to-know Design patterns"></a>Need-to-know Design patterns</h3><ol>
+<li>Singleton</li>
+<li>Factory</li>
+<li>Master-slave (esp. for relational DB)</li>
+</ol>
+<p><a target="_blank" rel="noopener" href="http://static.googleusercontent.com/media/research.google.com/en//archive/mapreduce-osdi04.pdf">MapReduce: Simplified Data Processing on Large Clusters</a></p>
+<p><a target="_blank" rel="noopener" href="http://static.googleusercontent.com/media/research.google.com/en//archive/gfs-sosp2003.pdf">The Google File System</a></p>
+<p><a target="_blank" rel="noopener" href="http://static.googleusercontent.com/media/research.google.com/en//archive/bigtable-osdi06.pdf">BigTable: A Distributed Storage System for Structured Data</a></p>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

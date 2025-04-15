@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    [CC150v4] 5.2 Convert Integer to Binary Form  丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">[CC150v4] 5.2 Convert Integer to Binary Form </div>
+  <div class="post-meta">
+    <div class="date">2014 September 7th</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><blockquote>
+<p>Given a (decimal - e.g. 3.72) number that is passed in as a string, print the binary representation.</p>
+</blockquote>
+<blockquote>
+<p>If the number can not be represented accurately in binary, print “ERROR”</p>
+</blockquote>
+<h3 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h3><p>Convert the integer part is easy.</p>
+<p><strong>The difficulty is how to convert a floating point (the decimal part) to binary form</strong>. The idea suggested in the book is to keep x2, and subtract 1 when necessary. Eg.</p>
+<blockquote>
+<p>0.625 x 2 &#x3D; 1.25, append 1</p>
+<p>0.25 x 2 &#x3D; 0.5, append 0</p>
+<p>0.5 x 2 &#x3D; 1, append 1</p>
+<p>the binary form of 0.625 would be 0.101.</p>
+</blockquote>
+<p>We must declarify the max number of digits in the decimal part. In the book, <strong>the answer assumes a maximum digits of 32 bits</strong> (i.e. when binary length grows more than 32 bits, return “Error”).</p>
+<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><p><strong>written by me</strong></p>
+<pre><code>public static String printBinary(String n) &#123;
+	String[] num = n.split(&quot;\\.&quot;);
+	int integer = Integer.parseInt(num[0]);
+	double decimal = Double.parseDouble(&quot;0.&quot; + num[1]);
+
+	// now convert decimal part, if can&#39;t convert, return ERROR
+	StringBuilder sb = new StringBuilder();
+	while (decimal != 0) &#123;
+		if (sb.length() &gt; 32) &#123;
+			return &quot;ERROR&quot;;
+		&#125;
+		double newDoub = 2 * decimal;
+		sb.append(newDoub &gt;= 1 ? &quot;1&quot; : &quot;0&quot;);
+		decimal = newDoub % 1;
+	&#125;
+
+	// now convert integer part
+	String intStr = &quot;&quot;;
+	while (integer != 0) &#123;
+		intStr = ((integer &amp; 1) == 1 ? &quot;1&quot; : &quot;0&quot;) + intStr;
+		integer = integer &gt;&gt; 1;
+	&#125;
+
+	// return the 2 parts connected with a dot
+	return intStr + &quot;.&quot; + sb.toString();
+&#125;
+</code></pre>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

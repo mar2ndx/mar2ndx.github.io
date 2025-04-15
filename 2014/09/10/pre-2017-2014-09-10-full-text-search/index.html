@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    [CC150v4] 20.8 Full Text Search (suffix tree)  丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">[CC150v4] 20.8 Full Text Search (suffix tree) </div>
+  <div class="post-meta">
+    <div class="date">2014 September 10th</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><blockquote>
+<p>Given a string s and an array of smaller strings T, design a method to search s for each small string in T.</p>
+</blockquote>
+<h3 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h3><p><strong>This is a very classic question of string search</strong>, favored by Google and Facebook.</p>
+<p>The solution is <strong>suffix tree</strong> (to be distinguished from <strong>trie</strong>, or prefix tree, which searched word by its prefix). Suffix tree is good for search a proportion of a long string. For example, using “bibs” to build a suffix tree like this:</p>
+<p><img src="/images/suffix-tree-example-bibs.png"></p>
+<p>The building of suffix tree and searching is not a very lengthy code. It’s posted below and it’s not written by me.</p>
+<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><p>Main method:</p>
+<pre><code>public static void main(String[] args) &#123;
+	String testString = &quot;mississippi&quot;;
+	String[] stringList = &#123; &quot;is&quot;, &quot;sip&quot;, &quot;hi&quot;, &quot;sis&quot; &#125;;
+	SuffixTree tree = new SuffixTree(testString);
+	for (String s : stringList) &#123;
+		ArrayList&lt;Integer&gt; list = tree.getIndexes(s);
+		if (list != null) &#123;
+			System.out.println(s + &quot;: &quot; + list.toString());
+		&#125; else &#123;
+			System.out.println(s + &quot;: does not exist.&quot;);
+		&#125;
+	&#125;
+&#125;
+</code></pre>
+<p>SuffixTree.java</p>
+<pre><code>public class SuffixTree &#123;
+	SuffixTreeNode root = new SuffixTreeNode();
+
+	public SuffixTree(String s) &#123;
+		// create a suffix tree with input string s
+		for (int i = 0; i &lt; s.length(); i++) &#123;
+			String suffix = s.substring(i);
+			root.insertString(suffix, i);
+		&#125;
+	&#125;
+
+	public ArrayList&lt;Integer&gt; getIndexes(String s) &#123;
+		return root.getIndexes(s);
+	&#125;
+&#125;
+</code></pre>
+<p>SuffixTreeNode.java</p>
+<pre><code>public class SuffixTreeNode &#123;
+
+	char value;
+	HashMap&lt;Character, SuffixTreeNode&gt; children;
+	ArrayList&lt;Integer&gt; indexes = new ArrayList&lt;Integer&gt;();
+
+	public SuffixTreeNode() &#123;
+		children = new HashMap&lt;Character, SuffixTreeNode&gt;();
+	&#125;
+
+	public void insertString(String s, int index) &#123;
+		indexes.add(index);
+		if (s != null &amp;&amp; s.length() &gt; 0) &#123;
+			value = s.charAt(0);
+			SuffixTreeNode child = null;
+			if (children.containsKey(value)) &#123;
+				child = children.get(value);
+			&#125; else &#123;
+				child = new SuffixTreeNode();
+				children.put(value, child);
+			&#125;
+			String remainder = s.substring(1);
+			child.insertString(remainder, index);
+		&#125;
+	&#125;
+
+	public ArrayList&lt;Integer&gt; getIndexes(String s) &#123;
+		if (s == null || s.length() == 0) &#123;
+			return indexes;
+		&#125; else &#123;
+			char first = s.charAt(0);
+			if (children.containsKey(first)) &#123;
+				String remainder = s.substring(1);
+				return children.get(first).getIndexes(remainder);
+			&#125;
+		&#125;
+		return null;
+	&#125;
+&#125;
+</code></pre>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

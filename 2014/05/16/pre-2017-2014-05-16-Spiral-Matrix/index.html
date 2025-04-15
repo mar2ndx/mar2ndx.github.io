@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    [LeetCode 54] Spiral Matrix 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">[LeetCode 54] Spiral Matrix</div>
+  <div class="post-meta">
+    <div class="date">2014 May 16th</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><p><a target="_blank" rel="noopener" href="http://oj.leetcode.com/problems/spiral-matrix/">link</a></p>
+<div class="question-content">
+            <p></p><p>Given a matrix of <i>m</i> x <i>n</i> elements (<i>m</i> rows, <i>n</i> columns), return all elements of the matrix in spiral order.
+</p>
+
+<p>
+For example,<br>
+Given the following matrix:
+</p>
+<pre>[
+ [ 1, 2, 3 ],
+ [ 4, 5, 6 ],
+ [ 7, 8, 9 ]
+]
+</pre>
+<p>
+You should return <code>[1,2,3,6,9,8,7,4,5]</code>.
+</p><p></p>
+          </div>
+
+<h3 id="Stats"><a href="#Stats" class="headerlink" title="Stats"></a>Stats</h3><table border="2">
+	<tr>
+		<td>Frequency</td>
+		<td bgcolor="lime">2</td>
+	</tr>
+	<tr>
+		<td>Difficulty</td>
+		<td bgcolor="red">4</td>
+	</tr>
+	<tr>
+		<td>Adjusted Difficulty</td>
+		<td bgcolor="yellow">3</td>
+	</tr>
+	<tr>
+		<td>Time to use</td>
+		<td bgcolor="yellow">----------</td>
+	</tr>
+</table>
+
+<p>Ratings&#x2F;Color &#x3D; 1(white) 2(lime) 3(yellow) 4&#x2F;5(red)</p>
+<h3 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h3><p><strong>This question is basic mathematics</strong>. The difficulty is the coding part.</p>
+<h3 id="My-code"><a href="#My-code" class="headerlink" title="My code"></a>My code</h3><pre><code>public class Solution &#123;
+    public List&lt;Integer&gt; spiralOrder(int[][] matrix) &#123;
+		List&lt;Integer&gt; ans = new ArrayList&lt;Integer&gt;();
+		if (matrix == null || matrix.length == 0
+			|| matrix[0] == null || matrix[0].length == 0) &#123;
+			return ans;
+		&#125;
+		int m = matrix.length;
+		int n = matrix[0].length;
+		int a = 0;
+		int b = 0;
+		while (a &lt; (m + 1) / 2 &amp;&amp; b &lt; (n + 1) / 2) &#123;
+			// special cases
+			if (2 * a + 1 == m &amp;&amp; 2 * b + 1 == n) &#123;
+				ans.add(matrix[a][b]);
+				break;
+			&#125; else if (2 * a + 1 == m) &#123;
+				for (int j = b; j &lt;= n - 1 - b; j++) &#123;
+					ans.add(matrix[a][j]);
+				&#125;
+				break;
+			&#125; else if (2 * b + 1 == n) &#123;
+				for (int i = a; i &lt;= m - 1 - a; i++) &#123;
+					ans.add(matrix[i][b]);
+				&#125;
+				break;
+			&#125;
+			// now is the general case
+			// first horizontal row without last element
+			for (int j = b; j &lt; n - 1 - b; j++) &#123;
+				ans.add(matrix[a][j]);
+			&#125;
+			// vertical column on right-hand side
+			for (int i = a; i &lt; m - 1 - a; i++) &#123;
+				ans.add(matrix[i][n - 1 - b]);
+			&#125;
+			for (int j = n - 1 - b; j &gt; b; j--) &#123;
+				ans.add(matrix[m - 1 - a][j]);
+			&#125;
+			for (int i = m - 1 - a; i &gt; a; i--) &#123;
+				ans.add(matrix[i][b]);
+			&#125;
+			a++;
+			b++;
+		&#125;
+		return ans;
+    &#125;
+&#125;
+</code></pre>
+<p><strong>Updated Oct 29, 2022</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">public List&lt;Integer&gt; spiralOrder(int[][] matrix) &#123;</span><br><span class="line">    int[][] direct = &#123;</span><br><span class="line">        &#123;0, 1&#125;,</span><br><span class="line">        &#123;1, 0&#125;,</span><br><span class="line">        &#123;0, -1&#125;,</span><br><span class="line">        &#123;-1, 0&#125;</span><br><span class="line">    &#125;;</span><br><span class="line">    int m = matrix.length;</span><br><span class="line">    int n = matrix[0].length;</span><br><span class="line">    List&lt;Integer&gt; ans = new LinkedList&lt;Integer&gt;();</span><br><span class="line">    boolean[][] visited = new boolean[m][n];</span><br><span class="line"></span><br><span class="line">    int x = 0;</span><br><span class="line">    int y = 0;</span><br><span class="line">    int k = 0;</span><br><span class="line">    while (ans.size() &lt; m * n) &#123;</span><br><span class="line">        visited[x][y] = true;</span><br><span class="line">        ans.add(matrix[x][y]);</span><br><span class="line">        int nextX = x + direct[k][0];</span><br><span class="line">        int nextY = y + direct[k][1];</span><br><span class="line">        if (nextX &lt; 0 || nextX &gt;= m</span><br><span class="line">                || nextY &lt; 0 || nextY &gt;= n</span><br><span class="line">                || visited[nextX][nextY]) &#123;</span><br><span class="line">            k = (k + 1) % 4;</span><br><span class="line">            x += direct[k][0];</span><br><span class="line">            y += direct[k][1];</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            x = nextX;</span><br><span class="line">            y = nextY;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    return ans;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

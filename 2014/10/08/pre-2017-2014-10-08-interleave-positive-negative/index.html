@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    [Question] Interleave Positive and Negative Numbers  丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">[Question] Interleave Positive and Negative Numbers </div>
+  <div class="post-meta">
+    <div class="date">2014 October 8th</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><p><a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/s?__biz=MzA5MzE4MjgyMw==&mid=200355650&idx=1&sn=f94e87cb391fb12af9531cedb452dba1&key=d232b50733c41de56b96f855d9cdea5824f24c712e158651b45d7fe139a94610a7561da1fab0104e968592b01f2439d4&ascene=7&uin=MzM2NjQyNQ==&pass_ticket=i7pJQweQbuRdnUFUt5cdOmapPc/DW6Xk40U7+cg/0o8=">link</a></p>
+<blockquote>
+<p>给一个包含正负整数的数组，要求对这个数组中的数进行重新排列，使得其正负交替出现。首先出现负数，然后是正数，然后是负数。有多余的数的一方，就放在末尾。</p>
+</blockquote>
+<blockquote>
+<p>如 [1, 2, 3, -4]-&gt;[-4, 1, 2, 3]，[1,-3,2,-4,-5]-&gt;[-3,1,-4,2,-5]. 要求使用O(1)的额外空间。</p>
+</blockquote>
+<blockquote>
+<p>如果需要保持正数序列和负数序列各自原来的顺序，如何做？</p>
+</blockquote>
+<blockquote>
+<p>如果不需要保持正数序列和负数序列各自原来的顺序，如何做？</p>
+</blockquote>
+<h3 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h3><p>I only solve this question if we <strong>do not have to keep the original ordering</strong>. </p>
+<p>Basically, 2 pointers search from beginning to end. If there’re more + than -, move the extra positive values to the back of the array. Vice versa. </p>
+<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><p><strong>written by me</strong></p>
+<pre><code>public void solve(int[] A) &#123;
+	int len = A.length;
+	int neg = 0;
+	int pos = 1;
+	while (neg &lt; len || pos &lt; len) &#123;
+
+		while (neg &lt; len &amp;&amp; A[neg] &lt; 0) &#123;
+			neg += 2;
+		&#125;
+		while (pos &lt; len &amp;&amp; A[pos] &gt; 0) &#123;
+			pos += 2;
+		&#125;
+		// neg points to a positive value
+		// pos points to a negative value
+		// swap them (if they&#39;re valid position)
+		if (neg &gt;= len &amp;&amp; pos &gt;= len) &#123;
+			return;
+		&#125; else if (neg &gt;= len) &#123;
+			// neg is done, there&#39;s more - then +
+			// put all negative values pointed by pos to the back
+			int right = len - 1;
+			if (right % 2 == 0) &#123;
+				right--;
+			&#125;
+			while (pos &lt; right) &#123;
+				while (pos &lt; len &amp;&amp; A[pos] &gt; 0) &#123;
+					pos += 2;
+				&#125;
+				while (right &gt;= 0 &amp;&amp; A[right] &lt; 0) &#123;
+					right -= 2;
+				&#125;
+				// pos point to a negative value, right to positive value
+				if (pos &gt; right) &#123;
+					break;
+				&#125; else &#123;
+					swap(A, pos, right);
+				&#125;
+			&#125;
+			return;
+		&#125; else if (pos &gt;= len) &#123;
+			// pos is done, there&#39;s more + then -
+			int right = len - 1;
+			if (right % 2 == 1) &#123;
+				right--;
+			&#125;
+			while (neg &lt; right) &#123;
+				while (neg &lt; len &amp;&amp; A[neg] &lt; 0) &#123;
+					neg += 2;
+				&#125;
+				while (right &gt;= 0 &amp;&amp; A[right] &gt; 0) &#123;
+					right -= 2;
+				&#125;
+				if (neg &gt; right) &#123;
+					break;
+				&#125; else &#123;
+					swap(A, neg, right);
+				&#125;
+			&#125;
+			return;
+		&#125; else &#123;
+			swap(A, neg, pos);
+		&#125;
+	&#125;
+&#125;
+
+private void swap(int[] array, int a, int b) &#123;
+	int temp = array[a];
+	array[a] = array[b];
+	array[b] = temp;
+&#125;
+</code></pre>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

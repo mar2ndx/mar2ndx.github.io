@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    [Java OOP] Common Root of Java Classes  丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">[Java OOP] Common Root of Java Classes </div>
+  <div class="post-meta">
+    <div class="date">2014 December 22nd</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><h3 id="Common-Root-Class"><a href="#Common-Root-Class" class="headerlink" title="Common Root Class"></a>Common Root Class</h3><p><strong>java.lang.Object</strong>, <a target="_blank" rel="noopener" href="http://docs.oracle.com/javase/7/docs/api/java/lang/Object.html">link</a></p>
+<p>All Java classes are derived from this <a target="_blank" rel="noopener" href="http://www.ntu.edu.sg/home/ehchua/programming/java/J3b_OOPInheritancePolymorphism.html">common root class</a>, that defines common behaviors.</p>
+<p>Common behaviors include multi-threading and garbage collector etc.</p>
+<h4 id="Some-methods"><a href="#Some-methods" class="headerlink" title="Some methods"></a>Some methods</h4><p><a target="_blank" rel="noopener" href="http://docs.oracle.com/javase/tutorial/java/IandI/objectclass.html">ref</a></p>
+<p>protected Object clone() throws CloneNotSupportedException</p>
+<blockquote>
+<p>Creates and returns a copy of this object.</p>
+</blockquote>
+<p>public boolean equals(Object obj)</p>
+<blockquote>
+<p>Indicates whether some other object is “equal to” this one.</p>
+</blockquote>
+<p>protected void finalize() throws Throwable</p>
+<blockquote>
+<p>Called by the garbage collector on an object when garbage collection determines that there are no more references to the object</p>
+</blockquote>
+<p>public final Class getClass()</p>
+<blockquote>
+<p>Returns the runtime class of an object.</p>
+</blockquote>
+<p>public int hashCode()</p>
+<blockquote>
+<p>Returns a hash code value for the object.</p>
+</blockquote>
+<p>public String toString()</p>
+<blockquote>
+<p>Returns a string representation of the object.</p>
+</blockquote>
+<h3 id="Sync-related-methods"><a href="#Sync-related-methods" class="headerlink" title="Sync-related methods"></a>Sync-related methods</h3><p>The notify, notifyAll, and wait methods of Object all play a part in synchronizing the activities of independently running threads in a program.</p>
+<pre><code>public final void notify()
+public final void notifyAll()
+public final void wait()
+public final void wait(long timeout)
+public final void wait(long timeout, int nanos)
+</code></pre>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

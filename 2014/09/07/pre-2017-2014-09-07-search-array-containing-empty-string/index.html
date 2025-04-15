@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    [CC150v4] 9.5 Search Array Containing Empty String  丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">[CC150v4] 9.5 Search Array Containing Empty String </div>
+  <div class="post-meta">
+    <div class="date">2014 September 7th</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><blockquote>
+<p>Given a sorted array of strings which is interspersed with empty strings, write a method to find the location of a given string.</p>
+</blockquote>
+<blockquote>
+<p>Example: find “ball” in [“at”, “”, “”, “”, “ball”, “”, “”, “car”, “”, “”, “dad”, “”, “”] will return 4</p>
+</blockquote>
+<blockquote>
+<p>Example: find “ballcar” in [“at”, “”, “”, “”, “”, “ball”, “car”, “”, “”, “dad”, “”, “”] will return -1</p>
+</blockquote>
+<h3 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h3><p>The solution is binary search, but when reads empty, <strong>advance to the next non-empty string</strong>.</p>
+<p>But wait, <strong>there can be a very big problem that causes looping forever</strong>. Eg.</p>
+<blockquote>
+<p>“a”, “”, “”, “”, “c” (5 items), look for “b”</p>
+</blockquote>
+<blockquote>
+<p>Now ‘left’ points to 1st string(“a”) and ‘right’ points to 4th(“”). If we read read ‘mid’ value and advance to the next non-empty string, it’ll be “c”.</p>
+</blockquote>
+<blockquote>
+<p>since “c” is large than “b”, ‘right’ is set to the 4th index. It’s a endless loop!</p>
+</blockquote>
+<p>There’re various ways to solve this. The book suggests <strong>locate ‘right’ pointer at non-empty string</strong> by moving left, and then <strong>locate ‘mid’ pointer at non-empty</strong> by moving right. This avoids endless loop.</p>
+<p>My approach is to use 2 instances of ‘mid’:</p>
+<ol>
+<li>calculatedMid</li>
+<li>comparisonMid</li>
+</ol>
+<p>Both ways are fine.</p>
+<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><pre><code>public static int search(String[] input, String target) &#123;
+	if (target == null || target.length() == 0) &#123;
+		return -1;
+	&#125;
+	int len = input.length;
+	int left = 0, right = len - 1;
+	while (left &lt; right) &#123;
+		int calculatedMid = left + (right - left) / 2;
+		int comparisonMid = calculatedMid;
+		while (comparisonMid &lt; len &amp;&amp; input[comparisonMid].length() == 0) &#123;
+			comparisonMid++;
+		&#125;
+		if (input[comparisonMid].equals(target)) &#123;
+			return comparisonMid;
+		&#125; else if (input[comparisonMid].compareTo(target) &lt; 0) &#123;
+			left = comparisonMid + 1;
+		&#125; else &#123;
+			right = calculatedMid - 1;
+		&#125;
+	&#125;
+	if (left &lt; len &amp;&amp; input[left].equals(target)) &#123;
+		return left;
+	&#125; else &#123;
+		return -1;
+	&#125;
+&#125;
+</code></pre>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

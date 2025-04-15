@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    [Question] Longest Substring with At Most Two Distinct Characters  丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">[Question] Longest Substring with At Most Two Distinct Characters </div>
+  <div class="post-meta">
+    <div class="date">2014 July 21st</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><p><a target="_blank" rel="noopener" href="http://www.programcreek.com/2013/02/longest-substring-which-contains-2-unique-characters/">link</a></p>
+<blockquote>
+<p>Given a string, find the longest substring that contains only two unique characters. For example, given “abcbbbbcccbdddadacb”, the longest substring that contains 2 unique character is “bcbbbbcccb”.</p>
+</blockquote>
+<h3 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h3><p><strong>First, the most basic and naive solution</strong>, which we use 2 pointers and 1 hashset. Read thru and when seeing the 3rd different char, <strong>rebuild the hashset</strong>. Idea is from original post. This approach is not very efficient. </p>
+<p><strong>Second, we can use HashMap instead of HashSet</strong>, so that we keep couting how many of each char we currently got. This should do the trick well. </p>
+<blockquote>
+<p>What if the question change from ‘2 unique chars’ to ‘N unique chars’? <strong>Use HashMap instead of HashSet</strong>. The rest of the is very similar. </p>
+</blockquote>
+<p><strong>Third solution I found it <a target="_blank" rel="noopener" href="http://stackoverflow.com/a/15000204">here</a></strong>. It keeps a ‘lastGroupStart’ pointer, that points to <strong>the last position where character changes</strong>. Eg. “aaaabbbbbcccc”, ‘lastGroupStart’ would pointer to the first occurance of ‘b’. When we read until c, we update the window starting point to ‘lastGroupStart’, and update ‘lastGroupStart’ to the first occurance of ‘c’. </p>
+<p>This is a frequent question. I personally would <strong>recommend 2nd solution: using HashMap</strong>. </p>
+<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><p><strong>first solution</strong></p>
+<pre><code>private String solution(String input) &#123;
+	HashSet&lt;Character&gt; set = new HashSet&lt;Character&gt;();
+	char[] letters = input.toCharArray();
+	set.add(letters[0]);
+
+	int start = 0;
+	String longest = input.substring(0, 1);
+
+	for (int i = 1; i &lt; input.length(); i++) &#123;
+		if (set.add(letters[i])) &#123;
+			if (set.size() &gt; 2) &#123;
+				// first, update the longest substring that exists before i
+				if (i - start &gt; longest.length()) &#123;
+					longest = input.substring(start, i);
+				&#125;
+				// clear and rebuild the HashSet
+				set.clear();
+				set.add(letters[i]);
+				set.add(letters[i - 1]);
+				// remove 1 char entirely from current substring
+				int p = i - 1;
+				while (p &gt; 0 &amp;&amp; letters[p] == letters[p - 1]) &#123;
+					p--;
+				&#125;
+				start = p;
+			&#125;
+		&#125;
+	&#125;
+	if (input.length() - start &gt; longest.length()) &#123;
+		longest = input.substring(start);
+	&#125;
+	return longest;
+&#125;
+</code></pre>
+<p><strong>third solution</strong>, pay attention to ‘lastGroupStart’. </p>
+<pre><code>// Find the first letter that is not equal to the first one, 
+// or return the entire string if it consists of one type of characters
+int start = 0;
+int i = 1;
+while (i &lt; str.length() &amp;&amp; str[i] == str[start])
+    i++;
+if (i == str.length())
+    return str;
+
+// The main algorithm
+char[2] chars = &#123;str[start], str[i]&#125;;
+int lastGroupStart = 0;
+while (i &lt; str.length()) &#123;
+    if (str[i] == chars[0] || str[i] == chars[1]) &#123;
+        if (str[i] != str[i - 1])
+            lastGroupStart = i;
+    &#125;
+    else &#123;
+        //TODO: str.substring(start, i) is a locally maximal string; 
+        //      compare it to the longest one so far
+        start = lastGroupStart;
+        lastGroupStart = i;
+        chars[0] = str[start];
+        chars[1] = str[lastGroupStart];
+    &#125;
+    i++;
+&#125;
+//TODO: After the loop, str.substring(start, str.length()) 
+//      is also a potential solution.
+</code></pre>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

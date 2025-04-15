@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    [Java OOP] Static class and Inner class  丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">[Java OOP] Static class and Inner class </div>
+  <div class="post-meta">
+    <div class="date">2015 October 23rd</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><h1 id="Nested-classes"><a href="#Nested-classes" class="headerlink" title="Nested classes"></a>Nested classes</h1><p>Both Static class and Inner class are called <strong>nested class</strong>.</p>
+<p><a target="_blank" rel="noopener" href="http://tutorials.jenkov.com/java/nested-classes.html">The purpose of a nested class</a> is to <strong>clearly group the nested class with its surrounding class</strong>, signaling that these two classes are to be used together.</p>
+<p>Now the 2 types:</p>
+<ol>
+<li>Static nested classes (also: Static Classes )</li>
+<li>Non-static nested classes (also: Inner Class)</li>
+</ol>
+<h2 id="Static-Classes"><a href="#Static-Classes" class="headerlink" title="Static Classes"></a>Static Classes</h2><p>Declare:</p>
+<pre><code>public class Outer &#123;
+    public static class Nested &#123;
+
+    &#125;
+&#125;
+</code></pre>
+<p>Instantiate (just like a normal class):</p>
+<pre><code>Outer.Nested instance = new Outer.Nested();
+</code></pre>
+<h2 id="Inner-Classes"><a href="#Inner-Classes" class="headerlink" title="Inner Classes"></a>Inner Classes</h2><pre><code>public class Outer &#123;
+    public class Inner &#123;
+
+    &#125;
+&#125;
+</code></pre>
+<p>Instantiate (you MUST have an instance of enclosing class, and look weird the ‘new’ keyword looks):</p>
+<pre><code>Outer outer = new Outer();
+Outer.Inner inner = outer.new Inner();
+</code></pre>
+<h1 id="access-level"><a href="#access-level" class="headerlink" title="access level"></a>access level</h1><p><strong>Inner class</strong> can access private members in enclosing class (static or non-static).</p>
+<pre><code>public class Outer &#123;
+
+    private String text = &quot;I am private!&quot;;
+
+    public class Inner &#123;
+
+        public void printText() &#123;
+            System.out.println(text);
+        &#125;
+    &#125;
+&#125;
+</code></pre>
+<p><strong>Static class</strong> <a target="_blank" rel="noopener" href="http://www.geeksforgeeks.org/static-class-in-java/">cannot access non-static members</a>.</p>
+<h1 id="top-level-static-class"><a href="#top-level-static-class" class="headerlink" title="top-level static class?"></a>top-level static class?</h1><p>Java has <strong><a target="_blank" rel="noopener" href="http://stackoverflow.com/a/7486111">no way of making a top-level class static</a></strong> but you can simulate a static class like this:</p>
+<ol>
+<li><p>Declare your class final</p>
+</li>
+<li><p>Make the constructor private</p>
+</li>
+<li><p>Make all the members and functions of the class static</p>
+</li>
+</ol>
+<p>(this basically is a Singleton)</p>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

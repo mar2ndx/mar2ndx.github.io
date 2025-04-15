@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    [Question] Add Integers without +/++ 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">[Question] Add Integers without +/++</div>
+  <div class="post-meta">
+    <div class="date">2014 August 8th</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><p><a target="_blank" rel="noopener" href="http://javarevisited.blogspot.sg/2013/06/how-to-add-two-integer-numbers-without-plus-arithmetic-operator-java-example.html">link</a></p>
+<blockquote>
+<p>Add two numbers (integers) without using + or plus arithmetic operator.</p>
+</blockquote>
+<h3 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h3><p><strong>Bit operations</strong>. </p>
+<p>We could not do this in 1 pass, because multiple rounding issues. </p>
+<p>So we do it in while-loop then! 2 solutions available: <strong>iteratively and recursively</strong>. </p>
+<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><p><strong>written by me</strong></p>
+<pre><code>public int add(int x, int y) &#123;
+	// add y into x (and y results to 0)
+	while (y != 0) &#123;
+		int carry = x &amp; y;
+		int sum = x ^ y;
+		x = sum;
+		y = carry &lt;&lt; 1;
+	&#125;
+	return x;
+&#125;
+</code></pre>
+<p><strong>recursive</strong></p>
+<pre><code>public int add2(int x, int y) &#123;
+	if (y == 0) &#123;
+		return x;
+	&#125;
+	int carry = (x &amp; y) &lt;&lt; 1;
+	return add2(x ^ y, carry);
+&#125;
+</code></pre>
+<p><strong>updated on Sep 10th, 2014</strong>: this question appears on cc150v4 20.1. I wrote the following code: </p>
+<pre><code>public static int add_no_arithm(int a, int b) &#123;
+	if (b == 0)
+		return a;
+	int addition = a ^ b;
+	int carry = (a &amp; b) &lt;&lt; 1;
+	return add_no_arithm(addition, carry);
+&#125;
+</code></pre>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

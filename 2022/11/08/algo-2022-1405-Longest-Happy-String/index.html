@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    1405. Longest Happy String 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">1405. Longest Happy String</div>
+  <div class="post-meta">
+    <div class="date">2022 November 8th</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><p>Link: <a target="_blank" rel="noopener" href="https://leetcode.cn/problems/longest-happy-string/">https://leetcode.cn/problems/longest-happy-string/</a></p>
+<h1 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h1><p>difficulty: mid<br>adj diff: 4</p>
+<pre><code>A string s is called happy if it satisfies the following conditions:
+
+s only contains the letters &#39;a&#39;, &#39;b&#39;, and &#39;c&#39;.
+s does not contain any of &quot;aaa&quot;, &quot;bbb&quot;, or &quot;ccc&quot; as a substring.
+s contains at most a occurrences of the letter &#39;a&#39;.
+s contains at most b occurrences of the letter &#39;b&#39;.
+s contains at most c occurrences of the letter &#39;c&#39;.
+Given three integers a, b, and c, return the longest possible happy string. If there are multiple longest happy strings, return any of them. If there is no such string, return the empty string &quot;&quot;.
+
+A substring is a contiguous sequence of characters within a string.
+Example 1:
+
+Input: a = 1, b = 1, c = 7
+Output: &quot;ccaccbcc&quot;
+Explanation: &quot;ccbccacc&quot; would also be a correct answer.
+Example 2:
+
+Input: a = 7, b = 1, c = 0
+Output: &quot;aabaa&quot;
+Explanation: It is the only correct answer in this case.
+
+Constraints:
+
+0 &lt;= a, b, c &lt;= 100
+a + b + c &gt; 0
+</code></pre>
+<h1 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line">public String longestDiverseString(int a, int b, int c) &#123;</span><br><span class="line">    StringBuilder sb = new StringBuilder();</span><br><span class="line">    Pair[] pairs = &#123;</span><br><span class="line">        new Pair(&#x27;a&#x27;, a),</span><br><span class="line">        new Pair(&#x27;b&#x27;, b),</span><br><span class="line">        new Pair(&#x27;c&#x27;, c)</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    Arrays.sort(pairs);</span><br><span class="line">    build(sb, &#x27;z&#x27;, pairs);</span><br><span class="line">    return sb.toString();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">private void build(StringBuilder sb, char preChar, Pair[] pairs) &#123;</span><br><span class="line">    int nextIndex = -1;</span><br><span class="line">    String str = sb.toString();</span><br><span class="line">    int len = str.length();</span><br><span class="line"></span><br><span class="line">    if (len &lt; 2 || preChar != pairs[0].abc) &#123;</span><br><span class="line">        nextIndex = 0;</span><br><span class="line">    &#125; else if (str.charAt(len - 2) == str.charAt(len - 1)) &#123;</span><br><span class="line">        nextIndex = 1;</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        nextIndex = 0;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    if (pairs[nextIndex].count == 0) &#123;</span><br><span class="line">        return;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    char nextChar = pairs[nextIndex].abc;</span><br><span class="line">    sb.append(nextChar);</span><br><span class="line">    pairs[nextIndex].count = pairs[nextIndex].count - 1;</span><br><span class="line">    Arrays.sort(pairs);</span><br><span class="line">    build(sb, nextChar, pairs);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class Pair implements Comparable&lt;Pair&gt;&#123;</span><br><span class="line">    char abc;</span><br><span class="line">    int count;</span><br><span class="line"></span><br><span class="line">    public Pair(char x, int y) &#123;</span><br><span class="line">        abc = x;</span><br><span class="line">        count = y;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public int compareTo(Pair p) &#123;</span><br><span class="line">        return p.count - this.count;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

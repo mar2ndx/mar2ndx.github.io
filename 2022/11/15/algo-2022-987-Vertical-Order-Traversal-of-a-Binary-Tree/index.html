@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    987. Vertical Order Traversal of a Binary Tree 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">987. Vertical Order Traversal of a Binary Tree</div>
+  <div class="post-meta">
+    <div class="date">2022 November 15th</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><p>Link: <a target="_blank" rel="noopener" href="https://leetcode.cn/problems/vertical-order-traversal-of-a-binary-tree/">https://leetcode.cn/problems/vertical-order-traversal-of-a-binary-tree/</a></p>
+<h1 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h1><p>difficulty: hard<br>adj diff: 3</p>
+<pre><code>Given the root of a binary tree, calculate the vertical order traversal of the binary tree.
+
+For each node at position (row, col), its left and right children will be at positions (row + 1, col - 1) and (row + 1, col + 1) respectively. The root of the tree is at (0, 0).
+
+The vertical order traversal of a binary tree is a list of top-to-bottom orderings for each column index starting from the leftmost column and ending on the rightmost column. There may be multiple nodes in the same row and same column. In such a case, sort these nodes by their values.
+
+Return the vertical order traversal of the binary tree.
+
+ 
+
+Example 1:
+
+Input: root = [3,9,20,null,null,15,7]
+Output: [[9],[3,15],[20],[7]]
+Explanation:
+Column -1: Only node 9 is in this column.
+Column 0: Nodes 3 and 15 are in this column in that order from top to bottom.
+Column 1: Only node 20 is in this column.
+Column 2: Only node 7 is in this column.
+
+Example 2:
+
+Input: root = [1,2,3,4,5,6,7]
+Output: [[4],[2],[1,5,6],[3],[7]]
+Explanation:
+Column -2: Only node 4 is in this column.
+Column -1: Only node 2 is in this column.
+Column 0: Nodes 1, 5, and 6 are in this column.
+		  1 is at the top, so it comes first.
+		  5 and 6 are at the same position (2, 0), so we order them by their value, 5 before 6.
+Column 1: Only node 3 is in this column.
+Column 2: Only node 7 is in this column.
+
+Example 3:
+
+Input: root = [1,2,3,4,6,5,7]
+Output: [[4],[2],[1,5,6],[3],[7]]
+Explanation:
+This case is the exact same as example 2, but with nodes 5 and 6 swapped.
+Note that the solution remains the same since 5 and 6 are in the same location and should be ordered by their values.
+
+ 
+
+Constraints:
+
+	The number of nodes in the tree is in the range [1, 1000].
+	0 &lt;= Node.val &lt;= 1000
+</code></pre>
+<p>这题不难。其实以前做过。</p>
+<p>那就是 <a href="https://mar2ndx.github.io/2014/12/17/Print-Binary-Tree-Vertically/">https://mar2ndx.github.io/2014/12/17/Print-Binary-Tree-Vertically/</a></p>
+<p>不过这道题不能 DFS写，我改成 BFS了，修改不大，如下。</p>
+<h1 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">    public List&lt;List&lt;Integer&gt;&gt; verticalTraversal(TreeNode root) &#123;</span><br><span class="line">        List&lt;List&lt;Integer&gt;&gt; ans = new ArrayList&lt;List&lt;Integer&gt;&gt;();</span><br><span class="line"></span><br><span class="line">        // 1. find the range of left bound and right bound</span><br><span class="line">        int[] range = new int[2];</span><br><span class="line">        findRange(root, range, 0);</span><br><span class="line"></span><br><span class="line">        // 2. calculate number of columns in the result</span><br><span class="line">        int rootIndex = 0 - range[0];</span><br><span class="line">        int columns = range[1] - range[0] + 1;</span><br><span class="line">        for (int i = 0; i &lt; columns; i++) &#123;</span><br><span class="line">            ans.add(new ArrayList&lt;Integer&gt;());</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        // 3. fill in vertically in a recursive manner</span><br><span class="line">        List&lt;TreeNode&gt; list1 = new LinkedList&lt;TreeNode&gt;();</span><br><span class="line">        List&lt;Integer&gt; list2 = new LinkedList&lt;Integer&gt;();</span><br><span class="line">        list1.add(root);</span><br><span class="line">        list2.add(rootIndex);</span><br><span class="line">        while (!list1.isEmpty()) &#123;</span><br><span class="line">            for (int i = list1.size() - 1; i &gt;= 0; i--) &#123;</span><br><span class="line">                TreeNode node = list1.remove(0);</span><br><span class="line">                int curIndex = list2.remove(0);</span><br><span class="line">                ans.get(curIndex).add(node.val);</span><br><span class="line">                if (node.left != null) &#123;</span><br><span class="line">                    list1.add(node.left);</span><br><span class="line">                    list2.add(curIndex - 1);</span><br><span class="line">                &#125;</span><br><span class="line">                if (node.right != null) &#123;</span><br><span class="line">                    list1.add(node.right);</span><br><span class="line">                    list2.add(curIndex + 1);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return ans;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    private void findRange(TreeNode node, int[] range, int position) &#123;</span><br><span class="line">        if (node == null) return;</span><br><span class="line">        if (position &lt; range[0]) &#123;</span><br><span class="line">            range[0] = position;</span><br><span class="line">        &#125; else if (position &gt; range[1]) &#123;</span><br><span class="line">            range[1] = position;</span><br><span class="line">        &#125;</span><br><span class="line">        findRange(node.left, range, position - 1);</span><br><span class="line">        findRange(node.right, range, position + 1);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    Hexo best practice in 2025 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">Hexo best practice in 2025</div>
+  <div class="post-meta">
+    <div class="date">2025 April 14th</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><h1 id="Change-config-yml"><a href="#Change-config-yml" class="headerlink" title="Change _config.yml:"></a>Change _config.yml:</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">new_post_name: :year-:month-:day-:title.md</span><br></pre></td></tr></table></figure>
+
+<p>After this change, your default file name becomes <code>2025-04-14-Hexo-best-practice-in-2025</code> instead of <code>Hexo-best-practice-in-2025</code></p>
+<h1 id="Deploy"><a href="#Deploy" class="headerlink" title="Deploy"></a>Deploy</h1><h2 id="CircleCI"><a href="#CircleCI" class="headerlink" title="CircleCI"></a>CircleCI</h2><p>Config:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">version: 2.1</span><br><span class="line">orbs:</span><br><span class="line">  node: circleci/node@5.1 # Use a more specific minor version</span><br><span class="line"></span><br><span class="line">jobs:</span><br><span class="line">  hexo_deploy:</span><br><span class="line">    executor: node/default</span><br><span class="line">    steps:</span><br><span class="line">      - checkout</span><br><span class="line">      - node/install-packages:</span><br><span class="line">          cache-path: node_modules # Simplified cache path</span><br><span class="line">          override-ci-command: npm install</span><br><span class="line"></span><br><span class="line">      - run:</span><br><span class="line">          name: Install Hexo CLI</span><br><span class="line">          command: npm install -g hexo-cli # Removed sudo</span><br><span class="line"></span><br><span class="line">      - run:</span><br><span class="line">          name: Clean public folder</span><br><span class="line">          command: rm -rf public # Added clean step</span><br><span class="line"></span><br><span class="line">      - run:</span><br><span class="line">          name: Generate Hexo Site</span><br><span class="line">          command: hexo generate</span><br><span class="line"></span><br><span class="line">      - run:</span><br><span class="line">          name: Install gh-pages package</span><br><span class="line">          command: npm install gh-pages --save-dev</span><br><span class="line"></span><br><span class="line">      - run:</span><br><span class="line">          name: Configure Git</span><br><span class="line">          command: |</span><br><span class="line">            git config --global user.email &quot;ci-build@circleci.com&quot;</span><br><span class="line">            git config --global user.name &quot;CircleCI Build&quot;</span><br><span class="line"></span><br><span class="line">      - run:</span><br><span class="line">          name: Deploy to GitHub Pages</span><br><span class="line">          command: |</span><br><span class="line">            npx gh-pages -d public -b gh-pages -m &quot;Build generated [skip ci]&quot;</span><br><span class="line"></span><br><span class="line">workflows:</span><br><span class="line">  version: 2</span><br><span class="line">  build-and-deploy:</span><br><span class="line">    jobs:</span><br><span class="line">      - hexo_deploy</span><br></pre></td></tr></table></figure>
+
+<p>Pipeline:</p>
+<p><a target="_blank" rel="noopener" href="https://app.circleci.com/pipelines/circleci/FxEGXAp1cq3kkmTWi4tCSt">https://app.circleci.com/pipelines/circleci/FxEGXAp1cq3kkmTWi4tCSt</a></p>
+<h2 id="TravisCI"><a href="#TravisCI" class="headerlink" title="TravisCI"></a>TravisCI</h2><p>Deprecated already since Travis stopped their free plan, but put config here for archiving:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">sudo: false</span><br><span class="line">language: node_js</span><br><span class="line">node_js:</span><br><span class="line">  - 22</span><br><span class="line">cache: npm</span><br><span class="line">branches:</span><br><span class="line">  only:</span><br><span class="line">    - hexo-source # build master branch only</span><br><span class="line">script:</span><br><span class="line">  - hexo generate # generate static files</span><br><span class="line">deploy:</span><br><span class="line">  provider: pages</span><br><span class="line">  skip-cleanup: true</span><br><span class="line">  github-token: $GITHUB_TOKEN</span><br><span class="line">  keep-history: true</span><br><span class="line">  target_branch: master # generate static files to master</span><br><span class="line">  on:</span><br><span class="line">#   branch: main</span><br><span class="line">    branch: hexo-source</span><br><span class="line">  local-dir: public</span><br></pre></td></tr></table></figure>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

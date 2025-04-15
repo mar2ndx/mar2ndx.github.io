@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    [NineChap 3.1] Binary Tree DFS and Divide Conquer 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">[NineChap 3.1] Binary Tree DFS and Divide Conquer</div>
+  <div class="post-meta">
+    <div class="date">2014 June 10th</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><h2 id="DFS"><a href="#DFS" class="headerlink" title="DFS"></a>DFS</h2><h4 id="Recursion-or-While-Loop"><a href="#Recursion-or-While-Loop" class="headerlink" title="Recursion or While-Loop?"></a>Recursion or While-Loop?</h4><p>We can use recursion, because unless it’s pre-order traverse, binary tree questions can be difficult.</p>
+<p>Solving the problem is more important.</p>
+<h4 id="Divide-Conquer-Algorithm"><a href="#Divide-Conquer-Algorithm" class="headerlink" title="Divide &amp; Conquer Algorithm"></a>Divide &amp; Conquer Algorithm</h4><ol>
+<li>Merge Sort</li>
+<li>Quick Sort</li>
+<li>Most of Binary tree questions</li>
+</ol>
+<h4 id="Solution-modal"><a href="#Solution-modal" class="headerlink" title="Solution modal"></a>Solution modal</h4><p>Generally, D&amp;C questions would do 2 things at same time:</p>
+<ol>
+<li>Divide - For binary tree, it mean solve left child, and solve right child</li>
+<li>Conquer - return result value</li>
+</ol>
+<p>A very common type would be validating the left&#x2F;right children and return -1 if the validation failed. Otherwise, a result value is returned. In this way, by checking the positive&#x2F;negative sign, we know whether this node is valid, and if valid, we know the returned value.</p>
+<p>This idea is extensivelly used among all binary tree questions. See “Lowest Common Ancestor (LCA)” for more details.</p>
+<h4 id="Template"><a href="#Template" class="headerlink" title="Template"></a>Template</h4><p><strong>Divide &amp; Conquer</strong>, <a target="_blank" rel="noopener" href="http://answer.ninechapter.com/solutions/dfs-template/">link</a></p>
+<pre><code>public class Solution &#123;
+    public ResultType traversal(TreeNode root) &#123;
+        // null or leaf
+        if (root == null) &#123;
+            // do something and return;
+        &#125;
+
+        // Divide
+        ResultType left = traversal(root.left);
+        ResultType right = traversal(root.right);
+
+        // Conquer
+        ResultType result = Merge from left and right.
+        return result;
+    &#125;
+&#125;
+</code></pre>
+<h2 id="Question-list"><a href="#Question-list" class="headerlink" title="Question list"></a>Question list</h2><p><strong>Traversal</strong></p>
+<ol>
+<li><p><strong><a href="/leetcode/2014-06-02-Binary-Tree-Preorder-Traversal">Binary Tree Preorder Traversal</a></strong></p>
+</li>
+<li><p><strong><a href="/leetcode/2014-05-24-Binary-Tree-Inorder-Traversal">Binary Tree Inorder Traversal</a></strong></p>
+</li>
+<li><p><strong><a href="/leetcode/2014-06-03-Binary-Tree-Postorder-Traversal">Binary Tree Postorder Traversal</a></strong></p>
+</li>
+</ol>
+<p><strong>Divide &amp; Conquer</strong></p>
+<ol>
+<li><p><strong><a href="/leetcode/2014-05-25-Maximum-Depth-of-Binary-Tree">Maximum Depth of Binary Tree</a></strong></p>
+</li>
+<li><p><strong><a href="/leetcode/2014-05-25-Minimum-Depth-of-Binary-Tree">Minimum Depth of Binary Tree</a></strong></p>
+</li>
+<li><p><strong><a href="/leetcode/2014-05-26-Balanced-Binary-Tree">Balanced Binary Tree</a></strong></p>
+</li>
+<li><p><strong><a href="/leetcode/2014-05-28-Binary-Tree-Maximum-Path-Sum">Binary Tree Maximum Path Sum</a></strong> - the most important question for this category</p>
+</li>
+</ol>
+<h4 id="Additional"><a href="#Additional" class="headerlink" title="Additional"></a>Additional</h4><ol>
+<li><p><strong>Lowest Common Ancestor Problem</strong></p>
+<p><a href="/leetcode_plus/2014-06-10-Lowest-Common-Ancestor-BST">problem one</a></p>
+<p><a href="/leetcode_plus/2014-06-10-Lowest-Common-Ancestor-Tree">problem two</a></p>
+<p><a href="/leetcode_plus/2014-06-10-Lowest-Common-Ancestor-Tree-II">problem three</a></p>
+</li>
+</ol>
+<h2 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h2><p><strong>Binary Tree Preorder Traversal</strong></p>
+<pre><code>public List&lt;Integer&gt; preorderTraversal(TreeNode root) &#123;
+    List&lt;Integer&gt; ans = new LinkedList&lt;Integer&gt;();
+    if (root == null) return ans;
+    Stack&lt;TreeNode&gt; stack = new Stack&lt;TreeNode&gt;();
+    stack.push(root);
+    while (!stack.isEmpty()) &#123;
+        TreeNode cur = stack.pop();
+        ans.add(cur.val);
+        if (cur.right != null) &#123;
+            stack.push(cur.right);
+        &#125;
+        if (cur.left != null) &#123;
+            stack.push(cur.left);
+        &#125;
+    &#125;
+    return ans;
+&#125;
+</code></pre>
+<p>There is a not-recommended but good-to-know solution of Divide &amp; Conquer (not written by me)</p>
+<pre><code>public class Solution &#123;
+    public ArrayList&lt;Integer&gt; preorderTraversal(TreeNode root) &#123;
+        ArrayList&lt;Integer&gt; result = new ArrayList&lt;Integer&gt;();
+        // null or leaf
+        if (root == null) &#123;
+            return result;
+        &#125;
+
+        // Divide
+        ArrayList&lt;Integer&gt; left = preorderTraversal(root.left);
+        ArrayList&lt;Integer&gt; right = preorderTraversal(root.right);
+
+        // Conquer
+        result.add(root.val);
+        result.addAll(left);
+        result.addAll(right);
+        return result;
+    &#125;
+&#125;
+</code></pre>
+<p><strong>Binary Tree Inorder Traversal</strong></p>
+<p>Keep traversing left until a NULL is found. When it happens, pop one and traverse right once. <strong>Remember this solution</strong>!</p>
+<pre><code>public ArrayList&lt;Integer&gt; inorderTraversal(TreeNode root) &#123;
+    ArrayList&lt;Integer&gt; ans = new ArrayList&lt;Integer&gt;();
+	if (root == null) &#123;
+		return ans;
+	&#125;
+	Stack&lt;TreeNode&gt; stack = new Stack&lt;TreeNode&gt;();
+	TreeNode p = root;
+	while (p != null || !stack.isEmpty()) &#123;
+		if (p != null) &#123;
+			stack.push(p);
+			p = p.left;
+		&#125;
+		else &#123;
+			p = stack.pop();
+			ans.add(p.val);
+			p = p.right;
+		&#125;
+	&#125;
+	return ans;
+&#125;
+</code></pre>
+<p><strong>Binary Tree Postorder Traversal</strong></p>
+<p>I failed to write the code even after reading the solution. I need to memorize this solution by heart.</p>
+<pre><code>public List&lt;Integer&gt; postorderTraversal(TreeNode root) &#123;
+	List&lt;Integer&gt; ans = new ArrayList&lt;Integer&gt;();
+	if (root == null) &#123;
+		return ans;
+	&#125;
+	Stack&lt;TreeNode&gt; stack = new Stack&lt;TreeNode&gt;();
+	stack.push(root);
+	TreeNode pre = null;
+	TreeNode cur = null;
+	while (!stack.isEmpty()) &#123;
+		cur = stack.peek();
+		if (pre == null || pre.left == cur || pre.right == cur) &#123;
+			if (cur.left != null) &#123;
+				stack.push(cur.left);
+			&#125; else if (cur.right != null) &#123;
+				stack.push(cur.right);
+			&#125;
+		&#125; else if (cur.left == pre) &#123;
+			if (cur.right != null) &#123;
+				stack.push(cur.right);
+			&#125;
+		&#125; else if (cur.right == pre || cur == pre) &#123;
+			// note that &#39;pre&#39; and &#39;cur&#39; are never going to be apart
+			// for more then 1 edge (they can overlap)
+			ans.add(stack.pop().val);
+		&#125;
+		pre = cur;
+	&#125;
+	return ans;
+&#125;
+</code></pre>
+<p><strong>Maximum Depth of Binary Tree</strong></p>
+<pre><code>// 1 minute
+public int maxDepth(TreeNode root) &#123;
+    if (root == null) return 0;
+    return 1 + Math.max(maxDepth(root.left), maxDepth(root.right));
+&#125;
+</code></pre>
+<p><strong>Minimum Depth of Binary Tree</strong></p>
+<pre><code>public int minDepth(TreeNode root) &#123;
+    if (root == null) &#123;
+		return 0;
+	&#125;
+	return checkLeaf(root);
+&#125;
+
+private int checkLeaf(TreeNode node) &#123;
+	if (node.left == null &amp;&amp; node.right == null) &#123;
+		return 1;
+	&#125;
+	int ll = Integer.MAX_VALUE;
+	int rr = Integer.MAX_VALUE;
+	if (node.left != null) ll = checkLeaf(node.left);
+	if (node.right != null) rr = checkLeaf(node.right);
+	return 1 + Math.min(ll, rr);
+&#125;
+</code></pre>
+<p>After checking <a target="_blank" rel="noopener" href="http://answer.ninechapter.com/solutions/minimum-depth-of-binary-tree/">the answer</a>, the code above can be optimized:</p>
+<pre><code>public int minDepth(TreeNode root) &#123;
+    if (root == null) &#123;
+        return 0;
+    &#125;
+    return getMin(root);
+&#125;
+
+public int getMin(TreeNode root)&#123;
+    if (root == null) &#123;
+        return Integer.MAX_VALUE; // important
+    &#125;
+
+    if (root.left == null &amp;&amp; root.right == null) &#123;
+        return 1;
+    &#125;
+
+    return Math.min(getMin(root.left), getMin(root.right)) + 1;
+&#125;
+</code></pre>
+<p><strong>Balanced Binary Tree</strong></p>
+<pre><code>// 4 minutes
+public boolean isBalanced(TreeNode root) &#123;
+    return getDepth(root) != -1;
+&#125;
+
+private int getDepth(TreeNode node) &#123;
+    if (node == null) &#123;
+        return 0;
+    &#125;
+    int ll = getDepth(node.left);
+    int rr = getDepth(node.right);
+    if (ll == -1 || rr == -1 || Math.abs(ll - rr) &gt; 1) &#123;
+        return -1;
+    &#125;
+    return 1 + Math.max(ll, rr);
+&#125;
+</code></pre>
+<p><strong>Binary Tree Maximum Path Sum</strong></p>
+<p>Although the following code works:</p>
+<pre><code>int max = Integer.MIN_VALUE;
+
+public int maxPathSum(TreeNode root) &#123;
+    maxDepth(root);
+	return max;
+&#125;
+
+private int maxDepth(TreeNode node) &#123;
+	if (node == null) &#123;
+		return 0;
+	&#125;
+	int ll = maxDepth(node.left);
+	int rr = maxDepth(node.right);
+	int currentMaxPath = ll + rr + node.val;
+	max = Math.max(max, currentMaxPath);
+	return Math.max(0, node.val + Math.max(ll, rr));
+&#125;
+</code></pre>
+<p>Mr. Huang said it’s AN EXTREMELY BAD IDEA TO USE GLOBAL VARIABLE in Java. It’s just terrible. Don’t do it.</p>
+<p>According to Mr. Huang’s <a target="_blank" rel="noopener" href="http://answer.ninechapter.com/solutions/binary-tree-maximum-path-sum/">suggestion</a>, I added another class called “ResultType”. This can help me return 2 values at 1 single traversal.</p>
+<p>Code is below. One ‘catch-ya’ is when NULL is found, the maxPath should return Integer.MIN_VALUE instead of 0.</p>
+<p>This code is much easier for both me and anyone else to understand, so <strong>stick to this solution, and never use global variable in Java</strong>!</p>
+<pre><code>private class ResultType &#123;
+    int singlePath, maxPath;
+    ResultType(int singlePath, int maxPath) &#123;
+        this.singlePath = singlePath;
+        this.maxPath = maxPath;
+    &#125;
+&#125;
+
+public int maxPathSum(TreeNode root) &#123;
+    ResultType result = helper(root);
+    return result.maxPath;
+&#125;
+
+private ResultType helper(TreeNode node) &#123;
+    // null case
+    if (node == null) &#123;
+        return new ResultType(0, Integer.MIN_VALUE);
+    &#125;
+    // divide
+    ResultType ll = helper(node.left);
+    ResultType rr = helper(node.right);
+    // conquer
+    int curSinglePath = Math.max(0, node.val +
+            Math.max(ll.singlePath, rr.singlePath));
+    int childMaxPath = Math.max(ll.maxPath, rr.maxPath);
+    int curMaxPath = Math.max(childMaxPath, node.val +
+            ll.singlePath + rr.singlePath);
+    // done
+    return new ResultType(curSinglePath, curMaxPath);
+&#125;
+</code></pre>
+<p><strong>Lowest Common Ancestor</strong> - I wrote three new posts on this topic:</p>
+<p>Problem 1: BST: top-down O(height) solution</p>
+<p>Problem 2: Binary Tree: bottom-up O(n) solution</p>
+<p>Problem 3: Binary Tree with a link to parent</p>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

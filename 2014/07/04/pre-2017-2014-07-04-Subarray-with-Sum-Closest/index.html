@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    [Question] Subarray with Sum Closest 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">[Question] Subarray with Sum Closest</div>
+  <div class="post-meta">
+    <div class="date">2014 July 4th</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><p><a target="_blank" rel="noopener" href="http://www.geeksforgeeks.org/minimum-length-subarray-sum-greater-given-value/">link</a></p>
+<blockquote>
+<p>Given an array of integers and a number x, find the smallest subarray with sum greater than the given value.</p>
+<p>Eg. input &#x3D; (1, 4, 45, 6, 0, 19), 51, output (4, 45, 6)</p>
+</blockquote>
+<h3 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h3><p><strong>Solution 1 (the better one)</strong> is based on another question <strong>Subarray with 0 Sum</strong>. We calculate the 前缀和 of every number. Takes O(n) time. </p>
+<p>If all input are positive, there can be a <strong>Solution 2</strong> which is based on another question <strong>Subarray with Particular Sum</strong>. The sliding window search. It’s O(n) time as well. </p>
+<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><p><strong>Solution 2</strong> (for positive input) </p>
+<pre><code>int smallestSubWithSum(int arr[], int n, int x) &#123;
+    //  Initilize length of smallest subarray as n+1
+     int min_len = n + 1;
+
+     // Pick every element as starting point
+     for (int start=0; start&lt;n; start++)
+     &#123;
+          // Initialize sum starting with current start
+          int curr_sum = arr[start];
+
+          // If first element itself is greater
+          if (curr_sum &gt; x) return 1;
+
+          // Try different ending points for curremt start
+          for (int end=start+1; end&lt;n; end++)
+          &#123;
+              // add last element to current sum
+              curr_sum += arr[end];
+
+              // If sum becomes more than x and length of
+              // this subarray is smaller than current smallest
+              // length, update the smallest length (or result)
+              if (curr_sum &gt; x &amp;&amp; (end - start + 1) &lt; min_len)
+                 min_len = (end - start + 1);
+          &#125;
+     &#125;
+     return min_len;
+&#125;
+</code></pre>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

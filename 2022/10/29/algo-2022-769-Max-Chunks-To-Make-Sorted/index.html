@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    769. Max Chunks To Make Sorted 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">769. Max Chunks To Make Sorted</div>
+  <div class="post-meta">
+    <div class="date">2022 October 29th</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><p>Link: <a target="_blank" rel="noopener" href="https://leetcode.cn/problems/max-chunks-to-make-sorted/">https://leetcode.cn/problems/max-chunks-to-make-sorted/</a></p>
+<h1 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h1><p>difficulty: mid<br>adj diff: 3</p>
+<pre><code>You are given an integer array arr of length n that represents a permutation of the integers in the range [0, n - 1].
+
+We split arr into some number of chunks (i.e., partitions), and individually sort each chunk. After concatenating them, the result should equal the sorted array.
+
+Return the largest number of chunks we can make to sort the array.
+
+Example 1:
+
+Input: arr = [4,3,2,1,0]
+Output: 1
+Explanation:
+Splitting into two or more chunks will not return the required result.
+For example, splitting into [4, 3], [2, 1, 0] will result in [3, 4, 0, 1, 2], which isn&#39;t sorted.
+
+Example 2:
+
+Input: arr = [1,0,2,3,4]
+Output: 4
+Explanation:
+We can split into two chunks, such as [1, 0], [2, 3, 4].
+However, splitting into [1, 0], [2], [3], [4] is the highest number of chunks possible.
+
+Constraints:
+
+	n == arr.length
+	1 &lt;= n &lt;= 10
+	0 &lt;= arr[i] &lt; n
+	All the elements of arr are unique.
+</code></pre>
+<p>挺巧妙的。</p>
+<h1 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">public int maxChunksToSorted(int[] arr) &#123;</span><br><span class="line">     int len = arr.length;</span><br><span class="line">     int chunks = 0;</span><br><span class="line">     int runningMax = 0;</span><br><span class="line">     for (int i = 0; i &lt; len; i++) &#123;</span><br><span class="line">         runningMax = Math.max(runningMax, arr[i]);</span><br><span class="line">         if (runningMax == i) &#123;</span><br><span class="line">             chunks++;</span><br><span class="line">         &#125;</span><br><span class="line">     &#125;</span><br><span class="line">     return chunks;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

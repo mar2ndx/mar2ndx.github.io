@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    [LeetCode 15] 3Sum  丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">[LeetCode 15] 3Sum </div>
+  <div class="post-meta">
+    <div class="date">2014 May 2nd</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><p><a target="_blank" rel="noopener" href="http://oj.leetcode.com/problems/3sum/">link</a></p>
+<div class="question-content">
+            <p></p><p>Given an array <i>S</i> of <i>n</i> integers, are there elements <i>a</i>, <i>b</i>, <i>c</i> in <i>S</i> such that <i>a</i> + <i>b</i> + <i>c</i> = 0? Find all unique triplets in the array which gives the sum of zero.</p>
+
+<p><b>Note:</b><br>
+</p><ul>
+<li>Elements in a triplet (<i>a</i>,<i>b</i>,<i>c</i>) must be in non-descending order. (ie, <i>a</i> ≤ <i>b</i> ≤ <i>c</i>)</li>
+<li>The solution set must not contain duplicate triplets.</li>
+</ul>
+<p></p>
+
+<pre>    For example, given array S = {-1 0 1 2 -1 -4},
+
+    A solution set is:
+    (-1, 0, 1)
+    (-1, -1, 2)
+</pre><p></p>
+</div>
+
+<h3 id="Stats"><a href="#Stats" class="headerlink" title="Stats"></a>Stats</h3><table border="2">
+	<tr>
+		<td>Frequency</td>
+		<td bgcolor="red">5</td>
+	</tr>
+	<tr>
+		<td>Diffficulty</td>
+		<td bgcolor="yellow">3</td>
+	</tr>
+	<tr>
+		<td>Adjusted Difficulty</td>
+		<td bgcolor="red">5</td>
+	</tr>
+	<tr>
+		<td>Time to use</td>
+		<td bgcolor="red">----------</td>
+	</tr>
+</table>
+
+<p>Ratings&#x2F;Color &#x3D; 1(white) 2(lime) 3(yellow) 4&#x2F;5(red)</p>
+<h3 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h3><p>First of all, the array must be sorted first.</p>
+<p><strong>This question is solved with O(n^2) time</strong>. The idea is, for every integer, try to find a 2-integer pair so that the 3 numbers sum to 0. The method to use is <strong>2-pointer scan</strong>.</p>
+<h3 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h3><p><strong>Very important point of this question</strong>: there might be duplications in the result.</p>
+<p>Eg. array &#x3D; {-5, 2, 2, 3, 3}. When a &#x3D; -5, we can choose 2, 3 and move pointers both by 1 position. Then we can choose 2, 3 again!</p>
+<p>Solution is to increase the pointer to where the value is different. Pay special attention in writing the code. Because there are 3 parts that need duplication avoidance:</p>
+<ol>
+<li><p><strong>The pivot number that we select, must be distinct each time</strong>. Why? because this is the smallest of the triplet. It must not be same.</p>
+</li>
+<li><p>The left pointer and right pointer. They should point to a new value each time.</p>
+</li>
+<li><p>Note that when sum is too large, move left pointer, and vice versa. <strong>However when sum is &#x3D;&#x3D; 0, we move both left and right pointer</strong>.</p>
+</li>
+</ol>
+<p>Point 3 is the reason why we have 2 conditions in seperate if-block:</p>
+<pre><code>if (sum &gt;= 0) &#123;...&#125;
+
+if (sum &lt;= 0) &#123;...&#125;
+</code></pre>
+<h3 id="My-code"><a href="#My-code" class="headerlink" title="My code"></a>My code</h3><pre><code>public class Solution &#123;
+    public List&lt;List&lt;Integer&gt;&gt; threeSum(int[] num) &#123;
+        List&lt;List&lt;Integer&gt;&gt; ans = new ArrayList&lt;List&lt;Integer&gt;&gt;();
+        if (num == null || num.length &lt; 3) &#123;
+            return ans;
+        &#125;
+        Arrays.sort(num);
+        int len = num.length;
+        int left, right;
+        for (int i = 0; i &lt; len; i++) &#123;
+            // duplication avoidance 1
+            if (i != 0 &amp;&amp; num[i] == num[i - 1]) &#123;
+                continue;
+            &#125;
+            left = i + 1;
+            right = len - 1;
+            while (left &lt; right) &#123;
+                int sum = num[i] + num[left] + num[right];
+                if (sum == 0) &#123;
+                    // now one triplet is found, add it to ans list
+                    List&lt;Integer&gt; triplet = new ArrayList&lt;Integer&gt;();
+                    triplet.add(num[i]);
+                    triplet.add(num[left]);
+                    triplet.add(num[right]);
+                    ans.add(triplet);
+                &#125;
+                // shrink the range between left and right pointer
+                // (until the 2 pointers met)
+                if (sum &gt;= 0) &#123;
+                    // move right pointer to the left
+                    right--;
+                    // duplication avoidance 2
+                    while (right &gt;= 0 &amp;&amp; num[right] == num[right + 1]) &#123;
+                        right--;
+                    &#125;
+                &#125;
+                if (sum &lt;= 0) &#123;
+                    // move left pointer to the right
+                    left++;
+                    // duplication avoidance 3
+                    while (left &lt; len &amp;&amp; num[left] == num[left - 1]) &#123;
+                        left++;
+                    &#125;
+                &#125;
+            &#125;
+        &#125;
+        return ans;
+    &#125;
+&#125;
+</code></pre>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

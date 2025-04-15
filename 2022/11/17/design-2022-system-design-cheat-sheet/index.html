@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    System design cheat sheet 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">System design cheat sheet</div>
+  <div class="post-meta">
+    <div class="date">2022 November 17th</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><h1 id="Answering-framework"><a href="#Answering-framework" class="headerlink" title="Answering framework"></a>Answering framework</h1><pre><code>Requirements
+    Functional Requirements
+    Non-functional requirements
+    Out of scope
+Capacity Estimation
+    Assumptions
+    Storage Estimations
+Detailed Component Design
+    Client
+    Meta Service
+    Block Service
+    Notification Service
+Database Schema
+APIs
+    Download Chunk
+    Upload Chunk
+    Get Objects
+Performance
+    Chunking Files
+    Data Deduplication
+    Caching
+Scalability
+    Horizontal Scaling
+    Database Sharding
+    Cache Sharding
+Security
+    HTTPS
+    Authentication
+Resiliency
+    Distributed Block Storage
+    Queuing
+    Load Balancing
+    Geo-redundancy
+References
+</code></pre>
+<p>Other things to remember:</p>
+<ol>
+<li>uploading file&#x2F;photo: use master&#x2F;slave model</li>
+<li>don’t forget to calculate the storage size for DB.<br>eg. 500M user data, each take 68 bytes, then storage needed &#x3D; 32GB<br>(user id 4 bytes, name 20 bytes, email 32 bytes, dataofbirth 4 bytes, creation time 4 byte, last login 4 bytes)</li>
+<li>data sharding - 如果按照 hash 分割，migration 非常困难。<br>solution：<br>先范围，再 hash。Or 一致性 hash 环（consistent hashing）</li>
+<li>如何 generate PhotoID？没有这个 id，我们无法判断哪个 shard。所以：用 snowflake 算法，unique IDs</li>
+</ol>
+<h1 id="3-most-popular-AWS-services"><a href="#3-most-popular-AWS-services" class="headerlink" title="3 most popular AWS services:"></a>3 most popular AWS services:</h1><ol>
+<li>EC2</li>
+<li>RDS: support multiple database engines including SQL Server, SQL, PostgreSQL</li>
+<li>S3: Simple Storage Service (S3)</li>
+</ol>
+<h1 id="Consistent-Hashing"><a href="#Consistent-Hashing" class="headerlink" title="Consistent Hashing"></a>Consistent Hashing</h1><p>Use for data partitioning problem</p>
+<p>Dynamo and Cassandra use Consistent Hashing to distribute their data across nodes</p>
+<h1 id="How-to-ensure-API-security"><a href="#How-to-ensure-API-security" class="headerlink" title="How to ensure API security?"></a>How to ensure API security?</h1><p>For each API request post log-in, we are doing authentication by checking the validity of auth_token in Authorization HTTP header.</p>
+<p>This makes sure that requests which originate from clients are legitimate.</p>
+<h1 id="Facebook-big-data"><a href="#Facebook-big-data" class="headerlink" title="Facebook big data"></a>Facebook big data</h1><p>Daily &#x3D; 5 Petabyte &#x3D; 5,000 Terabyte</p>
+<p>ODS &#x3D; time-series counter</p>
+<p>Scube &#x3D; in-memory</p>
+<p>Hive &#x3D; data warehouse</p>
+<p>None of the above are relational DB, thus no ACID properties.</p>
+<p>ACID &#x3D; atomic + consistency + isolation (invisible inter-mediate states) + durability (changes won’t undone)</p>
+<h1 id="Kafka"><a href="#Kafka" class="headerlink" title="Kafka"></a>Kafka</h1><p>Distributed streaming platform. Support publish-subscibe pattern. Not exactly same as messaging queue.</p>
+<p>Use cases:</p>
+<ol>
+<li>aggregate user activity on a website</li>
+<li>logs aggregation</li>
+</ol>
+<h1 id="News-Feed"><a href="#News-Feed" class="headerlink" title="News Feed"></a>News Feed</h1><p>pre-generation 然后存入一个 table。</p>
+<p>Pull（或者 long-pulling connection）比 Push 更好。</p>
+<p>因为：KOL 有 1M follower，push 不过来。但是人可以关注是又上限的：maybe 1000，所以 pull 起来更快一点。</p>
+<p>News feed 因为需要快速读写，所以 keep in memory. Eg. 100M users, each required 0.5MB space, then total space needed &#x3D; 50TB. If each computer &#x3D; 100GB, we need at least 500 machines.</p>
+<h1 id="Counter-service"><a href="#Counter-service" class="headerlink" title="Counter service"></a>Counter service</h1><p>不能用 Redis 这种 in-memory 来做，除非用户量小于 1000.</p>
+<p>用 Kafka + DB 来做。</p>
+<h1 id="Chat-app"><a href="#Chat-app" class="headerlink" title="Chat app"></a>Chat app</h1><p>XMPP protocol over WebSocket (or TCP), it’s peer-to-peer</p>
+<p>We can’t use HTTP which is client-server communication protocol, impossible for chatting app。</p>
+<h2 id="Session-Manager"><a href="#Session-Manager" class="headerlink" title="Session Manager"></a>Session Manager</h2><p>stores user ID - connection ID</p>
+<p>so I can find user’s websocket, so I know where to send the message</p>
+<h1 id="How-does-Long-polling-work"><a href="#How-does-Long-polling-work" class="headerlink" title="How does Long polling work?"></a>How does Long polling work?</h1><ol>
+<li>long polling is built on HTTP</li>
+<li>normally, client send HTTP request and server respond</li>
+<li>for long-polling, client send the request but server does not close the connection.</li>
+</ol>
+<p>The server does not close the connection, instead, the connection is kept open until there is data for the server to send</p>
+<p>Once data is received by the client, it immediately makes another HTTP Long-polling request to the server</p>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

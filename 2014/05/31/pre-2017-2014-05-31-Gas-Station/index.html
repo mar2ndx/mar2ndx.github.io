@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    [LeetCode 134] Gas Station 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">[LeetCode 134] Gas Station</div>
+  <div class="post-meta">
+    <div class="date">2014 May 31st</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><p><a target="_blank" rel="noopener" href="https://oj.leetcode.com/problems/gas-station/">link</a></p>
+<div class="question-content">
+            <p class="font-color"></p><p class="font-color">
+There are <i>N</i> gas stations along a circular route, where the amount of gas at station <i>i</i> is <code>gas[i]</code>.
+</p>
+
+<p class="font-color">
+You have a car with an unlimited gas tank and it costs <code>cost[i]</code> of gas to travel from station <i>i</i> to its next station (<i>i</i>+1). You begin the journey with an empty tank at one of the gas stations.
+</p>
+
+<p class="font-color">
+Return the starting gas station's index if you can travel around the circuit once, otherwise return -1.
+</p>
+
+<p class="font-color">
+<b>Note:</b><br>
+The solution is guaranteed to be unique.
+</p><p class="font-color"></p>
+          </div>
+
+<h3 id="Stats"><a href="#Stats" class="headerlink" title="Stats"></a>Stats</h3><table border="2">
+	<tr>
+		<td>Adjusted Difficulty</td>
+		<td bgcolor="red">4</td>
+	</tr>
+	<tr>
+		<td>Time to use</td>
+		<td bgcolor="yellow">--------</td>
+	</tr>
+</table>
+
+<p>Ratings&#x2F;Color &#x3D; 1(white) 2(lime) 3(yellow) 4&#x2F;5(red)</p>
+<h3 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h3><p><strong>This is a tough question, which requires a lot of math-related thinking</strong>.</p>
+<p><strong>My solution is IMHO very simple and easy</strong>. I first do a cumulation of gas from beginning to the end, and find the lowest cumulative value of the gas tank (of course can be negative). That point is where I start the journey, which is to say, I will validate the path from that point, and then return the result.</p>
+<p><strong>This idea is not seen on Internet</strong>, although it is just 2 loops thru the list, and time complexity is also O(n). Anyway, there’s a great solution which most people uses.</p>
+<p><strong>There’s a great <a target="_blank" rel="noopener" href="https://oj.leetcode.com/discuss/4159/share-some-of-my-ideas">post</a> that gives 2 valid conclusions</strong>:</p>
+<blockquote>
+<ol>
+<li>If car starts at A and can not reach B (let’s say B is the first station that A can not reach), then any station between A and B can not reach B.</li>
+<li>If the total number of gas is bigger than the total number of cost. There must be a valid solution.</li>
+</ol>
+</blockquote>
+<p>From here, a great solution can be found.</p>
+<h3 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h3><p><strong>A very detailed explanation and code is found from <a target="_blank" rel="noopener" href="http://leetcodenotes.wordpress.com/2013/11/21/leetcode-gas-station-%E8%BD%AC%E5%9C%88%E7%9A%84%E5%8A%A0%E6%B2%B9%E7%AB%99%E7%9C%8B%E8%83%BD%E4%B8%8D%E8%83%BD%E8%B5%B0%E4%B8%80%E5%9C%88/">this blog</a></strong>.</p>
+<blockquote>
+<ol>
+<li>从 i 开始，j 是当前 station 的指针，sum +&#x3D; gas[j] – cost[j] （从 j 站加了油，再算上从 i 开始走到 j 剩的油，走到 j+1 站还能剩下多少油）</li>
+<li>如果 sum &lt; 0，说明从 i 开始是不行的。那能不能从 i..j 中间的某个位置开始呢？假设能从 k (i &lt;&#x3D;k&lt;&#x3D;j)走，那么 i..j &lt; 0，若 k..j &gt;&#x3D;0，说明 i..k – 1 更是&lt;0，那从 k 处就早该断开了，根本轮不到 j。</li>
+<li>所以一旦 sum&lt;0，i 就赋成 j + 1，sum 归零。</li>
+</ol>
+</blockquote>
+<p>And note that if i is moved to j, there is no need to check (0..old_i) again, because this range must be reachable (write code again for beter understanding).</p>
+<p>Coding this solution <strong>is not easy</strong>! I failed to do it.</p>
+<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><p><strong>First, my solution</strong></p>
+<pre><code>public int canCompleteCircuit(int[] gas, int[] cost) &#123;
+    int len = gas.length;
+	if (len == 0) return -1;
+	int start = -1, min = Integer.MAX_VALUE, total = 0;
+	for (int i = 0; i &lt; len; i ++) &#123;
+		total += getDiff(gas, cost, i);
+		if (total &lt; min) &#123;
+			min = total;
+			start = i;
+		&#125;
+	&#125;
+	start = (start + 1) % len;
+	// now traverse the route from start
+	total = 0;
+	for (int i = 0; i &lt; len; i ++) &#123;
+		total += getDiff(gas, cost, (start + i) % len);
+		if (total &lt; 0) return -1;
+	&#125;
+	return start;
+&#125;
+
+private int getDiff(int[] gas, int[] cost, int i) &#123;
+	return gas[i] - cost[i];
+&#125;
+</code></pre>
+<p><strong>Second, best solution</strong></p>
+<pre><code>public int canCompleteCircuit(int[] gas, int[] cost) &#123;
+    int i = 0, j = 0;
+    int sum = 0;
+    int total = 0;
+    while (j &lt; gas.length) &#123;
+        int diff = gas[j] - cost[j];
+        if (sum + diff &lt; 0) &#123;
+            i = j + 1;
+            sum = 0;
+        &#125; else &#123;
+            sum += diff;
+        &#125;
+        j++;
+        total += diff;
+    &#125;
+    return total &gt;= 0 ? i : -1;
+&#125;
+</code></pre>
+<p>Updated Oct 29, 2022</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">public int canCompleteCircuit(int[] gas, int[] cost) &#123;</span><br><span class="line">    int n = gas.length;</span><br><span class="line">    int start = 0;</span><br><span class="line">    while (start &lt; n) &#123;</span><br><span class="line">        int totalGas = 0;</span><br><span class="line">        int totalCost = 0;</span><br><span class="line">        boolean isValidStart = true;</span><br><span class="line">        for (int i = 0; i &lt; n; i++) &#123;</span><br><span class="line">            int index = (start + i) % n;</span><br><span class="line">            totalGas += gas[index];</span><br><span class="line">            totalCost += cost[index];</span><br><span class="line">            if (totalGas &lt; totalCost) &#123;</span><br><span class="line">                // invalid starting point</span><br><span class="line">                start += i + 1;</span><br><span class="line">                isValidStart = false;</span><br><span class="line">                break;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        if (isValidStart) &#123;</span><br><span class="line">            return start;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    return start &gt;= n ? -1 : start;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

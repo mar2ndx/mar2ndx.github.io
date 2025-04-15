@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    1366. Rank Teams by Votes 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">1366. Rank Teams by Votes</div>
+  <div class="post-meta">
+    <div class="date">2022 October 30th</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><p>Link: <a target="_blank" rel="noopener" href="https://leetcode.cn/problems/rank-teams-by-votes/">https://leetcode.cn/problems/rank-teams-by-votes/</a></p>
+<h1 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h1><p>difficulty: mid<br>adj diff: 3</p>
+<pre><code>In a special ranking system, each voter gives a rank from highest to lowest to all teams participated in the competition.
+
+The ordering of teams is decided by who received the most position-one votes. If two or more teams tie in the first position, we consider the second position to resolve the conflict, if they tie again, we continue this process until the ties are resolved. If two or more teams are still tied after considering all positions, we rank them alphabetically based on their team letter.
+
+Given an array of strings votes which is the votes of all voters in the ranking systems. Sort all teams according to the ranking system described above.
+
+Return a string of all teams sorted by the ranking system.
+
+ 
+
+Example 1:
+
+Input: votes = [&quot;ABC&quot;,&quot;ACB&quot;,&quot;ABC&quot;,&quot;ACB&quot;,&quot;ACB&quot;]
+Output: &quot;ACB&quot;
+Explanation: Team A was ranked first place by 5 voters. No other team was voted as first place so team A is the first team.
+Team B was ranked second by 2 voters and was ranked third by 3 voters.
+Team C was ranked second by 3 voters and was ranked third by 2 voters.
+As most of the voters ranked C second, team C is the second team and team B is the third.
+
+Example 2:
+
+Input: votes = [&quot;WXYZ&quot;,&quot;XYZW&quot;]
+Output: &quot;XWYZ&quot;
+Explanation: X is the winner due to tie-breaking rule. X has same votes as W for the first position but X has one vote as second position while W doesn&#39;t have any votes as second position. 
+
+Example 3:
+
+Input: votes = [&quot;ZMNAGUEDSJYLBOPHRQICWFXTVK&quot;]
+Output: &quot;ZMNAGUEDSJYLBOPHRQICWFXTVK&quot;
+Explanation: Only one voter so his votes are used for the ranking.
+
+ 
+
+Constraints:
+
+	1 &lt;= votes.length &lt;= 1000
+	1 &lt;= votes[i].length &lt;= 26
+	votes[i].length == votes[j].length for 0 &lt;= i, j &lt; votes.length.
+	votes[i][j] is an English uppercase letter.
+	All characters of votes[i] are unique.
+	All the characters that occur in votes[0] also occur in votes[j] where 1 &lt;= j &lt; votes.length.
+</code></pre>
+<p>用到的 data structure 比较多。</p>
+<p>主要的思路就是：用一个长度为26的array来代表一个队的得票数。然后自定义 comparator （2种写法：implements Comparator, 或者 implements Comparable）。</p>
+<p>其实可以省一个 data structure，在 comparator 种复用一下 map 的数据，就行了。</p>
+<h1 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">    public String rankTeams(String[] votes) &#123;</span><br><span class="line">        // there is only 26 positions for each team</span><br><span class="line">        // eg. Team-A = &#123;2, 3, 1, 0, 6, 7&#125;</span><br><span class="line">        // eg. Team-B = &#123;2, 3, 1, 4, 1, 7&#125;</span><br><span class="line">        Map&lt;Character, TeamVotes&gt; map = new HashMap&lt;Character, TeamVotes&gt;();</span><br><span class="line">        for (String s: votes) &#123;</span><br><span class="line">            char[] countVotes = s.toCharArray();</span><br><span class="line">            for (int i = 0; i &lt; countVotes.length; i++) &#123;</span><br><span class="line">                char oneVote = countVotes[i];</span><br><span class="line">                if (!map.containsKey(oneVote)) &#123;</span><br><span class="line">                    map.put(oneVote, new TeamVotes(oneVote));</span><br><span class="line">                &#125;</span><br><span class="line">                map.get(oneVote).votes[i]++;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        // put the map into a list and sort it</span><br><span class="line">        List&lt;TeamVotes&gt; list = new ArrayList&lt;TeamVotes&gt;();</span><br><span class="line">        for (char charKey: map.keySet()) &#123;</span><br><span class="line">            list.add(map.get(charKey));</span><br><span class="line">        &#125;</span><br><span class="line">        Collections.sort(list);</span><br><span class="line"></span><br><span class="line">        StringBuilder sb = new StringBuilder();</span><br><span class="line">        for (TeamVotes tv: list) &#123;</span><br><span class="line">            sb.append(tv.team);</span><br><span class="line">        &#125;</span><br><span class="line">        return sb.toString();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    class TeamVotes implements Comparable&lt;TeamVotes&gt; &#123;</span><br><span class="line">        char team;</span><br><span class="line">        int[] votes;</span><br><span class="line"></span><br><span class="line">        public TeamVotes(char teamName) &#123;</span><br><span class="line">            this.team = teamName;</span><br><span class="line">            votes = new int[26];</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        public int compareTo(TeamVotes tv) &#123;</span><br><span class="line">            for (int i = 0; i &lt; 26; i++) &#123;</span><br><span class="line">                if (this.votes[i] &lt; tv.votes[i]) &#123;</span><br><span class="line">                    return 1;</span><br><span class="line">                &#125; else if (this.votes[i] &gt; tv.votes[i]) &#123;</span><br><span class="line">                    return -1;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            return this.team - tv.team;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

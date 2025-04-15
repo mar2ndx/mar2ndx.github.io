@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    [Design] HashMap vs Hashtable vs HashSet 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">[Design] HashMap vs Hashtable vs HashSet</div>
+  <div class="post-meta">
+    <div class="date">2014 July 1st</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><h2 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h2><h3 id="HashTable"><a href="#HashTable" class="headerlink" title="HashTable"></a>HashTable</h3><ol>
+<li>HashTable is thread safe synchronized. Only 1 thread can access at a time (compromise speed). </li>
+<li>HashTable does not allow null for key and value.</li>
+</ol>
+<h3 id="HashMap-HashSet"><a href="#HashMap-HashSet" class="headerlink" title="HashMap &amp; HashSet"></a>HashMap &amp; HashSet</h3><ol>
+<li>HashMap is not sync, but better performance. </li>
+<li>HashMap allows null key or null value. </li>
+<li>HashSet is same as HashMap, just interface difference.</li>
+</ol>
+<h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ol>
+<li>HashMap is roughly equivalent to Hashtable, except that it is unsynchronized and permits nulls. </li>
+<li>HashSet is same as HashMap. It’s not thread safe.</li>
+</ol>
+<h3 id="Implementation"><a href="#Implementation" class="headerlink" title="Implementation"></a>Implementation</h3><ol>
+<li>C++ Map is rbtree</li>
+<li>Java HashMap is buckets + entries (using Array + LinkedList)</li>
+<li>HashTable in Java is basically HashMap + lock</li>
+</ol>
+<h3 id="One-more-thing"><a href="#One-more-thing" class="headerlink" title="One more thing"></a>One more thing</h3><p>HashMap is locked-out during rehashing, so it’s better to avoid rehashing (by setting initial size bigger).</p>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

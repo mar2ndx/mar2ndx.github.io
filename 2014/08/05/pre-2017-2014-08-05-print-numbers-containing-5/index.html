@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    [Question] Print Numbers containing 5 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">[Question] Print Numbers containing 5</div>
+  <div class="post-meta">
+    <div class="date">2014 August 5th</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><p><a target="_blank" rel="noopener" href="http://www.mitbbs.com/article_t/JobHunting/32651839.html">link</a></p>
+<blockquote>
+<p>写一个function，对于参数n，输出从0到n之间所有含5的数字。eg. func(30) 应该输出5，15，25</p>
+</blockquote>
+<blockquote>
+<p>this is Groupon interview question</p>
+</blockquote>
+<h3 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h3><p>Suggested by level 10 of <a target="_blank" rel="noopener" href="http://www.mitbbs.com/article_t/JobHunting/32651839.html">this forum</a>. <strong>The key is to consider numbers as string, not numbers</strong>. Why? The key of the question is to find “5” in a number. We do not really care about values. We care about characters instead! </p>
+<blockquote>
+<p>用递归，基本思路是，</p>
+<p>考虑第i位的数字，取得值可以是0-9；唯一要注意的是最后一位数字，如果5没有出现过，只能取5.</p>
+</blockquote>
+<p>In other words, iterate thru the numbers one by one. Discard numbers that are larger than n. Discard numbers that don’t have “5”. We are left will all the valid output. </p>
+<p>It’s surprising to me that this is a <strong>String + DFS</strong> question. </p>
+<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><p><strong>written by me</strong></p>
+<pre><code>public void mySolution(int num) &#123;
+	if (num &gt;= 5) &#123;
+		String str = String.valueOf(num);
+		helper(num, &quot;&quot;, 0, str.length(), false);
+	&#125;
+&#125;
+
+private void helper(int max, String prefix, int pos, int len, boolean have5) &#123;
+	if (pos == len) &#123;
+		int cur = Integer.parseInt(prefix);
+		if (cur &lt;= max) &#123;
+			System.out.print(cur + &quot;, &quot;);
+		&#125;
+		return;
+	&#125;
+	for (int i = 0; i &lt; 10; i++) &#123;
+		if (pos == len - 1 &amp;&amp; !have5 &amp;&amp; i != 5) &#123;
+			continue;
+		&#125;
+		helper(max, prefix + i, pos + 1, len, have5 || i == 5);
+	&#125;
+&#125;
+</code></pre>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

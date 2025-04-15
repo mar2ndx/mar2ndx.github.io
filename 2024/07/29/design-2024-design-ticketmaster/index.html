@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    System Design 2024 - TicketMaster 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">System Design 2024 - TicketMaster</div>
+  <div class="post-meta">
+    <div class="date">2024 July 29th</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><h1 id="Design-TicketMaster"><a href="#Design-TicketMaster" class="headerlink" title="Design TicketMaster"></a>Design TicketMaster</h1><p>We’ll follow the 5-step procedure:</p>
+<ul>
+<li><p>Scenario</p>
+</li>
+<li><p>Numbers</p>
+</li>
+<li><p>API and Database</p>
+<ul>
+<li>[Important] also include HLD schema!</li>
+</ul>
+</li>
+<li><p>Performance</p>
+<ul>
+<li>Sharding and caching.</li>
+</ul>
+</li>
+<li><p>Evolve</p>
+<ul>
+<li>Read some real-world knowledge.</li>
+</ul>
+</li>
+</ul>
+<h1 id="1-Scenario"><a href="#1-Scenario" class="headerlink" title="1. Scenario"></a>1. Scenario</h1><h2 id="Functional-requirement"><a href="#Functional-requirement" class="headerlink" title="Functional requirement"></a>Functional requirement</h2><ol>
+<li>Book a ticket</li>
+<li>View an event</li>
+<li>Event discovery (search)</li>
+</ol>
+<h2 id="Non-Functional-requirement"><a href="#Non-Functional-requirement" class="headerlink" title="Non-Functional requirement"></a>Non-Functional requirement</h2><ol>
+<li>For search and viewing: <strong>High availability</strong>.</li>
+<li>However for booking, <strong>favor consistency</strong> over availability (avoid double booking)</li>
+<li>Scalability: support surges from popular events</li>
+<li>Minimize latency</li>
+</ol>
+<h3 id="Out-of-scope"><a href="#Out-of-scope" class="headerlink" title="Out of scope:"></a>Out of scope:</h3><ol>
+<li>GDPR compliance</li>
+<li>Fault tolerance</li>
+</ol>
+<h1 id="2-Numbers"><a href="#2-Numbers" class="headerlink" title="2. Numbers"></a>2. Numbers</h1><p>Skip.</p>
+<h1 id="3-API-and-Database"><a href="#3-API-and-Database" class="headerlink" title="3. API and Database"></a>3. API and Database</h1><h2 id="Core-entities"><a href="#Core-entities" class="headerlink" title="Core entities"></a>Core entities</h2><ol>
+<li>Event</li>
+<li>Venue</li>
+<li>Performer</li>
+<li>Ticket</li>
+</ol>
+<h2 id="API-design"><a href="#API-design" class="headerlink" title="API design"></a>API design</h2><p>Create an API for each of the functional requirements, and in exchange return entities in your core entities section. </p>
+<ul>
+<li>GET <code>/event/:eventId</code> -&gt; Event &amp; Venue &amp; Performer &amp; Ticket[]</li>
+<li>Get <code>/search?term=&#123;text&#125;&amp;location=&#123;lat,long&#125;&amp;type=&#123;string&#125;&amp;date=&#123;date&#125;</code> -&gt; Partial<Events>[] <ul>
+<li>It’s inspired by TypeScript, it’s perfectly fine to return array of events</li>
+</ul>
+</li>
+<li>POST <code>/booking/reserve</code> -&gt; hold the ticket for 10 minutes<ul>
+<li>Note that booking is a 2-phase process. <ol>
+<li>choose a seat (reserve phase)</li>
+<li>a timer count-down starts (eg. 10 minutes)</li>
+<li>pay within 10 minutes</li>
+</ol>
+</li>
+<li>Request example:</li>
+</ul>
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">header: JWT | sessionToken # this includes user&#x27;s information.</span><br><span class="line">body: &#123;</span><br><span class="line">    ticketId</span><br><span class="line">    # Please do not include userId here for security reason, since hacker could alter it</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>POST <code>/booking/confirm</code>  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">header: JWT | sessionToken # Never put usre&#x27;s ID in the request body.</span><br><span class="line">body: &#123;</span><br><span class="line">    ticketId,</span><br><span class="line">    paymentDetails (eg. for Stripe, there is a PaymentIntents that can be setup in client library),</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="Data-Model"><a href="#Data-Model" class="headerlink" title="Data Model"></a>Data Model</h2><ol>
+<li>Event table</li>
+<li>Venue - seatMap</li>
+<li>Performer</li>
+<li>Ticket - seat, price</li>
+</ol>
+<h3 id="Postgres-or-NoSQL"><a href="#Postgres-or-NoSQL" class="headerlink" title="Postgres or NoSQL?"></a>Postgres or NoSQL?</h3><p>Postgres (a SQL database) is easy to use, since it supports Transactions, support SQL queries, supports asset properties on Tickets. </p>
+<p>Well, Amazon’s DynamoDB (noSQL) also works. It also supports <strong>asset property</strong>. </p>
+<h2 id="HLD"><a href="#HLD" class="headerlink" title="HLD"></a>HLD</h2><p><img src="/images/system-design-ticketmaster-1.png"></p>
+<h3 id="To-book-a-ticket"><a href="#To-book-a-ticket" class="headerlink" title="To book a ticket"></a>To book a ticket</h3><p>Option 1 : keep a status column in the ticket table, another column called statusUpdateTime. </p>
+<p>If the status is “available”, or status is “reverved” but the statusUpdateTime is &gt;10min ago, that means the ticket is supposed to be released, and can be booked again.</p>
+<p>This design is horrible. </p>
+<p>Option 2 : Setup a cron job</p>
+<p>This job will periodically update the ticket reserve&#x2F;book status. </p>
+<p>This is still, not very much real-time. </p>
+<p>Option 3 : Keep a seperate service called “TicketLock”, using Redis. </p>
+<p>This is a <em>Distributed Lock</em>_. </p>
+<p>Instead of modifying our Ticket table, use Redis to keep all reserved ticket, with value like this: {ticketId, true} ttl &#x3D; 600 seconds. </p>
+<p>After 10 minutes, this K-V pair is automatically deleted from Redis.</p>
+<p>Steps: </p>
+<ol>
+<li>User request tickets with status &#x3D; available</li>
+<li>backend check Redis and remove all tickets that exists in the Redis</li>
+<li>User request to book ticket 1234</li>
+<li>add {1234, true} to Redis with ttl&#x3D;600</li>
+<li>10 minutes later without payment confirmation, Redis removes {1234, true}</li>
+<li>User comes back after 15 minutes, ticket 1234 is still available for booking.</li>
+</ol>
+<p>Q: what if the lock goes down?</p>
+<ol>
+<li>Immediately bring on up</li>
+<li>Many user will be able to book the system ticket (double book problem).</li>
+<li>Whoever submitted payment first, will win the ticket.</li>
+</ol>
+<h1 id="4-Performance"><a href="#4-Performance" class="headerlink" title="4. Performance"></a>4. Performance</h1><p>For performance deep-dive, show off your skills, especially if you are senior&#x2F;staff level. </p>
+<p>Find 1~3 places where you can optimize. Find from your non-functional requirements section. </p>
+<h2 id="4-1-Search-with-low-latency"><a href="#4-1-Search-with-low-latency" class="headerlink" title="4.1 Search with low-latency"></a>4.1 Search with low-latency</h2><p>Currently: full-table scan. </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Select * from DB</span><br><span class="line">Where type in []</span><br><span class="line">AND name like &quot;%term%&quot;</span><br></pre></td></tr></table></figure>
+
+<p>This is bad, since the wildcard means I need to do DB-scan on the entire table. </p>
+<p>New solution: ElasticSearch.</p>
+<ol>
+<li>Build an inverted-index to make searching document by ‘terms’ really fast. </li>
+<li>Tokenize the sets of strings, eg. “Golden state warriors” is a term. </li>
+<li>Map this term to the events. like this: <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">playoff: [event1, event2, event3, event4]</span><br><span class="line">swift: [event45, event134, event93]</span><br></pre></td></tr></table></figure></li>
+<li>ElasticSearch supports Geo-spacial queries as well.</li>
+<li>You can search a combination of {locations, date, terms} at the same time.</li>
+</ol>
+<p>Note: don’t use ElasticSearch as primary DB, learnt it the hard way.</p>
+<h2 id="4-2-How-to-sync-data-between-Postgres-and-ElasticSearch"><a href="#4-2-How-to-sync-data-between-Postgres-and-ElasticSearch" class="headerlink" title="4.2 How to sync data between Postgres and ElasticSearch"></a>4.2 How to sync data between Postgres and ElasticSearch</h2><p>Option 1 : write to both primary data store, and also ElasticSearch</p>
+<p>Not good. Retries happen. </p>
+<p>Option 2 : Change data capture (CDC)</p>
+<p>For any updates to Posgres, create a stream of change events, and consumed by ElasticSearch.</p>
+<p>There’s a limit for number of writes per second. </p>
+<h2 id="4-3-Handle-popular-events"><a href="#4-3-Handle-popular-events" class="headerlink" title="4.3 Handle popular events?"></a>4.3 Handle popular events?</h2><p>Caching. </p>
+<p>Option 1 : OpenSearch. </p>
+<p>AWS OpenSearch is a fully-managed ElasticSearch. It supports ‘node query caching’. </p>
+<p>It will cache the top 10K queries for each shard on your ElasticSearch cluster, using the Least recently used (LRU) Cache. </p>
+<p>Option 2 : cache &lt;search term, result&gt; K-V into Redis. </p>
+<p>Option 3 : You already got a CDN, cache API called and response. </p>
+<p>eg. people search “taylor swift” a lot, put this result in CDN cache. </p>
+<h2 id="4-4-Event-Ranking-and-Reco"><a href="#4-4-Event-Ranking-and-Reco" class="headerlink" title="4.4 Event Ranking and Reco?"></a>4.4 Event Ranking and Reco?</h2><p>Not covered. </p>
+<h1 id="5-Evolve"><a href="#5-Evolve" class="headerlink" title="5. Evolve"></a>5. Evolve</h1><h2 id="SeatMap-user-experience"><a href="#SeatMap-user-experience" class="headerlink" title="SeatMap user experience"></a>SeatMap user experience</h2><p>Front-end need to keep a HTTP-based long-pull to update seat map in real-time. </p>
+<p>Also, can use bi-directional persistent connection like WebSocket. </p>
+<p>Similarly, open a connection of Server-sent events (SSE). </p>
+<p>Keep difference:</p>
+<ol>
+<li>WebSocket is bi-directional.</li>
+<li>SSE is uni-directional.</li>
+</ol>
+<h2 id="Everyone-sees-a-black-map"><a href="#Everyone-sees-a-black-map" class="headerlink" title="Everyone sees a black map"></a>Everyone sees a black map</h2><p>For super-popular events, every seat is reserved with 1 seconds. </p>
+<p>Introduce a choke-point (essentially, a virtual waiting queue), using Redis. K-V will be like &lt;userId, token&gt;</p>
+<p>Basically, before user enters an event page, tell users to “please wait to enter this page”. Each time, only allow 100 people book tickets for a single event. </p>
+<h2 id="How-to-achive-strong-consistency"><a href="#How-to-achive-strong-consistency" class="headerlink" title="How to achive strong consistency?"></a>How to achive strong consistency?</h2><p>TicketLock using Redis.</p>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

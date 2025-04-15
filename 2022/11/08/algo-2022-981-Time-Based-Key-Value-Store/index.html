@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    981. Time Based Key-Value Store 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">981. Time Based Key-Value Store</div>
+  <div class="post-meta">
+    <div class="date">2022 November 8th</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><p>Link: <a target="_blank" rel="noopener" href="https://leetcode.cn/problems/time-based-key-value-store/">https://leetcode.cn/problems/time-based-key-value-store/</a></p>
+<h1 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h1><p>difficulty: mid<br>adj diff: 2</p>
+<pre><code>Design a time-based key-value data structure that can store multiple values for the same key at different time stamps and retrieve the key&#39;s value at a certain timestamp.
+
+Implement the TimeMap class:
+
+	TimeMap() Initializes the object of the data structure.
+	void set(String key, String value, int timestamp) Stores the key key with the value value at the given time timestamp.
+	String get(String key, int timestamp) Returns a value such that set was called previously, with timestamp_prev &lt;= timestamp. If there are multiple such values, it returns the value associated with the largest timestamp_prev. If there are no values, it returns &quot;&quot;.
+
+Example 1:
+
+Input
+[&quot;TimeMap&quot;, &quot;set&quot;, &quot;get&quot;, &quot;get&quot;, &quot;set&quot;, &quot;get&quot;, &quot;get&quot;]
+[[], [&quot;foo&quot;, &quot;bar&quot;, 1], [&quot;foo&quot;, 1], [&quot;foo&quot;, 3], [&quot;foo&quot;, &quot;bar2&quot;, 4], [&quot;foo&quot;, 4], [&quot;foo&quot;, 5]]
+Output
+[null, null, &quot;bar&quot;, &quot;bar&quot;, null, &quot;bar2&quot;, &quot;bar2&quot;]
+
+Explanation
+TimeMap timeMap = new TimeMap();
+timeMap.set(&quot;foo&quot;, &quot;bar&quot;, 1);  // store the key &quot;foo&quot; and value &quot;bar&quot; along with timestamp = 1.
+timeMap.get(&quot;foo&quot;, 1);         // return &quot;bar&quot;
+timeMap.get(&quot;foo&quot;, 3);         // return &quot;bar&quot;, since there is no value corresponding to foo at timestamp 3 and timestamp 2, then the only value is at timestamp 1 is &quot;bar&quot;.
+timeMap.set(&quot;foo&quot;, &quot;bar2&quot;, 4); // store the key &quot;foo&quot; and value &quot;bar2&quot; along with timestamp = 4.
+timeMap.get(&quot;foo&quot;, 4);         // return &quot;bar2&quot;
+timeMap.get(&quot;foo&quot;, 5);         // return &quot;bar2&quot;
+
+Constraints:
+
+	1 &lt;= key.length, value.length &lt;= 100
+	key and value consist of lowercase English letters and digits.
+	1 &lt;= timestamp &lt;= 107
+	All the timestamps timestamp of set are strictly increasing.
+	At most 2 * 105 calls will be made to set and get.
+</code></pre>
+<p>这题不难。</p>
+<p>唯一的 tricky 就是二分法，搜索。</p>
+<h1 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h1><p>以下代码，参考了：<a target="_blank" rel="noopener" href="https://leetcode.cn/problems/time-based-key-value-store/solution/gong-shui-san-xie-yi-ti-shuang-jie-ha-xi-h5et/">https://leetcode.cn/problems/time-based-key-value-store/solution/gong-shui-san-xie-yi-ti-shuang-jie-ha-xi-h5et/</a></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">class Pair &#123;</span><br><span class="line">    String key;</span><br><span class="line">    String value;</span><br><span class="line">    int timestamp;</span><br><span class="line"></span><br><span class="line">    public Pair (String a, String b, int c) &#123;</span><br><span class="line">        key = a;</span><br><span class="line">        value = b;</span><br><span class="line">        timestamp = c;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Map&lt;String, List&lt;Pair&gt;&gt; map;</span><br><span class="line"></span><br><span class="line">public TimeMap() &#123;</span><br><span class="line">    map = new HashMap&lt;String, List&lt;Pair&gt;&gt;();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">public void set(String key, String value, int timestamp) &#123;</span><br><span class="line">    if (!map.containsKey(key)) &#123;</span><br><span class="line">        List&lt;Pair&gt; list = new ArrayList&lt;Pair&gt;();</span><br><span class="line">        map.put(key, list);</span><br><span class="line">    &#125;</span><br><span class="line">    map.get(key).add(new Pair(key, value, timestamp));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">public String get(String key, int timestamp) &#123;</span><br><span class="line">    List&lt;Pair&gt; list = map.getOrDefault(key, new ArrayList&lt;&gt;());</span><br><span class="line">    if (list.isEmpty()) return &quot;&quot;;</span><br><span class="line"></span><br><span class="line">    int n = list.size();</span><br><span class="line">    int l = 0, r = n - 1;</span><br><span class="line">    while (l &lt; r) &#123;</span><br><span class="line">        int mid = l + r + 1 &gt;&gt; 1;</span><br><span class="line">        if (list.get(mid).timestamp &lt;= timestamp) &#123;</span><br><span class="line">            l = mid;</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            r = mid - 1;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    return list.get(r).timestamp &lt;= timestamp ? list.get(r).value : &quot;&quot;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

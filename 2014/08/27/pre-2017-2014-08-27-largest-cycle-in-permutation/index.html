@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    [Twitter] Largest Cycle in Permutation  丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">[Twitter] Largest Cycle in Permutation </div>
+  <div class="post-meta">
+    <div class="date">2014 August 27th</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><p><a target="_blank" rel="noopener" href="http://get-that-job-at-google.blogspot.sg/2013/01/twitter-programming-test.html">link</a></p>
+<blockquote>
+<p>Given a permutation which contains numbers in the range [1, N], return the length of the largest cycle in the permutation.</p>
+</blockquote>
+<blockquote>
+<p>A <a target="_blank" rel="noopener" href="http://mathworld.wolfram.com/PermutationCycle.html">permutation cycle</a> is a subset of a permutation whose elements trade places with one another.</p>
+</blockquote>
+<blockquote>
+<p>Sample Testcases:</p>
+</blockquote>
+<blockquote>
+<p>a) longestCycle([2 3 1]) returns 3, since only cycle is (1 2 3) whose length is 3</p>
+</blockquote>
+<blockquote>
+<p>b) longestCycle([5 4 3 2 1]) returns 2, since the permutation can be decomposed into (1 5), (2 4), (3)</p>
+</blockquote>
+<h3 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h3><p>This is just an idea.</p>
+<p>Now first of all, its important to understand <strong>what is a cycle in permutation</strong>.</p>
+<p>Keeping that in mind, I take (5,4,3,2,1) as an example. First, we fetch 5, and we swap number 5 with the 5th element of the array (which is 1). After this swap, value 1 is in the 1st position, so this cycle is done, the length is 2.</p>
+<p>We continue doing this until <strong>all numbers of value v is in the (v)th position</strong>, we should know the largest length of cycle during this process.</p>
+<p>I did not write code, and I found very little relevant resources. If you did, please leave a comment below.</p>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

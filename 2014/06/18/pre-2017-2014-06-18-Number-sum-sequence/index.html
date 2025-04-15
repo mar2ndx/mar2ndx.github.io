@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    [Question] Number Sum Sequence 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">[Question] Number Sum Sequence</div>
+  <div class="post-meta">
+    <div class="date">2014 June 18th</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><p><a target="_blank" rel="noopener" href="http://bbs.csdn.net/topics/390332954">link</a></p>
+<blockquote>
+<p>定义一个数字有以下的特征, 它可以被分成几个部分,而前面的部分相加起来的和是后面的部分.举例来说 </p>
+<p>1235813,       1+2&#x3D;3; 2+3&#x3D;5;3+5&#x3D;8; 5+8&#x3D;13;</p>
+<p>112112224,     112+112&#x3D;224;</p>
+<p>1981100,       19+81&#x3D;100;</p>
+<p>122436,        12+24&#x3D;36;</p>
+<p>1299111210,    12+99&#x3D;111,99+111&#x3D;210;</p>
+<p>要求写出一个函数,输入一个数字,判断这个数字是不是要求的这个数。</p>
+</blockquote>
+<h3 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h3><p><strong>This is a difficult DFS search question</strong>. Basic idea from <a target="_blank" rel="noopener" href="http://bbs.csdn.net/topics/390332954">this blog</a>: </p>
+<blockquote>
+<p>取前i位为a1,第i+1到j位为a2,检测n是否由a1和a2生成的序列组成。</p>
+<p>时间复杂度为O(n^3)（或O(n^2)). </p>
+</blockquote>
+<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><p>The code is surprisingly very short. </p>
+<p>I have yet to prove whether this code works. </p>
+<pre><code>def isLegal(n, i, j):
+    &quot;&quot;&quot;取前i位为a1,第i+1到j位为a2,检测n是否由a1和a2生成的序列组成。&quot;&quot;&quot;
+    nextDigit = j
+    a1 = int(n[:i])
+    a2 = int(n[i:j])
+    while nextDigit&lt;len(n): # n还有数字可用
+        a2, a1 = a1+a2, a2
+        s2 = str(a2)
+        if n.startswith(s2, nextDigit): #从n的第nextDigit位开始，与s2比较
+            nextDigit += len(s2)
+        else:
+            return False
+    return True
+
+def test(n):
+    for i in range(1, len(n)-1):
+        for j in range(i+1, len(n)-1):
+            if isLegal(n, i, j):
+                return True
+    return False
+</code></pre>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

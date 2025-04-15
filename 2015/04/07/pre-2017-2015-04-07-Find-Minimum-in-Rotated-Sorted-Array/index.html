@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    [LeetCode 153] Find Minimum in Rotated Sorted Array  丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">[LeetCode 153] Find Minimum in Rotated Sorted Array </div>
+  <div class="post-meta">
+    <div class="date">2015 April 7th</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><p><a target="_blank" rel="noopener" href="https://leetcode.com/problems/find-minimum-in-rotated-sorted-array/">link</a></p>
+<div class="question-content">
+              <p></p><p>Suppose a sorted array is rotated at some pivot unknown to you beforehand.</p>
+
+<p>(i.e., <code>0 1 2 4 5 6 7</code> might become <code>4 5 6 7 0 1 2</code>).</p>
+
+<p>Find the minimum element.</p>
+
+<p>You may assume no duplicate exists in the array.</p><p></p>
+              
+<pre><code>            &lt;div id=&quot;tags&quot; class=&quot;btn btn-xs btn-warning&quot;&gt;Show Tags&lt;/div&gt;
+            &lt;span class=&quot;hide&quot;&gt;
+              
+              &lt;a class=&quot;btn btn-xs btn-primary&quot; href=&quot;/tag/array/&quot;&gt;Array&lt;/a&gt;
+              
+              &lt;a class=&quot;btn btn-xs btn-primary&quot; href=&quot;/tag/binary-search/&quot;&gt;Binary Search&lt;/a&gt;
+              
+            &lt;/span&gt;
+          
+        &lt;/div&gt;
+</code></pre>
+<h3 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h3><p>This question is very similar to <strong>[LeetCode 33] Search in Rotated Sorted Array</strong>. Note a few special cases. </p>
+<h3 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h3><p>Very good code can be found <a target="_blank" rel="noopener" href="http://www.programcreek.com/2014/02/leetcode-find-minimum-in-rotated-sorted-array/">here</a> and <a target="_blank" rel="noopener" href="http://www.sanfoundry.com/java-program-find-minimum-element-rotated-sorted-array-using-binary-search-approach/">here</a>. </p>
+<h3 id="My-Code"><a href="#My-Code" class="headerlink" title="My Code"></a>My Code</h3><pre><code>public class Solution &#123;
+    public int findMin(int[] num) &#123;
+        if (num == null || num.length == 0) &#123;
+            return 0;
+        &#125;
+        return helper(num, 0, num.length - 1);
+    &#125;
+
+    private int helper(int[] num, int left, int right) &#123;
+        if (num[left] &lt;= num[right]) &#123;
+            return num[left];
+        &#125; else if (left + 1 == right) &#123;
+            return num[right];
+        &#125;
+        int mid = left + (right - left) / 2;
+        if (num[mid] &gt; num[left]) &#123;
+            return helper(num, mid, right);
+        &#125; else &#123;
+            return helper(num, left, mid);
+        &#125;
+    &#125;
+&#125;
+</code></pre>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

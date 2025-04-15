@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    1652. Defuse the Bomb 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">1652. Defuse the Bomb</div>
+  <div class="post-meta">
+    <div class="date">2022 November 8th</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><p>Link: <a target="_blank" rel="noopener" href="https://leetcode.cn/problems/defuse-the-bomb/">https://leetcode.cn/problems/defuse-the-bomb/</a></p>
+<h1 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h1><p>difficulty: low<br>adj diff: 2</p>
+<pre><code>You have a bomb to defuse, and your time is running out! Your informer will provide you with a circular array code of length of n and a key k.
+
+To decrypt the code, you must replace every number. All the numbers are replaced simultaneously.
+
+If k &gt; 0, replace the ith number with the sum of the next k numbers.
+If k &lt; 0, replace the ith number with the sum of the previous k numbers.
+If k == 0, replace the ith number with 0.
+As code is circular, the next element of code[n-1] is code[0], and the previous element of code[0] is code[n-1].
+
+Given the circular array code and an integer key k, return the decrypted code to defuse the bomb!
+
+Example 1:
+
+Input: code = [5,7,1,4], k = 3
+Output: [12,10,16,13]
+Explanation: Each number is replaced by the sum of the next 3 numbers. The decrypted code is [7+1+4, 1+4+5, 4+5+7, 5+7+1]. Notice that the numbers wrap around.
+Example 2:
+
+Input: code = [1,2,3,4], k = 0
+Output: [0,0,0,0]
+Explanation: When k is zero, the numbers are replaced by 0.
+Example 3:
+
+Input: code = [2,4,9,3], k = -2
+Output: [12,5,6,13]
+Explanation: The decrypted code is [3+9, 2+3, 4+2, 9+4]. Notice that the numbers wrap around again. If k is negative, the sum is of the previous numbers.
+
+Constraints:
+
+n == code.length
+1 &lt;= n &lt;= 100
+1 &lt;= code[i] &lt;= 100
+-(n - 1) &lt;= k &lt;= n - 1
+</code></pre>
+<h1 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">class Solution &#123;</span><br><span class="line">	public int[] decrypt(int[] code, int k) &#123;</span><br><span class="line">		int len = code.length;</span><br><span class="line">		int[] result = new int[len];</span><br><span class="line">		if (k == 0) return result;</span><br><span class="line">		int step = k /  Math.abs(k);</span><br><span class="line">		for (int i = 0; i &lt; len; i++) &#123;</span><br><span class="line">			int cur = step;</span><br><span class="line">			while (Math.abs(cur) &lt;= Math.abs(k)) &#123;</span><br><span class="line">				result[i] += code[(len + i + cur) % len];</span><br><span class="line">				cur += step;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		return result;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

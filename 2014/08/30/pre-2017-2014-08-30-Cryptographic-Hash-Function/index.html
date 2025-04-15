@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    [Design] Cryptographic Hash, MD5 and Digital signature  丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">[Design] Cryptographic Hash, MD5 and Digital signature </div>
+  <div class="post-meta">
+    <div class="date">2014 August 30th</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><h3 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h3><p><a target="_blank" rel="noopener" href="http://en.wikipedia.org/wiki/Cryptographic_hash_function">Cryptographic hash function</a> is a hash function which is considered practically impossible to invert.</p>
+<p>The input is arbitrary length, and output is fixed length.</p>
+<p>The input is called ‘message’ and output (the hash value) is called ‘<strong>digest</strong>‘.</p>
+<p>Common examples are:</p>
+<ol>
+<li>MD5<ol>
+<li>128-bit (16-byte) hash value, typically expressed with 32 digit hex number</li>
+<li>have colllision attack risks</li>
+</ol>
+</li>
+<li>SHA-1 (said to be <a target="_blank" rel="noopener" href="http://security.stackexchange.com/questions/19705/is-sha1-better-than-md5-only-because-it-generates-a-hash-of-160-bits">better than MD5</a>)<ol>
+<li>160-bit (20-byte) hash value, typically expressed with 40 digit hex number</li>
+<li>No known collision found so far</li>
+</ol>
+</li>
+</ol>
+<h4 id="Properties"><a href="#Properties" class="headerlink" title="Properties"></a>Properties</h4><ol>
+<li>Computationally efficient</li>
+<li>Collision resistant</li>
+<li>Hide information</li>
+<li>Look random</li>
+</ol>
+<h4 id="Examples"><a href="#Examples" class="headerlink" title="Examples"></a>Examples</h4><blockquote>
+<p>I generated checksum values on an important file I backed up to ensure that everything went OK. <a target="_blank" rel="noopener" href="http://pcsupport.about.com/od/termsm/g/md5.htm">source</a></p>
+</blockquote>
+<blockquote>
+<p>To verify that the latest version of Firefox I was downloading is correct, I ran a cryptographic hash function, SHA-1 to be exact, on the download and compared that checksum with the one published on Mozilla’s site. <a target="_blank" rel="noopener" href="http://pcsupport.about.com/od/termsc/g/cryptographic-hash-function.htm">source</a></p>
+</blockquote>
+<h3 id="Digital-signature"><a href="#Digital-signature" class="headerlink" title="Digital signature"></a>Digital signature</h3><p><a target="_blank" rel="noopener" href="http://en.wikipedia.org/wiki/Digital_signature">Digital signature</a> is a mathematical scheme for demonstrating the authenticity of a digital message. It uses public&#x2F;private keys.</p>
+<p>In practice, the signature is not used directly on the file, but rather on the <a target="_blank" rel="noopener" href="http://en.wikipedia.org/wiki/Digital_signature#How_they_work">digest of the file</a>.</p>
+<p><img src="/images/Digital-Signature-diagram.png"></p>
+<p><a target="_blank" rel="noopener" href="https://www.khanacademy.org/economics-finance-domain/core-finance/money-and-banking/bitcoin/v/bitcoin-digital-signatures">Video</a> on digital signature.</p>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

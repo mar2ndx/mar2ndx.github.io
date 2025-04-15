@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    1352. Product of the Last K Numbers 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">1352. Product of the Last K Numbers</div>
+  <div class="post-meta">
+    <div class="date">2022 November 8th</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><p>Link: <a target="_blank" rel="noopener" href="https://leetcode.cn/problems/product-of-the-last-k-numbers/">https://leetcode.cn/problems/product-of-the-last-k-numbers/</a></p>
+<h1 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h1><p>difficulty: mid<br>adj diff: 4</p>
+<pre><code>Design an algorithm that accepts a stream of integers and retrieves the product of the last k integers of the stream.
+
+Implement the ProductOfNumbers class:
+
+	ProductOfNumbers() Initializes the object with an empty stream.
+	void add(int num) Appends the integer num to the stream.
+	int getProduct(int k) Returns the product of the last k numbers in the current list. You can assume that always the current list has at least k numbers.
+
+The test cases are generated so that, at any time, the product of any contiguous sequence of numbers will fit into a single 32-bit integer without overflowing.
+Example:
+
+Input
+[&quot;ProductOfNumbers&quot;,&quot;add&quot;,&quot;add&quot;,&quot;add&quot;,&quot;add&quot;,&quot;add&quot;,&quot;getProduct&quot;,&quot;getProduct&quot;,&quot;getProduct&quot;,&quot;add&quot;,&quot;getProduct&quot;]
+[[],[3],[0],[2],[5],[4],[2],[3],[4],[8],[2]]
+
+Output
+[null,null,null,null,null,null,20,40,0,null,32]
+
+Explanation
+ProductOfNumbers productOfNumbers = new ProductOfNumbers();
+productOfNumbers.add(3);        // [3]
+productOfNumbers.add(0);        // [3,0]
+productOfNumbers.add(2);        // [3,0,2]
+productOfNumbers.add(5);        // [3,0,2,5]
+productOfNumbers.add(4);        // [3,0,2,5,4]
+productOfNumbers.getProduct(2); // return 20. The product of the last 2 numbers is 5 * 4 = 20
+productOfNumbers.getProduct(3); // return 40. The product of the last 3 numbers is 2 * 5 * 4 = 40
+productOfNumbers.getProduct(4); // return 0. The product of the last 4 numbers is 0 * 2 * 5 * 4 = 0
+productOfNumbers.add(8);        // [3,0,2,5,4,8]
+productOfNumbers.getProduct(2); // return 32. The product of the last 2 numbers is 4 * 8 = 32
+Constraints:
+
+	0 &lt;= num &lt;= 100
+	1 &lt;= k &lt;= 4 * 104
+	At most 4 * 104 calls will be made to add and getProduct.
+	The product of the stream at any point in time will fit in a 32-bit integer.
+</code></pre>
+<h1 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h1><p>以下代码“超出时间限制”，但是应该是 word 的。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">class MyInteger &#123;</span><br><span class="line">    int val;</span><br><span class="line">    public MyInteger(int a) &#123;</span><br><span class="line">        val = a;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">List&lt;MyInteger&gt; products;</span><br><span class="line"></span><br><span class="line">public ProductOfNumbers() &#123;</span><br><span class="line">    products = new ArrayList&lt;MyInteger&gt;();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">public void add(int num) &#123;</span><br><span class="line">    if (num == 0) &#123;</span><br><span class="line">        products.clear();</span><br><span class="line">    &#125;</span><br><span class="line">    products.add(new MyInteger(1));</span><br><span class="line">    for (MyInteger mi: products) &#123;</span><br><span class="line">        mi.val = mi.val * num;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">public int getProduct(int k) &#123;</span><br><span class="line">    if (k &gt; products.size()) &#123;</span><br><span class="line">        // because existances of &#x27;0&#x27;, all products are 0</span><br><span class="line">        return 0;</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        return products.get(products.size() - k).val;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

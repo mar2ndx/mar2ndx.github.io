@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    [Question] Duplicate Rows in Matrix 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">[Question] Duplicate Rows in Matrix</div>
+  <div class="post-meta">
+    <div class="date">2014 August 27th</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><h3 id="Question-1"><a href="#Question-1" class="headerlink" title="Question 1"></a>Question 1</h3><p><a target="_blank" rel="noopener" href="http://www.careercup.com/question?id=6488077455327232">link</a></p>
+<blockquote>
+<p>Given a 2D array (n x m) of integers, find all duplicate rows and print their index.</p>
+</blockquote>
+<h3 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h3><p>This is a <a target="_blank" rel="noopener" href="http://get-that-job-at-google.blogspot.sg/2012/12/google-interview-experience.html">google question</a>.</p>
+<p><strong>Use HashMap</strong> (but make your own). Computer hash value of each row and insert into HashMap as value pair of HashMap(hashValue, rowNumber). When there’s a collision, just check the rowNumber stored in HashMap with current row. </p>
+<p>This requires O(n*m) time and O(n) space. Note that <strong>we’re not store the entire row into HashMap</strong> cuz it’ll take up too much space. </p>
+<p>We (probably) can also use Trie. </p>
+<h3 id="Question-2"><a href="#Question-2" class="headerlink" title="Question 2"></a>Question 2</h3><p><a target="_blank" rel="noopener" href="http://www.careercup.com/question?id=9478119">link</a></p>
+<blockquote>
+<p>Given a binary matrix of N X N of integers, you need to return only unique rows of binary arrays. </p>
+</blockquote>
+<pre><code>input: 
+0 1 0 0 1 
+1 0 1 1 0 
+0 1 0 0 1 
+1 1 1 0 0 
+
+ans: 
+0 1 0 0 1 
+1 0 1 1 0 
+1 1 1 0 0
+</code></pre>
+<h3 id="Solution-1"><a href="#Solution-1" class="headerlink" title="Solution"></a>Solution</h3><p>Different from <strong>Question 1</strong>, this input is only 0 and 1. </p>
+<p><strong>The solution is to use Trie</strong>. Each node <a target="_blank" rel="noopener" href="http://www.geeksforgeeks.org/print-unique-rows/">only have 2 children</a> (that’s why Trie is perfect solution here). </p>
+<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><p><strong>Using binary trie node</strong>, refactored by me.</p>
+<pre><code>public int[][] getUniqueRows(int[][] matrix) &#123;
+	int m = matrix.length;
+	int n = matrix[0].length;
+
+	TrieNode root = new TrieNode();
+	TrieNode p;
+	int uniqueCount = 0;
+	boolean[] isUnique = new boolean[m];
+	// isUnique is used to mark the lines that would appear in final result
+
+	// start to build the trie
+	for (int i = 0; i &lt; m; i++) &#123;
+		// insert number matrix[i][] into the trie
+		p = root;
+		// root element would be an empty heading for all numbers
+		for (int j = 0; j &lt; n; j++) &#123;
+			int digit = matrix[i][j];
+			if (p.kids == null) &#123;
+				p.kids = new TrieNode[2];
+			&#125;
+			if (p.kids[digit] == null) &#123;
+				// this is a whole new branch, create a new node here
+				p.kids[digit] = new TrieNode();
+				if (j == n - 1) &#123;
+					uniqueCount++;
+					isUnique[i] = true;
+				&#125;
+			&#125;
+			p = p.kids[digit];
+		&#125;
+	&#125;
+	System.out.println(&quot;uniqueCount is &quot; + uniqueCount);
+	int[][] result = new int[uniqueCount][];
+	int k = 0;
+	for (int w = 0; w &lt; isUnique.length; w++) &#123;
+		if (isUnique[w]) &#123;
+			result[k++] = matrix[w];
+		&#125;
+	&#125;
+	return result;
+&#125;
+
+class TrieNode &#123;
+	TrieNode[] kids = null;
+&#125;
+</code></pre>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

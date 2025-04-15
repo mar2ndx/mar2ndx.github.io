@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    [Design] Monitor Rps for Past sec/min/hr  丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">[Design] Monitor Rps for Past sec/min/hr </div>
+  <div class="post-meta">
+    <div class="date">2015 February 3rd</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><p><a target="_blank" rel="noopener" href="http://www.careercup.com/question?id=6005446611566592">link</a></p>
+<blockquote>
+<p>Given a server that has requests coming in.</p>
+</blockquote>
+<blockquote>
+<p>Design a data structure such that you can fetch the count of the number requests in the last second, minute and hour.</p>
+</blockquote>
+<h3 id="Solution-1"><a href="#Solution-1" class="headerlink" title="Solution 1"></a>Solution 1</h3><p><strong>Keep a record of all request timestamps</strong>, suggested by the top answer by <a target="_blank" rel="noopener" href="http://www.careercup.com/question?id=6005446611566592">whatevva</a>:</p>
+<ol>
+<li><p>Use a queue implemented as a resizable array to store the timestamps of all new requests</p>
+</li>
+<li><p>maintain head&#x2F;tail pointers as usual</p>
+</li>
+<li><p>Also maintain three pointers, for past sec, past min and past hr.</p>
+</li>
+</ol>
+<p>Whenever a request comes in, update 3 pointers. Then in the for-loop of the thread, remove old entries and also update 3 pointers.</p>
+<p>Print Rps in real time. I posted my code below (the code is without thread-safety consideration).</p>
+<h3 id="Solution-2"><a href="#Solution-2" class="headerlink" title="Solution 2"></a>Solution 2</h3><p>This solution does not store all timestamps, and it does not generate real-time Rps data. But it’s good enough because result is only updated every 1 second, so its performance is better.</p>
+<p>Keep an array of int of size 60 * 60. Each second, use the <strong>number of request in the past second</strong> to update the array values <strong>in a rolling way</strong>.</p>
+<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><p>Solution 1. this is my code so please correct me!</p>
+<pre><code>public class SetRps &#123;
+
+    AtomicInteger count = new AtomicInteger(0);
+    int limit = -1;
+    int printIndex = 1;
+    long startTimestamp = -1;
+
+    void setRPS(int num) &#123;
+        limit = num;
+    &#125;
+
+    boolean process(long timestamp) &#123;
+        // suppose timestamp is ms
+        synchronized (this) &#123;
+            if (count.get() &lt; limit) &#123;
+                // can process
+                count.incrementAndGet();
+                System.out.println(printIndex++ + &quot;. processing request &quot;
+                        + timestamp % 100000 / 1000 + &quot;,&quot; + timestamp % 1000);
+                return true;
+            &#125;
+            if (timestamp - startTimestamp &gt;= 1000) &#123;
+                // every 1 seconds, reset
+                count.set(0);
+                startTimestamp = timestamp;
+                System.out.println(&quot;clear!&quot;);
+                return true;
+            &#125;
+        &#125;
+        return false;
+    &#125;
+&#125;
+</code></pre>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

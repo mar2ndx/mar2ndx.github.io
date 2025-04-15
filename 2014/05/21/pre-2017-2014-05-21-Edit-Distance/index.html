@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    [LeetCode 72] Edit Distance 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">[LeetCode 72] Edit Distance</div>
+  <div class="post-meta">
+    <div class="date">2014 May 21st</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><p><a target="_blank" rel="noopener" href="https://oj.leetcode.com/problems/edit-distance/">link</a></p>
+<div class="question-content">
+            <p></p><p>
+Given two words <i>word1</i> and <i>word2</i>, find the minimum number of steps required to convert <i>word1</i> to <i>word2</i>. (each operation is counted as 1 step.)
+</p>
+
+<p>
+You have the following 3 operations permitted on a word:
+</p>
+
+<p>
+a) Insert a character<br>
+b) Delete a character<br>
+c) Replace a character<br>
+</p><p></p>
+          </div>
+
+<h3 id="Stats"><a href="#Stats" class="headerlink" title="Stats"></a>Stats</h3><table border="2">
+	<tr>
+		<td>Frequency</td>
+		<td bgcolor="yellow">3</td>
+	</tr>
+	<tr>
+		<td>Difficulty</td>
+		<td bgcolor="red">4</td>
+	</tr>
+	<tr>
+		<td>Adjusted Difficulty</td>
+		<td bgcolor="yellow">3</td>
+	</tr>
+	<tr>
+		<td>Time to use</td>
+		<td bgcolor="yellow">--------</td>
+	</tr>
+</table>
+
+<p>Ratings&#x2F;Color &#x3D; 1(white) 2(lime) 3(yellow) 4&#x2F;5(red)</p>
+<h3 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h3><p><strong>This is a difficult DP problem</strong>. A lot of people said in their blog that they spent tons of time on this question.</p>
+<h3 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h3><p><strong>I posted below a very standard solution</strong>. The unconventional part of this solution is instead of declaring DP array of m*n size, I must declare it (m+1)*(n+1) size, where dp[i][j] denotes the distance of 2 strings that ends with (i)th and (j)th char respectively.</p>
+<p>The rest of the code is easy to understand.</p>
+<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><p><strong>my code</strong></p>
+<pre><code>public int minDistance(String word1, String word2) &#123;
+    int m = word1.length();
+    int n = word2.length();
+
+    int[][] dp = new int[m+1][n+1];
+    for (int i = 0; i &lt;= m; i++) &#123;
+        dp[i][0] = i;
+    &#125;
+    for (int i = 0; i &lt;= n; i++) &#123;
+        dp[0][i] = i;
+    &#125;
+    for (int a = 1; a &lt;= m; a++) &#123;
+        char aa = word1.charAt(a-1);
+        for (int b = 1; b &lt;= n; b++) &#123;
+            char bb = word2.charAt(b-1);
+            if (aa == bb)
+                dp[a][b] = dp[a-1][b-1];
+            else &#123;
+                int t1 = dp[a-1][b-1] + 1;
+                int t2 = dp[a][b-1] + 1;
+                int t3 = dp[a-1][b] + 1;
+                dp[a][b] = Math.min(Math.min(t1, t2), t3);
+            &#125;
+        &#125;
+    &#125;
+    return dp[m][n];
+&#125;
+</code></pre>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

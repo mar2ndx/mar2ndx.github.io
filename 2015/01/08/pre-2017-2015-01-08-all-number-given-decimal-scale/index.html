@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    [Google] Check all numbers given the decimal scale  丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">[Google] Check all numbers given the decimal scale </div>
+  <div class="post-meta">
+    <div class="date">2015 January 8th</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><p><a target="_blank" rel="noopener" href="http://www.mitbbs.com/article_t/JobHunting/32859887.html">link</a></p>
+<blockquote>
+<p>检查一个字符串是否包含 k 位 a 进制数的所有表示形式。</p>
+</blockquote>
+<blockquote>
+<p>保证原字符串的所有字串都是合法的 k 位 a 进制数。</p>
+</blockquote>
+<blockquote>
+<p>“00110, a&#x3D;2, k&#x3D;2” &#x3D;&gt; true （包括了 00，01，10，11）</p>
+</blockquote>
+<h3 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h3><p>First find all substrings with length &#x3D;&#x3D; k, then generate all numbers in a scale. This is not a difficult question.</p>
+<p>We may want to score the substrings in a HashMap&#x2F;HashSet. <strong>The hashing procedure is preferrably using <a target="_blank" rel="noopener" href="http://en.wikipedia.org/wiki/Rolling_hash">Rolling hash</a></strong>.</p>
+<blockquote>
+<p>Rolling Hash</p>
+</blockquote>
+<blockquote>
+<p>A rolling hash is a hash function where the input is hashed in a window that moves through the input.</p>
+</blockquote>
+<blockquote>
+<p>A few hash functions allow a rolling hash to be computed very quickly—the new hash value is rapidly calculated given only the old hash value, the old value removed from the window, and the new value added to the window—similar to the way a moving average function can be computed much more quickly than other low-pass filters.</p>
+</blockquote>
+<p>Rolling Hash is commonly used in <strong><a target="_blank" rel="noopener" href="http://www.geeksforgeeks.org/searching-for-patterns-set-3-rabin-karp-algorithm/">Rabin-Karp Algorithm</a></strong> to speed up strStr() string pattern matching.</p>
+<p>People in the origin post - they discuss about “<strong>slide window check</strong>“ algorithm. I do not understand what’s the benefit of this. If you read this and would like to help me, please leave a comment. Thanks!</p>
+<h3 id="A-similar-question"><a href="#A-similar-question" class="headerlink" title="A similar question"></a>A similar question</h3><p><a target="_blank" rel="noopener" href="http://www.mitbbs.com/article_t/JobHunting/32860321.html">This</a> is simply the reverse of the question above:</p>
+<blockquote>
+<p>给出最短的字符串, which is used to 表示 k 位 a 进制数的所有表示形式.</p>
+</blockquote>
+<p>This question is solved using <strong><a target="_blank" rel="noopener" href="http://en.wikipedia.org/wiki/De_Bruijn_sequence">De Bruijn sequence</a></strong>.</p>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>

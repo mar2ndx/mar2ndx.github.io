@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport" />
+  <title>
+    
+    [NineChap 6] Graph and Search 丨
+    
+
+    typo
+  </title>
+
+  
+  <link rel="shortcut icon" href="/icon.svg">
+  
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  
+  <link id="theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  
+
+  <!-- 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/root.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/css/post.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <header class="header">
+  <section class="header-container">
+    <a class="logo" href="/">Tech blog</a>
+    <ul class="nav">
+      
+      <li><a href="/archives">archives</a></li>
+      
+      <li><a href="/about">about</a></li>
+      
+    </ul>
+  </section>
+</header>
+  <main class="main">
+    <article class="post">
+  
+  <div class="post-title">[NineChap 6] Graph and Search</div>
+  <div class="post-meta">
+    <div class="date">2014 June 26th</div>
+    <div class="tags">
+      
+    </div>
+  </div>
+  
+
+  <main class="post-content"><h2 id="Graph"><a href="#Graph" class="headerlink" title="Graph"></a>Graph</h2><p>For graph, there are only 2 high-frequency questions, which is ‘clone graph’ and ‘topology sorting’.</p>
+<h3 id="Question-list"><a href="#Question-list" class="headerlink" title="Question list"></a>Question list</h3><ol>
+<li><p><strong><a href="/leetcode/2014-05-30-Clone-Graph">Clone Graph</a></strong> - difficult</p>
+</li>
+<li><p><strong><a href="/question/2014-06-27-Topology-sorting">Topology Sorting</a></strong></p>
+</li>
+</ol>
+<h2 id="Search"><a href="#Search" class="headerlink" title="Search"></a>Search</h2><p>Search have either DFS or BFS.</p>
+<p>First, we will cover permutations and combinations using DFS. In this section we solve the famous N-queens question.</p>
+<p>Then, there’s a few BFS questions. Graph traversal is BFS, and Word ladder is also a classic BFS question.</p>
+<h3 id="Question-list-1"><a href="#Question-list-1" class="headerlink" title="Question list"></a>Question list</h3><ol>
+<li><p><strong><a href="/leetcode/2014-05-22-Subsets">Subsets</a></strong></p>
+</li>
+<li><p><strong><a href="/leetcode/2014-05-22-Subsets-II">Subsets II</a></strong></p>
+<p>difficult</p>
+</li>
+<li><p><strong><a href="/leetcode/2014-05-14-Permutations">Permutations</a></strong></p>
+</li>
+<li><p><strong><a href="/leetcode/2014-05-14-Permutations-II">Permutations II</a></strong> - difficult</p>
+</li>
+<li><p><strong><a href="/leetcode/2014-05-16-N-Queens">N-Queens</a></strong></p>
+<p>how to use hashmap (and some space) to make it faster? 3 hashmaps to store the row, the (x,y) diff and sum. This will make isValid() method O(1).</p>
+</li>
+<li><p><strong><a href="/leetcode/2014-05-16-N-Queens-II">N-Queens II</a></strong></p>
+</li>
+<li><p><strong><a href="/leetcode/2014-05-12-Next-Permutation">Next Permutation</a></strong></p>
+</li>
+<li><p><strong><a href="/lintcode/2014-06-27-Previous-Permutation">Previous Permutation</a></strong></p>
+</li>
+<li><p><strong><a href="/leetcode/2014-05-29-Palindrome-Partitioning">Palindrome Partitioning</a></strong></p>
+</li>
+<li><p><strong><a href="/leetcode/2014-05-30-Palindrome-Partitioning-II">Palindrome Partitioning II</a></strong></p>
+</li>
+<li><p><strong><a href="/leetcode/2014-05-13-Combination-Sum">Combination Sum</a></strong></p>
+</li>
+<li><p><strong><a href="/leetcode/2014-05-13-Combination-Sum">Combination Sum II</a></strong></p>
+</li>
+<li><p><strong><a href="/leetcode/2014-05-29-Word-Ladder">Word Ladder</a></strong></p>
+</li>
+<li><p><strong><a href="/leetcode/2014-05-30-Word-Ladder-II">Word Ladder II</a></strong></p>
+</li>
+</ol>
+<h3 id="Additional-questions"><a href="#Additional-questions" class="headerlink" title="Additional questions"></a>Additional questions</h3><ol>
+<li><p><strong><a href="/leetcode/2014-05-24-Restore-IP-Addresses">Restore IP Addresses</a></strong></p>
+</li>
+<li><p><strong><a href="/leetcode/2014-05-22-Combinations">Combinations</a></strong></p>
+</li>
+<li><p><strong><a href="/leetcode/2014-05-02-Letter-Combinations-of-a-Phone-Number">Letter Combinations of a Phone Number</a></strong></p>
+</li>
+<li><p><strong><a href="/leetcode/2014-05-19-Permutation-Sequence">Permutation Sequence</a></strong></p>
+</li>
+</ol>
+<h2 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h2><h3 id="Graph-1"><a href="#Graph-1" class="headerlink" title="Graph"></a>Graph</h3><p><strong>Clone Graph</strong></p>
+<pre><code>public UndirectedGraphNode cloneGraph(UndirectedGraphNode node) &#123;
+    if (node == null) return null;
+    HashMap&lt;UndirectedGraphNode, UndirectedGraphNode&gt; map =
+            new HashMap&lt;UndirectedGraphNode, UndirectedGraphNode&gt;();
+    Queue&lt;UndirectedGraphNode&gt; queue = new LinkedList&lt;UndirectedGraphNode&gt;();
+    map.put(node, new UndirectedGraphNode(node.label));
+    queue.add(node);
+    while (!queue.isEmpty()) &#123;
+        UndirectedGraphNode cur = queue.remove();
+        UndirectedGraphNode copy = map.get(cur);
+        // here the &#39;copy&#39; must exist. why? because all neighbors
+        // has been added to the map when they&#39;re pushed to queue.
+        // so &#39;cur&#39; must have a corresponding copy in the hashmap.
+        for (UndirectedGraphNode neib: cur.neighbors) &#123;
+            if (!map.containsKey(neib)) &#123;
+                queue.add(neib);
+                map.put(neib, new UndirectedGraphNode(neib.label));
+            &#125;
+            copy.neighbors.add(map.get(neib));
+        &#125;
+    &#125;
+    return map.get(node);
+&#125;
+</code></pre>
+<p><strong>Topology Sorting</strong></p>
+<p>A new post is written for it.</p>
+<h3 id="Search-1"><a href="#Search-1" class="headerlink" title="Search"></a>Search</h3><p><strong>Subsets</strong></p>
+<pre><code>public List&lt;List&lt;Integer&gt;&gt; subsets(int[] num) &#123;
+    List&lt;List&lt;Integer&gt;&gt; ans = new LinkedList&lt;List&lt;Integer&gt;&gt;();
+    if (num == null || num.length == 0) &#123;
+        return ans;
+    &#125;
+    Arrays.sort(num);
+    helper(ans, new LinkedList&lt;Integer&gt;(), num, 0);
+    return ans;
+&#125;
+
+private void helper(List&lt;List&lt;Integer&gt;&gt; ans, List&lt;Integer&gt; path, int[] num, int pos) &#123;
+    ans.add(new LinkedList&lt;Integer&gt;(path));
+    for (int i = pos; i &lt; num.length; i++) &#123;
+        path.add(num[i]);
+        helper(ans, path, num, i + 1);
+        path.remove(path.size() - 1);
+    &#125;
+&#125;
+</code></pre>
+<p><strong>Subsets II</strong></p>
+<pre><code>public List&lt;List&lt;Integer&gt;&gt; subsetsWithDup(int[] num) &#123;
+    List&lt;List&lt;Integer&gt;&gt; ans = new LinkedList&lt;List&lt;Integer&gt;&gt;();
+    if (num == null || num.length == 0) &#123;
+        return ans;
+    &#125;
+    Arrays.sort(num);
+    helper(ans, new LinkedList&lt;Integer&gt;(), num, 0);
+    return ans;
+&#125;
+
+private void helper(List&lt;List&lt;Integer&gt;&gt; ans, List&lt;Integer&gt; path, int[] num, int pos) &#123;
+    ans.add(new LinkedList&lt;Integer&gt;(path));
+    for (int i = pos; i &lt; num.length; i++) &#123;
+        if (i &gt; pos &amp;&amp; num[i - 1] == num[i]) &#123;
+            continue;
+        &#125;
+        path.add(num[i]);
+        helper(ans, path, num, i + 1);
+        path.remove(path.size() - 1);
+    &#125;
+&#125;
+</code></pre>
+<p><strong>Permutations</strong></p>
+<pre><code>public List&lt;List&lt;Integer&gt;&gt; permute(int[] num) &#123;
+    List&lt;List&lt;Integer&gt;&gt; ans = new LinkedList&lt;List&lt;Integer&gt;&gt;();
+    if (num == null || num.length == 0) &#123;
+        return ans;
+    &#125;
+    helper(ans, new LinkedList&lt;Integer&gt;(), num);
+    return ans;
+&#125;
+
+private void helper(List&lt;List&lt;Integer&gt;&gt; ans, List&lt;Integer&gt; path, int[] num)&#123;
+    if (path.size() == num.length) &#123;
+        ans.add(new LinkedList&lt;Integer&gt;(path));
+    &#125;
+    for (int i = 0; i &lt; num.length; i++) &#123;
+        if (path.contains(num[i])) &#123;
+            continue;
+        &#125;
+        path.add(num[i]);
+        helper(ans, path, num);
+        path.remove(path.size() - 1);
+    &#125;
+&#125;
+</code></pre>
+<p><strong>Permutations II</strong></p>
+<pre><code>public List&lt;List&lt;Integer&gt;&gt; permuteUnique(int[] num) &#123;
+    List&lt;List&lt;Integer&gt;&gt; ans = new LinkedList&lt;List&lt;Integer&gt;&gt;();
+    if (num == null || num.length == 0) &#123;
+        return ans;
+    &#125;
+    Arrays.sort(num);
+    helper(ans, new LinkedList&lt;Integer&gt;(), num, new int[num.length]);
+    return ans;
+&#125;
+
+private void helper(List&lt;List&lt;Integer&gt;&gt; ans, List&lt;Integer&gt; path, int[] num, int[] visited)&#123;
+    if (path.size() == num.length) &#123;
+        ans.add(new LinkedList&lt;Integer&gt;(path));
+        return;
+    &#125;
+    for (int i = 0; i &lt; num.length; i++) &#123;
+        if (visited[i] == 1) &#123;
+            continue;
+        &#125;
+        if (i &gt; 0 &amp;&amp; visited[i - 1] == 1 &amp;&amp; visited[i] == 0 &amp;&amp; num[i - 1] == num[i]) &#123;
+            // if current number is same as previous, then don&#39;t visit current
+            continue;
+        &#125;
+        path.add(num[i]);
+        visited[i] = 1;
+
+        helper(ans, path, num, visited);
+
+        path.remove(path.size() - 1);
+        visited[i] = 0;
+    &#125;
+&#125;
+</code></pre>
+<p><strong>N-Queens</strong></p>
+<p>一次通关！高兴。</p>
+<pre><code>public List&lt;String[]&gt; solveNQueens(int n) &#123;
+    List&lt;String[]&gt; ans = new LinkedList&lt;String[]&gt;();
+	if (n &lt;= 0) &#123;
+		return ans;
+	&#125;
+	helper(ans, new int[n], n, 0);
+	return ans;
+&#125;
+
+private void helper(List&lt;String[]&gt; ans, int[] path, int n, int pos) &#123;
+	if (pos &gt;= n) &#123;
+		ans.add(convert(path, n));
+		return;
+	&#125;
+	for (int i = 0; i &lt; n; i++) &#123;
+		path[pos] = i;
+		if (!isValid(path, pos)) &#123;
+			continue;
+		&#125;
+		helper(ans, path, n, pos + 1);
+	&#125;
+&#125;
+
+private String[] convert(int[] path, int n) &#123;
+	String[] ans = new String[n];
+	for (int j = 0; j &lt; n; j++) &#123;
+		ans[j] = &quot;&quot;;
+		for (int i = 0; i &lt; n; i++) &#123;
+			ans[j] += (j == path[i]) ? &#39;Q&#39; : &#39;.&#39;;
+		&#125;
+	&#125;
+	return ans;
+&#125;
+
+private boolean isValid(int[] path, int pos) &#123;
+	for (int i = 0; i &lt; pos; i++) &#123;
+		// check path[i] and path[pos]
+		if (path[i] == path[pos]) &#123;
+			return false;
+		&#125;
+		if (path[i] - path[pos] == pos - i) &#123;
+			return false;
+		&#125;
+		if (path[pos] - path[i] == pos - i) &#123;
+			return false;
+		&#125;
+	&#125;
+	return true;
+&#125;
+</code></pre>
+<p><strong>N-Queens II</strong></p>
+<pre><code>int total;
+
+public int totalNQueens(int n) &#123;
+	if (n &lt;= 0) &#123;
+		return 0;
+	&#125;
+	helper(new int[n], n, 0);
+	return total;
+&#125;
+
+private void helper(int[] path, int n, int pos) &#123;
+	if (pos &gt;= n) &#123;
+		total++;
+		return;
+	&#125;
+	for (int i = 0; i &lt; n; i++) &#123;
+		path[pos] = i;
+		if (!isValid(path, pos)) &#123;
+			continue;
+		&#125;
+		helper(path, n, pos + 1);
+	&#125;
+&#125;
+
+private boolean isValid(int[] path, int pos) &#123;
+	for (int i = 0; i &lt; pos; i++) &#123;
+		// check path[i] and path[pos]
+		if (path[i] == path[pos]) &#123;
+			return false;
+		&#125;
+		if (path[i] - path[pos] == pos - i) &#123;
+			return false;
+		&#125;
+		if (path[pos] - path[i] == pos - i) &#123;
+			return false;
+		&#125;
+	&#125;
+	return true;
+&#125;
+</code></pre>
+<p><strong>Next Permutation</strong></p>
+<pre><code>public void nextPermutation(int[] num) &#123;
+    if (num == null || num.length &lt;= 1) &#123;
+		return;
+	&#125;
+	int len = num.length;
+	int p = len - 2;
+	while (p &gt;= 0 &amp;&amp; num[p] &gt;= num[p + 1]) &#123;
+		p--;
+	&#125;
+	if (p &lt; 0) &#123;
+		Arrays.sort(num);
+	&#125; else &#123;
+		int k = len - 1;
+		while (k &gt;= 0 &amp;&amp; num[k] &lt;= num[p]) &#123;
+			k--;
+		&#125;
+		swap(num, p, k);
+		reverse(num, p + 1, len - 1);
+	&#125;
+&#125;
+
+private void swap(int[] num, int p, int k) &#123;
+	num[p] = num[p] + num[k];
+	num[k] = num[p] - num[k];
+	num[p] = num[p] - num[k];
+&#125;
+
+private void reverse(int[] num, int s, int d) &#123;
+	while (s &lt; d) &#123;
+		swap(num, s++, d--);
+	&#125;
+&#125;
+</code></pre>
+<p><strong>Previous Permutation</strong></p>
+<p>Plz look at the new post.</p>
+<p><strong>Palindrome Partitioning</strong></p>
+<p>一次通关 again！very 高兴。</p>
+<pre><code>public ArrayList&lt;ArrayList&lt;String&gt;&gt; partition(String s) &#123;
+	ArrayList&lt;ArrayList&lt;String&gt;&gt; ans = new ArrayList&lt;ArrayList&lt;String&gt;&gt;();
+	if (s == null || s.length() == 0) &#123;
+		return ans;
+	&#125;
+	boolean[][] map = palinMap(s);
+	helper(ans, new ArrayList&lt;String&gt;(), s, map, 0);
+	return ans;
+&#125;
+
+private void helper(ArrayList&lt;ArrayList&lt;String&gt;&gt; ans, ArrayList&lt;String&gt; path, String s, boolean[][] map, int pos) &#123;
+	int len = s.length();
+	if (pos == len) &#123;
+		ans.add(new ArrayList&lt;String&gt;(path));
+		return;
+	&#125;
+	for (int i = pos; i &lt; len; i++) &#123;
+		if (!map[pos][i]) &#123;
+			continue;
+		&#125;
+		path.add(s.substring(pos, i + 1));
+		helper(ans, path, s, map, i + 1);
+		path.remove(path.size() - 1);
+	&#125;
+&#125;
+
+private boolean[][] palinMap(String s) &#123;
+	int len = s.length();
+	boolean[][] map = new boolean[len][len];
+	for (int i = len - 1; i &gt;= 0; i--) &#123;
+		for (int j = 0; j &lt; len; j++) &#123;
+			if (i &gt; j) &#123;
+				continue;
+			&#125; else if (i == j) &#123;
+				map[i][j] = true;
+			&#125; else if (j - i == 1) &#123;
+				map[i][j] = s.charAt(i) == s.charAt(j);
+			&#125; else &#123;
+				map[i][j] = map[i + 1][j - 1] &amp;
+						s.charAt(i) == s.charAt(j);
+			&#125;
+		&#125;
+	&#125;
+	return map;
+&#125;
+</code></pre>
+<p><strong>Palindrome Partitioning II</strong></p>
+<p>This is DP, not Graph &amp; Search.</p>
+<p><strong>Combination Sum</strong></p>
+<pre><code>public ArrayList&lt;ArrayList&lt;Integer&gt;&gt; combinationSum(int[] candidates, int target) &#123;
+	ArrayList&lt;ArrayList&lt;Integer&gt;&gt; ans = new ArrayList&lt;ArrayList&lt;Integer&gt;&gt;();
+	if (candidates == null || candidates.length == 0) &#123;
+		return ans;
+	&#125;
+	Arrays.sort(candidates);
+	helper(ans, new ArrayList&lt;Integer&gt;(), candidates, target, 0);
+	return ans;
+&#125;
+
+private void helper(ArrayList&lt;ArrayList&lt;Integer&gt;&gt; ans, ArrayList&lt;Integer&gt; path,
+		int[] candidates, int target, int pos) &#123;
+	if (target == 0) &#123;
+		ans.add(new ArrayList&lt;Integer&gt;(path));
+		return;
+	&#125; else if (target &lt; 0) &#123;
+		return;
+	&#125;
+	for (int i = pos; i &lt; candidates.length; i++) &#123;
+		if (target &lt; candidates[i]) &#123;
+			continue;
+		&#125;
+		path.add(candidates[i]);
+		helper(ans, path, candidates, target - candidates[i], i);
+		path.remove(path.size() - 1);
+	&#125;
+&#125;
+</code></pre>
+<p><strong>Combination Sum II</strong></p>
+<pre><code>public ArrayList&lt;ArrayList&lt;Integer&gt;&gt; combinationSum2(int[] candidates, int target) &#123;
+	ArrayList&lt;ArrayList&lt;Integer&gt;&gt; ans = new ArrayList&lt;ArrayList&lt;Integer&gt;&gt;();
+	if (candidates == null || candidates.length == 0) &#123;
+		return ans;
+	&#125;
+	Arrays.sort(candidates);
+	helper(ans, new ArrayList&lt;Integer&gt;(), candidates, target, 0);
+	return ans;
+&#125;
+
+private void helper(ArrayList&lt;ArrayList&lt;Integer&gt;&gt; ans, ArrayList&lt;Integer&gt; path,
+		int[] candidates, int target, int pos) &#123;
+	if (target == 0) &#123;
+		ans.add(new ArrayList&lt;Integer&gt;(path));
+		return;
+	&#125; else if (target &lt; 0) &#123;
+		return;
+	&#125;
+	for (int i = pos; i &lt; candidates.length; i++) &#123;
+		if (target &lt; candidates[i]) &#123;
+			continue;
+		&#125;
+		if (i &gt; pos &amp;&amp; candidates[i - 1] == candidates[i]) &#123;
+			continue;
+		&#125;
+		path.add(candidates[i]);
+		helper(ans, path, candidates, target - candidates[i], i + 1);
+		path.remove(path.size() - 1);
+	&#125;
+&#125;
+</code></pre>
+<p><strong>Word Ladder</strong></p>
+<p>Note that this is a <strong>BFS question, not DFS</strong>. I made it wrong and it took me a long time.</p>
+<pre><code>public int ladderLength(String start, String end, Set&lt;String&gt; dict) &#123;
+	Queue&lt;String&gt; queue = new LinkedList&lt;String&gt;();
+	queue.add(start);
+	int length = 1;
+
+	while (!queue.isEmpty()) &#123;
+	    int currentSize = queue.size();
+		for (int k = 0; k &lt; currentSize; k++) &#123;
+			String word = queue.remove();
+			// insert all adjacent strings of word
+			if (word.equals(end)) &#123;
+				return length;
+			&#125;
+			for (int i = 0; i &lt; word.length(); i++) &#123;
+				char[] letters = word.toCharArray();
+				char originalLetter = letters[i];
+				for (char c = &#39;a&#39;; c &lt;= &#39;z&#39;; c++) &#123;
+					if (c == originalLetter) continue;
+					letters[i] = c;
+					String newLetters = String.valueOf(letters);
+					if (dict.contains(newLetters)) &#123;
+						queue.add(newLetters);
+						dict.remove(newLetters);
+					&#125;
+				&#125;
+				letters[i] = originalLetter;
+			&#125;
+		&#125;
+		length++;
+	&#125;
+	return 0;
+&#125;
+</code></pre>
+<p><strong>Word Ladder II</strong></p>
+<p>unsolvable</p>
+<h3 id="Additional-questions-1"><a href="#Additional-questions-1" class="headerlink" title="Additional questions"></a>Additional questions</h3><p><strong>Restore IP Addresses</strong></p>
+<pre><code>public List&lt;String&gt; restoreIpAddresses(String s) &#123;
+    List&lt;String&gt; ans = new ArrayList&lt;String&gt;();
+    if (s == null || s.length() == 0) &#123;
+        return ans;
+    &#125;
+    helper(ans, new ArrayList&lt;String&gt;(), s, 0);
+    return ans;
+&#125;
+
+private void helper(List&lt;String&gt; ans, List&lt;String&gt; path, String s, int pos) &#123;
+    if (path.size() == 4) &#123;
+        if (pos == s.length()) &#123;
+            ans.add(convert(path));
+        &#125;
+        return;
+    &#125;
+    for (int i = pos + 1; i &lt;= s.length() &amp;&amp; i &lt;= pos + 3; i++) &#123;
+        String nextNum = s.substring(pos, i);
+        if (!isValid(nextNum)) &#123;
+            continue;
+        &#125;
+        path.add(nextNum);
+        helper(ans, path, s, i);
+        path.remove(path.size() - 1);
+    &#125;
+&#125;
+
+private boolean isValid(String str) &#123;
+    if (str.length() == 1) &#123;
+        return true;
+    &#125; else if (str.charAt(0) == &#39;0&#39;) &#123;
+        return false;
+    &#125; else &#123;
+        int num = Integer.parseInt(str);
+        return 0 &lt;= num &amp;&amp; num &lt;= 255;
+    &#125;
+&#125;
+
+private String convert(List&lt;String&gt; path) &#123;
+    String str = &quot;&quot;;
+    for (String s: path) &#123;
+        str += &quot;.&quot; + s;
+    &#125;
+    return str.substring(1);
+&#125;
+</code></pre>
+<p><strong>Combinations</strong></p>
+<p>skip</p>
+<p><strong>Letter Combinations of a Phone Number</strong></p>
+<p>skip</p>
+<p><strong>Permutation Sequence</strong></p>
+<pre><code>public String getPermutation(int n, int k) &#123;
+    List&lt;Integer&gt; list = new ArrayList&lt;Integer&gt;();
+	int fact = 1;
+	for (int i = 1; i &lt;= n; i++) &#123;
+		list.add(i);
+		fact *= i;
+	&#125;
+	String ans = &quot;&quot;;
+	for (int i = n; i &gt; 0; i--) &#123;
+		fact = fact / i;
+		int rank = (k - 1) / fact;
+		k = (k - 1) % fact + 1;
+
+		int curNum = list.remove(rank);
+		ans += String.valueOf(curNum);
+	&#125;
+	return ans;
+&#125;
+</code></pre>
+<h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><h4 id="DFS-O-2-n-O-n"><a href="#DFS-O-2-n-O-n" class="headerlink" title="DFS (O(2^n), O(n!))"></a>DFS (O(2^n), O(n!))</h4><ol>
+<li>Find all possible solutions</li>
+<li>Permutations &#x2F; Subsets</li>
+</ol>
+<h4 id="BFS-O-m-O-n"><a href="#BFS-O-m-O-n" class="headerlink" title="BFS (O(m), O(n))"></a>BFS (O(m), O(n))</h4><ol>
+<li>Graph traversal</li>
+<li>Find shortest path in a simple graph</li>
+</ol>
+<p><strong>Two most canonical BFS questions</strong>:</p>
+<ol>
+<li>Graph traversal and toposort</li>
+<li>Word Ladder</li>
+</ol>
+</main>
+
+</article>
+
+
+<script src="/js/highlight.js"></script>
+
+  </main>
+  <footer class="footer">
+  
+  <span>Copyright © 2024 typo</span>
+  
+</footer>
+  
+<script src="/js/theme.js"></script>
+
+</body>
+
+</html>
