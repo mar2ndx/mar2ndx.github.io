@@ -6,7 +6,7 @@ comments: true
 date: 2025-04-14 04:40:37
 ---
 
-Script: 
+CircleCI Script: 
 
 ```
 version: 2.1
@@ -18,6 +18,8 @@ jobs:
     executor: node/default
     steps:
       - checkout
+          submodules: true # This is the key line!
+
       - node/install-packages:
           cache-path: node_modules # Simplified cache path
           override-ci-command: npm install
