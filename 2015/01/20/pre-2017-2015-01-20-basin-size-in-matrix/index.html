@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+
+
+
+
+<title>[Palantir] Largest basin size in matrix | Tech blog</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const pagebody = document.getElementsByTagName('body')[0]
+
+            function setTheme(status) {
+
+                if (status === 'dark') {
+                    window.sessionStorage.theme = 'dark'
+                    pagebody.classList.add('dark-theme');
+
+                } else if (status === 'light') {
+                    window.sessionStorage.theme = 'light'
+                    pagebody.classList.remove('dark-theme');
+                }
+            };
+
+            setTheme(window.sessionStorage.theme)
+        })();
+    </script>
+
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">Bentham&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                <a class="menu-item" href="/archives">Posts</a>
+                
+                <a class="menu-item" href="/category">Categories</a>
+                
+                <a class="menu-item" href="/tag">Tags</a>
+                
+                <a class="menu-item" href="/about">About</a>
+                
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">Bentham&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">
+                    <svg class="menu-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M4.5 17.27q-.213 0-.356-.145T4 16.768t.144-.356t.356-.143h15q.213 0 .356.144q.144.144.144.357t-.144.356t-.356.143zm0-4.77q-.213 0-.356-.144T4 11.999t.144-.356t.356-.143h15q.213 0 .356.144t.144.357t-.144.356t-.356.143zm0-4.77q-.213 0-.356-.143Q4 7.443 4 7.23t.144-.356t.356-.143h15q.213 0 .356.144T20 7.23t-.144.356t-.356.144z"/></svg>
+                    <svg class="close-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Material Symbols Light by Google - https://github.com/google/material-design-icons/blob/master/LICENSE --><path fill="currentColor" d="m12 12.708l-5.246 5.246q-.14.14-.344.15t-.364-.15t-.16-.354t.16-.354L11.292 12L6.046 6.754q-.14-.14-.15-.344t.15-.364t.354-.16t.354.16L12 11.292l5.246-5.246q.14-.14.345-.15q.203-.01.363.15t.16.354t-.16.354L12.708 12l5.246 5.246q.14.14.15.345q.01.203-.15.363t-.354.16t-.354-.16z"/></svg>
+                </div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                <a class="menu-item" href="/archives">Posts</a>
+                
+                <a class="menu-item" href="/category">Categories</a>
+                
+                <a class="menu-item" href="/tag">Tags</a>
+                
+                <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if (toggleMenu.classList.contains("active")) {
+            toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        } else {
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    var tocbot_timer;
+    var DEPTH_MAX = 6; // 为 6 时展开所有
+    var tocbot_default_config = {
+        tocSelector: '.tocbot-list',
+        contentSelector: '.post-content',
+        headingSelector: 'h1, h2, h3, h4, h5',
+        orderedList: false,
+        scrollSmooth: true,
+        onClick: extend_click,
+    };
+
+    function extend_click() {
+        clearTimeout(tocbot_timer);
+        tocbot_timer = setTimeout(function() {
+            tocbot.refresh(obj_merge(tocbot_default_config, {
+                hasInnerContainers: true
+            }));
+        }, 420); // 这个值是由 tocbot 源码里定义的 scrollSmoothDuration 得来的
+    }
+
+    document.ready(function() {
+        tocbot.init(obj_merge(tocbot_default_config, {
+            collapseDepth: 1
+        }));
+    });
+
+    function expand_toc() {
+        var b = document.querySelector('.tocbot-toc-expand');
+        var expanded = b.getAttribute('data-expanded');
+        expanded ? b.removeAttribute('data-expanded') : b.setAttribute('data-expanded', true);
+        tocbot.refresh(obj_merge(tocbot_default_config, {
+            collapseDepth: expanded ? 1 : DEPTH_MAX
+        }));
+        b.innerText = expanded ? 'Expand all' : 'Collapse all';
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+    function obj_merge(target, source) {
+        for (var item in source) {
+            if (source.hasOwnProperty(item)) {
+                target[item] = source[item];
+            }
+        }
+        return target;
+    }
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">[Palantir] Largest basin size in matrix</h1>
+            
+                <div class="post-meta">
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">January 20, 2015&nbsp;&nbsp;0:00:00</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/Question/">Question</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><p><a target="_blank" rel="noopener" href="http://www.careercup.com/question?id=15380670">link</a></p>
+<p>A group of farmers has some elevation data, and we’re going to help them understand how rainfall flows over their farmland.</p>
+<p>We’ll represent the land as a two-dimensional array of altitudes and use the following model, based on the idea that water flows downhill:</p>
+<p>If a cell’s neighboring cells all have higher altitudes, we call this cell a sink; water collects in sinks. Two cells are neighbors if the rows and columns each differ by at most one. Hence an interior cell will have eight neighbors, a cell on the edge will have five neighbors, and a cell in a corner will have three neighbors.</p>
+<p>Otherwise, water will flow to the neighboring cell with the lowest altitude. If a cell is not a sink, you may assume it has a unique lowest neighbor and that this neighbor will be lower than the cell.<br>Cells that drain into the same sink – directly or indirectly – are said to be part of the same basin.</p>
+<p>Your challenge is to partition the map into basins. In particular, given a map of elevations, your code should partition the map into basins and output the sizes of the basins, in descending order.</p>
+<p>Assume the elevation maps are square. Input will begin with a line with one integer, S, the height (and width) of the map. The next S lines will each contain a row of the map, each with S integers – the elevations of the S cells in the row. Some farmers have small land plots such as the examples below, while some have larger plots. However, in no case will the total size of the farmland exceed 1000x1000.</p>
+<p>Note: The input uses unix line endings (\n). If you try to view the sample inputs on a windows machine with a program that does not convert line endings (like Notepad), you will see the input appear all on a single line.</p>
+<p>Your code should output a space-separated list of the basin sizes, in descending order. (Trailing spaces are ignored.)</p>
+<p>While correctness and performance are the most important parts of this problem, a human will be reading your solution, so please make an effort to submit clean, readable code. In particular, do not write code as if you were solving a problem for a competition.</p>
+<p>A few examples are below.</p>
+<p>Input:</p>
+<pre><code>       3
+       1 5 2
+       2 4 7
+       3 6 9
+</code></pre>
+<p>Output:</p>
+<pre><code>            7 2
+</code></pre>
+<p>The basins, labeled with A’s and B’s, are:</p>
+<pre><code>       A A B
+       A A B
+       A A A
+</code></pre>
+<p>Input:</p>
+<pre><code>       1
+       10
+</code></pre>
+<p>Output:</p>
+<pre><code>       1
+</code></pre>
+<p>There is only one basin in this case.</p>
+<p>Input:</p>
+<pre><code>       5
+       1 0 2 5 8
+       2 3 4 7 9
+       3 5 7 9 9
+       1 2 5 5 3
+       3 3 5 1 0
+</code></pre>
+<p>Output:</p>
+<pre><code>       10 8 7
+</code></pre>
+<p>The basins, labeled with A’s, B’s, and C’s, are:</p>
+<pre><code>       A A A A A
+       A A A A A
+       B B B C C
+       B B C C C
+       B B C C C
+</code></pre>
+<p>Input:</p>
+<pre><code>       4
+       0 3 2 3
+       3 2 1 4
+       3 4 3 3
+       5 5 2 0
+</code></pre>
+<p>Output:</p>
+<pre><code>       6 5 5
+</code></pre>
+<p>The basins, labeled with A’s, B’s, and C’s, are:</p>
+<pre><code>       A A B B
+       A A B B
+       A B C C
+       A C C C
+</code></pre>
+<h3 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h3><p>I did not find a ‘best’ solution online, but there’s a good enough explanation available <a target="_blank" rel="noopener" href="http://stackoverflow.com/questions/24336686/find-the-largest-basin-size-in-a-given-matrix">here</a>:</p>
+<ol>
+<li><p>First store index according to their heights.</p>
+</li>
+<li><p>Then iterate from smallest height to largest height.</p>
+</li>
+<li><p>If current index is not visited, make it Basin surface (where water can collect), and make all higher neighbours as Non-Basin surface.</p>
+</li>
+<li><p>Repeat step 3 till all indexes are visited.</p>
+</li>
+<li><p>DFS find each basin</p>
+</li>
+</ol>
+<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><p>I post my solution written in 2013.</p>
+<pre><code>public class MeSolution2013 &#123;
+
+    public static void main(String args[]) &#123;
+
+        String inputFile;
+        int testCaseNumber = 1;
+
+        while (true) &#123;
+            inputFile = &quot;input&quot; + testCaseNumber + &quot;.txt&quot;;
+            BufferedReader in;
+            try &#123;
+                URI uri = MeSolution2013.class.getResource(inputFile).toURI();
+                in = new BufferedReader(new FileReader(new File(uri)));
+            &#125; catch (Exception e) &#123;
+                // there is not more test cases
+                break;
+            &#125;
+
+            Scanner sc = new Scanner(in);
+            int length = sc.nextInt();
+            int[][] elevation = new int[length][length];
+            for (int i = 0; i &lt; length; i++) &#123;
+                for (int j = 0; j &lt; length; j++) &#123;
+                    elevation[i][j] = sc.nextInt();
+                &#125;
+            &#125;
+
+            List&lt;Pair&gt; sinkList = new ArrayList&lt;Pair&gt;();
+
+            // first find out all sink nodes
+            for (int i = 0; i &lt; length; i++) &#123;
+                for (int j = 0; j &lt; length; j++) &#123;
+                    if (elevation[i][j] &lt; lowestNeighbor(i, j, elevation)) &#123;
+                        // (i,j) is a sink point
+                        sinkList.add(new Pair(i, j));
+                    &#125;
+                &#125;
+            &#125;
+
+            // then for each sink node, return the count
+            int[] basinSize = new int[sinkList.size()];
+            for (int i = 0; i &lt; sinkList.size(); i++) &#123;
+                basinSize[i] = count(sinkList.get(i).X, sinkList.get(i).Y,
+                        elevation);
+            &#125;
+            Arrays.sort(basinSize);
+
+            for (int i = sinkList.size() - 1; i &gt;= 0; i--) &#123;
+                System.out.print(basinSize[i]);
+                if (i != 0)
+                    System.out.print(&quot; &quot;);
+            &#125;
+            System.out.println();
+            testCaseNumber++;
+        &#125;
+    &#125;
+
+    static int count(int x, int y, int[][] ele) &#123;
+
+        int num = 1;
+
+        // if the neighbour is higher than current, add count to current count
+        // if all neighbours are lower than current, return 1
+
+        // diagonal neighbors
+        if (withinBound(x - 1, y, ele) &amp;&amp; rainFlowFrom(x, y, x - 1, y, ele)) &#123; // upper
+                                                                                // elment
+            num += count(x - 1, y, ele);
+        &#125;
+        if (withinBound(x + 1, y, ele) &amp;&amp; rainFlowFrom(x, y, x + 1, y, ele)) &#123; // lower
+                                                                                // element
+            num += count(x + 1, y, ele);
+        &#125;
+        if (withinBound(x, y - 1, ele) &amp;&amp; rainFlowFrom(x, y, x, y - 1, ele)) &#123; // left
+                                                                                // hand
+                                                                                // side
+            num += count(x, y - 1, ele);
+        &#125;
+        if (withinBound(x, y + 1, ele) &amp;&amp; rainFlowFrom(x, y, x, y + 1, ele)) &#123; // right
+                                                                                // hand
+                                                                                // side
+            num += count(x, y + 1, ele);
+        &#125;
+
+        // diagonal neighbors
+        if (withinBound(x - 1, y - 1, ele)
+                &amp;&amp; rainFlowFrom(x, y, x - 1, y - 1, ele)) &#123; // upper elment
+            num += count(x - 1, y - 1, ele);
+        &#125;
+        if (withinBound(x + 1, y + 1, ele)
+                &amp;&amp; rainFlowFrom(x, y, x + 1, y + 1, ele)) &#123; // lower element
+            num += count(x + 1, y + 1, ele);
+        &#125;
+        if (withinBound(x + 1, y - 1, ele)
+                &amp;&amp; rainFlowFrom(x, y, x + 1, y - 1, ele)) &#123; // left hand side
+            num += count(x + 1, y - 1, ele);
+        &#125;
+        if (withinBound(x - 1, y + 1, ele)
+                &amp;&amp; rainFlowFrom(x, y, x - 1, y + 1, ele)) &#123; // right hand side
+            num += count(x - 1, y + 1, ele);
+        &#125;
+
+        return num;
+    &#125;
+
+    static Boolean withinBound(int x, int y, int[][] ele) &#123;
+        int bound = ele.length;
+        return (x &gt;= 0 &amp;&amp; x &lt; bound &amp;&amp; y &gt;= 0 &amp;&amp; y &lt; bound);
+    &#125;
+
+    static Boolean rainFlowFrom(int a, int b, int c, int d, int[][] ele) &#123;
+        // rain in (c,d) flows into (a,b).
+        if (ele[a][b] &gt;= ele[c][d])
+            // if (a,b) is higher than (c,d), impossible to flow this way
+            return false;
+
+        int lowest = lowestNeighbor(c, d, ele);
+
+        return (ele[a][b] == lowest);
+        // the question states &quot;you may assume it has a unique lowest neighbor&quot;
+        // so if flow to (a,b), then that is the unique lowest height.
+    &#125;
+
+    static int lowestNeighbor(int a, int b, int[][] ele) &#123;
+        int height = 9999999;
+
+        // adjacent neighbor
+        if (withinBound(a - 1, b, ele) &amp;&amp; ele[a - 1][b] &lt; height) &#123;
+            height = ele[a - 1][b];
+        &#125;
+        if (withinBound(a + 1, b, ele) &amp;&amp; ele[a + 1][b] &lt; height) &#123;
+            height = ele[a + 1][b];
+        &#125;
+        if (withinBound(a, b - 1, ele) &amp;&amp; ele[a][b - 1] &lt; height) &#123;
+            height = ele[a][b - 1];
+        &#125;
+        if (withinBound(a, b + 1, ele) &amp;&amp; ele[a][b + 1] &lt; height) &#123;
+            height = ele[a][b + 1];
+        &#125;
+
+        // diagonal neighbor
+        if (withinBound(a - 1, b - 1, ele) &amp;&amp; ele[a - 1][b - 1] &lt; height) &#123;
+            height = ele[a - 1][b - 1];
+        &#125;
+        if (withinBound(a + 1, b - 1, ele) &amp;&amp; ele[a + 1][b - 1] &lt; height) &#123;
+            height = ele[a + 1][b - 1];
+        &#125;
+        if (withinBound(a - 1, b + 1, ele) &amp;&amp; ele[a - 1][b + 1] &lt; height) &#123;
+            height = ele[a - 1][b + 1];
+        &#125;
+        if (withinBound(a + 1, b + 1, ele) &amp;&amp; ele[a + 1][b + 1] &lt; height) &#123;
+            height = ele[a + 1][b + 1];
+        &#125;
+        return height;
+    &#125;
+&#125;
+
+class Pair &#123;
+
+    public int X;
+    public int Y;
+
+    public Pair(int _x, int _y) &#123;
+        X = _x;
+        Y = _y;
+    &#125;
+&#125;
+</code></pre>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>Permalink:</span>
+                        <span><a href="https://mar2ndx.github.io/2015/01/20/pre-2017-2015-01-20-basin-size-in-matrix/">https://mar2ndx.github.io/2015/01/20/pre-2017-2015-01-20-basin-size-in-matrix/</a></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2019 <a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc/4.0/">CC-BY-NC-4.0</a> LICENSE</span>
+                    </p>
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY</strong>?</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2015/01/24/pre-2017-2015-01-24-distributed-caching-memcached/">[Design] Distributed Caching - memcached </a>
+            
+            
+            <a class="next" rel="next" href="/2015/01/20/pre-2017-2015-01-20-difference-http-https/">[Design] Difference between HTTP and HTTPS </a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+            </div>
+            <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>©  | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+
+
+
+
+<title>[Ruby] Endless error with gem dependencies  | Tech blog</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const pagebody = document.getElementsByTagName('body')[0]
+
+            function setTheme(status) {
+
+                if (status === 'dark') {
+                    window.sessionStorage.theme = 'dark'
+                    pagebody.classList.add('dark-theme');
+
+                } else if (status === 'light') {
+                    window.sessionStorage.theme = 'light'
+                    pagebody.classList.remove('dark-theme');
+                }
+            };
+
+            setTheme(window.sessionStorage.theme)
+        })();
+    </script>
+
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">Bentham&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                <a class="menu-item" href="/archives">Posts</a>
+                
+                <a class="menu-item" href="/category">Categories</a>
+                
+                <a class="menu-item" href="/tag">Tags</a>
+                
+                <a class="menu-item" href="/about">About</a>
+                
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">Bentham&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">
+                    <svg class="menu-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M4.5 17.27q-.213 0-.356-.145T4 16.768t.144-.356t.356-.143h15q.213 0 .356.144q.144.144.144.357t-.144.356t-.356.143zm0-4.77q-.213 0-.356-.144T4 11.999t.144-.356t.356-.143h15q.213 0 .356.144t.144.357t-.144.356t-.356.143zm0-4.77q-.213 0-.356-.143Q4 7.443 4 7.23t.144-.356t.356-.143h15q.213 0 .356.144T20 7.23t-.144.356t-.356.144z"/></svg>
+                    <svg class="close-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Material Symbols Light by Google - https://github.com/google/material-design-icons/blob/master/LICENSE --><path fill="currentColor" d="m12 12.708l-5.246 5.246q-.14.14-.344.15t-.364-.15t-.16-.354t.16-.354L11.292 12L6.046 6.754q-.14-.14-.15-.344t.15-.364t.354-.16t.354.16L12 11.292l5.246-5.246q.14-.14.345-.15q.203-.01.363.15t.16.354t-.16.354L12.708 12l5.246 5.246q.14.14.15.345q.01.203-.15.363t-.354.16t-.354-.16z"/></svg>
+                </div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                <a class="menu-item" href="/archives">Posts</a>
+                
+                <a class="menu-item" href="/category">Categories</a>
+                
+                <a class="menu-item" href="/tag">Tags</a>
+                
+                <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if (toggleMenu.classList.contains("active")) {
+            toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        } else {
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    var tocbot_timer;
+    var DEPTH_MAX = 6; // 为 6 时展开所有
+    var tocbot_default_config = {
+        tocSelector: '.tocbot-list',
+        contentSelector: '.post-content',
+        headingSelector: 'h1, h2, h3, h4, h5',
+        orderedList: false,
+        scrollSmooth: true,
+        onClick: extend_click,
+    };
+
+    function extend_click() {
+        clearTimeout(tocbot_timer);
+        tocbot_timer = setTimeout(function() {
+            tocbot.refresh(obj_merge(tocbot_default_config, {
+                hasInnerContainers: true
+            }));
+        }, 420); // 这个值是由 tocbot 源码里定义的 scrollSmoothDuration 得来的
+    }
+
+    document.ready(function() {
+        tocbot.init(obj_merge(tocbot_default_config, {
+            collapseDepth: 1
+        }));
+    });
+
+    function expand_toc() {
+        var b = document.querySelector('.tocbot-toc-expand');
+        var expanded = b.getAttribute('data-expanded');
+        expanded ? b.removeAttribute('data-expanded') : b.setAttribute('data-expanded', true);
+        tocbot.refresh(obj_merge(tocbot_default_config, {
+            collapseDepth: expanded ? 1 : DEPTH_MAX
+        }));
+        b.innerText = expanded ? 'Expand all' : 'Collapse all';
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+    function obj_merge(target, source) {
+        for (var item in source) {
+            if (source.hasOwnProperty(item)) {
+                target[item] = source[item];
+            }
+        }
+        return target;
+    }
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">[Ruby] Endless error with gem dependencies </h1>
+            
+                <div class="post-meta">
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">December 23, 2014&nbsp;&nbsp;0:00:00</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/experience/">experience</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h3 id="The-problem"><a href="#The-problem" class="headerlink" title="The problem"></a>The problem</h3><p>In setting up the octopress environment, we need to install dependencies like this:</p>
+<pre><code>gem install bundler
+bundle install
+</code></pre>
+<p>First line simply installs bundler (a Ruby dependency manager). The second line is where you might face problems:</p>
+<blockquote>
+<p>bundle install</p>
+<p><a target="_blank" rel="noopener" href="http://bundler.io/man/bundle-install.1.html">Install the dependencies</a> specified in your Gemfile</p>
+</blockquote>
+<p>Look at the Gemfile in your octopress folder, it looks like <a target="_blank" rel="noopener" href="https://github.com/imathis/octopress/blob/master/Gemfile">this</a>:</p>
+<pre><code>source &quot;https://rubygems.org&quot;
+
+group :development do
+  gem &#39;rake&#39;, &#39;~&gt; 10.0&#39;
+  gem &#39;jekyll&#39;, &#39;~&gt; 2.0&#39;
+  gem &#39;octopress-hooks&#39;, &#39;~&gt; 2.2&#39;
+  gem &#39;octopress-date-format&#39;, &#39;~&gt; 2.0&#39;
+  gem &#39;jekyll-sitemap&#39;
+  gem &#39;rdiscount&#39;, &#39;~&gt; 2.0&#39;
+  gem &#39;RedCloth&#39;, &#39;~&gt; 4.2.9&#39;
+  gem &#39;haml&#39;, &#39;~&gt; 4.0&#39;
+  gem &#39;compass&#39;, &#39;~&gt; 1.0.1&#39;
+  gem &#39;sass-globbing&#39;, &#39;~&gt; 1.0.0&#39;
+  gem &#39;rubypants&#39;, &#39;~&gt; 0.2.0&#39;
+  gem &#39;rb-fsevent&#39;, &#39;~&gt; 0.9&#39;
+  gem &#39;stringex&#39;, &#39;~&gt; 1.4.0&#39;
+end
+
+gem &#39;sinatra&#39;, &#39;~&gt; 1.4.2&#39;
+</code></pre>
+<p>When I do ‘bundle install’:</p>
+<pre><code>$ bundle install
+Fetching gem metadata from https://rubygems.org/........
+Resolving dependencies...
+
+Gem::RemoteFetcher::FetchError: SSL_connect returned=1 errno=0 state=SSLv3 read
+server certificate B: certificate verify failed (https://rubygems.org/gems/rake-
+10.4.2.gem)
+An error occurred while installing rake (10.4.2), and Bundler cannot continue.
+Make sure that `gem install rake -v &#39;10.4.2&#39;` succeeds before bundling.
+</code></pre>
+<p>It shows the gem ‘rake’ is missing. So I did as I was instrcucted to. I type <strong>gem install rake -v ‘10.4.2’</strong> into command line, and execute. Again, I was told another gem missing. I kept doing this, until I found this is an endless procedure:</p>
+<pre><code>$ bundle install
+Fetching gem metadata from https://rubygems.org/.......
+Using rake 10.3.2
+Using RedCloth 4.2.9
+Using blankslate 2.1.2.4
+
+Gem::RemoteFetcher::FetchError: SSL_connect returned=1 errno=0 state=SSLv3 read
+server certificate B: certificate verify failed (https://rubygems.org/gems/timer
+s-1.1.0.gem)
+An error occurred while installing timers (1.1.0), and Bundler cannot continue.
+Make sure that `gem install timers -v &#39;1.1.0&#39;` succeeds before bundling.
+</code></pre>
+<p>Something is very wrong with the execution of ‘bundle install’.</p>
+<h3 id="The-solution"><a href="#The-solution" class="headerlink" title="The solution"></a>The solution</h3><p>Until I found <a target="_blank" rel="noopener" href="http://stackoverflow.com/questions/15529451/octopress-installation-stops-during-bundle-install">this post</a>, I was hopelessly searching and learning Ruby gems and related things.</p>
+<p>I fact, I just deleted 1 letter by changing <strong>source “<a target="_blank" rel="noopener" href="https://rubygems.org/">https://rubygems.org</a>“</strong> to <strong>source “<a target="_blank" rel="noopener" href="http://rubygems.org/">http://rubygems.org</a>“</strong> at line 1 of Gemfile in octopress folder.</p>
+<p>Then, everything is fine:</p>
+<pre><code>$ bundle install
+Fetching gem metadata from http://rubygems.org/........
+Resolving dependencies....
+Installing rake 10.4.2
+Using RedCloth 4.2.9
+Using blankslate 2.1.2.4
+Installing hitimes 1.2.2
+Installing timers 4.0.1
+Installing celluloid 0.16.0
+Installing chunky_png 1.3.3
+Installing fast-stemmer 1.0.2
+Installing classifier-reborn 2.0.2
+Installing coffee-script-source 1.8.0
+Installing execjs 2.2.2
+Installing coffee-script 2.3.0
+Installing colorator 0.1
+Installing multi_json 1.10.1
+Installing sass 3.4.9
+Installing compass-core 1.0.1
+Installing compass-import-once 1.0.5
+Installing rb-fsevent 0.9.4
+Installing ffi 1.9.6
+Installing rb-inotify 0.9.5
+Installing compass 1.0.1
+Installing tilt 1.4.1
+Installing haml 4.0.6
+Installing jekyll-coffeescript 1.0.1
+Installing jekyll-gist 1.1.0
+Installing jekyll-paginate 1.1.0
+Installing jekyll-sass-converter 1.3.0
+Installing listen 2.8.4
+Installing jekyll-watch 1.2.0
+Installing kramdown 1.5.0
+Installing liquid 2.6.1
+Installing mercenary 0.3.5
+Installing posix-spawn 0.3.9
+Installing yajl-ruby 1.1.0
+Installing pygments.rb 0.6.0
+Installing redcarpet 3.2.2
+Installing safe_yaml 1.0.4
+Installing parslet 1.5.0
+Installing toml 0.1.2
+Installing jekyll 2.5.3
+Installing jekyll-sitemap 0.7.0
+Installing octopress-hooks 2.2.3
+Installing octopress-date-format 2.0.2
+Installing rack 1.6.0
+Installing rack-protection 1.5.3
+Installing rdiscount 2.1.7.1
+Installing rubypants 0.2.0
+Installing sass-globbing 1.0.0
+Installing sinatra 1.4.5
+Installing stringex 1.4.0
+Using bundler 1.7.9
+Your bundle is complete!
+Use `bundle show [gemname]` to see where a bundled gem is installed.
+Post-install message from compass:
+    Compass is charityware. If you love it, please donate on our behalf at http:
+//umdf.org/compass Thanks!
+Post-install message from haml:
+
+HEADS UP! Haml 4.0 has many improvements, but also has changes that may break
+your application:
+
+* Support for Ruby 1.8.6 dropped
+* Support for Rails 2 dropped
+* Sass filter now always outputs &lt;style&gt; tags
+* Data attributes are now hyphenated, not underscored
+* html2haml utility moved to the html2haml gem
+* Textile and Maruku filters moved to the haml-contrib gem
+
+For more info see:
+
+http://rubydoc.info/github/haml/haml/file/CHANGELOG.md
+</code></pre>
+<p>I guess this is because my network security settings, but I do not know. If you are facing the same issue, I hope my solution helped. Or if you know the reason, please tell me by leaving a comment below. Thanks!</p>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>Permalink:</span>
+                        <span><a href="https://mar2ndx.github.io/2014/12/23/pre-2017-2014-12-23-Endless-error-gem-dependencies/">https://mar2ndx.github.io/2014/12/23/pre-2017-2014-12-23-Endless-error-gem-dependencies/</a></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2019 <a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc/4.0/">CC-BY-NC-4.0</a> LICENSE</span>
+                    </p>
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY</strong>?</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2014/12/27/pre-2017-2014-12-27-database-indexing/">[Design] Database Indexing </a>
+            
+            
+            <a class="next" rel="next" href="/2014/12/23/pre-2017-2014-12-23-Java-runtime-exception/">[Java OOP] Java Runtime Exception </a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+            </div>
+            <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>©  | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+
+</html>

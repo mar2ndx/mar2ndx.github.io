@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+
+
+
+
+<title>[LeetCode 85] Maximal Rectangle | Tech blog</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const pagebody = document.getElementsByTagName('body')[0]
+
+            function setTheme(status) {
+
+                if (status === 'dark') {
+                    window.sessionStorage.theme = 'dark'
+                    pagebody.classList.add('dark-theme');
+
+                } else if (status === 'light') {
+                    window.sessionStorage.theme = 'light'
+                    pagebody.classList.remove('dark-theme');
+                }
+            };
+
+            setTheme(window.sessionStorage.theme)
+        })();
+    </script>
+
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">Bentham&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                <a class="menu-item" href="/archives">Posts</a>
+                
+                <a class="menu-item" href="/category">Categories</a>
+                
+                <a class="menu-item" href="/tag">Tags</a>
+                
+                <a class="menu-item" href="/about">About</a>
+                
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">Bentham&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">
+                    <svg class="menu-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M4.5 17.27q-.213 0-.356-.145T4 16.768t.144-.356t.356-.143h15q.213 0 .356.144q.144.144.144.357t-.144.356t-.356.143zm0-4.77q-.213 0-.356-.144T4 11.999t.144-.356t.356-.143h15q.213 0 .356.144t.144.357t-.144.356t-.356.143zm0-4.77q-.213 0-.356-.143Q4 7.443 4 7.23t.144-.356t.356-.143h15q.213 0 .356.144T20 7.23t-.144.356t-.356.144z"/></svg>
+                    <svg class="close-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Material Symbols Light by Google - https://github.com/google/material-design-icons/blob/master/LICENSE --><path fill="currentColor" d="m12 12.708l-5.246 5.246q-.14.14-.344.15t-.364-.15t-.16-.354t.16-.354L11.292 12L6.046 6.754q-.14-.14-.15-.344t.15-.364t.354-.16t.354.16L12 11.292l5.246-5.246q.14-.14.345-.15q.203-.01.363.15t.16.354t-.16.354L12.708 12l5.246 5.246q.14.14.15.345q.01.203-.15.363t-.354.16t-.354-.16z"/></svg>
+                </div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                <a class="menu-item" href="/archives">Posts</a>
+                
+                <a class="menu-item" href="/category">Categories</a>
+                
+                <a class="menu-item" href="/tag">Tags</a>
+                
+                <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if (toggleMenu.classList.contains("active")) {
+            toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        } else {
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    var tocbot_timer;
+    var DEPTH_MAX = 6; // 为 6 时展开所有
+    var tocbot_default_config = {
+        tocSelector: '.tocbot-list',
+        contentSelector: '.post-content',
+        headingSelector: 'h1, h2, h3, h4, h5',
+        orderedList: false,
+        scrollSmooth: true,
+        onClick: extend_click,
+    };
+
+    function extend_click() {
+        clearTimeout(tocbot_timer);
+        tocbot_timer = setTimeout(function() {
+            tocbot.refresh(obj_merge(tocbot_default_config, {
+                hasInnerContainers: true
+            }));
+        }, 420); // 这个值是由 tocbot 源码里定义的 scrollSmoothDuration 得来的
+    }
+
+    document.ready(function() {
+        tocbot.init(obj_merge(tocbot_default_config, {
+            collapseDepth: 1
+        }));
+    });
+
+    function expand_toc() {
+        var b = document.querySelector('.tocbot-toc-expand');
+        var expanded = b.getAttribute('data-expanded');
+        expanded ? b.removeAttribute('data-expanded') : b.setAttribute('data-expanded', true);
+        tocbot.refresh(obj_merge(tocbot_default_config, {
+            collapseDepth: expanded ? 1 : DEPTH_MAX
+        }));
+        b.innerText = expanded ? 'Expand all' : 'Collapse all';
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+    function obj_merge(target, source) {
+        for (var item in source) {
+            if (source.hasOwnProperty(item)) {
+                target[item] = source[item];
+            }
+        }
+        return target;
+    }
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">[LeetCode 85] Maximal Rectangle</h1>
+            
+                <div class="post-meta">
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">May 24, 2014&nbsp;&nbsp;0:00:00</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/Leetcode/">Leetcode</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><p><a target="_blank" rel="noopener" href="https://oj.leetcode.com/problems/maximal-rectangle/">link</a></p>
+<div class="question-content">
+            <p></p><p>
+Given a 2D binary matrix filled with 0's and 1's, find the largest rectangle containing all ones and return its area.
+</p><p></p>
+          </div>
+
+<h3 id="Stats"><a href="#Stats" class="headerlink" title="Stats"></a>Stats</h3><table border="2">
+	<tr>
+		<td>Frequency</td>
+		<td bgcolor="white">1</td>
+	</tr>
+	<tr>
+		<td>Difficulty</td>
+		<td bgcolor="red">5</td>
+	</tr>
+	<tr>
+		<td>Adjusted Difficulty</td>
+		<td bgcolor="red">5</td>
+	</tr>
+	<tr>
+		<td>Time to use</td>
+		<td bgcolor="red">--------</td>
+	</tr>
+</table>
+
+<p>Ratings&#x2F;Color &#x3D; 1(white) 2(lime) 3(yellow) 4&#x2F;5(red)</p>
+<h3 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h3><p><strong>This is a very difficult question</strong>. It is similar and also related to “<strong>Largest Rectangle in Histogram</strong>“.</p>
+<p>Two solutions are available for this question.</p>
+<p><strong>First solution is O(n^2)</strong>. This makes use of solution of “<strong>Largest Rectangle in Histogram</strong>“, which is to say, we are finding the max rectangle for each row (as base) in the matrix.</p>
+<p>This solution is very easy to write once you realize this connection - I guess not many people would. That’s why I have the next solution.</p>
+<p><strong>Second solution is a clever Brute Force, time complexity is O(n^3)</strong>. The fundamental idea is to make a 2-D array storing the number of ‘1’s occured before current node (inclusive). After this is done, there’re 2 different ways to implement. Read code 2 and code 3.</p>
+<h3 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h3><p>FIrst code is easy.</p>
+<p>Second code is the idea from <a target="_blank" rel="noopener" href="http://blog.csdn.net/fightforyourdream/article/details/17711893">this blog</a>. For every node in the 2-D array, checks all possible rectangles ending at this node (which mean check all the way up&#x2F;left).</p>
+<p>Third code from <a target="_blank" rel="noopener" href="http://leetcodenotes.wordpress.com/2013/10/19/leetcode-maximal-rectangle-0101%E7%BB%84%E6%88%90%E7%9A%84%E7%9F%A9%E9%98%B5%EF%BC%8C%E6%B1%82%E9%87%8C%E9%9D%A2%E5%85%A8%E6%98%AF1%E7%9A%84%E7%9F%A9%E5%BD%A2%E7%9A%84%E6%9C%80%E5%A4%A7%E9%9D%A2/">this blog</a>. It is similar to second, but it’s checking all rectangles that shared same width as current line. So it’s checking up then down, both direction. Read the code and it’s easy to understand.</p>
+<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><p><strong>First, solution making use of “Largest rectangle”</strong></p>
+<pre><code>public int maximalRectangle(char[][] matrix) &#123;
+    if (matrix.length == 0 || matrix[0].length == 0) return 0;
+    int[][] m = new int[matrix.length][matrix[0].length];
+    for (int i = 0; i &lt; matrix.length; i ++) &#123;
+        for (int j = 0; j &lt; matrix[i].length; j ++) &#123;
+            if (i == 0 || matrix[i][j] == &#39;0&#39;)
+                m[i][j] = matrix[i][j] - &#39;0&#39;;
+            else
+                m[i][j] = m[i-1][j] + 1;
+        &#125;
+    &#125;
+    int max = 0;
+    for (int i = 0; i &lt; m.length; i ++) &#123;
+        max = Math.max(max, largestRectangleArea(m[i]));
+    &#125;
+    return max;
+&#125;
+
+// the following code is the solution for &quot;Largest Rectangle in Histogram&quot;
+public int largestRectangleArea(int[] height) &#123;
+    int len = height.length;
+    if (len == 0) return 0;
+    int max = Integer.MIN_VALUE;
+    Stack&lt;Integer&gt; stack = new Stack&lt;Integer&gt;();
+    for (int i = 0; i &lt; len; i ++) &#123;
+        if (stack.isEmpty() || height[stack.peek()] &lt;= height[i]) stack.push(i);
+        else &#123;
+            int temp = stack.pop();
+            // here I must do a check of stack.isEmpty(),
+            // And do nto use (i-height[temp]) instead use (i-stack.peek()-1])
+            max = Math.max(max, height[temp] *
+                (stack.isEmpty() ? i : (i - stack.peek() - 1)));
+            i --;
+        &#125;
+    &#125;
+    while (! stack.isEmpty()) &#123;
+            int temp = stack.pop();
+            max = Math.max(max, height[temp] *
+                (stack.isEmpty() ? len : (len - stack.peek() - 1)));
+    &#125;
+    return max;
+&#125;
+</code></pre>
+<p>**Second **</p>
+<pre><code>public int maximalRectangle(char[][] matrix) &#123;
+    int rows = matrix.length;
+    if (rows == 0) return 0;
+    int cols = matrix[0].length;
+    int [][] hOnes = new int[rows][cols];
+    int max = 0;
+    for (int i=0; i&lt;rows; i++)
+        for(int j=0; j&lt;cols; j++)
+            if(matrix[i][j] == &#39;1&#39;)
+                if(j == 0) hOnes[i][j] = 1;
+                else hOnes[i][j] = hOnes[i][j-1] + 1;
+    for (int i=0; i&lt;rows; i++)
+        for (int j=0; j&lt;cols; j++)&#123;
+            if (hOnes[i][j] != 0)&#123;
+                int minI = i;
+                int minRowWidth = hOnes[i][j];
+                while (minI &gt;= 0)&#123;
+                    minRowWidth = Math.min(minRowWidth, hOnes[minI][j]);
+                    int area = minRowWidth * (i-minI+1);
+                    max = Math.max(max, area);
+                    minI--;
+                &#125;
+            &#125;
+        &#125;
+    return max;
+&#125;
+</code></pre>
+<p><strong>Third</strong></p>
+<pre><code>public int maximalRectangle(char[][] matrix) &#123;
+    if (matrix.length == 0) return 0;
+    int res = 0;
+    int m = matrix.length, n = matrix[0].length;
+    int[][] d = new int[m][n];
+    for (int i = 0; i &lt; m; i++) &#123;
+        d[i][0] = matrix[i][0] - &#39;0&#39;;
+        for (int j = 1; j &lt; n; j++)
+            d[i][j] = matrix[i][j] == &#39;1&#39; ? d[i][j - 1] + 1 : 0;
+    &#125;
+    for (int i = 0; i &lt; m; i++)
+        for (int j = 0; j &lt; n; j++)
+            res = Math.max(res, expand(d, i, j));
+    return res;
+&#125;
+
+private int expand(int[][] d, int I, int J) &#123;
+    int height = 0, width = d[I][J];
+    //go up
+    for (int i = I - 1; i &gt;= 0; i--)
+        if (d[i][J] &gt;= width) height++;
+        else break;
+    //go down
+    for (int i = I; i &lt; d.length; i++)
+        if (d[i][J] &gt;= width) height++;
+        else break;
+    return width * height;
+&#125;
+</code></pre>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>Permalink:</span>
+                        <span><a href="https://mar2ndx.github.io/2014/05/24/pre-2017-2014-05-24-Maximal-Rectangle/">https://mar2ndx.github.io/2014/05/24/pre-2017-2014-05-24-Maximal-Rectangle/</a></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2019 <a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc/4.0/">CC-BY-NC-4.0</a> LICENSE</span>
+                    </p>
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY</strong>?</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2014/05/24/pre-2017-2014-05-24-Interleaving-String/">[LeetCode 97] Interleaving String</a>
+            
+            
+            <a class="next" rel="next" href="/2014/05/24/pre-2017-2014-05-24-Restore-IP-Addresses/">[LeetCode 93] Restore IP Addresses</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+            </div>
+            <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>©  | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+
+</html>

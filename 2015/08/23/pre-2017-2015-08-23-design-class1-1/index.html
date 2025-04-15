@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+
+
+
+
+<title>[NineChap System Design] Class 1.1: Overview  | Tech blog</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const pagebody = document.getElementsByTagName('body')[0]
+
+            function setTheme(status) {
+
+                if (status === 'dark') {
+                    window.sessionStorage.theme = 'dark'
+                    pagebody.classList.add('dark-theme');
+
+                } else if (status === 'light') {
+                    window.sessionStorage.theme = 'light'
+                    pagebody.classList.remove('dark-theme');
+                }
+            };
+
+            setTheme(window.sessionStorage.theme)
+        })();
+    </script>
+
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">Bentham&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                <a class="menu-item" href="/archives">Posts</a>
+                
+                <a class="menu-item" href="/category">Categories</a>
+                
+                <a class="menu-item" href="/tag">Tags</a>
+                
+                <a class="menu-item" href="/about">About</a>
+                
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">Bentham&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">
+                    <svg class="menu-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M4.5 17.27q-.213 0-.356-.145T4 16.768t.144-.356t.356-.143h15q.213 0 .356.144q.144.144.144.357t-.144.356t-.356.143zm0-4.77q-.213 0-.356-.144T4 11.999t.144-.356t.356-.143h15q.213 0 .356.144t.144.357t-.144.356t-.356.143zm0-4.77q-.213 0-.356-.143Q4 7.443 4 7.23t.144-.356t.356-.143h15q.213 0 .356.144T20 7.23t-.144.356t-.356.144z"/></svg>
+                    <svg class="close-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Material Symbols Light by Google - https://github.com/google/material-design-icons/blob/master/LICENSE --><path fill="currentColor" d="m12 12.708l-5.246 5.246q-.14.14-.344.15t-.364-.15t-.16-.354t.16-.354L11.292 12L6.046 6.754q-.14-.14-.15-.344t.15-.364t.354-.16t.354.16L12 11.292l5.246-5.246q.14-.14.345-.15q.203-.01.363.15t.16.354t-.16.354L12.708 12l5.246 5.246q.14.14.15.345q.01.203-.15.363t-.354.16t-.354-.16z"/></svg>
+                </div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                <a class="menu-item" href="/archives">Posts</a>
+                
+                <a class="menu-item" href="/category">Categories</a>
+                
+                <a class="menu-item" href="/tag">Tags</a>
+                
+                <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if (toggleMenu.classList.contains("active")) {
+            toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        } else {
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    var tocbot_timer;
+    var DEPTH_MAX = 6; // 为 6 时展开所有
+    var tocbot_default_config = {
+        tocSelector: '.tocbot-list',
+        contentSelector: '.post-content',
+        headingSelector: 'h1, h2, h3, h4, h5',
+        orderedList: false,
+        scrollSmooth: true,
+        onClick: extend_click,
+    };
+
+    function extend_click() {
+        clearTimeout(tocbot_timer);
+        tocbot_timer = setTimeout(function() {
+            tocbot.refresh(obj_merge(tocbot_default_config, {
+                hasInnerContainers: true
+            }));
+        }, 420); // 这个值是由 tocbot 源码里定义的 scrollSmoothDuration 得来的
+    }
+
+    document.ready(function() {
+        tocbot.init(obj_merge(tocbot_default_config, {
+            collapseDepth: 1
+        }));
+    });
+
+    function expand_toc() {
+        var b = document.querySelector('.tocbot-toc-expand');
+        var expanded = b.getAttribute('data-expanded');
+        expanded ? b.removeAttribute('data-expanded') : b.setAttribute('data-expanded', true);
+        tocbot.refresh(obj_merge(tocbot_default_config, {
+            collapseDepth: expanded ? 1 : DEPTH_MAX
+        }));
+        b.innerText = expanded ? 'Expand all' : 'Collapse all';
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+    function obj_merge(target, source) {
+        for (var item in source) {
+            if (source.hasOwnProperty(item)) {
+                target[item] = source[item];
+            }
+        }
+        return target;
+    }
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">[NineChap System Design] Class 1.1: Overview </h1>
+            
+                <div class="post-meta">
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">August 23, 2015&nbsp;&nbsp;0:00:00</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/NineChap/">NineChap</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h1 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h1><h2 id="defination"><a href="#defination" class="headerlink" title="defination"></a>defination</h2><p>the process of defining the <strong>architecture, components, modules, interfaces and data</strong> to satisfy specified <strong>requirements</strong>.</p>
+<ol>
+<li>conceptual design (macro)</li>
+<li>logical design</li>
+<li>physical design (micro)</li>
+</ol>
+<h3 id="Top-down-design"><a href="#Top-down-design" class="headerlink" title="Top-down design"></a>Top-down design</h3><p>Eg. MS Office, Huawei Security System</p>
+<h3 id="Bottom-up-design"><a href="#Bottom-up-design" class="headerlink" title="Bottom-up design"></a>Bottom-up design</h3><p>Most start-up use, MVP first using Medetor + MongoDb.</p>
+<h2 id="5-steps-SNAKE-Principle"><a href="#5-steps-SNAKE-Principle" class="headerlink" title="5 steps (SNAKE Principle):"></a>5 steps (SNAKE Principle):</h2><ol>
+<li><strong>Scenario</strong>: case&#x2F;interface - input</li>
+<li><strong>Necessary</strong>: constrain&#x2F;hypothesis - input</li>
+<li><strong>Application</strong>: service&#x2F;algorithm - output</li>
+<li><strong>Kilobit</strong>: data - output</li>
+<li><strong>Evolve</strong> - solution</li>
+</ol>
+<h1 id="A-top-down-example"><a href="#A-top-down-example" class="headerlink" title="A top-down example"></a>A top-down example</h1><p>Example one: <strong>design a radio</strong></p>
+<h2 id="Step-One-Scenario"><a href="#Step-One-Scenario" class="headerlink" title="Step One, Scenario"></a>Step One, Scenario</h2><ol>
+<li><p>brain storm</p>
+<ol>
+<li>register&#x2F;log in</li>
+<li>play music</li>
+<li>recommendation</li>
+</ol>
+</li>
+<li><p>prioritize</p>
+<ol>
+<li>play music<ol>
+<li>Get channel</li>
+<li>select a channel</li>
+<li>play</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h2 id="Step-Two-Necessary"><a href="#Step-Two-Necessary" class="headerlink" title="Step Two, Necessary"></a>Step Two, Necessary</h2><ol>
+<li><p>ask</p>
+<ol>
+<li>total user - 100,000,000</li>
+<li><strong>daily users - 1,000,000</strong></li>
+</ol>
+</li>
+<li><p>predict</p>
+<ol>
+<li>user analysis</li>
+<li>Traffic analysis</li>
+<li>Memory analysis</li>
+<li>QPS</li>
+</ol>
+</li>
+</ol>
+<p>Details:</p>
+<ol>
+<li><p>user analysis</p>
+<blockquote>
+<p>Avg Concurrent users &#x3D; daily users <strong>&#x2F; 5</strong> &#x3D; 200,000</p>
+<p>Peak Concurrent users &#x3D; concurrent user <strong>* 3</strong> &#x3D; 600,000</p>
+</blockquote>
+<p>considering your product may grow in the next 3 month:</p>
+<blockquote>
+<p>Max Peak users in 3 month &#x3D; Peak users <strong>* 10</strong> &#x3D; 6,000,000</p>
+</blockquote>
+</li>
+<li><p>Traffic analysis</p>
+<blockquote>
+<p>Request of new music per user: 1 music&#x2F;min</p>
+<p>Music size &#x3D; 3MB</p>
+<p>Max peak traffic (in 3 months) &#x3D; 6,000,000 * 3MB &#x2F; 60 &#x3D; 300GB&#x2F;s</p>
+</blockquote>
+</li>
+<li><p>Memory analysis</p>
+<blockquote>
+<p>Memory per user (metadata) &#x3D; 10KB</p>
+<p>Max daily memory &#x3D; 1,000,000 * 10 * 10 &#x3D; 100 million KB &#x3D; 100GB</p>
+<p>(10 times of avg daily user)</p>
+</blockquote>
+</li>
+</ol>
+<h2 id="Step-Three-Application"><a href="#Step-Three-Application" class="headerlink" title="Step Three, Application"></a>Step Three, Application</h2><ol>
+<li>Replay the case, one service for each</li>
+<li>Merge the services</li>
+</ol>
+<p><img src="/images/design-class1-basic-receptionist.png"></p>
+<h2 id="Step-Four-Kilobit-data"><a href="#Step-Four-Kilobit-data" class="headerlink" title="Step Four, Kilobit: data"></a>Step Four, Kilobit: data</h2><ol>
+<li><p>Append 1 dataset for each service</p>
+<p>Eg. User service: stability, more addition, less modify and deletion.</p>
+<p>Eg. Channel Service: high concurrency, MongoDB</p>
+<p>Eg. Music Service: MP3 File Systems</p>
+</li>
+</ol>
+<p><img src="/images/design-class1-reco-5.png"></p>
+<h2 id="Last-Step-Evolve"><a href="#Last-Step-Evolve" class="headerlink" title="Last Step, Evolve"></a>Last Step, Evolve</h2><ol>
+<li><p>Better: constrains</p>
+<p>eg. able to handle 300GB&#x2F;s traffic?</p>
+</li>
+<li><p>Broader: new cases</p>
+<p>share music? delete user account?</p>
+</li>
+<li><p>Deeper: details design</p>
+</li>
+</ol>
+<p>From views of <strong>Performance, Scalability and Robustness</strong>.</p>
+<p><img src="/images/design-class1-snake.jpg"></p>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>Permalink:</span>
+                        <span><a href="https://mar2ndx.github.io/2015/08/23/pre-2017-2015-08-23-design-class1-1/">https://mar2ndx.github.io/2015/08/23/pre-2017-2015-08-23-design-class1-1/</a></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2019 <a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc/4.0/">CC-BY-NC-4.0</a> LICENSE</span>
+                    </p>
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY</strong>?</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2015/08/24/pre-2017-2015-08-24-three-property-object/">[Java OOP] Three Properties of Class/Object </a>
+            
+            
+            <a class="next" rel="next" href="/2015/08/23/pre-2017-2015-08-23-design-class1-2/">[NineChap System Design] Class 1.2: An Example </a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+            </div>
+            <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>©  | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+
+</html>

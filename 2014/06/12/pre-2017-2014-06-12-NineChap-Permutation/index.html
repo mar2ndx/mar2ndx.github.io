@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+
+
+
+
+<title>[NineChap 1.2] Permutation | Tech blog</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const pagebody = document.getElementsByTagName('body')[0]
+
+            function setTheme(status) {
+
+                if (status === 'dark') {
+                    window.sessionStorage.theme = 'dark'
+                    pagebody.classList.add('dark-theme');
+
+                } else if (status === 'light') {
+                    window.sessionStorage.theme = 'light'
+                    pagebody.classList.remove('dark-theme');
+                }
+            };
+
+            setTheme(window.sessionStorage.theme)
+        })();
+    </script>
+
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">Bentham&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                <a class="menu-item" href="/archives">Posts</a>
+                
+                <a class="menu-item" href="/category">Categories</a>
+                
+                <a class="menu-item" href="/tag">Tags</a>
+                
+                <a class="menu-item" href="/about">About</a>
+                
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">Bentham&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">
+                    <svg class="menu-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M4.5 17.27q-.213 0-.356-.145T4 16.768t.144-.356t.356-.143h15q.213 0 .356.144q.144.144.144.357t-.144.356t-.356.143zm0-4.77q-.213 0-.356-.144T4 11.999t.144-.356t.356-.143h15q.213 0 .356.144t.144.357t-.144.356t-.356.143zm0-4.77q-.213 0-.356-.143Q4 7.443 4 7.23t.144-.356t.356-.143h15q.213 0 .356.144T20 7.23t-.144.356t-.356.144z"/></svg>
+                    <svg class="close-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Material Symbols Light by Google - https://github.com/google/material-design-icons/blob/master/LICENSE --><path fill="currentColor" d="m12 12.708l-5.246 5.246q-.14.14-.344.15t-.364-.15t-.16-.354t.16-.354L11.292 12L6.046 6.754q-.14-.14-.15-.344t.15-.364t.354-.16t.354.16L12 11.292l5.246-5.246q.14-.14.345-.15q.203-.01.363.15t.16.354t-.16.354L12.708 12l5.246 5.246q.14.14.15.345q.01.203-.15.363t-.354.16t-.354-.16z"/></svg>
+                </div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                <a class="menu-item" href="/archives">Posts</a>
+                
+                <a class="menu-item" href="/category">Categories</a>
+                
+                <a class="menu-item" href="/tag">Tags</a>
+                
+                <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if (toggleMenu.classList.contains("active")) {
+            toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        } else {
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    var tocbot_timer;
+    var DEPTH_MAX = 6; // 为 6 时展开所有
+    var tocbot_default_config = {
+        tocSelector: '.tocbot-list',
+        contentSelector: '.post-content',
+        headingSelector: 'h1, h2, h3, h4, h5',
+        orderedList: false,
+        scrollSmooth: true,
+        onClick: extend_click,
+    };
+
+    function extend_click() {
+        clearTimeout(tocbot_timer);
+        tocbot_timer = setTimeout(function() {
+            tocbot.refresh(obj_merge(tocbot_default_config, {
+                hasInnerContainers: true
+            }));
+        }, 420); // 这个值是由 tocbot 源码里定义的 scrollSmoothDuration 得来的
+    }
+
+    document.ready(function() {
+        tocbot.init(obj_merge(tocbot_default_config, {
+            collapseDepth: 1
+        }));
+    });
+
+    function expand_toc() {
+        var b = document.querySelector('.tocbot-toc-expand');
+        var expanded = b.getAttribute('data-expanded');
+        expanded ? b.removeAttribute('data-expanded') : b.setAttribute('data-expanded', true);
+        tocbot.refresh(obj_merge(tocbot_default_config, {
+            collapseDepth: expanded ? 1 : DEPTH_MAX
+        }));
+        b.innerText = expanded ? 'Expand all' : 'Collapse all';
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+    function obj_merge(target, source) {
+        for (var item in source) {
+            if (source.hasOwnProperty(item)) {
+                target[item] = source[item];
+            }
+        }
+        return target;
+    }
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">[NineChap 1.2] Permutation</h1>
+            
+                <div class="post-meta">
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">June 12, 2014&nbsp;&nbsp;0:00:00</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/NineChap/">NineChap</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h2 id="First-Word"><a href="#First-Word" class="headerlink" title="First Word"></a>First Word</h2><p>Permutation questions provide you with a list of items, and you build, validate and return a combination of these items. The standard solution is to sort the input first, and add items 1 by 1.</p>
+<p><strong>Do not try to solve the problems with anything other than the template given below</strong>, because otherwise the code is impossible to be bug-free.</p>
+<p>Though the code is standard, <strong>many question are very difficult</strong>, and most of time <strong>duplication removal can be tough</strong>.</p>
+<h2 id="Template"><a href="#Template" class="headerlink" title="Template"></a>Template</h2><pre><code>public List&lt;List&lt;Integer&gt;&gt; subsets(int[] num) &#123;
+    List&lt;List&lt;Integer&gt;&gt; result = new ArrayList&lt;List&lt;Integer&gt;&gt;();
+    if(num == null || num.length == 0) &#123;
+        return result;
+    &#125;
+    Arrays.sort(num);
+    subsetsHelper(result, new ArrayList&lt;Integer&gt;(), num, 0);
+    return result;
+&#125;
+
+private void subsetsHelper(List&lt;List&lt;Integer&gt;&gt; result,
+    List&lt;Integer&gt; list, int[] num, int pos) &#123;
+    result.add(new ArrayList&lt;Integer&gt;(list));
+    for (int i = pos; i &lt; num.length; i++) &#123;
+        list.add(num[i]);
+        subsetsHelper(result, list, num, i + 1);
+        list.remove(list.size() - 1);
+    &#125;
+&#125;
+</code></pre>
+<p><strong>Note:</strong> 2nd last line “subsetsHelper(result, list, num, i + 1);”.</p>
+<p>It’s easy to mistake it as “pos+1” instead of “i+1”, which will result in TLE.</p>
+<h2 id="Question-list"><a href="#Question-list" class="headerlink" title="Question list"></a>Question list</h2><ol>
+<li><p><strong><a href="/leetcode/2014-05-22-Subsets">Subsets</a></strong></p>
+</li>
+<li><p><strong><a href="/leetcode/2014-05-14-Permutations">Permutations</a></strong></p>
+</li>
+<li><p><strong><a href="/leetcode/2014-05-22-Subsets-II">Subsets II</a></strong></p>
+</li>
+<li><p><strong><a href="/leetcode/2014-05-14-Permutations-II">Permutations II</a></strong></p>
+</li>
+</ol>
+<h4 id="Additional"><a href="#Additional" class="headerlink" title="Additional"></a>Additional</h4><ol>
+<li><p><strong><a href="/leetcode/2014-05-13-Combination-Sum">Combination Sum</a></strong></p>
+</li>
+<li><p><strong><a href="/leetcode/2014-05-13-Combination-Sum-II">Combination Sum II</a></strong></p>
+</li>
+<li><p><strong><a href="/leetcode/2014-05-29-Palindrome-Partitioning">Palindrome Partitioning</a></strong></p>
+</li>
+<li><p><strong><a href="/leetcode/2014-05-30-Palindrome-Partitioning-II">Palindrome Partitioning II</a></strong></p>
+</li>
+<li><p><strong><a href="/leetcode/2014-05-24-Restore-IP-Addresses">Restore IP Addresses</a></strong></p>
+</li>
+<li><p><strong><a href="/leetcode/2014-05-22-Combinations">Combinations</a></strong></p>
+</li>
+<li><p><strong><a href="/leetcode/2014-05-02-Letter-Combinations-of-a-Phone-Number">Letter Combinations of a Phone Number</a></strong></p>
+</li>
+</ol>
+<h2 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h2><p><strong>Subsets</strong> - good example for practise (by applying the model)</p>
+<pre><code>public List&lt;List&lt;Integer&gt;&gt; subsets(int[] num) &#123;
+    List&lt;List&lt;Integer&gt;&gt; result = new ArrayList&lt;List&lt;Integer&gt;&gt;();
+    if(num == null || num.length == 0) &#123;
+        return result;
+    &#125;
+    Arrays.sort(num);
+    helper(result, new LinkedList&lt;Integer&gt;(), num, 0);
+    return result;
+&#125;
+
+private void helper(List&lt;List&lt;Integer&gt;&gt; ans, List&lt;Integer&gt; path, int[] num, int position) &#123;
+    ans.add(new LinkedList&lt;Integer&gt;(path));
+    for (int i = position; i &lt; num.length; i ++) &#123;
+        path.add(num[i]);
+        helper(ans, path, num, i + 1);
+        path.remove(path.size() - 1);
+    &#125;
+&#125;
+</code></pre>
+<p><strong>Permutations</strong></p>
+<pre><code>public List&lt;List&lt;Integer&gt;&gt; permute(int[] num) &#123;
+    List&lt;List&lt;Integer&gt;&gt; ans = new LinkedList&lt;List&lt;Integer&gt;&gt;();
+    if (num == null || num.length == 0) &#123;
+        return ans;
+    &#125;
+    helper(ans, new LinkedList&lt;Integer&gt;(), num);
+    return ans;
+&#125;
+
+private void helper(List&lt;List&lt;Integer&gt;&gt; ans, List&lt;Integer&gt; path, int[] num)&#123;
+    if (path.size() == num.length) &#123;
+        ans.add(new LinkedList&lt;Integer&gt;(path));
+        return;
+    &#125;
+    for (int i = 0; i &lt; num.length; i ++) &#123;
+        if (!path.contains(num[i])) &#123;
+            path.add(num[i]);
+            helper(ans, path, num);
+            path.remove(path.size() - 1);
+        &#125;
+    &#125;
+&#125;
+</code></pre>
+<p><strong>Subsets II</strong> - good example for practise</p>
+<p>We only care how many times we use the duplicate number, we care not the order. So, only 3 lines of code is added based on previous solution.</p>
+<pre><code>public List&lt;List&lt;Integer&gt;&gt; subsetsWithDup(int[] num) &#123;
+    List&lt;List&lt;Integer&gt;&gt; result = new ArrayList&lt;List&lt;Integer&gt;&gt;();
+    if(num == null || num.length == 0) &#123;
+        return result;
+    &#125;
+    Arrays.sort(num);
+    helper(result, new LinkedList&lt;Integer&gt;(), num, 0);
+    return result;
+&#125;
+
+private void helper(List&lt;List&lt;Integer&gt;&gt; ans, List&lt;Integer&gt; path, int[] num, int position) &#123;
+    ans.add(new LinkedList&lt;Integer&gt;(path));
+    for (int i = position; i &lt; num.length; i ++) &#123;
+        if (i &gt; position &amp;&amp; num[i - 1] == num[i]) &#123;
+            // if duplicate, only append num[position]
+            continue;
+        &#125;
+        path.add(num[i]);
+        helper(ans, path, num, i + 1);
+        path.remove(path.size() - 1);
+    &#125;
+&#125;
+</code></pre>
+<p><strong>Permutations II</strong></p>
+<pre><code>public List&lt;List&lt;Integer&gt;&gt; permuteUnique(int[] num) &#123;
+    List&lt;List&lt;Integer&gt;&gt; ans = new LinkedList&lt;List&lt;Integer&gt;&gt;();
+    if (num == null || num.length == 0) &#123;
+        return ans;
+    &#125;
+    Arrays.sort(num);
+    helper(ans, new LinkedList&lt;Integer&gt;(), new int[num.length], num);
+    return ans;
+&#125;
+
+private void helper(List&lt;List&lt;Integer&gt;&gt; ans, List&lt;Integer&gt; path, int[] visited, int[] num)&#123;
+    if (path.size() == num.length) &#123;
+        ans.add(new LinkedList&lt;Integer&gt;(path));
+        return;
+    &#125;
+    for (int i = 0; i &lt; num.length; i ++) &#123;
+        if (visited[i] == 1) &#123;
+            continue;
+        &#125;
+        if (i &gt; 0 &amp;&amp; visited[i-1] == 0 &amp;&amp; num[i - 1] == num[i]) &#123;
+            continue;
+        &#125;
+        visited[i] = 1;
+        path.add(num[i]);
+        helper(ans, path, visited, num);
+        visited[i] = 0;
+        path.remove(path.size() - 1);
+    &#125;
+&#125;
+</code></pre>
+<p><strong>Combination Sum</strong></p>
+<pre><code>public ArrayList&lt;ArrayList&lt;Integer&gt;&gt; combinationSum(int[] candidates, int target) &#123;
+    ArrayList&lt;ArrayList&lt;Integer&gt;&gt; ans = new ArrayList&lt;ArrayList&lt;Integer&gt;&gt;();
+    Arrays.sort(candidates);
+    helper(ans, new ArrayList&lt;Integer&gt;(), candidates, 0, target);
+    return ans;
+&#125;
+
+private void helper(ArrayList&lt;ArrayList&lt;Integer&gt;&gt; ans, ArrayList&lt;Integer&gt; path,
+                    int[] nums, int pos, int target) &#123;
+    if (target &lt; 0) &#123;
+        return;
+    &#125; else if (target == 0) &#123;
+        ans.add(new ArrayList&lt;Integer&gt;(path));
+        return;
+    &#125;
+    for (int i = pos; i &lt; nums.length; i ++) &#123;
+        path.add(nums[i]);
+        helper(ans, path, nums, i, target - nums[i]);
+        path.remove(path.size() - 1);
+    &#125;
+&#125;
+</code></pre>
+<p><strong>Combination Sum II</strong></p>
+<pre><code>public ArrayList&lt;ArrayList&lt;Integer&gt;&gt; combinationSum2(int[] candidates, int target) &#123;
+    ArrayList&lt;ArrayList&lt;Integer&gt;&gt; ans = new ArrayList&lt;ArrayList&lt;Integer&gt;&gt;();
+    Arrays.sort(candidates);
+    helper(ans, new ArrayList&lt;Integer&gt;(), candidates, 0, target);
+    return ans;
+&#125;
+
+private void helper(ArrayList&lt;ArrayList&lt;Integer&gt;&gt; ans, ArrayList&lt;Integer&gt; path,
+                    int[] nums, int pos, int target) &#123;
+    if (target &lt; 0) &#123;
+        return;
+    &#125; else if (target == 0) &#123;
+        ans.add(new ArrayList&lt;Integer&gt;(path));
+        return;
+    &#125;
+    for (int i = pos; i &lt; nums.length; i ++) &#123;
+        if (i &gt; pos &amp;&amp; nums[i-1] == nums[i]) &#123;
+            continue;
+        &#125;
+        path.add(nums[i]);
+        helper(ans, path, nums, i + 1, target - nums[i]);
+        path.remove(path.size() - 1);
+    &#125;
+&#125;
+</code></pre>
+<p><strong>Palindrome Partitioning</strong></p>
+<p>Naive approach can AC:</p>
+<pre><code>public ArrayList&lt;ArrayList&lt;String&gt;&gt; partition(String s) &#123;
+    ArrayList&lt;ArrayList&lt;String&gt;&gt; ans = new ArrayList&lt;ArrayList&lt;String&gt;&gt;();
+    if (s == null || s.length() == 0) &#123;
+        return ans;
+    &#125;
+    helper(ans, new ArrayList&lt;String&gt;(), s, 0);
+    return ans;
+&#125;
+
+private void helper(ArrayList&lt;ArrayList&lt;String&gt;&gt; ans, ArrayList&lt;String&gt; path, String s, int pos) &#123;
+    if (pos == s.length()) &#123;
+        ans.add(new ArrayList&lt;String&gt;(path));
+        return;
+    &#125;
+    for (int i = pos + 1; i &lt;= s.length(); i++) &#123;
+        String sub = s.substring(pos, i);
+        if (!isPlm(sub)) &#123;
+            continue;
+        &#125;
+        path.add(sub);
+        helper(ans, path, s, i);
+        path.remove(path.size() - 1);
+    &#125;
+&#125;
+
+private boolean isPlm(String str) &#123;
+    int left = 0, right = str.length() - 1;
+    while (left &lt; right) &#123;
+        if (str.charAt(left) != str.charAt(right))
+            return false;
+        left++;
+        right--;
+    &#125;
+    return true;
+&#125;
+</code></pre>
+<p>Use DP to optimize the process of palindrome validation.</p>
+<pre><code>// palindrome validation optimized with DP
+public ArrayList&lt;ArrayList&lt;String&gt;&gt; partition(String s) &#123;
+    ArrayList&lt;ArrayList&lt;String&gt;&gt; ans = new ArrayList&lt;ArrayList&lt;String&gt;&gt;();
+    if (s == null || s.length() == 0) &#123;
+        return ans;
+    &#125;
+    helper(ans, new ArrayList&lt;String&gt;(), s, 0, palindromeMap(s));
+    return ans;
+&#125;
+
+private void helper(ArrayList&lt;ArrayList&lt;String&gt;&gt; ans,
+ArrayList&lt;String&gt; path, String s, int pos, boolean[][] palinMap) &#123;
+    if (pos == s.length()) &#123;
+        ans.add(new ArrayList&lt;String&gt;(path));
+        return;
+    &#125;
+    for (int i = pos; i &lt; s.length(); i++) &#123;
+        if (!palinMap[i][pos]) &#123;
+            continue;
+        &#125;
+        path.add(s.substring(pos, i + 1));
+        helper(ans, path, s, i + 1, palinMap);
+        path.remove(path.size() - 1);
+    &#125;
+&#125;
+
+private boolean[][] palindromeMap(String s) &#123;
+    int len = s.length();
+    boolean[][] map = new boolean[len][len];
+    char[] ss = s.toCharArray();
+    for (int i = 0; i &lt; len; i++) &#123;
+        for (int j = i; j &gt;= 0; j--) &#123;
+            if (i == j) &#123;
+                map[i][j] = true;
+            &#125; else if (i - j == 1) &#123;
+                map[i][j] = ss[i] == ss[j];
+            &#125; else &#123;
+                map[i][j] = (ss[i] == ss[j]) &amp; map[i - 1][j + 1];
+            &#125;
+        &#125;
+    &#125;
+    return map;
+&#125;
+</code></pre>
+<p><strong>Palindrome Partitioning II</strong></p>
+<p>Used above template and got TLE. Turns out, this is a pure DP question.</p>
+<p>Skip for now.</p>
+<p><strong>Restore IP Addresses</strong></p>
+<pre><code>public List&lt;String&gt; restoreIpAddresses(String s) &#123;
+    List&lt;String&gt; ans = new LinkedList&lt;String&gt;();
+    if (s == null || s.length() == 0) &#123;
+        return ans;
+    &#125;
+    helper(ans, s, &quot;&quot;, 0, 0);
+    return ans;
+&#125;
+
+private void helper(List&lt;String&gt; ans, String s, String path, int pos, int count) &#123;
+    if (count == 4) &#123;
+        if (pos == s.length()) &#123;
+            ans.add(path.substring(1));
+        &#125;
+        return;
+    &#125;
+    for (int i = pos; i &lt; s.length(); i++) &#123;
+        if (i - pos &gt;= 3) &#123;
+            break;
+        &#125;
+        if (!isValidNum(s.substring(pos, i + 1))) &#123;
+            continue;
+        &#125;
+        String newPath = path + &quot;.&quot; + s.substring(pos, i + 1);
+        helper(ans, s, newPath, i + 1, count + 1);
+    &#125;
+&#125;
+
+private boolean isValidNum(String str) &#123;
+    if (str.length() &gt; 1 &amp;&amp; str.charAt(0) == &#39;0&#39;) &#123;
+        return false;
+    &#125;
+    int num = Integer.parseInt(str);
+    if (num &lt; 0 || 255 &lt; num) &#123;
+        return false;
+    &#125;
+    return true;
+&#125;
+</code></pre>
+<p><strong>Combinations</strong></p>
+<pre><code>public List&lt;List&lt;Integer&gt;&gt; combine(int n, int k) &#123;
+    List&lt;List&lt;Integer&gt;&gt; ans = new LinkedList&lt;List&lt;Integer&gt;&gt;();
+    if (n == 0 || k == 0 || n &lt; k) &#123;
+        return ans;
+    &#125;
+    helper(ans, new LinkedList&lt;Integer&gt;(), n, k, 1);
+    return ans;
+&#125;
+
+private void helper(List&lt;List&lt;Integer&gt;&gt; ans, List&lt;Integer&gt; path, int n, int k, int pos) &#123;
+    if (path.size() == k) &#123;
+        ans.add(new LinkedList&lt;Integer&gt;(path));
+        return;
+    &#125;
+    for (int i = pos; i &lt;= n; i++) &#123;
+        path.add(i);
+        helper(ans, path, n, k, i + 1);
+        path.remove(path.size() - 1);
+    &#125;
+&#125;
+</code></pre>
+<p><strong>Letter Combinations of a Phone Number</strong></p>
+<pre><code>public List&lt;String&gt; letterCombinations(String digits) &#123;
+    List&lt;String&gt; ans = new LinkedList&lt;String&gt;();
+    if (digits == null) &#123;
+        return ans;
+    &#125;
+    String[] pad = new String[]&#123;
+        &quot; &quot;,&quot;&quot;,&quot;abc&quot;,&quot;def&quot;,&quot;ghi&quot;,&quot;jkl&quot;,&quot;mno&quot;,&quot;pqrs&quot;,&quot;tuv&quot;,&quot;wxyz&quot;&#125;;
+    helper(ans, &quot;&quot;, pad, digits, 0);
+    return ans;
+&#125;
+
+private void helper(List&lt;String&gt; ans, String path, String[] pad, String digits, int pos) &#123;
+    if (path.length() == digits.length()) &#123;
+        ans.add(path);
+        return;
+    &#125;
+    String letters = pad[digits.charAt(pos) - &#39;0&#39;];
+    for (int i = 0; i &lt; letters.length(); i++) &#123;
+        path += letters.charAt(i) + &quot;&quot;;
+        helper(ans, path, pad, digits, pos + 1);
+        path = path.substring(0, path.length() - 1);
+    &#125;
+&#125;
+</code></pre>
+<h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><h4 id="Remember-the-model-It-applies-to-most-search-question"><a href="#Remember-the-model-It-applies-to-most-search-question" class="headerlink" title="Remember the model! It applies to most search question."></a>Remember the model! It applies to most search question.</h4>
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>Permalink:</span>
+                        <span><a href="https://mar2ndx.github.io/2014/06/12/pre-2017-2014-06-12-NineChap-Permutation/">https://mar2ndx.github.io/2014/06/12/pre-2017-2014-06-12-NineChap-Permutation/</a></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2019 <a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc/4.0/">CC-BY-NC-4.0</a> LICENSE</span>
+                    </p>
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY</strong>?</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2014/06/12/pre-2017-2014-06-12-Compare-mergesort-quicksort/">[Question] Compare Mergesort and Quicksort</a>
+            
+            
+            <a class="next" rel="next" href="/2014/06/11/pre-2017-2014-06-11-BST-insert-and-delete/">[Design] BST Node Insertion / Deletion</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+            </div>
+            <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>©  | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+
+</html>

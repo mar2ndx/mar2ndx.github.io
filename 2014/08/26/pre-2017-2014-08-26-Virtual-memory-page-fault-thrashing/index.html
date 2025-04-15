@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+
+
+
+
+<title>[Design] Virtual Memory, Page Fault and Thrashing | Tech blog</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const pagebody = document.getElementsByTagName('body')[0]
+
+            function setTheme(status) {
+
+                if (status === 'dark') {
+                    window.sessionStorage.theme = 'dark'
+                    pagebody.classList.add('dark-theme');
+
+                } else if (status === 'light') {
+                    window.sessionStorage.theme = 'light'
+                    pagebody.classList.remove('dark-theme');
+                }
+            };
+
+            setTheme(window.sessionStorage.theme)
+        })();
+    </script>
+
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">Bentham&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                <a class="menu-item" href="/archives">Posts</a>
+                
+                <a class="menu-item" href="/category">Categories</a>
+                
+                <a class="menu-item" href="/tag">Tags</a>
+                
+                <a class="menu-item" href="/about">About</a>
+                
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">Bentham&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">
+                    <svg class="menu-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M4.5 17.27q-.213 0-.356-.145T4 16.768t.144-.356t.356-.143h15q.213 0 .356.144q.144.144.144.357t-.144.356t-.356.143zm0-4.77q-.213 0-.356-.144T4 11.999t.144-.356t.356-.143h15q.213 0 .356.144t.144.357t-.144.356t-.356.143zm0-4.77q-.213 0-.356-.143Q4 7.443 4 7.23t.144-.356t.356-.143h15q.213 0 .356.144T20 7.23t-.144.356t-.356.144z"/></svg>
+                    <svg class="close-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Material Symbols Light by Google - https://github.com/google/material-design-icons/blob/master/LICENSE --><path fill="currentColor" d="m12 12.708l-5.246 5.246q-.14.14-.344.15t-.364-.15t-.16-.354t.16-.354L11.292 12L6.046 6.754q-.14-.14-.15-.344t.15-.364t.354-.16t.354.16L12 11.292l5.246-5.246q.14-.14.345-.15q.203-.01.363.15t.16.354t-.16.354L12.708 12l5.246 5.246q.14.14.15.345q.01.203-.15.363t-.354.16t-.354-.16z"/></svg>
+                </div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                <a class="menu-item" href="/archives">Posts</a>
+                
+                <a class="menu-item" href="/category">Categories</a>
+                
+                <a class="menu-item" href="/tag">Tags</a>
+                
+                <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if (toggleMenu.classList.contains("active")) {
+            toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        } else {
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    var tocbot_timer;
+    var DEPTH_MAX = 6; // 为 6 时展开所有
+    var tocbot_default_config = {
+        tocSelector: '.tocbot-list',
+        contentSelector: '.post-content',
+        headingSelector: 'h1, h2, h3, h4, h5',
+        orderedList: false,
+        scrollSmooth: true,
+        onClick: extend_click,
+    };
+
+    function extend_click() {
+        clearTimeout(tocbot_timer);
+        tocbot_timer = setTimeout(function() {
+            tocbot.refresh(obj_merge(tocbot_default_config, {
+                hasInnerContainers: true
+            }));
+        }, 420); // 这个值是由 tocbot 源码里定义的 scrollSmoothDuration 得来的
+    }
+
+    document.ready(function() {
+        tocbot.init(obj_merge(tocbot_default_config, {
+            collapseDepth: 1
+        }));
+    });
+
+    function expand_toc() {
+        var b = document.querySelector('.tocbot-toc-expand');
+        var expanded = b.getAttribute('data-expanded');
+        expanded ? b.removeAttribute('data-expanded') : b.setAttribute('data-expanded', true);
+        tocbot.refresh(obj_merge(tocbot_default_config, {
+            collapseDepth: expanded ? 1 : DEPTH_MAX
+        }));
+        b.innerText = expanded ? 'Expand all' : 'Collapse all';
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+    function obj_merge(target, source) {
+        for (var item in source) {
+            if (source.hasOwnProperty(item)) {
+                target[item] = source[item];
+            }
+        }
+        return target;
+    }
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">[Design] Virtual Memory, Page Fault and Thrashing</h1>
+            
+                <div class="post-meta">
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">August 26, 2014&nbsp;&nbsp;0:00:00</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/Design/">Design</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h3 id="Terminologies"><a href="#Terminologies" class="headerlink" title="Terminologies"></a>Terminologies</h3><h4 id="Paging"><a href="#Paging" class="headerlink" title="Paging"></a>Paging</h4><p><a target="_blank" rel="noopener" href="http://whatis.techtarget.com/definition/paging">Paging</a> is a method of writing data to, and reading it from, <strong>secondary storage</strong> for use in <strong>primary storage</strong>, also known as main memory. Paging plays a role in memory management for a operating system.</p>
+<h4 id="Page-table"><a href="#Page-table" class="headerlink" title="Page table"></a>Page table</h4><p><a target="_blank" rel="noopener" href="http://en.wikipedia.org/wiki/Page_table">A page table</a> is the data structure used by a virtual memory system to store the mapping between <strong>virtual addresses</strong> and <strong>physical addresses</strong>.</p>
+<h4 id="Page-fault"><a href="#Page-fault" class="headerlink" title="Page fault"></a>Page fault</h4><p>A <a target="_blank" rel="noopener" href="http://en.wikipedia.org/wiki/Page_fault">page fault</a> is a trap to the software raised by the hardware when a program <strong>accesses a page that is mapped in the virtual address space</strong>, but <strong>not loaded in physical memory</strong>. In the typical case the operating system tries to handle the page fault by making the required page accessible at a location in physical memory or terminates the program in the case of an illegal access.</p>
+<p>An <strong>invalid page fault</strong> or <strong>page fault error</strong> occurs when the operating system cannot find the data in virtual memory. This usually happens when the virtual memory area, or the table that maps virtual addresses to real addresses, becomes corrupt.</p>
+<h4 id="Logical-address"><a href="#Logical-address" class="headerlink" title="Logical address"></a>Logical address</h4><p><a target="_blank" rel="noopener" href="http://en.wikipedia.org/wiki/Logical_address">Logical address</a> is the address at which an item (memory cell, storage element, network host) appears to reside from the perspective of an executing application program.</p>
+<h4 id="Physical-address"><a href="#Physical-address" class="headerlink" title="Physical address"></a>Physical address</h4><p><a target="_blank" rel="noopener" href="http://en.wikipedia.org/wiki/Physical_address">Physical address</a> (also real address, or binary address), is a memory address that is represented in the form of a binary number for accessing main memory.</p>
+<p><a target="_blank" rel="noopener" href="http://www.geekinterview.com/question_details/3186">In general</a>, Logical address is the address generated <strong>by the CPU</strong>. Where as physical address is the <strong>actual address of the process in the memory</strong>. The CPU generates the logical address that is added with the <strong>offset value</strong> to get the actual address of the process inthe memory.</p>
+<h4 id="Thrashing"><a href="#Thrashing" class="headerlink" title="Thrashing"></a>Thrashing</h4><p><a target="_blank" rel="noopener" href="http://www.computerhope.com/jargon/t/thrash.htm">Thrashing</a> or disk thrashing is a term used to describe when the hard drive is <strong>being overworked by moving information</strong> between the system memory and virtual memory excessively.</p>
+<h3 id="Demand-Paging"><a href="#Demand-Paging" class="headerlink" title="Demand Paging"></a>Demand Paging</h3><p>Virtual memory is implemented (mostly) using demand paging. <strong><a target="_blank" rel="noopener" href="http://www.webopedia.com/TERM/D/demand_paging.html">Demand Paging</a></strong> is a type of swapping in which pages of data are not copied from disk to RAM until they are needed. This is an example of a <a target="_blank" rel="noopener" href="http://en.wikipedia.org/wiki/Demand_paging">lazy loading technique</a>.</p>
+<p>Pros:</p>
+<ol>
+<li>less RAM needed</li>
+<li>more users</li>
+<li>less I&#x2F;O</li>
+</ol>
+<p>When a pages is needed, if <strong>invalid referernce</strong>, abort the process. else <strong>if valid</strong>, it’s called page fault.</p>
+<p>Page fault time:</p>
+<ol>
+<li>servicing the page fault interrupt</li>
+<li>read in new page (major part)</li>
+<li>restart the process</li>
+</ol>
+<h3 id="Page-Replacement"><a href="#Page-Replacement" class="headerlink" title="Page Replacement"></a>Page Replacement</h3><ol>
+<li>FIFO</li>
+<li>Optimal Algorithm</li>
+<li>LRU</li>
+<li>LRU Approximation<ol>
+<li>Additional-Reference-Bits algorithm</li>
+<li>Second-Chance (Clock) algorithm</li>
+</ol>
+</li>
+</ol>
+<p>Refer to another post <strong>“Cache and Page Replacement Algorithms”</strong>.</p>
+<h3 id="Solution-to-Thrashing"><a href="#Solution-to-Thrashing" class="headerlink" title="Solution to Thrashing"></a>Solution to Thrashing</h3><ol>
+<li>More RAM</li>
+<li>Less program running together</li>
+<li>Assign working priorities</li>
+<li>Improve <a target="_blank" rel="noopener" href="http://en.wikipedia.org/wiki/Thrashing_(computer_science)#Solutions">spatial locality</a> by replacing loops, i.e.</li>
+</ol>
+<p>Replace</p>
+<pre><code>// recall that in C, arrays use Row-major order
+int m[256][256];
+for (k=0; k&lt;256; k++) &#123;
+	for (i=0; i&lt;256; i++) &#123;
+		m[i][k] = something();
+	&#125;
+&#125;
+</code></pre>
+<p>with</p>
+<pre><code>int m[256][256];
+for (i=0; i&lt;256; i++) &#123;
+	for (k=0; k&lt;256; k++) &#123;
+		// consecutive values of k reside in adjacent memory locations
+		m[i][k] = something();
+	&#125;
+&#125;
+</code></pre>
+<p>So that the use of data elements is within relatively <a target="_blank" rel="noopener" href="http://en.wikipedia.org/wiki/Locality_of_reference">close storage locations</a>.</p>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>Permalink:</span>
+                        <span><a href="https://mar2ndx.github.io/2014/08/26/pre-2017-2014-08-26-Virtual-memory-page-fault-thrashing/">https://mar2ndx.github.io/2014/08/26/pre-2017-2014-08-26-Virtual-memory-page-fault-thrashing/</a></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2019 <a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc/4.0/">CC-BY-NC-4.0</a> LICENSE</span>
+                    </p>
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY</strong>?</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2014/08/26/pre-2017-2014-08-26-Test-hashcode-function/">[Testing] Test hashCode() function</a>
+            
+            
+            <a class="next" rel="next" href="/2014/08/25/pre-2017-2014-08-25-Implement-HashMap/">[CC150v5] 8.10 Implement a Hashmap</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+            </div>
+            <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>©  | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+
+</html>

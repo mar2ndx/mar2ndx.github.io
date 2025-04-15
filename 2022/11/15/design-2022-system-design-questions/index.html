@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+
+
+
+
+<title>System design questions | Tech blog</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const pagebody = document.getElementsByTagName('body')[0]
+
+            function setTheme(status) {
+
+                if (status === 'dark') {
+                    window.sessionStorage.theme = 'dark'
+                    pagebody.classList.add('dark-theme');
+
+                } else if (status === 'light') {
+                    window.sessionStorage.theme = 'light'
+                    pagebody.classList.remove('dark-theme');
+                }
+            };
+
+            setTheme(window.sessionStorage.theme)
+        })();
+    </script>
+
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">Bentham&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                <a class="menu-item" href="/archives">Posts</a>
+                
+                <a class="menu-item" href="/category">Categories</a>
+                
+                <a class="menu-item" href="/tag">Tags</a>
+                
+                <a class="menu-item" href="/about">About</a>
+                
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">Bentham&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">
+                    <svg class="menu-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M4.5 17.27q-.213 0-.356-.145T4 16.768t.144-.356t.356-.143h15q.213 0 .356.144q.144.144.144.357t-.144.356t-.356.143zm0-4.77q-.213 0-.356-.144T4 11.999t.144-.356t.356-.143h15q.213 0 .356.144t.144.357t-.144.356t-.356.143zm0-4.77q-.213 0-.356-.143Q4 7.443 4 7.23t.144-.356t.356-.143h15q.213 0 .356.144T20 7.23t-.144.356t-.356.144z"/></svg>
+                    <svg class="close-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Material Symbols Light by Google - https://github.com/google/material-design-icons/blob/master/LICENSE --><path fill="currentColor" d="m12 12.708l-5.246 5.246q-.14.14-.344.15t-.364-.15t-.16-.354t.16-.354L11.292 12L6.046 6.754q-.14-.14-.15-.344t.15-.364t.354-.16t.354.16L12 11.292l5.246-5.246q.14-.14.345-.15q.203-.01.363.15t.16.354t-.16.354L12.708 12l5.246 5.246q.14.14.15.345q.01.203-.15.363t-.354.16t-.354-.16z"/></svg>
+                </div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                <a class="menu-item" href="/archives">Posts</a>
+                
+                <a class="menu-item" href="/category">Categories</a>
+                
+                <a class="menu-item" href="/tag">Tags</a>
+                
+                <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if (toggleMenu.classList.contains("active")) {
+            toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        } else {
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    var tocbot_timer;
+    var DEPTH_MAX = 6; // 为 6 时展开所有
+    var tocbot_default_config = {
+        tocSelector: '.tocbot-list',
+        contentSelector: '.post-content',
+        headingSelector: 'h1, h2, h3, h4, h5',
+        orderedList: false,
+        scrollSmooth: true,
+        onClick: extend_click,
+    };
+
+    function extend_click() {
+        clearTimeout(tocbot_timer);
+        tocbot_timer = setTimeout(function() {
+            tocbot.refresh(obj_merge(tocbot_default_config, {
+                hasInnerContainers: true
+            }));
+        }, 420); // 这个值是由 tocbot 源码里定义的 scrollSmoothDuration 得来的
+    }
+
+    document.ready(function() {
+        tocbot.init(obj_merge(tocbot_default_config, {
+            collapseDepth: 1
+        }));
+    });
+
+    function expand_toc() {
+        var b = document.querySelector('.tocbot-toc-expand');
+        var expanded = b.getAttribute('data-expanded');
+        expanded ? b.removeAttribute('data-expanded') : b.setAttribute('data-expanded', true);
+        tocbot.refresh(obj_merge(tocbot_default_config, {
+            collapseDepth: expanded ? 1 : DEPTH_MAX
+        }));
+        b.innerText = expanded ? 'Expand all' : 'Collapse all';
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+    function obj_merge(target, source) {
+        for (var item in source) {
+            if (source.hasOwnProperty(item)) {
+                target[item] = source[item];
+            }
+        }
+        return target;
+    }
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">System design questions</h1>
+            
+                <div class="post-meta">
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">November 15, 2022&nbsp;&nbsp;21:58:00</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/Design/">Design</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h1 id="TikTok"><a href="#TikTok" class="headerlink" title="TikTok"></a>TikTok</h1><p>Java AOP 的用法<br>Rest vs RPC 区别<br>手写 singleton Java<br>double checked locking singleton java<br>distributed lock 分布式锁<br>LRU cache 如何变成线程安全，然后展开如果是分布系统，如何做 replica，并且保证数据一致性</p>
+<p>系统设计，就是抖音的 profile 页面</p>
+<p>Circular queue’s follow up 多个线程要访问这个 queue 怎么办。我说用锁。他说效率不好。我提出分成 2 种锁，enqueue&#x2F;dequeue 各一种。他说有没有听过乐观锁。答曰没有。</p>
+<p>设计一个服务，用户可以拿到 Amazon 上商品的历史价格<br>这个挺有意思的，因为里边隐藏了一个 web crawler。相当于一个简易版的 web crawler + 典型分布式服务设计。记得多问问题，举个例子，现实中有这么个网站亚麻是很容易知道的，你还要去爬网页就有 legal 风险（虽然是公开数据，但也是亚麻的数据，亚麻和商户之间肯定也是有相关协议的）。面试官就会告诉你其实亚麻是允许你爬的，但是设置了限制，1 个 IP 一秒只能访问一次。这样的话你的设计里就只能牺牲 data freshness，同时可以给货品的 popularity 分类，不然那么多商品肯定爬不完的。<br>另外还有一些有意思的讨论，比如这个网站肯定是 prime day 用的最多，如何应对一年一度的访问峰值的问题。<br>这轮应该也过了吧，抖音的同事说一般只有这轮过了才有下一轮</p>
+<h1 id="eBay"><a href="#eBay" class="headerlink" title="eBay"></a>eBay</h1><p>eBay OOD，设计一个 chess game</p>
+<p>开始设计 promoted listing，主要涉及 API design，backend design，DB，cache，LB，logging，monitoring，rate limiter，auth system，就是一个 seller 可能有 item1, item2, item3，然后这个 seller 去 eBay 买了推广，这些 item 会被 eBay 在首页或者别的地方推荐，然后会提供 seller 一个 dashboard 上面有各种 metrics，比如 click count, view count 这些 metric，要求设计这个系统和 API<br>（听起来是设计 metric collection system, 不是设计 promoted listing 本身是怎么实现的？）<br>（是的 针对的 metrics system）</p>
+<p>crawler: 问你爬虫怎么驱虫 然后提了布隆过滤 讲了分布式存储, 不过面试官感觉不太 convince</p>
+<p>rate limiter: 限流器, 从算法 配置讨论到 log 消息队列</p>
+<p>rating system: 一个物品评分打星系统</p>
+<p>然后问俩个 local meachine, 网络不好, 两边都有大文件, 怎么样判定文件完全相同 -答 checksum, hash<br>接着问怎样能够列出不相同的文件, 最后他希望用 tree</p>
+<p>MySQL 的设计，需要尽量的规范化：normalization。减少数据冗余，但是查询比较麻烦，需要关联 Join。但是 NoSQL 需要反规范化 denormalize，为了方便查询而设计。例如：一个 video 在一个 date，一个小时内，view count，就可以存成这样：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">video_id + date_time | uploader_id | video_name | video_count:1500 | video_count:1600 | video_count:1700 |</span><br></pre></td></tr></table></figure>
+
+<h1 id="Amazon"><a href="#Amazon" class="headerlink" title="Amazon"></a>Amazon</h1><h2 id="Amazon-BQ-LP-questions"><a href="#Amazon-BQ-LP-questions" class="headerlink" title="Amazon BQ &#x2F; LP questions"></a>Amazon BQ &#x2F; LP questions</h2><pre><code>Tell me about a time when you have worked against tight deadlines and didn&#39;t have the time to consider all options before making a decision. What approach did you take?
+
+We ship millions of customer orders around the world, carried by different carriers like UPS, FedEx.  We report status of the delivery via a push notification and via website. These carriers have varying formats, SLAs, and QoSs. How would you design a system to maintain status of our shipments and report the same to the customer?
+
+Tell me about a time someone disagreed with your approach.
+
+Tell me about a time a customer wanted one thing, but you felt they needed something else. How did you approach the situation, what were your actions and what was the end result?
+
+Give me an example of a time when you didn&#39;t think you were going to meet the commitments you promised. How did you identify the risk and communicate it to stakeholders? What was the outcome?
+
+Assume you are using an app that has a feed. To edit content, you would click on a button to open a new screen which has an edit text. Hitting submit will kick off an http request and update the first screen. What are the various manual tests you can think of to test this flow?
+
+Design a system used for taxi reservation. How would you handle conditions such as users, scale and other conditions.
+
+Model a system which will allow an administrator to control the product visibility of a sale at Amazon using a given set of rules. The system should allow the administrator to create rules on transaction information and thus disabling or enabling products visible for sale, such as price, category, etc.
+
+Give an example of a tough or critical piece of feedback you received. What was it and what did you do about it?
+Tell me about a time when you took on something significant outside your area of responsibility. Why was it important? What was the outcome?
+
+Tell me about a time you made a hard decision to sacrifice short term gain for a longer term goal.
+
+Give an example of when you saw a peer struggling and decided to step in and help. What was the situation and what actions did you take? What was the outcome?
+
+Give me an example of when you took an unpopular stance in a meeting with peers and your leader and you were the outlier. What was it, why did you feel strongly about it, and what did you do?
+</code></pre>
+<p>BQ 半个小时，他从我的简历上挑了一段他感兴趣的实习经历，之后开始 dfs 式的提问。整个过程中对细节扣得非常细，比如我提到我在团队合作中帮助到了别人，他就会问我的帮助对别人具体产生了什么影响。我说我们团队需要考一个证书，他就问整个证书是干什么的，考这个证书都会涉及哪些知识哪些题型。我提了一下用户会要求一些定制化开发的内容，他就问具体哪一些是定制化的，最后的解决方案是什么。还问了我组里开会每天都会聊什么等等各种细节的东西。所以对于说过的每一句话每一个词，都会可能成为面试官提问你的理由。就这样，在浓浓的咖喱味儿口音中，我被提问了半个小时。</p>
+<h2 id="Amazon-System-Design"><a href="#Amazon-System-Design" class="headerlink" title="Amazon System Design"></a>Amazon System Design</h2><p>Write a background service that queries the status on the backend by a certain interval.</p>
+<p>Write a program that could determine the number of times a specific item is purchased.</p>
+<p>接下来是 coding，除了一道比较奇怪的题目，不是算法题，偏向 ood。一个亚麻用户下单送货支付的场景，给我了一些 class，给了一些 rule，写一个 method 检查是否符合所有 rule。比如要 check paymant method, check item, check address 之类的一共 4 条 rule。写完之后，follow up 1，怎么支持更多的 payment method。follow up2。如果有更多的 rule，要加进来，程序改怎么拓展。我答了用 DI，印度老哥要求写 DI 的伪代码。最后时间不够了，匆匆写了一些伪代码。</p>
+<h2 id="Amazon-Coding"><a href="#Amazon-Coding" class="headerlink" title="Amazon Coding"></a>Amazon Coding</h2><p>How would you design a class that behaves similar to a Java Map &lt;Date,Object&gt; except that get() returns the mapped value for not only an exact match but also for the latest Date in the Map</p>
+<p>Thinking of Amazon Locker for example. Each Locker has a position and a size. Given the number of times a locker has been used, find the size that is most popular. </p>
+<p>Convert json file to object with the variable type(没说必须 json object， 问了面试官我假设就 hashmap 也行)<br>数据类型有：</p>
+<pre><code>Map -”M”
+List- “L”
+Number- “N”
+String-”S”
+Boolean-”B”
+
+Input:
+Person: &#123;
+name: “John”,
+age: 40,
+&#125;
+Output:
+M: &#123;Person:&#123;
+S: &#123;name: “John”&#125;,
+N: &#123;age: 40&#125;
+&#125;&#125;
+</code></pre>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>Permalink:</span>
+                        <span><a href="https://mar2ndx.github.io/2022/11/15/design-2022-system-design-questions/">https://mar2ndx.github.io/2022/11/15/design-2022-system-design-questions/</a></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2019 <a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc/4.0/">CC-BY-NC-4.0</a> LICENSE</span>
+                    </p>
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY</strong>?</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2022/11/17/algo-2022-TODO-Google-question/">Google questions</a>
+            
+            
+            <a class="next" rel="next" href="/2022/11/15/design-2022-Design-patterns/">Java Design Pattern</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+            </div>
+            <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>©  | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+
+</html>

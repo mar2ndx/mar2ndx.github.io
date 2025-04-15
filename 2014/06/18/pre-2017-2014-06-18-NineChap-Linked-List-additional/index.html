@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+
+
+
+
+<title>[NineChap 4.2] Linked List Additional | Tech blog</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const pagebody = document.getElementsByTagName('body')[0]
+
+            function setTheme(status) {
+
+                if (status === 'dark') {
+                    window.sessionStorage.theme = 'dark'
+                    pagebody.classList.add('dark-theme');
+
+                } else if (status === 'light') {
+                    window.sessionStorage.theme = 'light'
+                    pagebody.classList.remove('dark-theme');
+                }
+            };
+
+            setTheme(window.sessionStorage.theme)
+        })();
+    </script>
+
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">Bentham&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                <a class="menu-item" href="/archives">Posts</a>
+                
+                <a class="menu-item" href="/category">Categories</a>
+                
+                <a class="menu-item" href="/tag">Tags</a>
+                
+                <a class="menu-item" href="/about">About</a>
+                
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">Bentham&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">
+                    <svg class="menu-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M4.5 17.27q-.213 0-.356-.145T4 16.768t.144-.356t.356-.143h15q.213 0 .356.144q.144.144.144.357t-.144.356t-.356.143zm0-4.77q-.213 0-.356-.144T4 11.999t.144-.356t.356-.143h15q.213 0 .356.144t.144.357t-.144.356t-.356.143zm0-4.77q-.213 0-.356-.143Q4 7.443 4 7.23t.144-.356t.356-.143h15q.213 0 .356.144T20 7.23t-.144.356t-.356.144z"/></svg>
+                    <svg class="close-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Material Symbols Light by Google - https://github.com/google/material-design-icons/blob/master/LICENSE --><path fill="currentColor" d="m12 12.708l-5.246 5.246q-.14.14-.344.15t-.364-.15t-.16-.354t.16-.354L11.292 12L6.046 6.754q-.14-.14-.15-.344t.15-.364t.354-.16t.354.16L12 11.292l5.246-5.246q.14-.14.345-.15q.203-.01.363.15t.16.354t-.16.354L12.708 12l5.246 5.246q.14.14.15.345q.01.203-.15.363t-.354.16t-.354-.16z"/></svg>
+                </div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                <a class="menu-item" href="/archives">Posts</a>
+                
+                <a class="menu-item" href="/category">Categories</a>
+                
+                <a class="menu-item" href="/tag">Tags</a>
+                
+                <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if (toggleMenu.classList.contains("active")) {
+            toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        } else {
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    var tocbot_timer;
+    var DEPTH_MAX = 6; // 为 6 时展开所有
+    var tocbot_default_config = {
+        tocSelector: '.tocbot-list',
+        contentSelector: '.post-content',
+        headingSelector: 'h1, h2, h3, h4, h5',
+        orderedList: false,
+        scrollSmooth: true,
+        onClick: extend_click,
+    };
+
+    function extend_click() {
+        clearTimeout(tocbot_timer);
+        tocbot_timer = setTimeout(function() {
+            tocbot.refresh(obj_merge(tocbot_default_config, {
+                hasInnerContainers: true
+            }));
+        }, 420); // 这个值是由 tocbot 源码里定义的 scrollSmoothDuration 得来的
+    }
+
+    document.ready(function() {
+        tocbot.init(obj_merge(tocbot_default_config, {
+            collapseDepth: 1
+        }));
+    });
+
+    function expand_toc() {
+        var b = document.querySelector('.tocbot-toc-expand');
+        var expanded = b.getAttribute('data-expanded');
+        expanded ? b.removeAttribute('data-expanded') : b.setAttribute('data-expanded', true);
+        tocbot.refresh(obj_merge(tocbot_default_config, {
+            collapseDepth: expanded ? 1 : DEPTH_MAX
+        }));
+        b.innerText = expanded ? 'Expand all' : 'Collapse all';
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+    function obj_merge(target, source) {
+        for (var item in source) {
+            if (source.hasOwnProperty(item)) {
+                target[item] = source[item];
+            }
+        }
+        return target;
+    }
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">[NineChap 4.2] Linked List Additional</h1>
+            
+                <div class="post-meta">
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">June 18, 2014&nbsp;&nbsp;0:00:00</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/NineChap/">NineChap</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h2 id="Question-list"><a href="#Question-list" class="headerlink" title="Question list"></a>Question list</h2><ol>
+<li><p><strong><a href="/question/2014-06-17-Union-and-intersection-of-linked-list">Union and Intersection of two Linked Lists</a></strong></p>
+</li>
+<li><p><strong><a href="/leetcode/2014-05-30-Insertion-Sort-List">Insertion Sort List</a></strong> - difficult</p>
+</li>
+<li><p><strong><a href="/leetcode/2014-05-28-Flatten-Binary-Tree-to-Linked-List">Flatten Binary Tree to Linked List</a></strong></p>
+</li>
+<li><p><strong><a href="/leetcode/2014-05-26-Convert-Sorted-List-to-Binary-Search-Tree">Convert Sorted List to Binary Search Tree</a></strong></p>
+</li>
+<li><p><strong><a href="/leetcode/2014-05-19-Rotate-List">Rotate List</a></strong></p>
+</li>
+<li><p><strong><a href="/leetcode/2014-05-02-Remove-Nth-Node-From-End-of-List">Remove Nth Node From End of List</a></strong></p>
+</li>
+<li><p><strong><a href="/leetcode/2014-06-03-LRU-Cache">LRU Cache </a></strong></p>
+</li>
+<li><p><strong><a href="/leetcode/2014-05-11-Reverse-Nodes-in-k-Group">Reverse Nodes in k-Groups</a></strong></p>
+</li>
+<li><p><strong><a href="/leetcode/2014-05-09-Swap-Nodes-in-Pairs">Swap Nodes in Pairs</a></strong></p>
+</li>
+</ol>
+<h2 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h2><p><strong>Union and Intersection of two Linked Lists</strong></p>
+<p>Think about the idea only.</p>
+<p><strong>Insertion Sort List</strong></p>
+<pre><code>public ListNode insertionSortList(ListNode head) &#123;
+    if (head == null) &#123;
+        return null;
+    &#125;
+    ListNode dummy = new ListNode(0);
+    ListNode cur = head;
+    while (cur != null) &#123;
+        // insert cur into correct pos
+        ListNode pos = dummy;
+        while (pos.next != null &amp;&amp; pos.next.val &lt; cur.val) &#123;
+            pos = pos.next;
+        &#125;
+        ListNode temp = cur.next;
+        cur.next = pos.next;
+        pos.next = cur;
+        cur = temp;
+    &#125;
+    return dummy.next;
+&#125;
+</code></pre>
+<p><strong>Flatten Binary Tree to Linked List</strong></p>
+<p>I forgot to set “root.left &#x3D; null” again, which result in long-time debugging. This is a very common and very silly mistake that I really should avoid.</p>
+<pre><code>public void flatten(TreeNode root) &#123;
+    root = helper(root);
+&#125;
+
+private TreeNode helper(TreeNode node) &#123;
+    if (node == null) &#123;
+        return null;
+    &#125; else if (node.left == null &amp;&amp; node.right == null) &#123;
+        return node;
+    &#125; else if (node.left == null) &#123;
+        return helper(node.right);
+    &#125; else if (node.right == null) &#123;
+        node.right = node.left;
+        node.left = null;
+        return helper(node.right);
+    &#125; else &#123;
+        TreeNode tempRight = node.right;
+        node.right = node.left;
+        node.left = null;
+        TreeNode leftTail = helper(node.right);
+        leftTail.right = tempRight;
+        return helper(tempRight);
+    &#125;
+&#125;
+</code></pre>
+<p><strong>Convert Sorted List to Binary Search Tree</strong></p>
+<p>This is the Mock Interview question. My solution is:</p>
+<pre><code>public TreeNode sortedListToBST(ListNode listHead) &#123;
+    if (listHead == null) &#123;
+        return null;
+    &#125;
+    if (listHead.next == null) &#123;
+        return new TreeNode(listHead.val);
+    &#125;
+    ListNode listFirstHalf = listHead;
+    ListNode listPreMid = findMiddle(listHead);
+    ListNode listSecondHalf = null;
+    if (listPreMid.next != null) &#123;
+        listSecondHalf = listPreMid.next.next;
+    &#125;
+    TreeNode head = new TreeNode(listPreMid.next.val);
+    listPreMid.next = null;
+    head.left = sortedListToBST(listFirstHalf);
+    head.right = sortedListToBST(listSecondHalf);
+    return head;
+&#125;
+
+private ListNode findMiddle(ListNode listHead) &#123;
+    if (listHead == null) &#123;
+        return null;
+    &#125;
+    ListNode slow = listHead;
+    ListNode fast = listHead.next;
+    while (fast != null &amp;&amp; fast.next != null&amp;&amp; fast.next.next != null) &#123;
+        slow = slow.next;
+        fast = fast.next.next;
+    &#125;
+    return slow;
+&#125;
+</code></pre>
+<p>This is not a good answer, cuz I have to findMid in each recursion.</p>
+<p>The best solution is, use a global variable and 2 numbers to simplify this process. Code:</p>
+<pre><code>ListNode cur = null;
+
+public TreeNode sortedListToBST(ListNode head) &#123;
+	if (head == null) &#123;
+		return null;
+	&#125;
+	cur = head;
+	int k = 0;
+	ListNode p = head;
+	while (p != null) &#123;
+		k++;
+		p = p.next;
+	&#125;
+	return build(0, k - 1);
+&#125;
+
+private TreeNode build(int start, int end) &#123;
+	if (start &gt; end) &#123;
+		return null;
+	&#125;
+	int mid = start + (end - start) / 2;
+	TreeNode leftBranch = build(start, mid - 1);
+	TreeNode head = new TreeNode(cur.val);
+	cur = cur.next;
+	head.left = leftBranch;
+	head.right = build(mid + 1, end);
+	return head;
+&#125;
+</code></pre>
+<p><strong>Rotate List</strong></p>
+<p>Naive solution:</p>
+<pre><code>public ListNode rotateRight(ListNode head, int n) &#123;
+    if (head == null) &#123;
+        return null;
+    &#125;
+    ListNode p = head;
+    for (int i = 0; i &lt; n; i++) &#123;
+        if (p.next == null) &#123;
+            p = head;
+        &#125; else &#123;
+            p = p.next;
+        &#125;
+    &#125;
+	ListNode q = head;
+	while (p.next != null) &#123;
+		p = p.next;
+		q = q.next;
+	&#125;
+	p.next = head;
+	ListNode newHead = q.next;
+	q.next = null;
+	return newHead;
+&#125;
+</code></pre>
+<p>Make a circular list:</p>
+<pre><code>public ListNode rotateRight(ListNode head, int n) &#123;
+    if (head == null) &#123;
+        return null;
+    &#125;
+	ListNode p = head;
+	int k = 1;
+	while (p.next != null) &#123;
+		k++;
+		p = p.next;
+	&#125;
+	p.next = head;
+	int steps = k - (n % k);
+	for (int i = 0; i &lt; steps; i++) &#123;
+		p = p.next;
+	&#125;
+	head = p.next;
+	p.next = null;
+	return head;
+&#125;
+</code></pre>
+<p><strong>Remove Nth Node From End of List</strong></p>
+<pre><code>public ListNode removeNthFromEnd(ListNode head, int n) &#123;
+    if (head == null || n == 0) &#123;
+		return null;
+	&#125;
+	ListNode dummy = new ListNode(0);
+	dummy.next = head;
+	ListNode right = dummy;
+	for (int i = 0; i &lt; n; i++) &#123;
+		right = right.next;
+	&#125;
+	ListNode left = dummy;
+	while (right.next != null) &#123;
+		left = left.next;
+		right = right.next;
+	&#125;
+	left.next = left.next.next;
+	return dummy.next;
+&#125;
+</code></pre>
+<p><strong>LRU Cache</strong></p>
+<p>I solved it in the original post.</p>
+<p><strong>Reverse Nodes in k-Groups</strong></p>
+<pre><code>public ListNode reverseKGroup(ListNode head, int k) &#123;
+    ListNode p = head;
+    int count = 0;
+    while (p != null) &#123;
+        p = p.next;
+        count++;
+    &#125;
+    return helper(head, k, count);
+&#125;
+
+public ListNode helper(ListNode head, int k, int count) &#123;
+    if (head == null || k &lt; 1 || count &lt; k) &#123;
+        return head;
+    &#125;
+    ListNode result = null;
+    ListNode cur = head;
+    for (int i = 0; i &lt; k; i++) &#123;
+        if (cur == null) break;
+        ListNode temp = cur.next;
+        cur.next = result;
+        result = cur;
+        cur = temp;
+    &#125;
+    head.next = helper(cur, k, count - k);
+    return result;
+&#125;
+</code></pre>
+<p><strong>Swap Nodes in Pairs</strong></p>
+<pre><code>public ListNode swapPairs(ListNode head) &#123;
+    if (head == null || head.next == null) &#123;
+        return head;
+    &#125;
+    ListNode result = head.next;
+    ListNode temp = head.next.next;
+    result.next = head;
+    head.next = swapPairs(temp);
+    return result;
+&#125;
+</code></pre>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>Permalink:</span>
+                        <span><a href="https://mar2ndx.github.io/2014/06/18/pre-2017-2014-06-18-NineChap-Linked-List-additional/">https://mar2ndx.github.io/2014/06/18/pre-2017-2014-06-18-NineChap-Linked-List-additional/</a></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2019 <a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc/4.0/">CC-BY-NC-4.0</a> LICENSE</span>
+                    </p>
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY</strong>?</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2014/06/23/pre-2017-2014-06-23-Cache-algorithms/">[Design] Cache and Page Replacement Algorithms</a>
+            
+            
+            <a class="next" rel="next" href="/2014/06/18/pre-2017-2014-06-18-Number-sum-sequence/">[Question] Number Sum Sequence</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+            </div>
+            <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>©  | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+
+</html>

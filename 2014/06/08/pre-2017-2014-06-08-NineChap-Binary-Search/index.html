@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+
+
+
+
+<title>[NineChap 2.1] Binary Search | Tech blog</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const pagebody = document.getElementsByTagName('body')[0]
+
+            function setTheme(status) {
+
+                if (status === 'dark') {
+                    window.sessionStorage.theme = 'dark'
+                    pagebody.classList.add('dark-theme');
+
+                } else if (status === 'light') {
+                    window.sessionStorage.theme = 'light'
+                    pagebody.classList.remove('dark-theme');
+                }
+            };
+
+            setTheme(window.sessionStorage.theme)
+        })();
+    </script>
+
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">Bentham&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                <a class="menu-item" href="/archives">Posts</a>
+                
+                <a class="menu-item" href="/category">Categories</a>
+                
+                <a class="menu-item" href="/tag">Tags</a>
+                
+                <a class="menu-item" href="/about">About</a>
+                
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">Bentham&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">
+                    <svg class="menu-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M4.5 17.27q-.213 0-.356-.145T4 16.768t.144-.356t.356-.143h15q.213 0 .356.144q.144.144.144.357t-.144.356t-.356.143zm0-4.77q-.213 0-.356-.144T4 11.999t.144-.356t.356-.143h15q.213 0 .356.144t.144.357t-.144.356t-.356.143zm0-4.77q-.213 0-.356-.143Q4 7.443 4 7.23t.144-.356t.356-.143h15q.213 0 .356.144T20 7.23t-.144.356t-.356.144z"/></svg>
+                    <svg class="close-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Material Symbols Light by Google - https://github.com/google/material-design-icons/blob/master/LICENSE --><path fill="currentColor" d="m12 12.708l-5.246 5.246q-.14.14-.344.15t-.364-.15t-.16-.354t.16-.354L11.292 12L6.046 6.754q-.14-.14-.15-.344t.15-.364t.354-.16t.354.16L12 11.292l5.246-5.246q.14-.14.345-.15q.203-.01.363.15t.16.354t-.16.354L12.708 12l5.246 5.246q.14.14.15.345q.01.203-.15.363t-.354.16t-.354-.16z"/></svg>
+                </div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                <a class="menu-item" href="/archives">Posts</a>
+                
+                <a class="menu-item" href="/category">Categories</a>
+                
+                <a class="menu-item" href="/tag">Tags</a>
+                
+                <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if (toggleMenu.classList.contains("active")) {
+            toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        } else {
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    var tocbot_timer;
+    var DEPTH_MAX = 6; // 为 6 时展开所有
+    var tocbot_default_config = {
+        tocSelector: '.tocbot-list',
+        contentSelector: '.post-content',
+        headingSelector: 'h1, h2, h3, h4, h5',
+        orderedList: false,
+        scrollSmooth: true,
+        onClick: extend_click,
+    };
+
+    function extend_click() {
+        clearTimeout(tocbot_timer);
+        tocbot_timer = setTimeout(function() {
+            tocbot.refresh(obj_merge(tocbot_default_config, {
+                hasInnerContainers: true
+            }));
+        }, 420); // 这个值是由 tocbot 源码里定义的 scrollSmoothDuration 得来的
+    }
+
+    document.ready(function() {
+        tocbot.init(obj_merge(tocbot_default_config, {
+            collapseDepth: 1
+        }));
+    });
+
+    function expand_toc() {
+        var b = document.querySelector('.tocbot-toc-expand');
+        var expanded = b.getAttribute('data-expanded');
+        expanded ? b.removeAttribute('data-expanded') : b.setAttribute('data-expanded', true);
+        tocbot.refresh(obj_merge(tocbot_default_config, {
+            collapseDepth: expanded ? 1 : DEPTH_MAX
+        }));
+        b.innerText = expanded ? 'Expand all' : 'Collapse all';
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+    function obj_merge(target, source) {
+        for (var item in source) {
+            if (source.hasOwnProperty(item)) {
+                target[item] = source[item];
+            }
+        }
+        return target;
+    }
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">[NineChap 2.1] Binary Search</h1>
+            
+                <div class="post-meta">
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">June 8, 2014&nbsp;&nbsp;0:00:00</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/NineChap/">NineChap</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h2 id="Binary-Search"><a href="#Binary-Search" class="headerlink" title="Binary Search"></a>Binary Search</h2><h4 id="Recursion-or-While-Loop"><a href="#Recursion-or-While-Loop" class="headerlink" title="Recursion or While-Loop?"></a>Recursion or While-Loop?</h4><p>In general, it’s never a good idea to do binary search with recursion, because that’ll make the interview too boring.</p>
+<h4 id="Template"><a href="#Template" class="headerlink" title="Template"></a>Template</h4><p><a target="_blank" rel="noopener" href="http://answer.ninechapter.com/solutions/binary-search/">link</a></p>
+<p>This template is able to locate the first (or last) occurance of an element <strong>when array contains duplications</strong>.</p>
+<p>If item too small&#x2F;large, left&#x2F;right boundary is returned.</p>
+<p>Read Question “Search for a Range” for more details.</p>
+<pre><code>int binarySearch(vector&lt;int&gt; &amp;A, int target) &#123;
+    if (A.size() == 0) &#123;
+        return -1;
+    &#125;
+
+    int start = 0;
+    int end = A.size() - 1;
+    int mid;
+
+    while (start + 1 &lt; end) &#123;
+        mid = start + (end - start) / 2;
+        if (A[mid] &lt; target) &#123;
+            start = mid;
+        &#125; else &#123;
+            end = mid;
+        &#125;
+    &#125;
+
+    if (A[start] == target) &#123;
+        return start;
+    &#125;
+    if (A[end] == target) &#123;
+        return end;
+    &#125;
+
+    return -1;
+&#125;
+</code></pre>
+<h4 id="Keypoints"><a href="#Keypoints" class="headerlink" title="Keypoints"></a>Keypoints</h4><ol>
+<li>start + 1 &lt; end</li>
+<li>start + (end-start)&#x2F;2</li>
+<li>A[mid] &#x3D;&#x3D;, &lt;, &gt;</li>
+<li>A[start&#x2F;end] &#x3D;&#x3D; target</li>
+</ol>
+<h2 id="Question-list"><a href="#Question-list" class="headerlink" title="Question list"></a>Question list</h2><p><strong>Binary search</strong></p>
+<ol>
+<li><p><strong><a href="/leetcode/2014-05-12-Search-Insert-Position">Search Insert Position</a></strong></p>
+</li>
+<li><p><strong><a href="/leetcode/2014-05-12-Search-for-a-Range">Search for a Range</a></strong></p>
+</li>
+<li><p><strong><a href="/leetcode/2014-05-12-Search-in-Rotated-Sorted-Array">Search in Rotated Sorted Array</a></strong></p>
+</li>
+<li><p><strong><a href="/leetcode/2014-05-22-Search-in-Rotated-Sorted-Array-II">Search in Rotated Sorted Array II</a></strong></p>
+</li>
+<li><p><strong><a href="/leetcode/2014-05-21-Search-a-2D-Matrix">Search a 2D Matrix</a></strong></p>
+</li>
+</ol>
+<p><strong>Additional</strong></p>
+<ol>
+<li><p><strong><a href="/leetcode_plus/2014-06-10-Searching-a-2D-Sorted-Matrix">Search a 2D Matrix II</a></strong> - A tricky question</p>
+</li>
+<li><p><strong>Find the First Bad Version</strong></p>
+<p>The code base version is an integer and start from 0 to n. One day, someone commit a bad version in the code case, so it caused itself and the following versions are all failed in the unittests. You can determine whether a version is bad by the following interface:</p>
+<blockquote>
+<p>boolean isBadVersion(int version);</p>
+</blockquote>
+<p>Find the first bad version.</p>
+</li>
+<li><p><strong>Find a peek</strong></p>
+<p>There is an array which we can assume the numbers in adjcent positions are different. and A[0] &lt; A[1] &amp;&amp; A[A.length - 2] &gt; A[A.length - 1]. We consider a position P is a peek if A[P] &gt; A[P-1] &amp;&amp; A[P] &gt; A[P+1]. Find a peek in this array.</p>
+</li>
+</ol>
+<h2 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h2><p>All following code are written with the template provided above.</p>
+<p><strong>Search Insert Position</strong></p>
+<pre><code>public int searchInsert(int[] A, int target) &#123;
+    // 6 minutes
+    if (A == null || A.length == 0) &#123;
+        return 0;
+    &#125;
+    int left = 0, right = A.length - 1;
+    int mid;
+    while (left + 1 &lt; right) &#123;
+        mid = left + (right - left) / 2;
+        if (A[mid] &lt; target) &#123;
+            left = mid;
+        &#125;
+        else &#123;
+            right = mid;
+        &#125;
+    &#125;
+    if (target &lt;= A[left]) &#123;
+        // equal or less than first element
+        return left;
+    &#125;
+    else if (A[left] &lt; target &amp;&amp; target &lt;= A[right]) &#123;
+        return right;
+    &#125;
+    else &#123;
+        // bigger than largest element
+        return right + 1;
+    &#125;
+&#125;
+</code></pre>
+<p><strong>Search for a Range</strong></p>
+<pre><code>public int[] searchRange(int[] A, int target) &#123;
+    // 6 minutes
+    int[] result = new int[2];
+    result[0] = -1;
+    result[1] = -1;
+    if (A == null || A.length == 0) &#123;
+        return result;
+    &#125;
+    // find the start point of target
+    int left = 0, right = A.length - 1, mid;
+    while (left + 1 &lt; right) &#123;
+        mid = left + (right - left) / 2;
+        if (A[mid] &lt; target) &#123;
+            left = mid;
+        &#125;
+        else &#123;
+            right = mid;
+        &#125;
+    &#125;
+    if (A[left] == target) &#123;
+        result[0] = left;
+    &#125;
+    else if (A[right] == target) &#123;
+        result[0] = right;
+    &#125;
+    else &#123;
+        return result;
+    &#125;
+    // find the end point of target
+    left = 0;
+    right = A.length - 1;
+    while (left + 1 &lt; right) &#123;
+        mid = left + (right - left) / 2;
+        if (A[mid] &lt;= target) &#123;
+            left = mid;
+        &#125;
+        else &#123;
+            right = mid;
+        &#125;
+    &#125;
+    if (A[right] == target) &#123;
+        result[1] = right;
+    &#125;
+    else if (A[left] == target) &#123;
+        result[1] = left;
+    &#125;
+    return result;
+&#125;
+</code></pre>
+<p><strong>Search in Rotated Sorted Array</strong></p>
+<p>Note: this is an high-freq qeustion. Every company will ask this question.</p>
+<p>The solution is using 4 if-conditions. It takes long time first, because I compare A[mid] with target. It become complex.</p>
+<p>We should compared A[left] and A[mid] first, then it’ll be much easier for coding.</p>
+<pre><code>public int search(int[] A, int target) &#123;
+    // this is the 4th time that I do this question
+    // 7 minutes
+    if (A == null || A.length == 0) &#123;
+		return -1;
+	&#125;
+	int left = 0;
+	int right = A.length - 1;
+	int mid;
+	while (left + 1 &lt; right) &#123;
+		mid = left + (right - left) / 2;
+		if (A[mid] == target) &#123;
+			return mid;
+		&#125; else if (A[left] &lt; A[mid]) &#123;
+			if (A[left] &lt;= target &amp;&amp; target &lt; A[mid]) &#123;
+				right = mid;
+			&#125; else &#123;
+				left = mid;
+			&#125;
+		&#125; else &#123;
+			if (A[mid] &lt; target &amp;&amp; target &lt;= A[right]) &#123;
+				left = mid;
+			&#125; else &#123;
+				right = mid;
+			&#125;
+		&#125;
+	&#125;
+	if (A[left] == target) &#123;
+		return left;
+	&#125; else if (A[right] == target) &#123;
+		return right;
+	&#125;
+	return -1;
+&#125;
+</code></pre>
+<p><strong>Search in Rotated Sorted Array II</strong></p>
+<p>There are multiple ways to remove duplications. My previous solution is removing duplicate before entering the while-loop, which is a very good idea.</p>
+<p>Binary can’t be used, because there might be: value of start &#x3D; mid &#x3D; end. In this case, the entire list needs to be search. Impossible!</p>
+<p>The worse case will anyway take O(n) time. To indicate the time complexity is regardless of binary search, Mr. Huang suggests the following code:</p>
+<pre><code>public boolean search(int[] A, int target) &#123;
+    for (int i = 0; i &lt; A.length; i ++) &#123;
+        if (A[i] == target) &#123;
+            return true;
+        &#125;
+    &#125;
+    return false;
+&#125;
+</code></pre>
+<p><strong>Search a 2D Matrix</strong></p>
+<p>my code (2D search):</p>
+<pre><code>public boolean searchMatrix(int[][] matrix, int target) &#123;
+    // 13 miniutes
+    if (matrix == null || matrix.length == 0 || matrix[0].length == 0) &#123;
+        return false;
+    &#125;
+    int m = matrix.length;
+    int n = matrix[0].length;
+    // find target vertically from matrix[0] to matrix[m-1]
+    int top = 0, bottom = m - 1;
+    int mid;
+    while (top + 1 &lt; bottom) &#123;
+        mid = top + (bottom - top) / 2;
+        if (matrix[mid][0] &lt; target) &#123;
+            top = mid;
+        &#125;
+        else &#123;
+            bottom = mid;
+        &#125;
+    &#125;
+    // locate the row number
+    int row = -1;
+    if (matrix[top][0] &lt;= target &amp;&amp; target &lt;= matrix[top][n-1]) &#123;
+        row = top;
+    &#125;
+    else if (matrix[bottom][0]&lt;=target &amp;&amp; target &lt;= matrix[bottom][n-1]) &#123;
+        row = bottom;
+    &#125;
+    else &#123;
+        return false;
+    &#125;
+    // now find target from matrix[row]
+    int left = 0, right = n - 1;
+    while (left + 1 &lt; right) &#123;
+        mid = left + (right - left) / 2;
+        if (matrix[row][mid] &lt; target) &#123;
+            left = mid;
+        &#125;
+        else &#123;
+            right = mid;
+        &#125;
+    &#125;
+    return (matrix[row][left] == target || matrix[row][right] == target);
+&#125;
+</code></pre>
+<p>better code (1D search):</p>
+<pre><code>public boolean searchMatrix(int[][] matrix, int target) &#123;
+    int rows = matrix.length;
+    int cols = matrix[0].length;
+    int start = 0;
+    int end = rows * cols - 1;
+    while (start &lt;= end) &#123;
+        int mid = (start + end) / 2;
+        // Tricks to treat it as a 1-D array
+        int digit = matrix[mid / cols][mid % cols];
+        if (target == digit) &#123;
+            return true;
+        &#125; else if (target &gt; digit) &#123;
+            start = mid + 1;
+        &#125; else &#123;
+            end = mid - 1;
+        &#125;
+    &#125;
+    return false;
+&#125;
+</code></pre>
+<p><strong>Search a 2D Matrix II</strong></p>
+<p>Read my new post for details.</p>
+<p><strong>Find the First Bad Version</strong></p>
+<p>A simple binary search.</p>
+<p><strong>Find a peek</strong></p>
+<p>A binary search, and for each ‘mid’ point, judge weather it’s a peek, or it’s upward sloping, or downward sloping.</p>
+<p>Code skipped.</p>
+<h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><h4 id="Always-try-to-exclude-a-half"><a href="#Always-try-to-exclude-a-half" class="headerlink" title="Always try to exclude a half."></a>Always try to exclude a half.</h4>
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>Permalink:</span>
+                        <span><a href="https://mar2ndx.github.io/2014/06/08/pre-2017-2014-06-08-NineChap-Binary-Search/">https://mar2ndx.github.io/2014/06/08/pre-2017-2014-06-08-NineChap-Binary-Search/</a></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2019 <a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc/4.0/">CC-BY-NC-4.0</a> LICENSE</span>
+                    </p>
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY</strong>?</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2014/06/09/pre-2017-2014-06-09-NineChap-Sorted-array/">[NineChap 2.2] Sorted Array</a>
+            
+            
+            <a class="next" rel="next" href="/2014/06/08/pre-2017-2014-06-08-Recover-Rotated-Sorted-Array/">[LintCode] Recover Rotated Sorted Array</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+            </div>
+            <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>©  | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+
+</html>

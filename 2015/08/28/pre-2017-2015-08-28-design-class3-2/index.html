@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+
+
+
+
+<title>[NineChap System Design] Class 3.2: Web Service  | Tech blog</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const pagebody = document.getElementsByTagName('body')[0]
+
+            function setTheme(status) {
+
+                if (status === 'dark') {
+                    window.sessionStorage.theme = 'dark'
+                    pagebody.classList.add('dark-theme');
+
+                } else if (status === 'light') {
+                    window.sessionStorage.theme = 'light'
+                    pagebody.classList.remove('dark-theme');
+                }
+            };
+
+            setTheme(window.sessionStorage.theme)
+        })();
+    </script>
+
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">Bentham&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                <a class="menu-item" href="/archives">Posts</a>
+                
+                <a class="menu-item" href="/category">Categories</a>
+                
+                <a class="menu-item" href="/tag">Tags</a>
+                
+                <a class="menu-item" href="/about">About</a>
+                
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">Bentham&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">
+                    <svg class="menu-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M4.5 17.27q-.213 0-.356-.145T4 16.768t.144-.356t.356-.143h15q.213 0 .356.144q.144.144.144.357t-.144.356t-.356.143zm0-4.77q-.213 0-.356-.144T4 11.999t.144-.356t.356-.143h15q.213 0 .356.144t.144.357t-.144.356t-.356.143zm0-4.77q-.213 0-.356-.143Q4 7.443 4 7.23t.144-.356t.356-.143h15q.213 0 .356.144T20 7.23t-.144.356t-.356.144z"/></svg>
+                    <svg class="close-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Material Symbols Light by Google - https://github.com/google/material-design-icons/blob/master/LICENSE --><path fill="currentColor" d="m12 12.708l-5.246 5.246q-.14.14-.344.15t-.364-.15t-.16-.354t.16-.354L11.292 12L6.046 6.754q-.14-.14-.15-.344t.15-.364t.354-.16t.354.16L12 11.292l5.246-5.246q.14-.14.345-.15q.203-.01.363.15t.16.354t-.16.354L12.708 12l5.246 5.246q.14.14.15.345q.01.203-.15.363t-.354.16t-.354-.16z"/></svg>
+                </div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                <a class="menu-item" href="/archives">Posts</a>
+                
+                <a class="menu-item" href="/category">Categories</a>
+                
+                <a class="menu-item" href="/tag">Tags</a>
+                
+                <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if (toggleMenu.classList.contains("active")) {
+            toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        } else {
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    var tocbot_timer;
+    var DEPTH_MAX = 6; // 为 6 时展开所有
+    var tocbot_default_config = {
+        tocSelector: '.tocbot-list',
+        contentSelector: '.post-content',
+        headingSelector: 'h1, h2, h3, h4, h5',
+        orderedList: false,
+        scrollSmooth: true,
+        onClick: extend_click,
+    };
+
+    function extend_click() {
+        clearTimeout(tocbot_timer);
+        tocbot_timer = setTimeout(function() {
+            tocbot.refresh(obj_merge(tocbot_default_config, {
+                hasInnerContainers: true
+            }));
+        }, 420); // 这个值是由 tocbot 源码里定义的 scrollSmoothDuration 得来的
+    }
+
+    document.ready(function() {
+        tocbot.init(obj_merge(tocbot_default_config, {
+            collapseDepth: 1
+        }));
+    });
+
+    function expand_toc() {
+        var b = document.querySelector('.tocbot-toc-expand');
+        var expanded = b.getAttribute('data-expanded');
+        expanded ? b.removeAttribute('data-expanded') : b.setAttribute('data-expanded', true);
+        tocbot.refresh(obj_merge(tocbot_default_config, {
+            collapseDepth: expanded ? 1 : DEPTH_MAX
+        }));
+        b.innerText = expanded ? 'Expand all' : 'Collapse all';
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+    function obj_merge(target, source) {
+        for (var item in source) {
+            if (source.hasOwnProperty(item)) {
+                target[item] = source[item];
+            }
+        }
+        return target;
+    }
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">[NineChap System Design] Class 3.2: Web Service </h1>
+            
+                <div class="post-meta">
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">August 28, 2015&nbsp;&nbsp;0:00:00</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/NineChap/">NineChap</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h1 id="Question-4"><a href="#Question-4" class="headerlink" title="Question 4"></a>Question 4</h1><p><strong>fix MP3 problem</strong></p>
+<p>The process of fetching a MP3 (from CDN):</p>
+<p><img src="/images/design-class3-client-request-mp3.png"></p>
+<ol>
+<li>aquire MP3 link, and send request</li>
+<li>send request to CDN</li>
+<li>CDN receive request, find MP3</li>
+<li>response to client</li>
+<li>play the music</li>
+</ol>
+<p><img src="/images/design-class3-client-request-mp3-errors.png"></p>
+<p>Question: in step 2, there’s more Network error, but in step 4, there’s no Network error, but Timeout. Why?</p>
+<h2 id="Fix-step-2-Network-error"><a href="#Fix-step-2-Network-error" class="headerlink" title="Fix step 2, Network error"></a>Fix step 2, Network error</h2><p>Problem is: MP3 url invalid. It actually comes from a failed CDN sever.</p>
+<p>Solution: fix the server.</p>
+<h2 id="Fix-step-3-CDN-can’t-find-MP3"><a href="#Fix-step-3-CDN-can’t-find-MP3" class="headerlink" title="Fix step 3, CDN can’t find MP3"></a>Fix step 3, CDN can’t find MP3</h2><p>Problem associated with <strong>Anti-Leech</strong>.</p>
+<blockquote>
+<p><strong><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Leech_(computing)">a leech</a></strong> is one who benefits, usually deliberately, from others’ information or effort but does not offer anything in return.</p>
+<p>Example: Wi-Fi leeches, Direct linking (or hot-linking) and In most P2P-networks, leeching is whose who download too much.</p>
+</blockquote>
+<blockquote>
+<p><strong><a target="_blank" rel="noopener" href="https://answers.yahoo.com/question/index?qid=1006042926419">Anti-Leech</a></strong> specializes in protecting file downloads and stopping bandwidth leeching.</p>
+</blockquote>
+<p>See that some P2P and leeching software will steal your url links, so the MP3 url expiration time is 5 minutes.</p>
+<p>So when CDN server’s clock and web server’s clock are not synchronized well, MP3 url can expire.</p>
+<p>Solution: every 10 minutes sync CDN clock with web server clock.</p>
+<h2 id="Fix-step-4-Timeout-error"><a href="#Fix-step-4-Timeout-error" class="headerlink" title="Fix step 4, Timeout error"></a>Fix step 4, Timeout error</h2><p>Some MP3 are relatively large. Thus timeout.</p>
+<blockquote>
+<p>MP3 performs better at higher bps, and aac(Advanced Audio Coding) works better at lower bps.</p>
+</blockquote>
+<p>Solution:</p>
+<ol>
+<li><p>compress MP3 to 48bps, or use aac format. So, play lower-rate music first, then switch automatically.</p>
+</li>
+<li><p>pre-load a music while previous is playing.</p>
+</li>
+<li><p>optimize CDN</p>
+</li>
+</ol>
+<blockquote>
+<p><strong><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Content_delivery_network">CDN</a></strong> content delivery network is a large <strong>distributed system of servers</strong> deployed in <strong>multiple data centers</strong> across the Internet.</p>
+</blockquote>
+<blockquote>
+<p>The goal of a CDN is to serve content to end-users with high availability and high performance.</p>
+</blockquote>
+<p><img src="/images/design-class3-CDN.png"></p>
+<p>Which CDN should client choose?</p>
+<blockquote>
+<p>Not DNS, but web server calculates which to choose. It can be calculated using IP distance, or ISP provider, but not accurate.</p>
+</blockquote>
+<blockquote>
+<p>We can also use local desktop apps (in different locations) to ping CDN servers. This may violate user privacy, though.</p>
+</blockquote>
+<h2 id="Fix-step-5-Fail-to-play"><a href="#Fix-step-5-Fail-to-play" class="headerlink" title="Fix step 5, Fail to play"></a>Fix step 5, Fail to play</h2><p>Problem: some files got wrong decoding.</p>
+<h2 id="Fix-step-6-unkown-error"><a href="#Fix-step-6-unkown-error" class="headerlink" title="Fix step 6, unkown error"></a>Fix step 6, unkown error</h2><p>Problem: some users close the page while MP3 loading.</p>
+<h1 id="Question-5"><a href="#Question-5" class="headerlink" title="Question 5"></a>Question 5</h1><p><strong>fix player problem</strong></p>
+<p>Problem: iOS device can never play Flash.</p>
+<p>Solution: develop HTML5 player.</p>
+<h2 id="5-2-how-to-evaluate-that-you-solved-the-problem"><a href="#5-2-how-to-evaluate-that-you-solved-the-problem" class="headerlink" title="5.2 how to evaluate that you solved the problem"></a>5.2 how to evaluate that you solved the problem</h2><ol>
+<li><p>user complains</p>
+</li>
+<li><p><strong>important</strong>: daily retention rate!</p>
+</li>
+</ol>
+<p>We can’t use daily active user, cuz it depends on marketing, competitors, and infrastructure changes.</p>
+<p><strong>One day retention rate</strong>:</p>
+<p><img src="/images/design-class3-user-retention.png"></p>
+<blockquote>
+<p>Today’s visitor &#x3D; {U1, U3, U7, U9, U10}</p>
+<p>Tomorrow’s visitor &#x3D; {U2, U3, U9,}</p>
+<p>Today’s one day retention rate &#x3D; 2&#x2F;5</p>
+</blockquote>
+<h1 id="Question-6-秒杀"><a href="#Question-6-秒杀" class="headerlink" title="Question 6 秒杀"></a>Question 6 秒杀</h1><h2 id="Design"><a href="#Design" class="headerlink" title="Design"></a>Design</h2><p>Queue A and Queue B</p>
+<p><img src="/images/design-class3-miao-sha.png"></p>
+<h3 id="Queue-A"><a href="#Queue-A" class="headerlink" title="Queue A"></a>Queue A</h3><p>Many queues, each one locates on a individual web server or reverse proxy. It is mainly used to accept large amount of requests coming from the clients.</p>
+<p>Each machine may takes 10,000 or more requests per second.</p>
+<p>Queue A will redirect most requests to a static page (cached).</p>
+<h3 id="Queue-B"><a href="#Queue-B" class="headerlink" title="Queue B"></a>Queue B</h3><p>Queue B is a single machine, to aviod distributed problems. It takes in small amount of requests and decides results (eg. redirect to payment page).</p>
+<blockquote>
+<p>Now, why do we need 2 queues, not 1?</p>
+</blockquote>
+<blockquote>
+<p>Think about a hospital. Queue A is the hospital lobby and security guard, and Queue B is the queue of patience.</p>
+</blockquote>
+<h2 id="How-to-reduce-traffic"><a href="#How-to-reduce-traffic" class="headerlink" title="How to reduce traffic"></a>How to reduce traffic</h2><ol>
+<li>no image</li>
+<li>cache more static pages</li>
+<li>reverse proxy: batch sending the requests</li>
+</ol>
+<p>Also, can use front-end javascript to prevent clicking. There are method to bypass, so we need to check IP or do some filtering.</p>
+<h2 id="How-to-keep-it-simple"><a href="#How-to-keep-it-simple" class="headerlink" title="How to keep it simple?"></a>How to keep it simple?</h2><ol>
+<li>no DB: basic logic. But rmb to use a log file</li>
+<li>no lock</li>
+</ol>
+<h2 id="How-to-improve-stability"><a href="#How-to-improve-stability" class="headerlink" title="How to improve stability"></a>How to improve stability</h2><ol>
+<li>use new server to do <strong>Miao Sha</strong>, in case of crash</li>
+<li>asyc prcessing everything! Don’t let other people wait, in case of crash.</li>
+</ol>
+<h3 id="How-to-defend-hackers"><a href="#How-to-defend-hackers" class="headerlink" title="How to defend hackers"></a>How to defend hackers</h3><ol>
+<li>IP address (to defent auto softwares), but it’s easy for hackers to fake IP address</li>
+<li>CAPTCHA</li>
+</ol>
+<blockquote>
+<p><strong><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/CAPTCHA">CAPTCHA</a></strong> (an acronym for “Completely Automated Public Turing test to tell Computers and Humans Apart”) is a type of challenge-response test used in computing to determine whether or not the user is human.</p>
+</blockquote>
+<h2 id="follow-up"><a href="#follow-up" class="headerlink" title="follow-up"></a>follow-up</h2><p>How to design 12306 (support several million QPS)</p>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>Permalink:</span>
+                        <span><a href="https://mar2ndx.github.io/2015/08/28/pre-2017-2015-08-28-design-class3-2/">https://mar2ndx.github.io/2015/08/28/pre-2017-2015-08-28-design-class3-2/</a></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2019 <a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc/4.0/">CC-BY-NC-4.0</a> LICENSE</span>
+                    </p>
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY</strong>?</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2015/08/28/pre-2017-2015-08-28-design-class3-1/">[NineChap System Design] Class 3.1: Web Service </a>
+            
+            
+            <a class="next" rel="next" href="/2015/08/26/pre-2017-2015-08-26-design-class2-1/">[NineChap System Design] Class 2.1: Database </a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+            </div>
+            <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>©  | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+
+
+
+
+<title>[LeetCode 76] Minimum Window Substring | Tech blog</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const pagebody = document.getElementsByTagName('body')[0]
+
+            function setTheme(status) {
+
+                if (status === 'dark') {
+                    window.sessionStorage.theme = 'dark'
+                    pagebody.classList.add('dark-theme');
+
+                } else if (status === 'light') {
+                    window.sessionStorage.theme = 'light'
+                    pagebody.classList.remove('dark-theme');
+                }
+            };
+
+            setTheme(window.sessionStorage.theme)
+        })();
+    </script>
+
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">Bentham&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                <a class="menu-item" href="/archives">Posts</a>
+                
+                <a class="menu-item" href="/category">Categories</a>
+                
+                <a class="menu-item" href="/tag">Tags</a>
+                
+                <a class="menu-item" href="/about">About</a>
+                
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">Bentham&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">
+                    <svg class="menu-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M4.5 17.27q-.213 0-.356-.145T4 16.768t.144-.356t.356-.143h15q.213 0 .356.144q.144.144.144.357t-.144.356t-.356.143zm0-4.77q-.213 0-.356-.144T4 11.999t.144-.356t.356-.143h15q.213 0 .356.144t.144.357t-.144.356t-.356.143zm0-4.77q-.213 0-.356-.143Q4 7.443 4 7.23t.144-.356t.356-.143h15q.213 0 .356.144T20 7.23t-.144.356t-.356.144z"/></svg>
+                    <svg class="close-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Material Symbols Light by Google - https://github.com/google/material-design-icons/blob/master/LICENSE --><path fill="currentColor" d="m12 12.708l-5.246 5.246q-.14.14-.344.15t-.364-.15t-.16-.354t.16-.354L11.292 12L6.046 6.754q-.14-.14-.15-.344t.15-.364t.354-.16t.354.16L12 11.292l5.246-5.246q.14-.14.345-.15q.203-.01.363.15t.16.354t-.16.354L12.708 12l5.246 5.246q.14.14.15.345q.01.203-.15.363t-.354.16t-.354-.16z"/></svg>
+                </div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                <a class="menu-item" href="/archives">Posts</a>
+                
+                <a class="menu-item" href="/category">Categories</a>
+                
+                <a class="menu-item" href="/tag">Tags</a>
+                
+                <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if (toggleMenu.classList.contains("active")) {
+            toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        } else {
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    var tocbot_timer;
+    var DEPTH_MAX = 6; // 为 6 时展开所有
+    var tocbot_default_config = {
+        tocSelector: '.tocbot-list',
+        contentSelector: '.post-content',
+        headingSelector: 'h1, h2, h3, h4, h5',
+        orderedList: false,
+        scrollSmooth: true,
+        onClick: extend_click,
+    };
+
+    function extend_click() {
+        clearTimeout(tocbot_timer);
+        tocbot_timer = setTimeout(function() {
+            tocbot.refresh(obj_merge(tocbot_default_config, {
+                hasInnerContainers: true
+            }));
+        }, 420); // 这个值是由 tocbot 源码里定义的 scrollSmoothDuration 得来的
+    }
+
+    document.ready(function() {
+        tocbot.init(obj_merge(tocbot_default_config, {
+            collapseDepth: 1
+        }));
+    });
+
+    function expand_toc() {
+        var b = document.querySelector('.tocbot-toc-expand');
+        var expanded = b.getAttribute('data-expanded');
+        expanded ? b.removeAttribute('data-expanded') : b.setAttribute('data-expanded', true);
+        tocbot.refresh(obj_merge(tocbot_default_config, {
+            collapseDepth: expanded ? 1 : DEPTH_MAX
+        }));
+        b.innerText = expanded ? 'Expand all' : 'Collapse all';
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+    function obj_merge(target, source) {
+        for (var item in source) {
+            if (source.hasOwnProperty(item)) {
+                target[item] = source[item];
+            }
+        }
+        return target;
+    }
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">[LeetCode 76] Minimum Window Substring</h1>
+            
+                <div class="post-meta">
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">May 21, 2014&nbsp;&nbsp;0:00:00</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/Leetcode/">Leetcode</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><p><a target="_blank" rel="noopener" href="https://oj.leetcode.com/problems/minimum-window-substring/">link</a></p>
+<div class="question-content">
+            <p></p><p>
+Given a string S and a string T, find the minimum window in S which will contain all the characters in T in complexity O(n).
+</p>
+
+<p>
+For example,<br>
+<b>S</b> = <code>"ADOBECODEBANC"</code><br>
+<b>T</b> = <code>"ABC"</code><br>
+</p>
+<p>
+Minimum window is <code>"BANC"</code>.
+</p>
+
+<p>
+<b>Note:</b><br>
+If there is no such window in S that covers all characters in T, return the emtpy string <code>""</code>.
+</p>
+<p>
+If there are multiple such windows, you are guaranteed that there will always be only one unique minimum window in S.
+</p><p></p>
+          </div>
+
+<h3 id="Stats"><a href="#Stats" class="headerlink" title="Stats"></a>Stats</h3><table border="2">
+	<tr>
+		<td>Frequency</td>
+		<td bgcolor="lime">2</td>
+	</tr>
+	<tr>
+		<td>Difficulty</td>
+		<td bgcolor="red">4</td>
+	</tr>
+	<tr>
+		<td>Adjusted Difficulty</td>
+		<td bgcolor="red">5</td>
+	</tr>
+	<tr>
+		<td>Time to use</td>
+		<td bgcolor="red">----------</td>
+	</tr>
+</table>
+
+<p>Ratings&#x2F;Color &#x3D; 1(white) 2(lime) 3(yellow) 4&#x2F;5(red)</p>
+<h3 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h3><p><strong>This is a very difficult string matching question</strong>.</p>
+<p>The sliding window solution is very well explained in <a target="_blank" rel="noopener" href="http://leetcode.com/2010/11/finding-minimum-window-in-s-which.html">this post</a> (the best solution).</p>
+<blockquote cite="http://fisherlei.blogspot.sg/2013/01/leetcode-simplify-path.html">
+    <p>To help illustrate this approach, I use a different example: <b>S</b> = “<b>acbbaca</b>” and <b>T</b> = “<b>aba</b>“. The idea is mainly based on the help of two pointers (begin and end position of the window) and two tables (<i>needToFind </i>and <i>hasFound</i>) while traversing <b>S</b>. <i>needToFind</i> stores the total count of a character in <b>T</b> and <i>hasFound</i> stores the total count of a character met so far. We also use a <i>count</i> variable to store the total characters in <b>T</b> that’s met so far (not counting characters where hasFound[<i>x</i>]<i> </i>exceeds needToFind[<i>x</i>]). When count equals <b>T</b>‘s length, we know a valid window is found.</p><p>Each time we advance the end pointer (pointing to an element <i>x</i>), we increment hasFound[<i>x</i>] by one. We also increment <i>count </i>by one if hasFound[<i>x</i>] is less than or equal to needToFind[<i>x</i>]. Why? When the constraint is met (that is, <i>count</i> equals to <b>T</b>‘s size), we immediately advance begin pointer as far right as possible while maintaining the constraint.</p><p>How do we check if it is maintaining the constraint? Assume that begin points to an element <i>x</i>, we check if hasFound[<i>x</i>] is greater than needToFind[<i>x</i>]. If it is, we can decrement hasFound[<i>x</i>] by one and advancing begin pointer without breaking the constraint. On the other hand, if it is not, we stop immediately as advancing begin pointer breaks the window constraint.</p><p>Finally, we check if the minimum window length is less than the current minimum. Update the current minimum if a new minimum is found.</p><p>Essentially, the algorithm finds the first window that satisfies the constraint, then continue maintaining the constraint throughout.</p><p></p><div class="separator" style="clear: both; text-align: center;"><a target="_blank" rel="noopener" href="http://2.bp.blogspot.com/_UElib2WLeDE/TOBuvjG6exI/AAAAAAAACYE/uludVXtJ8OY/s1600/sliding.gif" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"><img border="0" height="83" src="http://2.bp.blogspot.com/_UElib2WLeDE/TOBuvjG6exI/AAAAAAAACYE/uludVXtJ8OY/s400/sliding.gif" width="400"></a></div><div style="text-align: center;"><span style="font-size: x-small;">i) <b>S</b> = “<b>acbbaca</b>” and <b>T</b> = “<b>aba</b>“.<br></span></div><p></p><div class="separator" style="clear: both; text-align: center;"><a target="_blank" rel="noopener" href="http://4.bp.blogspot.com/_UElib2WLeDE/TOBvHRLbOAI/AAAAAAAACYI/38QLgUIMePU/s1600/sliding_2.gif" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"><img border="0" height="79" src="http://4.bp.blogspot.com/_UElib2WLeDE/TOBvHRLbOAI/AAAAAAAACYI/38QLgUIMePU/s400/sliding_2.gif" width="400"></a></div><div style="text-align: center;"><span style="font-size: x-small;">ii) The first minimum window is found. Notice that we cannot advance begin pointer as hasFound['a'] == needToFind['a'] == 2. Advancing would mean breaking the constraint.<br></span></div><p></p><div class="separator" style="clear: both; text-align: center;"><a target="_blank" rel="noopener" href="http://3.bp.blogspot.com/_UElib2WLeDE/TOBvLH1aLcI/AAAAAAAACYM/pbJLl7qoduo/s1600/sliding_3.gif" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"><img border="0" height="79" src="http://3.bp.blogspot.com/_UElib2WLeDE/TOBvLH1aLcI/AAAAAAAACYM/pbJLl7qoduo/s400/sliding_3.gif" width="400"></a></div><div style="text-align: center;"><span style="font-size: x-small;">iii) The second window is found. begin pointer still points to the first element ‘a’. hasFound['a'] (<b>3</b>) is greater than needToFind['a'] (<b>2</b>). We decrement hasFound['a'] by one and advance begin pointer to the right.<br></span></div><p></p><div class="separator" style="clear: both; text-align: center;"><a target="_blank" rel="noopener" href="http://2.bp.blogspot.com/_UElib2WLeDE/TOBvOljpz0I/AAAAAAAACYQ/TxuWgWGTOF4/s1600/sliding_4.gif" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"><img border="0" height="79" src="http://2.bp.blogspot.com/_UElib2WLeDE/TOBvOljpz0I/AAAAAAAACYQ/TxuWgWGTOF4/s400/sliding_4.gif" width="400"></a></div><div style="text-align: center;"><span style="font-size: x-small;">iv) We skip ‘c’ since it is not found in <b>T</b>. Begin pointer now points to ‘b’. hasFound['b'] (<b>2</b>) is greater than needToFind['b'] (<b>1</b>). We decrement hasFound['b'] by one and advance begin pointer to the right.<br></span></div><p></p><div class="separator" style="clear: both; text-align: center;"><a target="_blank" rel="noopener" href="http://2.bp.blogspot.com/_UElib2WLeDE/TOBvSOl6RdI/AAAAAAAACYU/R4O1dPXVvBQ/s1600/sliding_5.gif" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"><img border="0" height="79" src="http://2.bp.blogspot.com/_UElib2WLeDE/TOBvSOl6RdI/AAAAAAAACYU/R4O1dPXVvBQ/s400/sliding_5.gif" width="400"></a></div><div style="text-align: center;"><span style="font-size: x-small;">v) Begin pointer now points to the next ‘b’. hasFound['b'] (1) is equal to needToFind['b'] (1). We stop immediately and this is our newly found minimum window.<br></span></div><p>Both the begin and end pointers can advance at most <i>N</i> steps (where <i>N</i> is <b>S</b>‘s size) in the worst case, adding to a total of 2<i>N</i> times. Therefore, the run time complexity must be in <i>O</i>(<i>N</i>).</p>
+</blockquote>
+
+<h3 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h3><p>Best code is from <a target="_blank" rel="noopener" href="http://answer.ninechapter.com/solutions/minimum-window-substring/">this post</a>.</p>
+<p>First of all, keep a HashMap to store all letters and occurrance. Then declare a ‘count’ variable. This is an important varaible. It helps us to check whether we have successfully achieve at least 1 window. After we found the first window, the ‘count’ variable shall always equals to total number of letters in ‘T’.</p>
+<p>Now the looping part. Basically we assume that the window end at one point, and we find the correct starting position and calculate corresponding length.</p>
+<p>The coding part is very difficult. Try to practise more.</p>
+<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><p><strong>Updated on July 7th</strong>, code:</p>
+<pre><code>public String minWindow(String S, String T) &#123;
+    HashMap&lt;Character, Integer&gt; map = new HashMap&lt;Character, Integer&gt;();
+    HashMap&lt;Character, Integer&gt; map2 = new HashMap&lt;Character, Integer&gt;();
+    for (Character ch: T.toCharArray()) &#123;
+        if (map.containsKey(ch)) &#123;
+            map.put(ch, map.get(ch) + 1);
+        &#125; else &#123;
+            map.put(ch, 1);
+            map2.put(ch, 0);
+        &#125;
+    &#125;
+    int count = 0;
+    int start = 0;
+    int end = 0;
+    String result = &quot;&quot;;
+    while (end &lt; S.length()) &#123;
+        char cur = S.charAt(end);
+        if (!map.containsKey(cur)) &#123;
+            end++;
+            continue;
+        &#125;
+        map2.put(cur, map2.get(cur) + 1);
+        if (map2.get(cur) &lt;= map.get(cur)) &#123;
+            count++;
+        &#125;
+
+        if (count == T.length()) &#123;
+            // locate start point
+            while(true) &#123;
+                char ll = S.charAt(start);
+                if (!map.containsKey(ll)) &#123;
+                    start++;
+                    continue;
+                &#125;
+                if (map2.get(ll) &gt; map.get(ll)) &#123;
+                    map2.put(ll, map2.get(ll) - 1);
+                    start++;
+                    continue;
+                &#125; else &#123;
+                    break;
+                &#125;
+            &#125;
+            if (result.equals(&quot;&quot;) || result.length() &gt; end - start + 1) &#123;
+                result = S.substring(start, end + 1);
+            &#125;
+        &#125;
+        end++;
+    &#125;
+    return result;
+&#125;
+</code></pre>
+<p><strong>Updated on July 19th</strong>, rewrite the code changing all while-loop to for-loop:</p>
+<pre><code>public String minWindow(String S, String T) &#123;
+    if (S.length() &lt; T.length()) &#123;
+        return &quot;&quot;;
+    &#125;
+    HashMap&lt;Character, Integer&gt; map = new HashMap&lt;Character, Integer&gt;();
+    HashMap&lt;Character, Integer&gt; found = new HashMap&lt;Character, Integer&gt;();
+    for (Character ch: T.toCharArray()) &#123;
+        if (map.containsKey(ch)) &#123;
+            map.put(ch, map.get(ch) + 1);
+        &#125; else &#123;
+            map.put(ch, 1);
+            found.put(ch, 0);
+        &#125;
+    &#125;
+
+    String window = S;
+    int count = 0;
+    int start  = 0;
+
+    char[] letters = S.toCharArray();
+    for (int i = 0; i &lt; letters.length; i++) &#123;
+        char ch  = letters[i];
+        if (!map.containsKey(ch)) &#123;
+            continue;
+        &#125;
+        if (found.get(ch) &lt; map.get(ch)) &#123;
+            count++;
+        &#125;
+        found.put(ch, found.get(ch) + 1);
+        if (count == T.length()) &#123;
+            // update the start pointer
+            for (; start &lt;= i; start++) &#123;
+                char sChar = letters[start];
+                if (!map.containsKey(sChar)) &#123;
+                    continue;
+                &#125;
+                if (found.get(sChar) &lt;= map.get(sChar)) &#123;
+                    break;
+                &#125; else &#123;
+                    found.put(sChar, found.get(sChar) - 1);
+                &#125;
+            &#125;
+            if (window.length() &gt; i - start + 1) &#123;
+                window = S.substring(start, i + 1);
+            &#125;
+        &#125;
+    &#125;
+    return count == T.length() ? window : &quot;&quot;;
+&#125;
+</code></pre>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>Permalink:</span>
+                        <span><a href="https://mar2ndx.github.io/2014/05/21/pre-2017-2014-05-21-Minimum-Window-Substring/">https://mar2ndx.github.io/2014/05/21/pre-2017-2014-05-21-Minimum-Window-Substring/</a></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2019 <a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc/4.0/">CC-BY-NC-4.0</a> LICENSE</span>
+                    </p>
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY</strong>?</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2014/05/21/pre-2017-2014-05-21-Edit-Distance/">[LeetCode 72] Edit Distance</a>
+            
+            
+            <a class="next" rel="next" href="/2014/05/21/pre-2017-2014-05-21-Plus-One/">[LeetCode 66] Plus One</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+            </div>
+            <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>©  | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+
+</html>

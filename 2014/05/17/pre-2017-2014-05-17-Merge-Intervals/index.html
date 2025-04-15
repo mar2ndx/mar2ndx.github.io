@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+
+
+
+
+<title>[LeetCode 56] Merge Intervals | Tech blog</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const pagebody = document.getElementsByTagName('body')[0]
+
+            function setTheme(status) {
+
+                if (status === 'dark') {
+                    window.sessionStorage.theme = 'dark'
+                    pagebody.classList.add('dark-theme');
+
+                } else if (status === 'light') {
+                    window.sessionStorage.theme = 'light'
+                    pagebody.classList.remove('dark-theme');
+                }
+            };
+
+            setTheme(window.sessionStorage.theme)
+        })();
+    </script>
+
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">Bentham&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                <a class="menu-item" href="/archives">Posts</a>
+                
+                <a class="menu-item" href="/category">Categories</a>
+                
+                <a class="menu-item" href="/tag">Tags</a>
+                
+                <a class="menu-item" href="/about">About</a>
+                
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">Bentham&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">
+                    <svg class="menu-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M4.5 17.27q-.213 0-.356-.145T4 16.768t.144-.356t.356-.143h15q.213 0 .356.144q.144.144.144.357t-.144.356t-.356.143zm0-4.77q-.213 0-.356-.144T4 11.999t.144-.356t.356-.143h15q.213 0 .356.144t.144.357t-.144.356t-.356.143zm0-4.77q-.213 0-.356-.143Q4 7.443 4 7.23t.144-.356t.356-.143h15q.213 0 .356.144T20 7.23t-.144.356t-.356.144z"/></svg>
+                    <svg class="close-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Material Symbols Light by Google - https://github.com/google/material-design-icons/blob/master/LICENSE --><path fill="currentColor" d="m12 12.708l-5.246 5.246q-.14.14-.344.15t-.364-.15t-.16-.354t.16-.354L11.292 12L6.046 6.754q-.14-.14-.15-.344t.15-.364t.354-.16t.354.16L12 11.292l5.246-5.246q.14-.14.345-.15q.203-.01.363.15t.16.354t-.16.354L12.708 12l5.246 5.246q.14.14.15.345q.01.203-.15.363t-.354.16t-.354-.16z"/></svg>
+                </div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                <a class="menu-item" href="/archives">Posts</a>
+                
+                <a class="menu-item" href="/category">Categories</a>
+                
+                <a class="menu-item" href="/tag">Tags</a>
+                
+                <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if (toggleMenu.classList.contains("active")) {
+            toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        } else {
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    var tocbot_timer;
+    var DEPTH_MAX = 6; // 为 6 时展开所有
+    var tocbot_default_config = {
+        tocSelector: '.tocbot-list',
+        contentSelector: '.post-content',
+        headingSelector: 'h1, h2, h3, h4, h5',
+        orderedList: false,
+        scrollSmooth: true,
+        onClick: extend_click,
+    };
+
+    function extend_click() {
+        clearTimeout(tocbot_timer);
+        tocbot_timer = setTimeout(function() {
+            tocbot.refresh(obj_merge(tocbot_default_config, {
+                hasInnerContainers: true
+            }));
+        }, 420); // 这个值是由 tocbot 源码里定义的 scrollSmoothDuration 得来的
+    }
+
+    document.ready(function() {
+        tocbot.init(obj_merge(tocbot_default_config, {
+            collapseDepth: 1
+        }));
+    });
+
+    function expand_toc() {
+        var b = document.querySelector('.tocbot-toc-expand');
+        var expanded = b.getAttribute('data-expanded');
+        expanded ? b.removeAttribute('data-expanded') : b.setAttribute('data-expanded', true);
+        tocbot.refresh(obj_merge(tocbot_default_config, {
+            collapseDepth: expanded ? 1 : DEPTH_MAX
+        }));
+        b.innerText = expanded ? 'Expand all' : 'Collapse all';
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+    function obj_merge(target, source) {
+        for (var item in source) {
+            if (source.hasOwnProperty(item)) {
+                target[item] = source[item];
+            }
+        }
+        return target;
+    }
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">[LeetCode 56] Merge Intervals</h1>
+            
+                <div class="post-meta">
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">May 17, 2014&nbsp;&nbsp;0:00:00</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/Leetcode/">Leetcode</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><p><a target="_blank" rel="noopener" href="http://oj.leetcode.com/problems/merge-intervals/">link</a></p>
+<div class="question-content">
+            <p></p><p>Given a collection of intervals, merge all overlapping intervals.</p>
+
+<p>
+For example,<br>
+Given <code>[1,3],[2,6],[8,10],[15,18]</code>,<br>
+return <code>[1,6],[8,10],[15,18]</code>.
+</p><p></p>
+          </div>
+
+<h3 id="Stats"><a href="#Stats" class="headerlink" title="Stats"></a>Stats</h3><table border="2">
+	<tr>
+		<td>Frequency</td>
+		<td bgcolor="red">5</td>
+	</tr>
+	<tr>
+		<td>Difficulty</td>
+		<td bgcolor="red">4</td>
+	</tr>
+	<tr>
+		<td>Adjusted Difficulty</td>
+		<td bgcolor="red">4</td>
+	</tr>
+	<tr>
+		<td>Time to use</td>
+		<td bgcolor="yellow">----------</td>
+	</tr>
+</table>
+
+<p>Ratings&#x2F;Color &#x3D; 1(white) 2(lime) 3(yellow) 4&#x2F;5(red)</p>
+<h3 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h3><p><strong>The idea of the solution is not difficult</strong>. First, sort the entire collection list by start time. Secondly, merge it.</p>
+<p><strong>The real difficult part is how to sort the collection</strong>.</p>
+<p><strong>We can of course do insertion sort</strong>, or <strong>binary insertion sort</strong>. However, from <a target="_blank" rel="noopener" href="http://www.brpreiss.com/books/opus5/html/page487.html">this article</a>:</p>
+<blockquote>
+<p>The straight insertion algorithm presented in the preceding section does a linear search to find the position in which to do the insertion. However, since the element is inserted into a sequence that is already sorted, we can use a binary search instead of a linear search. Whereas a linear search requires O(n) comparisons in the worst case, a binary search only requires O(logn) comparisons. Therefore, if the cost of a comparison is significant, the binary search may be preferred.</p>
+</blockquote>
+<p><img src="/images/merge_interval_binary_insertion_sort_algo.png"></p>
+<p><strong>And from</strong> <a target="_blank" rel="noopener" href="http://en.wikipedia.org/wiki/Insertion_sort#Variants">wikipedia</a>:</p>
+<blockquote>
+<p>If the cost of comparisons exceeds the cost of swaps, as is the case for example with string keys stored by reference or with human interaction (such as choosing one of a pair displayed side-by-side), then using binary insertion sort may yield better performance. Binary insertion sort employs a binary search to determine the correct location to insert new elements, and therefore performs ⌈log2(n)⌉ comparisons in the worst case, which is O(n log n). The algorithm as a whole still has a running time of O(n^2) on average because of the series of swaps required for each insertion.</p>
+</blockquote>
+<p>So insertion sort algorithm may not be the best choice for us!</p>
+<p><strong>A more popular solution is using Collection.sort function</strong>.</p>
+<blockquote>
+<p>java.util.Collections</p>
+<p>public static <T> void sort(List<T> list, Comparator&lt;? super T&gt; c)</p>
+<p>Parameters: c</p>
+<p>The comparator to determine the order of the list. A null value indicates that the elements’ natural ordering should be used.</p>
+</blockquote>
+<p>A new class that implements the Comparator interface is created, and inside there is compare(Interval, Interval) method. <a target="_blank" rel="noopener" href="http://www.cnblogs.com/lautsie/p/3254191.html">Here</a> is one example of such solution.</p>
+<p><strong>The third solution is same as the second, but only different</strong> in implementing the comparator object. Note the following code from <a target="_blank" rel="noopener" href="http://rleetcode.blogspot.sg/2014/01/merge-intervals-java.html">this blog</a>:</p>
+<p>Comparator<Interval> intervalComperator &#x3D; new Comparator<Interval>(){<br>public int compare(Interval i1, Interval i2){<br>Integer i1St&#x3D;i1.start;<br>Integer i2St&#x3D;i2.start;<br>return i1St.compareTo(i2St);<br>}<br>};</p>
+<p>Read 3 pieces of code below.</p>
+<h3 id="My-code"><a href="#My-code" class="headerlink" title="My code"></a>My code</h3><p>insertion sort, then merge:</p>
+<pre><code>public ArrayList&lt;Interval&gt; merge(ArrayList&lt;Interval&gt; intervals) &#123;
+    ArrayList&lt;Interval&gt; ans = new ArrayList&lt;Interval&gt;();
+    int len = intervals.size();
+    if (len == 0) return ans;
+    ans.add(intervals.get(0));
+    if (len == 1) return ans;
+    // now intervals length is &gt;= then 2
+    if (intervals.get(0).start &lt; intervals.get(1).start)
+        ans.add(intervals.get(1));
+    else ans.add(0, intervals.get(1));
+    for (int i = 2; i &lt; len; i++) &#123;
+        int cur = intervals.get(i).start;
+        // now find number cur from ans&lt;list&gt;
+        int left = 0, right = ans.size() - 1;
+        while (right - left &gt; 1) &#123;
+            int mid = (left + right) / 2;
+            if (ans.get(mid).start &lt; cur) left = mid;
+            else right = mid;
+        &#125;
+        // insert cur between left and right, unless:
+        if (left == 0 &amp;&amp; cur &lt; ans.get(0).start)
+            ans.add(0, intervals.get(i));
+        else if (right == ans.size() - 1
+                &amp;&amp; cur &gt; ans.get(ans.size() - 1).start)
+            ans.add(intervals.get(i));
+        else
+            ans.add(right, intervals.get(i));
+    &#125;
+    // now merge ans
+    int k = 0;
+    while (k &lt; ans.size() - 1) &#123;
+        while (k &lt; ans.size() - 1 &amp;&amp; ans.get(k).end &gt;= ans.get(k + 1).start) &#123;
+            ans.get(k).end = Math.max(ans.get(k).end, ans.get(k + 1).end);
+            ans.remove(k + 1);
+        &#125;
+        k++;
+    &#125;
+    return ans;
+&#125;
+</code></pre>
+<p><strong>Recommended solution</strong>. Creating a new Comparator class</p>
+<pre><code>/**
+ * Definition for an interval.
+ * public class Interval &#123;
+ *     int start;
+ *     int end;
+ *     Interval() &#123; start = 0; end = 0; &#125;
+ *     Interval(int s, int e) &#123; start = s; end = e; &#125;
+ * &#125;
+ */
+public class Solution &#123;
+    public List&lt;Interval&gt; merge(List&lt;Interval&gt; intervals) &#123;
+        if (intervals == null || intervals.size() == 0) &#123;
+            return intervals;
+        &#125;
+        Collections.sort(intervals, new IntervalComparator());
+        int p = 0;
+        // if p is the last element of the list, we should stop merging
+        while (p &lt; intervals.size() - 1) &#123;
+            // merge p with the next interval, if possible
+            if (intervals.get(p).end &gt;= intervals.get(p + 1).start) &#123;
+                intervals.get(p).end = Math.max(intervals.get(p).end, intervals.get(p + 1).end);
+                intervals.remove(p + 1);
+            &#125; else &#123;
+                p++;
+            &#125;
+        &#125;
+        return intervals;
+    &#125;
+
+    class IntervalComparator implements Comparator&lt;Interval&gt; &#123;
+        public int compare(Interval a, Interval b) &#123;
+            return a.start - b.start;
+        &#125;
+    &#125;
+&#125;
+</code></pre>
+<p><strong>Third solution</strong>, different way of writing Comparator.</p>
+<pre><code>public ArrayList&lt;Interval&gt; merge(ArrayList&lt;Interval&gt; intervals) &#123;
+    if (intervals == null || intervals.size() &lt; 2)
+        return intervals;
+    ArrayList&lt;Interval&gt; result = new ArrayList&lt;Interval&gt;();
+
+    Comparator&lt;Interval&gt; intervalComperator = new Comparator&lt;Interval&gt;() &#123;
+        public int compare(Interval i1, Interval i2) &#123;
+            Integer i1St = i1.start;
+            Integer i2St = i2.start;
+            return i1St.compareTo(i2St);
+
+        &#125;
+    &#125;;
+    Collections.sort(intervals, intervalComperator);
+
+    Interval current = intervals.get(0);
+    int i = 1;
+    while (i &lt; intervals.size()) &#123;
+        Interval currentToCompare = intervals.get(i);
+        if (current.end &lt; currentToCompare.start) &#123;
+            result.add(current);
+            current = currentToCompare;
+        &#125; else
+            current.end = Math.max(current.end, currentToCompare.end);
+        i++;
+    &#125;
+    result.add(current);
+    return result;
+&#125;
+</code></pre>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>Permalink:</span>
+                        <span><a href="https://mar2ndx.github.io/2014/05/17/pre-2017-2014-05-17-Merge-Intervals/">https://mar2ndx.github.io/2014/05/17/pre-2017-2014-05-17-Merge-Intervals/</a></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2019 <a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc/4.0/">CC-BY-NC-4.0</a> LICENSE</span>
+                    </p>
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY</strong>?</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2014/05/18/pre-2017-2014-05-18-Valid-Number/">[LeetCode 65] Valid Number (unsolvable)</a>
+            
+            
+            <a class="next" rel="next" href="/2014/05/16/pre-2017-2014-05-16-Jump-Game/">[LeetCode 55] Jump Game</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+            </div>
+            <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>©  | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+
+</html>

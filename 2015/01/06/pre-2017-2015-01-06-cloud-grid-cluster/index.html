@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+
+
+
+
+<title>[Design] Cloud, Grid and Cluster  | Tech blog</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const pagebody = document.getElementsByTagName('body')[0]
+
+            function setTheme(status) {
+
+                if (status === 'dark') {
+                    window.sessionStorage.theme = 'dark'
+                    pagebody.classList.add('dark-theme');
+
+                } else if (status === 'light') {
+                    window.sessionStorage.theme = 'light'
+                    pagebody.classList.remove('dark-theme');
+                }
+            };
+
+            setTheme(window.sessionStorage.theme)
+        })();
+    </script>
+
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">Bentham&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                <a class="menu-item" href="/archives">Posts</a>
+                
+                <a class="menu-item" href="/category">Categories</a>
+                
+                <a class="menu-item" href="/tag">Tags</a>
+                
+                <a class="menu-item" href="/about">About</a>
+                
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">Bentham&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">
+                    <svg class="menu-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M4.5 17.27q-.213 0-.356-.145T4 16.768t.144-.356t.356-.143h15q.213 0 .356.144q.144.144.144.357t-.144.356t-.356.143zm0-4.77q-.213 0-.356-.144T4 11.999t.144-.356t.356-.143h15q.213 0 .356.144t.144.357t-.144.356t-.356.143zm0-4.77q-.213 0-.356-.143Q4 7.443 4 7.23t.144-.356t.356-.143h15q.213 0 .356.144T20 7.23t-.144.356t-.356.144z"/></svg>
+                    <svg class="close-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Material Symbols Light by Google - https://github.com/google/material-design-icons/blob/master/LICENSE --><path fill="currentColor" d="m12 12.708l-5.246 5.246q-.14.14-.344.15t-.364-.15t-.16-.354t.16-.354L11.292 12L6.046 6.754q-.14-.14-.15-.344t.15-.364t.354-.16t.354.16L12 11.292l5.246-5.246q.14-.14.345-.15q.203-.01.363.15t.16.354t-.16.354L12.708 12l5.246 5.246q.14.14.15.345q.01.203-.15.363t-.354.16t-.354-.16z"/></svg>
+                </div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                <a class="menu-item" href="/archives">Posts</a>
+                
+                <a class="menu-item" href="/category">Categories</a>
+                
+                <a class="menu-item" href="/tag">Tags</a>
+                
+                <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if (toggleMenu.classList.contains("active")) {
+            toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        } else {
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    var tocbot_timer;
+    var DEPTH_MAX = 6; // 为 6 时展开所有
+    var tocbot_default_config = {
+        tocSelector: '.tocbot-list',
+        contentSelector: '.post-content',
+        headingSelector: 'h1, h2, h3, h4, h5',
+        orderedList: false,
+        scrollSmooth: true,
+        onClick: extend_click,
+    };
+
+    function extend_click() {
+        clearTimeout(tocbot_timer);
+        tocbot_timer = setTimeout(function() {
+            tocbot.refresh(obj_merge(tocbot_default_config, {
+                hasInnerContainers: true
+            }));
+        }, 420); // 这个值是由 tocbot 源码里定义的 scrollSmoothDuration 得来的
+    }
+
+    document.ready(function() {
+        tocbot.init(obj_merge(tocbot_default_config, {
+            collapseDepth: 1
+        }));
+    });
+
+    function expand_toc() {
+        var b = document.querySelector('.tocbot-toc-expand');
+        var expanded = b.getAttribute('data-expanded');
+        expanded ? b.removeAttribute('data-expanded') : b.setAttribute('data-expanded', true);
+        tocbot.refresh(obj_merge(tocbot_default_config, {
+            collapseDepth: expanded ? 1 : DEPTH_MAX
+        }));
+        b.innerText = expanded ? 'Expand all' : 'Collapse all';
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+    function obj_merge(target, source) {
+        for (var item in source) {
+            if (source.hasOwnProperty(item)) {
+                target[item] = source[item];
+            }
+        }
+        return target;
+    }
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">[Design] Cloud, Grid and Cluster </h1>
+            
+                <div class="post-meta">
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">January 6, 2015&nbsp;&nbsp;0:00:00</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/Design/">Design</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <p><a target="_blank" rel="noopener" href="http://stackoverflow.com/questions/9723040/what-is-the-difference-between-cloud-grid-and-cluster">ref</a></p>
+<h3 id="Cluster-VS-Grid"><a href="#Cluster-VS-Grid" class="headerlink" title="Cluster VS. Grid"></a>Cluster VS. Grid</h3><p><strong><a target="_blank" rel="noopener" href="http://stackoverflow.com/a/9753568">Cluster differs</a> from Cloud and Grid in that</strong></p>
+<ol>
+<li>a cluster is a group of computers connected by a local area network (LAN)</li>
+<li>cloud and grid are more wide scale and can be geographically distributed.</li>
+</ol>
+<p>Another way to put it is to say that</p>
+<ol>
+<li>a cluster is tightly coupled</li>
+<li>a Grid or a cloud is loosely coupled.</li>
+</ol>
+<p>Also, <strong>the hardware</strong>:</p>
+<ol>
+<li>clusters are made up of machines with similar hardware</li>
+<li>clouds and grids are made up of machines with possibly very different hardware configurations.</li>
+</ol>
+<h3 id="Computer-cluster"><a href="#Computer-cluster" class="headerlink" title="Computer cluster"></a>Computer cluster</h3><p><strong><a target="_blank" rel="noopener" href="http://en.wikipedia.org/wiki/Computer_cluster">A computer cluster</a></strong> consists of a set of tightly connected computers that work together as a single system.</p>
+<p>Unlike grid computers, computer clusters have each node set to <strong>perform the same task</strong>, controlled and scheduled by software.</p>
+<p>In most circumstances, all of the nodes use the <strong>same hardware and OS</strong>. They are connected in <strong>LAN</strong> with each node running its <strong>own piece</strong> of OS.</p>
+<p>They are used to improve <strong>performance</strong> and <strong>availability</strong> over that of a single computer, while being more <strong>cost effective</strong>.</p>
+<p>Computer clusters emerged as a result of:</p>
+<ol>
+<li>low-cost microprocessors,</li>
+<li>high-speed networks,</li>
+<li>software for high-performance distributed computing</li>
+</ol>
+<h3 id="Grid-computing"><a href="#Grid-computing" class="headerlink" title="Grid computing"></a>Grid computing</h3><p><strong><a target="_blank" rel="noopener" href="http://en.wikipedia.org/wiki/Grid_computing">Grid computing</a></strong> is the collection of computer resources from multiple locations to reach a common goal. Each computer have <strong>non-interactive workloads</strong>. It’s like a <strong>“super virtual computer”</strong> composed of many networked loosely coupled computers acting together to perform large tasks.</p>
+<p>Unlike conventional high performance computing systems such as <strong>cluster computing</strong>, grid computers have each node set to <strong>perform a different task</strong>.</p>
+<p>Grid computers also tend to be more <strong>geographically dispersed</strong> than cluster computers. Grids are often constructed with general-purpose grid middleware software libraries.</p>
+<p>Major disadvantage with Grid Computing is, <strong>if one piece of software on a node fails</strong>, other pieces of the software on the other nodes may fail.</p>
+<h3 id="Cloud-computing"><a href="#Cloud-computing" class="headerlink" title="Cloud computing"></a>Cloud computing</h3><p><strong><a target="_blank" rel="noopener" href="http://en.wikipedia.org/wiki/Cloud_computing">Cloud computing</a></strong> is terminology based on utility and <strong>consumption of computing resources</strong>.</p>
+<h4 id="SaaS"><a href="#SaaS" class="headerlink" title="SaaS"></a>SaaS</h4><p>An application doesn’t access resources it requires directly, rather it accesses them through <strong>something <a target="_blank" rel="noopener" href="http://stackoverflow.com/a/1068133">like a service</a></strong>. Instead of talking to a specific hard drive for storage, and a specific CPU for computation, etc, it talks to some <strong>service that provides these resources</strong>. The service then maps any requests for resources to its physical resources.</p>
+<p>The services themselves <a target="_blank" rel="noopener" href="http://stackoverflow.com/a/9753568">have long been referred to</a> as <strong>Software as a Service (SaaS)</strong>. The datacenter hardware and software is what we call <strong>a Cloud</strong>. When a Cloud is made available in a pay-as-you-go manner to the general public, we call it a <strong>Public Cloud</strong>; the service being sold is <strong>Utility Computing</strong>.</p>
+<h4 id="Sharing-of-Resources"><a href="#Sharing-of-Resources" class="headerlink" title="Sharing of Resources"></a>Sharing of Resources</h4><p>Usually the service <strong>dynamically allocate resources</strong> to maximize the effectiveness of the shared resources(per users and per demand).</p>
+<p>For example, a cloud computer facility that serves European users during European business hours with a specific application (e.g., email) may reallocate the same resources to serve North American users during North America’s business hours with a different application (e.g., a web server).</p>
+<p>With cloud computing, multiple users can access a single server to retrieve and update their data <strong>without purchasing licenses for different applications</strong>.</p>
+<h4 id="Scalability"><a href="#Scalability" class="headerlink" title="Scalability"></a>Scalability</h4><ol>
+<li><p>If an application requires only <strong>a small amount of some resource</strong>, say computation, then the service only allocates a small amount, say a small share on a single physical CPU.</p>
+</li>
+<li><p>If the application requires <strong>a large amount of some resource</strong>, then the service allocates that large amount, say a grid of CPUs.</p>
+</li>
+</ol>
+<p>All the complex handling and coordination is performed <strong>by the service, not the application</strong>. In this way the application can scale well.</p>
+<p><a target="_blank" rel="noopener" href="http://stackoverflow.com/a/1068133">For example</a> a web site written “on the cloud” may share a server with many other web sites while it has a low amount of traffic. If it ever has massive amounts of traffic, it may be moved to its own dedicated server, or <strong>grid of servers</strong>. This is all handled <strong>by the cloud service (provider)</strong>, so the application shouldn’t have to be modified drastically to cope.</p>
+<h4 id="Other-Advantages"><a href="#Other-Advantages" class="headerlink" title="Other Advantages"></a>Other Advantages</h4><p>Using Cloud Computing, companies can <a target="_blank" rel="noopener" href="http://www.ibeehosting.com/blog/what-is-the-difference-between-cloud-computing-and-grid-computing.html">scale upto High capacities</a> immediately without investing in new infrastructure, training the people or new software licensing. It is more useful for small and medium scale businesses who wants to outsource their Data Center infrastructure, or some larger companies also prefer if they want to cut down the costs of building data-centers internally in order to get peak load capacity. In short, consumers use what they need and pay accordingly.</p>
+<h3 id="Grid-Computing-VS-Cloud-Computing"><a href="#Grid-Computing-VS-Cloud-Computing" class="headerlink" title="Grid Computing VS. Cloud Computing"></a>Grid Computing VS. Cloud Computing</h3><ol>
+<li><p>Grid Computing is the parent of Cloud computing, cloud actually evolves from Grid Computing.</p>
+</li>
+<li><p>A cloud would usually use a grid. A grid is not necessarily a cloud.</p>
+</li>
+<li><p>Resource distribution: Cloud computing is a centralized model whereas grid computing is a decentralized model where the computation could occur over many administrative domains.</p>
+</li>
+<li><p>Ownership: A grid is a collection of computers which is owned by multiple parties in multiple locations and connected together so that users can share the combined power of resources. Whereas a cloud is a collection of computers usually owned by a single party.</p>
+</li>
+</ol>
+<h4 id="Examples"><a href="#Examples" class="headerlink" title="Examples"></a>Examples</h4><p>Examples of Clouds: Amazon Web Services (AWS), Google App Engine, Dropbox, Gmail, Facebook, Youtube, Rapidshare</p>
+<p>Examples of Grids: FutureGrid</p>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>Permalink:</span>
+                        <span><a href="https://mar2ndx.github.io/2015/01/06/pre-2017-2015-01-06-cloud-grid-cluster/">https://mar2ndx.github.io/2015/01/06/pre-2017-2015-01-06-cloud-grid-cluster/</a></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2019 <a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc/4.0/">CC-BY-NC-4.0</a> LICENSE</span>
+                    </p>
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY</strong>?</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2015/01/06/pre-2017-2015-01-06-big-data-storage/">[Design] Big Data Storage </a>
+            
+            
+            <a class="next" rel="next" href="/2015/01/06/pre-2017-2015-01-06-distributed-hash-table/">[Design] Distributed hash table </a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+            </div>
+            <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>©  | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+
+</html>

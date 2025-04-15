@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+
+
+
+
+<title>[Question] ASCII, Utf-8, Utf-16 and Unicode | Tech blog</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const pagebody = document.getElementsByTagName('body')[0]
+
+            function setTheme(status) {
+
+                if (status === 'dark') {
+                    window.sessionStorage.theme = 'dark'
+                    pagebody.classList.add('dark-theme');
+
+                } else if (status === 'light') {
+                    window.sessionStorage.theme = 'light'
+                    pagebody.classList.remove('dark-theme');
+                }
+            };
+
+            setTheme(window.sessionStorage.theme)
+        })();
+    </script>
+
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">Bentham&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                <a class="menu-item" href="/archives">Posts</a>
+                
+                <a class="menu-item" href="/category">Categories</a>
+                
+                <a class="menu-item" href="/tag">Tags</a>
+                
+                <a class="menu-item" href="/about">About</a>
+                
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">Bentham&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">
+                    <svg class="menu-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M4.5 17.27q-.213 0-.356-.145T4 16.768t.144-.356t.356-.143h15q.213 0 .356.144q.144.144.144.357t-.144.356t-.356.143zm0-4.77q-.213 0-.356-.144T4 11.999t.144-.356t.356-.143h15q.213 0 .356.144t.144.357t-.144.356t-.356.143zm0-4.77q-.213 0-.356-.143Q4 7.443 4 7.23t.144-.356t.356-.143h15q.213 0 .356.144T20 7.23t-.144.356t-.356.144z"/></svg>
+                    <svg class="close-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Material Symbols Light by Google - https://github.com/google/material-design-icons/blob/master/LICENSE --><path fill="currentColor" d="m12 12.708l-5.246 5.246q-.14.14-.344.15t-.364-.15t-.16-.354t.16-.354L11.292 12L6.046 6.754q-.14-.14-.15-.344t.15-.364t.354-.16t.354.16L12 11.292l5.246-5.246q.14-.14.345-.15q.203-.01.363.15t.16.354t-.16.354L12.708 12l5.246 5.246q.14.14.15.345q.01.203-.15.363t-.354.16t-.354-.16z"/></svg>
+                </div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                <a class="menu-item" href="/archives">Posts</a>
+                
+                <a class="menu-item" href="/category">Categories</a>
+                
+                <a class="menu-item" href="/tag">Tags</a>
+                
+                <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if (toggleMenu.classList.contains("active")) {
+            toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        } else {
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    var tocbot_timer;
+    var DEPTH_MAX = 6; // 为 6 时展开所有
+    var tocbot_default_config = {
+        tocSelector: '.tocbot-list',
+        contentSelector: '.post-content',
+        headingSelector: 'h1, h2, h3, h4, h5',
+        orderedList: false,
+        scrollSmooth: true,
+        onClick: extend_click,
+    };
+
+    function extend_click() {
+        clearTimeout(tocbot_timer);
+        tocbot_timer = setTimeout(function() {
+            tocbot.refresh(obj_merge(tocbot_default_config, {
+                hasInnerContainers: true
+            }));
+        }, 420); // 这个值是由 tocbot 源码里定义的 scrollSmoothDuration 得来的
+    }
+
+    document.ready(function() {
+        tocbot.init(obj_merge(tocbot_default_config, {
+            collapseDepth: 1
+        }));
+    });
+
+    function expand_toc() {
+        var b = document.querySelector('.tocbot-toc-expand');
+        var expanded = b.getAttribute('data-expanded');
+        expanded ? b.removeAttribute('data-expanded') : b.setAttribute('data-expanded', true);
+        tocbot.refresh(obj_merge(tocbot_default_config, {
+            collapseDepth: expanded ? 1 : DEPTH_MAX
+        }));
+        b.innerText = expanded ? 'Expand all' : 'Collapse all';
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+    function obj_merge(target, source) {
+        for (var item in source) {
+            if (source.hasOwnProperty(item)) {
+                target[item] = source[item];
+            }
+        }
+        return target;
+    }
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">[Question] ASCII, Utf-8, Utf-16 and Unicode</h1>
+            
+                <div class="post-meta">
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">June 4, 2014&nbsp;&nbsp;0:00:00</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/Question/">Question</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h2 id="First-Word"><a href="#First-Word" class="headerlink" title="First Word"></a>First Word</h2><p><strong>ASCII, UTF-? are encoding schemes. Unicode is character set</strong>.</p>
+<p>Or in other words, UTF-8 is an encoding used to translate binary data into numbers. Unicode is a character set used to translate numbers into characters.</p>
+<h2 id="ASCII"><a href="#ASCII" class="headerlink" title="ASCII"></a>ASCII</h2><p><strong><a target="_blank" rel="noopener" href="http://en.wikipedia.org/wiki/ASCII">ASCII</a></strong> is a character-encoding scheme based on the English alphabet. It encodes 128 characters into 7-bit integers.</p>
+<p>ASCII was the most commonly used character encoding on the World Wide Web until December 2007, when it was surpassed by UTF-8, which includes ASCII as a subset.</p>
+<h2 id="UTF-8"><a href="#UTF-8" class="headerlink" title="UTF-8"></a>UTF-8</h2><p>UCS Transformation Format—8-bit</p>
+<p><strong><a target="_blank" rel="noopener" href="http://en.wikipedia.org/wiki/Utf_8">UTF-8</a></strong> is a variable-width encoding that can represent every character in the Unicode character set. It uses 1 byte for ASCII characters, and up to 4 bytes for others.</p>
+<p><strong>UTF-8 is the dominant character encoding for the World Wide Web</strong>, accounting for more than half of all Web pages.</p>
+<p>Utf-8 is good because:</p>
+<ol>
+<li><p>backward compatibility with ASCII</p>
+</li>
+<li><p>avoid the complications of endianness and byte order marks in UTF-16 and UTF-32</p>
+</li>
+</ol>
+<p>UTF-8 has become the dominant character encoding for the World Wide Web, accounting for more than half of all Web pages</p>
+<h2 id="UTF-16-and-UTF-32"><a href="#UTF-16-and-UTF-32" class="headerlink" title="UTF-16 and UTF-32"></a>UTF-16 and UTF-32</h2><p><strong>UTF-16 is used for text in the OS API in Microsoft Windows 2000&#x2F;XP&#x2F;2003&#x2F;Vista&#x2F;7&#x2F;8&#x2F;CE</strong>. The word “Unicode” means something else according to <a target="_blank" rel="noopener" href="http://stackoverflow.com/a/3951826">this person</a>:</p>
+<blockquote>
+<p>Windows uses UTF-16LE encoding internally as the memory storage format for Unicode strings, it considers this to be the natural encoding of Unicode text. In the Windows world, there are ANSI strings and there are Unicode strings (stored internally as UTF-16LE).</p>
+</blockquote>
+<blockquote>
+<p>This was all devised in the early days of Unicode, before UTF-8 was invented. This is why Windows’s support for UTF-8 is all-round poor.</p>
+</blockquote>
+<h4 id="UTF-8-“size-optimize”"><a href="#UTF-8-“size-optimize”" class="headerlink" title="UTF-8: “size optimize”:"></a>UTF-8: “size optimize”:</h4><p>Best suited for Latin character based data (or ASCII), it takes only 1 byte.</p>
+<h4 id="UTF-16-“balance”"><a href="#UTF-16-“balance”" class="headerlink" title="UTF-16: “balance”"></a>UTF-16: “balance”</h4><p>It takes minimum 2 bytes per character which is enough for existing set of the mainstream languages with having fixed size on it to ease character handling, but size is still variable and can grow up to 4 bytes per character.</p>
+<h4 id="UTF-32-“performance”"><a href="#UTF-32-“performance”" class="headerlink" title="UTF-32: “performance”"></a>UTF-32: “performance”</h4><p>Allows using of simple algorithms as result of fixed size characters (4 bytes) but with memory disadvantage</p>
+<h2 id="Unicode"><a href="#Unicode" class="headerlink" title="Unicode"></a>Unicode</h2><p><a target="_blank" rel="noopener" href="http://en.wikipedia.org/wiki/Unicode">Unicode</a> is a computing industry standard for the consistent encoding. It expresses most of world’s writing systems with more than 110,000 characters covering 100 scripts and symbols.</p>
+<p>Unicode can be implemented by Utf-8, Utf-16 and now-obsolete Ucs-2. When unicode is encoded with UTF-8, its code value is same as ASCII.</p>
+<h2 id="Table-of-the-scheme"><a href="#Table-of-the-scheme" class="headerlink" title="Table of the scheme"></a>Table of the scheme</h2><table class="wikitable">
+<tbody><tr>
+<th class="bg-color bg-img font-color">Bits of<br>
+code point</th>
+<th class="bg-color bg-img font-color">First<br>
+code point</th>
+<th class="bg-color bg-img font-color">Last<br>
+code point</th>
+<th class="bg-color bg-img font-color">Bytes in<br>
+sequence</th>
+<th class="bg-color bg-img font-color">Byte 1</th>
+<th class="bg-color bg-img font-color">Byte 2</th>
+<th class="bg-color bg-img font-color">Byte 3</th>
+<th class="bg-color bg-img font-color">Byte 4</th>
+<th class="bg-color bg-img font-color">Byte 5</th>
+<th class="bg-color bg-img font-color">Byte 6</th>
+</tr>
+<tr>
+<th class="bg-color bg-img font-color">&nbsp;&nbsp;7</th>
+<td class="bg-color bg-img font-color">U+0000</td>
+<td class="bg-color bg-img font-color">U+007F</td>
+<td style="text-align: center;" class="bg-color bg-img font-color">1</td>
+<td class="bg-color bg-img font-color"><code>0xxxxxxx</code></td>
+</tr>
+<tr>
+<th class="bg-color bg-img font-color">11</th>
+<td class="bg-color bg-img font-color">U+0080</td>
+<td class="bg-color bg-img font-color">U+07FF</td>
+<td style="text-align: center;" class="bg-color bg-img font-color">2</td>
+<td class="bg-color bg-img font-color"><code>110xxxxx</code></td>
+<td class="bg-color bg-img font-color"><code>10xxxxxx</code></td>
+</tr>
+<tr class="bg-color bg-img font-color">
+<th class="bg-color bg-img font-color">16</th>
+<td class="bg-color bg-img font-color">U+0800</td>
+<td class="bg-color bg-img font-color">U+FFFF</td>
+<td style="text-align: center;" class="bg-color bg-img font-color">3</td>
+<td class="bg-color bg-img font-color"><code class="bg-color bg-img font-color">1110xxxx</code></td>
+<td class="bg-color bg-img font-color"><code>10xxxxxx</code></td>
+<td class="bg-color bg-img font-color"><code>10xxxxxx</code></td>
+</tr>
+<tr>
+<th class="bg-color bg-img font-color">21</th>
+<td class="bg-color bg-img font-color">U+10000</td>
+<td class="bg-color bg-img font-color">U+1FFFFF</td>
+<td style="text-align: center;" class="bg-color bg-img font-color">4</td>
+<td class="bg-color bg-img font-color"><code>11110xxx</code></td>
+<td class="bg-color bg-img font-color"><code>10xxxxxx</code></td>
+<td class="bg-color bg-img font-color"><code>10xxxxxx</code></td>
+<td class="bg-color bg-img font-color"><code>10xxxxxx</code></td>
+</tr>
+<tr>
+<th class="bg-color bg-img font-color">26</th>
+<td class="bg-color bg-img font-color">U+200000</td>
+<td class="bg-color bg-img font-color">U+3FFFFFF</td>
+<td style="text-align: center;" class="bg-color bg-img font-color">5</td>
+<td class="bg-color bg-img font-color"><code>111110xx</code></td>
+<td class="bg-color bg-img font-color"><code>10xxxxxx</code></td>
+<td class="bg-color bg-img font-color"><code>10xxxxxx</code></td>
+<td class="bg-color bg-img font-color"><code>10xxxxxx</code></td>
+<td class="bg-color bg-img font-color"><code>10xxxxxx</code></td>
+</tr>
+<tr>
+<th class="bg-color bg-img font-color">31</th>
+<td class="bg-color bg-img font-color">U+4000000</td>
+<td class="bg-color bg-img font-color">U+7FFFFFFF</td>
+<td style="text-align: center;" class="bg-color bg-img font-color">6</td>
+<td class="bg-color bg-img font-color"><code>1111110x</code></td>
+<td class="bg-color bg-img font-color"><code>10xxxxxx</code></td>
+<td class="bg-color bg-img font-color"><code>10xxxxxx</code></td>
+<td class="bg-color bg-img font-color"><code>10xxxxxx</code></td>
+<td class="bg-color bg-img font-color"><code>10xxxxxx</code></td>
+<td class="bg-color bg-img font-color"><code>10xxxxxx</code></td>
+</tr>
+</tbody></table>
+
+<h2 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h2><p>Translate ‘€’ into binary Utf-8.</p>
+<ol>
+<li><p>The Unicode code point for “€” is U+20AC.</p>
+</li>
+<li><p>According to the scheme table above, this will take 3 bytes (16 bits).</p>
+</li>
+<li><p>Convert hexadecimal 20AC into a 16-bit binary 0010000010101100.</p>
+</li>
+<li><p>Fill in the 16 bits into: 1110xxxx 10xxxxxx 10xxxxxx, we got 11100010 10000010 10101100</p>
+</li>
+<li><p>Almost done. The result can be concisely written in hexadecimal, as E2 82 AC.</p>
+</li>
+</ol>
+<p>Note that the last byte of any encoding starts with ‘0’, in this way computer can easily identify the encoding length of every character. Also <strong>note that ASCII code is natively supported by Utf-8</strong>.</p>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>Permalink:</span>
+                        <span><a href="https://mar2ndx.github.io/2014/06/04/pre-2017-2014-06-04-Unicode-Utf8/">https://mar2ndx.github.io/2014/06/04/pre-2017-2014-06-04-Unicode-Utf8/</a></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2019 <a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc/4.0/">CC-BY-NC-4.0</a> LICENSE</span>
+                    </p>
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY</strong>?</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2014/06/04/pre-2017-2014-06-04-Junit-hands-on-notes/">[Question] Junit Hand-on Notes</a>
+            
+            
+            <a class="next" rel="next" href="/2014/06/03/pre-2017-2014-06-03-Big-endian-little-endian/">[Design] Big Endian and Little Endian</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+            </div>
+            <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>©  | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+
+</html>

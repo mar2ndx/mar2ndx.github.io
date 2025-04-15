@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+
+
+
+
+<title>[LeetCode 127] Word Ladder | Tech blog</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const pagebody = document.getElementsByTagName('body')[0]
+
+            function setTheme(status) {
+
+                if (status === 'dark') {
+                    window.sessionStorage.theme = 'dark'
+                    pagebody.classList.add('dark-theme');
+
+                } else if (status === 'light') {
+                    window.sessionStorage.theme = 'light'
+                    pagebody.classList.remove('dark-theme');
+                }
+            };
+
+            setTheme(window.sessionStorage.theme)
+        })();
+    </script>
+
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">Bentham&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                <a class="menu-item" href="/archives">Posts</a>
+                
+                <a class="menu-item" href="/category">Categories</a>
+                
+                <a class="menu-item" href="/tag">Tags</a>
+                
+                <a class="menu-item" href="/about">About</a>
+                
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">Bentham&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">
+                    <svg class="menu-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M4.5 17.27q-.213 0-.356-.145T4 16.768t.144-.356t.356-.143h15q.213 0 .356.144q.144.144.144.357t-.144.356t-.356.143zm0-4.77q-.213 0-.356-.144T4 11.999t.144-.356t.356-.143h15q.213 0 .356.144t.144.357t-.144.356t-.356.143zm0-4.77q-.213 0-.356-.143Q4 7.443 4 7.23t.144-.356t.356-.143h15q.213 0 .356.144T20 7.23t-.144.356t-.356.144z"/></svg>
+                    <svg class="close-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Material Symbols Light by Google - https://github.com/google/material-design-icons/blob/master/LICENSE --><path fill="currentColor" d="m12 12.708l-5.246 5.246q-.14.14-.344.15t-.364-.15t-.16-.354t.16-.354L11.292 12L6.046 6.754q-.14-.14-.15-.344t.15-.364t.354-.16t.354.16L12 11.292l5.246-5.246q.14-.14.345-.15q.203-.01.363.15t.16.354t-.16.354L12.708 12l5.246 5.246q.14.14.15.345q.01.203-.15.363t-.354.16t-.354-.16z"/></svg>
+                </div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                <a class="menu-item" href="/archives">Posts</a>
+                
+                <a class="menu-item" href="/category">Categories</a>
+                
+                <a class="menu-item" href="/tag">Tags</a>
+                
+                <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if (toggleMenu.classList.contains("active")) {
+            toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        } else {
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    var tocbot_timer;
+    var DEPTH_MAX = 6; // 为 6 时展开所有
+    var tocbot_default_config = {
+        tocSelector: '.tocbot-list',
+        contentSelector: '.post-content',
+        headingSelector: 'h1, h2, h3, h4, h5',
+        orderedList: false,
+        scrollSmooth: true,
+        onClick: extend_click,
+    };
+
+    function extend_click() {
+        clearTimeout(tocbot_timer);
+        tocbot_timer = setTimeout(function() {
+            tocbot.refresh(obj_merge(tocbot_default_config, {
+                hasInnerContainers: true
+            }));
+        }, 420); // 这个值是由 tocbot 源码里定义的 scrollSmoothDuration 得来的
+    }
+
+    document.ready(function() {
+        tocbot.init(obj_merge(tocbot_default_config, {
+            collapseDepth: 1
+        }));
+    });
+
+    function expand_toc() {
+        var b = document.querySelector('.tocbot-toc-expand');
+        var expanded = b.getAttribute('data-expanded');
+        expanded ? b.removeAttribute('data-expanded') : b.setAttribute('data-expanded', true);
+        tocbot.refresh(obj_merge(tocbot_default_config, {
+            collapseDepth: expanded ? 1 : DEPTH_MAX
+        }));
+        b.innerText = expanded ? 'Expand all' : 'Collapse all';
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+    function obj_merge(target, source) {
+        for (var item in source) {
+            if (source.hasOwnProperty(item)) {
+                target[item] = source[item];
+            }
+        }
+        return target;
+    }
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">[LeetCode 127] Word Ladder</h1>
+            
+                <div class="post-meta">
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">May 29, 2014&nbsp;&nbsp;0:00:00</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/Leetcode/">Leetcode</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><p><a target="_blank" rel="noopener" href="https://oj.leetcode.com/problems/word-ladder/">link</a></p>
+<div class="question-content">
+            <p></p><p>
+Given two words (<i>start</i> and <i>end</i>), and a dictionary, find the length of shortest transformation sequence from <i>start</i> to <i>end</i>, such that:
+</p>
+<ol>
+<li>Only one letter can be changed at a time</li>
+<li>Each intermediate word must exist in the dictionary</li>
+</ol>
+
+<p>
+For example,
+</p>
+<p>
+Given:<br>
+<i>start</i> = <code>"hit"</code><br>
+<i>end</i> = <code>"cog"</code><br>
+<i>dict</i> = <code>["hot","dot","dog","lot","log"]</code><br>
+</p>
+<p>
+As one shortest transformation is <code>"hit" -&gt; "hot" -&gt; "dot" -&gt; "dog" -&gt; "cog"</code>,<br>
+return its length <code>5</code>.
+</p>
+
+<p>
+<b>Note:</b><br>
+</p><ul>
+<li>Return 0 if there is no such transformation sequence.</li>
+<li>All words have the same length.</li>
+<li>All words contain only lowercase alphabetic characters.</li>
+</ul>
+<p></p><p></p>
+</div>
+
+<h3 id="Stats"><a href="#Stats" class="headerlink" title="Stats"></a>Stats</h3><table border="2">
+	<tr>
+		<td>Frequency</td>
+		<td bgcolor="red">5</td>
+	</tr>
+	<tr>
+		<td>Difficulty</td>
+		<td bgcolor="yellow">3</td>
+	</tr>
+	<tr>
+		<td>Adjusted Difficulty</td>
+		<td bgcolor="red">5</td>
+	</tr>
+	<tr>
+		<td>Time to use</td>
+		<td bgcolor="red">--------</td>
+	</tr>
+</table>
+
+<p>Ratings&#x2F;Color &#x3D; 1(white) 2(lime) 3(yellow) 4&#x2F;5(red)</p>
+<h3 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h3><p><strong>This is an extremely difficult question</strong>.</p>
+<h3 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h3><ol>
+<li><p>This question is <strong>find shortest path</strong>, so we shall choose <strong>BFS</strong> over DFS.</p>
+</li>
+<li><p>Since finding an element in HashSet is O(1) time, <strong>we can generate all the possible strings of distance &#x3D; 1</strong> and check if they are in the dictionary. In this way, we reduce time complexity from O(m x n) to O(m x 26).</p>
+</li>
+<li><p>If a word is found from the dictionary, remove it.</p>
+</li>
+</ol>
+<p><strong>For the 3rd point, we remove the word from dict</strong>. It might be hard to understand. <a target="_blank" rel="noopener" href="http://blog.csdn.net/zxzxy1988/article/details/8591890">This blog</a> explains it clear enough.</p>
+<blockquote cite="http://blog.csdn.net/zxzxy1988/article/details/8591890">
+另外一个需要注意的地方就是，如果我们曾经遍历过某个元素，我会将其从字典中删除，以防以后再次遍历到这个元素。这里有几种情况：<br><br>
+1.以后再也遍历不到这个元素，那么我们删除它当然没有任何问题。<br><br>
+2.我们以后会遍历到该元素，又分为两种情况：<br><br>
+(1)在本层我们就能遍历到该元素。也就是说，我们到达这个元素有两条路径，而且它们都是最短路径。<br><br>
+对于本题来说，是没有什么影响的，因为到dog距离都是3，到dig距离都是4。但是后面我们做word ladder 2的时候，如果没有考虑这个情况，将是非常致命的，因为题目要求输出最短路径的所有情况<br><br>
+(2)在更下层我们才能够遍历到该元素。比如hot-&gt;dot-&gt;dog-&gt;dig和hot-&gt;hat-&gt;dat-&gt;dag-&gt;dog-&gt;dig，如果第一次我们找到了dog并且将其删除，那么第二次我们实际上是找不到这个元素的。这样对于本题来说，没有任何影响。对于word ladder 2来说，因为也是要输出最短路径，所以也不会有任何影响。<br><br>
+</blockquote>
+
+<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><p><strong>BFS solution</strong></p>
+<p>This is similar to the code posted in <a target="_blank" rel="noopener" href="http://www.programcreek.com/2012/12/leetcode-word-ladder/">this article</a>.</p>
+<pre><code>public int ladderLength(String start, String end, HashSet&lt;String&gt; dict) &#123;
+	if (start.equals(end)) return 1;
+	LinkedList&lt;String&gt; words = new LinkedList&lt;String&gt;();
+	LinkedList&lt;Integer&gt; nums = new LinkedList&lt;Integer&gt;();
+	words.add(start);
+	nums.add(1);
+	while (!words.isEmpty()) &#123;
+		String word = words.remove();
+		int num = nums.remove();
+		// otherwise, change each char in word, and find it from dict
+		char[] charArr = word.toCharArray();
+		for (int i = 0; i &lt; charArr.length; i++) &#123;
+			char originChar = charArr[i];
+			for (char j = &#39;a&#39;; j &lt;= &#39;z&#39;; j++) &#123;
+				charArr[i] = j;
+				String newWord = new String(charArr);
+				if (newWord.equals(end))
+					return num + 1;
+				if (dict.contains(newWord)) &#123;
+					dict.remove(newWord);
+					words.add(newWord);
+					nums.add(num + 1);
+				&#125;
+			&#125;
+			charArr[i] = originChar;
+		&#125;
+	&#125;
+	return 0;
+&#125;
+</code></pre>
+<p><strong>Updated Oct 29, 2022</strong></p>
+<p>这个代码是 bft，注意 dict.remove（）方法，很重要。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line">public int ladderLength(String start, String end, List&lt;String&gt; wordList) &#123;</span><br><span class="line">    HashSet&lt;String&gt; dict = new HashSet&lt;String&gt;();</span><br><span class="line">    for (String str: wordList) dict.add(str);</span><br><span class="line">    if (start.equals(end)) &#123;</span><br><span class="line">        return 1;</span><br><span class="line">    &#125; else if (!dict.contains(end)) &#123;</span><br><span class="line">        return 0;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    LinkedList&lt;WordAndDistance&gt; words = new LinkedList&lt;WordAndDistance&gt;();</span><br><span class="line">    words.add(new WordAndDistance(start, 1));</span><br><span class="line">    while (!words.isEmpty()) &#123;</span><br><span class="line">        WordAndDistance word = words.remove();</span><br><span class="line">        // change each char in word, and try find it from dict</span><br><span class="line">        char[] charArr = word.word.toCharArray();</span><br><span class="line">        for (int i = 0; i &lt; charArr.length; i++) &#123;</span><br><span class="line">            char originChar = charArr[i];</span><br><span class="line">            for (char j = &#x27;a&#x27;; j &lt;= &#x27;z&#x27;; j++) &#123;</span><br><span class="line">                charArr[i] = j;</span><br><span class="line">                String newWord = new String(charArr);</span><br><span class="line">                if (newWord.equals(end))</span><br><span class="line">                    return word.distance + 1;</span><br><span class="line">                if (dict.contains(newWord)) &#123;</span><br><span class="line">                    // important: need to remove it from dict, otherwise can have loop</span><br><span class="line">                    dict.remove(newWord);</span><br><span class="line">                    words.add(new WordAndDistance(newWord, word.distance + 1));</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            charArr[i] = originChar;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class WordAndDistance &#123;</span><br><span class="line">    String word;</span><br><span class="line">    int distance;</span><br><span class="line"></span><br><span class="line">    public WordAndDistance(String str, int num) &#123;</span><br><span class="line">        word = str;</span><br><span class="line">        distance = num;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>Permalink:</span>
+                        <span><a href="https://mar2ndx.github.io/2014/05/29/pre-2017-2014-05-29-Word-Ladder/">https://mar2ndx.github.io/2014/05/29/pre-2017-2014-05-29-Word-Ladder/</a></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2019 <a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc/4.0/">CC-BY-NC-4.0</a> LICENSE</span>
+                    </p>
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY</strong>?</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2014/05/29/pre-2017-2014-05-29-Surrounded-Regions/">[LeetCode 130] Surrounded Regions</a>
+            
+            
+            <a class="next" rel="next" href="/2014/05/28/pre-2017-2014-05-28-Best-Time-to-Buy-and-Sell-Stock-II/">[LeetCode 122] Best Time to Buy and Sell Stock II</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+            </div>
+            <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>©  | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+
+
+
+
+<title>MySql (1) - Indexing, Locking and Transaction | Tech blog</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const pagebody = document.getElementsByTagName('body')[0]
+
+            function setTheme(status) {
+
+                if (status === 'dark') {
+                    window.sessionStorage.theme = 'dark'
+                    pagebody.classList.add('dark-theme');
+
+                } else if (status === 'light') {
+                    window.sessionStorage.theme = 'light'
+                    pagebody.classList.remove('dark-theme');
+                }
+            };
+
+            setTheme(window.sessionStorage.theme)
+        })();
+    </script>
+
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">Bentham&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                <a class="menu-item" href="/archives">Posts</a>
+                
+                <a class="menu-item" href="/category">Categories</a>
+                
+                <a class="menu-item" href="/tag">Tags</a>
+                
+                <a class="menu-item" href="/about">About</a>
+                
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">Bentham&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">
+                    <svg class="menu-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M4.5 17.27q-.213 0-.356-.145T4 16.768t.144-.356t.356-.143h15q.213 0 .356.144q.144.144.144.357t-.144.356t-.356.143zm0-4.77q-.213 0-.356-.144T4 11.999t.144-.356t.356-.143h15q.213 0 .356.144t.144.357t-.144.356t-.356.143zm0-4.77q-.213 0-.356-.143Q4 7.443 4 7.23t.144-.356t.356-.143h15q.213 0 .356.144T20 7.23t-.144.356t-.356.144z"/></svg>
+                    <svg class="close-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Material Symbols Light by Google - https://github.com/google/material-design-icons/blob/master/LICENSE --><path fill="currentColor" d="m12 12.708l-5.246 5.246q-.14.14-.344.15t-.364-.15t-.16-.354t.16-.354L11.292 12L6.046 6.754q-.14-.14-.15-.344t.15-.364t.354-.16t.354.16L12 11.292l5.246-5.246q.14-.14.345-.15q.203-.01.363.15t.16.354t-.16.354L12.708 12l5.246 5.246q.14.14.15.345q.01.203-.15.363t-.354.16t-.354-.16z"/></svg>
+                </div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                <a class="menu-item" href="/archives">Posts</a>
+                
+                <a class="menu-item" href="/category">Categories</a>
+                
+                <a class="menu-item" href="/tag">Tags</a>
+                
+                <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if (toggleMenu.classList.contains("active")) {
+            toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        } else {
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    var tocbot_timer;
+    var DEPTH_MAX = 6; // 为 6 时展开所有
+    var tocbot_default_config = {
+        tocSelector: '.tocbot-list',
+        contentSelector: '.post-content',
+        headingSelector: 'h1, h2, h3, h4, h5',
+        orderedList: false,
+        scrollSmooth: true,
+        onClick: extend_click,
+    };
+
+    function extend_click() {
+        clearTimeout(tocbot_timer);
+        tocbot_timer = setTimeout(function() {
+            tocbot.refresh(obj_merge(tocbot_default_config, {
+                hasInnerContainers: true
+            }));
+        }, 420); // 这个值是由 tocbot 源码里定义的 scrollSmoothDuration 得来的
+    }
+
+    document.ready(function() {
+        tocbot.init(obj_merge(tocbot_default_config, {
+            collapseDepth: 1
+        }));
+    });
+
+    function expand_toc() {
+        var b = document.querySelector('.tocbot-toc-expand');
+        var expanded = b.getAttribute('data-expanded');
+        expanded ? b.removeAttribute('data-expanded') : b.setAttribute('data-expanded', true);
+        tocbot.refresh(obj_merge(tocbot_default_config, {
+            collapseDepth: expanded ? 1 : DEPTH_MAX
+        }));
+        b.innerText = expanded ? 'Expand all' : 'Collapse all';
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+    function obj_merge(target, source) {
+        for (var item in source) {
+            if (source.hasOwnProperty(item)) {
+                target[item] = source[item];
+            }
+        }
+        return target;
+    }
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">MySql (1) - Indexing, Locking and Transaction</h1>
+            
+                <div class="post-meta">
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">October 30, 2022&nbsp;&nbsp;6:08:00</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/Design/">Design</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h1 id="MySQL-Knowledge-Graph"><a href="#MySQL-Knowledge-Graph" class="headerlink" title="MySQL Knowledge Graph"></a>MySQL Knowledge Graph</h1><ol>
+<li>Performance</li>
+<li>MySQL cluster</li>
+<li>Sharding</li>
+<li>Indexing</li>
+<li>MySQL architecture</li>
+<li>Lock</li>
+<li>MySQL事务 （ACID）</li>
+</ol>
+<h2 id="Architecture"><a href="#Architecture" class="headerlink" title="Architecture"></a>Architecture</h2><p><img src="/images/mysql-High-Level-Architecture.png"></p>
+<ol>
+<li><p>最上层：connector</p>
+</li>
+<li><p>中间：SQL Layer</p>
+<p> 包含：connection pool （包括，Auth，thread，check memory，cache），以及 Management Services &amp; Utilities</p>
+<ol>
+<li>SQL interface 接受sql语句</li>
+<li>Parser 词法分析，判断能否执行 （语法树）</li>
+<li>Optimizer 优化器，你写的不够完美，通过：执行查询计划（explain）<br> eg 多表关联：小结果集，驱动大结果集</li>
+<li>Cache and Buffer （MySql 8.0之后弃用）</li>
+</ol>
+</li>
+<li><p>下层：storage layer</p>
+<ol>
+<li>就是跟文件打交道的。</li>
+<li>多种引擎，可选：MyISAM（快），InnoDB（默认，功能更全），Memory（极快，易丢失）等等</li>
+</ol>
+</li>
+</ol>
+<h3 id="对比-MyISAM-和-InnoDB"><a href="#对比-MyISAM-和-InnoDB" class="headerlink" title="对比 MyISAM 和 InnoDB"></a>对比 MyISAM 和 InnoDB</h3><p>skip</p>
+<p>现在基本都是 InnoDB。并发 + 支持事务 + 隔离性。</p>
+<p>如果基本就是读写，数据量巨大，无并发，可以选MyIsam。</p>
+<h1 id="Physical-结构"><a href="#Physical-结构" class="headerlink" title="Physical 结构"></a>Physical 结构</h1><p>MySQL 的文件，分2中：</p>
+<ol>
+<li>索引文件</li>
+<li>日志文件</li>
+</ol>
+<p>其实都是存在 &#x2F;var&#x2F;lib&#x2F;mysql&#x2F; 中。</p>
+<h2 id="日志文件"><a href="#日志文件" class="headerlink" title="日志文件"></a>日志文件</h2><ol>
+<li><p>errorlog</p>
+<p> 默认开启，默认记录为 mysqld.log</p>
+</li>
+<li><p>binlog（binary log）</p>
+<p> 记录所有ddl和dml语句（数据的变化），但是不记录select语句。</p>
+<p> 是一种压缩日志，以“事件”的形式保存。</p>
+<p> 有好多个文件，因为每次 restart MySQL，生成一个新的 binlog。</p>
+</li>
+<li><p>general query log</p>
+<p> 增删改查，全都存。一般不开启。</p>
+</li>
+<li><p>slow query log</p>
+<p> 如果差的很慢，存一下。用于调优。</p>
+<p> long_query_time &#x3D; 3, 意思是超过3s的，就记录到慢查询日志中。</p>
+</li>
+<li><p>重做日志</p>
+</li>
+<li><p>回滚日志</p>
+</li>
+<li><p>中继日志（用作：主从复制）</p>
+</li>
+</ol>
+<h3 id="查询log的开启状况："><a href="#查询log的开启状况：" class="headerlink" title="查询log的开启状况："></a>查询log的开启状况：</h3><p>查看所有log On&#x2F;Off: </p>
+<pre><code>show varibles like ‘log_%’;
+</code></pre>
+<p>查看数据位置：</p>
+<pre><code>show varibles like ‘%datadir%’;
+</code></pre>
+<h1 id="Indexing"><a href="#Indexing" class="headerlink" title="Indexing"></a>Indexing</h1><p>索引的作用：</p>
+<ol>
+<li>搜索</li>
+<li>排序</li>
+<li>索引下推 ICP</li>
+<li>覆盖索引 （select字段作为索引）</li>
+</ol>
+<p>查看 索引：show index from tuser；</p>
+<p>索引的种类：</p>
+<ol>
+<li>主键索引</li>
+<li>唯一索引 （Unique Index）</li>
+<li>组合索引</li>
+<li>单列索引（Index），或普通索引</li>
+</ol>
+<h2 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h2><p>MyISAM &#x2F; InnoDB ： B+ tree 索引。</p>
+<p>Memery：Hash 索引</p>
+<h3 id="B-tree"><a href="#B-tree" class="headerlink" title="B+ tree"></a>B+ tree</h3><p>B Tree 高度一般在 2～4 层。（其中，3 层就可以支持 20G，4层可以支持到 20TB）</p>
+<p>平衡多路查找树（B-Tree）</p>
+<p><img src="/images/sql-b-tree.png"></p>
+<p>B tree和B+ tree区别：</p>
+<ol>
+<li>非leaf节点 是否存储数据。（B tree 存，B+ tree 不存）</li>
+<li>leaf 节点是一个 linked list</li>
+</ol>
+<p><img src="/images/sql-b-plus-tree.png"></p>
+<h1 id="MySQL-locking"><a href="#MySQL-locking" class="headerlink" title="MySQL locking"></a>MySQL locking</h1><ol>
+<li><p>乐观锁</p>
+<ol>
+<li>程序实现：版本号 + 时间戳。</li>
+<li>通常是Redis实现的。这里先不讲。</li>
+</ol>
+</li>
+<li><p>悲观锁</p>
+<p> 我用了，你就不能用。（MySQL系统默认都是悲观锁）</p>
+<ol>
+<li><p>表级锁（expensive，少用）</p>
+<p> 只有当 <strong>行锁升级为表锁</strong>时，才会用到<strong>表锁</strong>。</p>
+</li>
+<li><p>行级锁（InnoDB）</p>
+<ol>
+<li>共享读锁 - 手动加</li>
+<li>排他写锁 - 自动加</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<p>eg. session 1 write 时候，拿到 写锁，session2 连读都读不了。</p>
+<h1 id="Transaction-事务"><a href="#Transaction-事务" class="headerlink" title="Transaction 事务"></a>Transaction 事务</h1><p>四大特性ACID：</p>
+<ol>
+<li>Atomicity</li>
+<li>Consistency：执行前后，是稳定一致的。</li>
+<li>Isolation：多个tx之间，互不影响</li>
+<li>Durabilitity：一定全部写入磁盘。</li>
+</ol>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>Permalink:</span>
+                        <span><a href="https://mar2ndx.github.io/2022/10/30/design-2022-MySql-1-basic/">https://mar2ndx.github.io/2022/10/30/design-2022-MySql-1-basic/</a></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2019 <a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc/4.0/">CC-BY-NC-4.0</a> LICENSE</span>
+                    </p>
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY</strong>?</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2022/10/30/design-2022-MySql-4-optimize/">MySql (4) - Performance Optimization</a>
+            
+            
+            <a class="next" rel="next" href="/2022/10/30/design-2022-Spring-core/">Java Spring framework</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+            </div>
+            <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>©  | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+
+</html>

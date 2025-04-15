@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+
+
+
+
+<title>[Google] Boggle Solver (search words from matrix) | Tech blog</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const pagebody = document.getElementsByTagName('body')[0]
+
+            function setTheme(status) {
+
+                if (status === 'dark') {
+                    window.sessionStorage.theme = 'dark'
+                    pagebody.classList.add('dark-theme');
+
+                } else if (status === 'light') {
+                    window.sessionStorage.theme = 'light'
+                    pagebody.classList.remove('dark-theme');
+                }
+            };
+
+            setTheme(window.sessionStorage.theme)
+        })();
+    </script>
+
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">Bentham&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                <a class="menu-item" href="/archives">Posts</a>
+                
+                <a class="menu-item" href="/category">Categories</a>
+                
+                <a class="menu-item" href="/tag">Tags</a>
+                
+                <a class="menu-item" href="/about">About</a>
+                
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">Bentham&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">
+                    <svg class="menu-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M4.5 17.27q-.213 0-.356-.145T4 16.768t.144-.356t.356-.143h15q.213 0 .356.144q.144.144.144.357t-.144.356t-.356.143zm0-4.77q-.213 0-.356-.144T4 11.999t.144-.356t.356-.143h15q.213 0 .356.144t.144.357t-.144.356t-.356.143zm0-4.77q-.213 0-.356-.143Q4 7.443 4 7.23t.144-.356t.356-.143h15q.213 0 .356.144T20 7.23t-.144.356t-.356.144z"/></svg>
+                    <svg class="close-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Material Symbols Light by Google - https://github.com/google/material-design-icons/blob/master/LICENSE --><path fill="currentColor" d="m12 12.708l-5.246 5.246q-.14.14-.344.15t-.364-.15t-.16-.354t.16-.354L11.292 12L6.046 6.754q-.14-.14-.15-.344t.15-.364t.354-.16t.354.16L12 11.292l5.246-5.246q.14-.14.345-.15q.203-.01.363.15t.16.354t-.16.354L12.708 12l5.246 5.246q.14.14.15.345q.01.203-.15.363t-.354.16t-.354-.16z"/></svg>
+                </div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                <a class="menu-item" href="/archives">Posts</a>
+                
+                <a class="menu-item" href="/category">Categories</a>
+                
+                <a class="menu-item" href="/tag">Tags</a>
+                
+                <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if (toggleMenu.classList.contains("active")) {
+            toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        } else {
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    var tocbot_timer;
+    var DEPTH_MAX = 6; // 为 6 时展开所有
+    var tocbot_default_config = {
+        tocSelector: '.tocbot-list',
+        contentSelector: '.post-content',
+        headingSelector: 'h1, h2, h3, h4, h5',
+        orderedList: false,
+        scrollSmooth: true,
+        onClick: extend_click,
+    };
+
+    function extend_click() {
+        clearTimeout(tocbot_timer);
+        tocbot_timer = setTimeout(function() {
+            tocbot.refresh(obj_merge(tocbot_default_config, {
+                hasInnerContainers: true
+            }));
+        }, 420); // 这个值是由 tocbot 源码里定义的 scrollSmoothDuration 得来的
+    }
+
+    document.ready(function() {
+        tocbot.init(obj_merge(tocbot_default_config, {
+            collapseDepth: 1
+        }));
+    });
+
+    function expand_toc() {
+        var b = document.querySelector('.tocbot-toc-expand');
+        var expanded = b.getAttribute('data-expanded');
+        expanded ? b.removeAttribute('data-expanded') : b.setAttribute('data-expanded', true);
+        tocbot.refresh(obj_merge(tocbot_default_config, {
+            collapseDepth: expanded ? 1 : DEPTH_MAX
+        }));
+        b.innerText = expanded ? 'Expand all' : 'Collapse all';
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+    function obj_merge(target, source) {
+        for (var item in source) {
+            if (source.hasOwnProperty(item)) {
+                target[item] = source[item];
+            }
+        }
+        return target;
+    }
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">[Google] Boggle Solver (search words from matrix)</h1>
+            
+                <div class="post-meta">
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">August 29, 2014&nbsp;&nbsp;0:00:00</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/q-google/">q-google</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><p><a target="_blank" rel="noopener" href="http://stackoverflow.com/questions/746082/how-to-find-list-of-possible-words-from-a-letter-matrix-boggle-solver">link</a></p>
+<blockquote>
+<p>Boggle Game:</p>
+</blockquote>
+<pre><code>F X I E
+A M L O
+E W B X
+A S T U
+</code></pre>
+<blockquote>
+<p>The goal of the game is to find as many words as you can that can be formed by chaining letters together. You are given a dictionary of words are reference.</p>
+</blockquote>
+<h3 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h3><p><strong><a target="_blank" rel="noopener" href="http://stackoverflow.com/a/4314056">The best solution</a> is to use Trie</strong>, then do DFS search.</p>
+<p>The idea is from <a target="_blank" rel="noopener" href="http://stackoverflow.com/a/746102">this answer</a> (however, this guy said his solution does not handle ‘visited’ nodes properly, meaning that same char might be visited again to produce a word).</p>
+<p>We need to first define a class called Item:</p>
+<pre><code>class Item &#123;
+    public final int x, y;
+    public final String prefix;
+
+    public Item(int row, int column, String prefix) &#123;
+        this.x = row;
+        this.y = column;
+        this.prefix = prefix;
+    &#125;
+&#125;
+</code></pre>
+<p>So when we start doing DFS, we pass in an Item object which stores 2 information:</p>
+<ol>
+<li>The next position that we’re going to visit.</li>
+<li>The prefix string that we have validated so far (before visiting this position).</li>
+</ol>
+<p>For example:</p>
+<pre><code>F X I E
+A M L O
+E W B X
+A S T U
+</code></pre>
+<p>We’ll have Items objects like (0, 0, “”), (0, 1, “F”), (0, 2, “FA”) … We guarantee that the prefix must be a valid prefix by searching them in the Trie.</p>
+<p>How to tell whether a string is a prefix of word, or it’s an actual word? We have a property in TrieNode called TrieNode.isWord() to help us.</p>
+<p>The code I wrote below is based on <a target="_blank" rel="noopener" href="http://stackoverflow.com/a/11698898">this Java solution by zouzhile</a>.</p>
+<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><p>BoggleSolver.java</p>
+<pre><code>public class BoggleSolver &#123;
+
+    private static BufferedReader in = null;
+    private static final String INPUT_FILE = &quot;dictionary.txt&quot;;
+
+    public static void beginFileReader() &#123;
+        try &#123;
+            in = new BufferedReader(new FileReader(new File(BoggleSolver.class
+                    .getResource(INPUT_FILE).toURI())));
+        &#125; catch (FileNotFoundException e) &#123;
+            e.printStackTrace();
+        &#125; catch (URISyntaxException e) &#123;
+            e.printStackTrace();
+        &#125;
+    &#125;
+
+    private Trie buildTrie() &#123;
+        Trie trie = new Trie();
+        beginFileReader();
+        String line = null;
+        try &#123;
+            while ((line = in.readLine()) != null) &#123;
+                String[] words = line.split(&quot; &quot;);
+                for (String word : words) &#123;
+                    word = word.trim().toLowerCase();
+                    trie.addWord(word);
+                &#125;
+            &#125;
+            if (in != null) &#123;
+                in.close();
+            &#125;
+        &#125; catch (IOException e1) &#123;
+            e1.printStackTrace();
+        &#125;
+        return trie;
+    &#125;
+
+    public Set&lt;String&gt; findWords(char[][] map, Trie dict) &#123;
+        Set&lt;String&gt; ans = new TreeSet&lt;String&gt;();
+        int m = map.length;
+        int n = map[0].length;
+        for (int i = 0; i &lt; m; i++) &#123;
+            for (int j = 0; j &lt; n; j++) &#123;
+                boolean[][] visited = new boolean[m][n];
+                findWordsDfs(ans, dict, map, visited, new Item(i, j, &quot;&quot;));
+                // item have 3 parameters:
+                // location x,y and the prefix string before reaching (i.j)
+            &#125;
+        &#125;
+        return ans;
+    &#125;
+
+    public void findWordsDfs(Set&lt;String&gt; ans, Trie dict, char[][] map,
+            boolean[][] visited, Item item) &#123;
+        // item: the location that we&#39;re going to test
+        // item.prefix is the word prefix before reaching (x, y)
+
+        int m = map.length;
+        int n = map[0].length;
+        int x = item.x;
+        int y = item.y;
+
+        // check whether cur.(x,y) is a valid position
+        if (x &lt; 0 || x &gt;= m || y &lt; 0 || y &gt;= n) &#123;
+            return;
+        &#125; else if (visited[x][y]) &#123;
+            return;
+        &#125;
+        String newWord = item.prefix + map[x][y];
+        // check whether cur.prefix is a valid prefix
+        TrieNode findWord = dict.match(newWord);
+        if (findWord == null) &#123;
+            // up to this position (x, y), the word dont&#39; exists
+            return;
+        &#125;
+        // now cur is in a valid position, with a valid prefix
+        if (findWord.isWord()) &#123;
+            ans.add(newWord);
+        &#125;
+        // visit this position, and continue in 4 different directions
+        visited[x][y] = true;
+        findWordsDfs(ans, dict, map, visited, new Item(x, y - 1, newWord));
+        findWordsDfs(ans, dict, map, visited, new Item(x, y + 1, newWord));
+        findWordsDfs(ans, dict, map, visited, new Item(x - 1, y, newWord));
+        findWordsDfs(ans, dict, map, visited, new Item(x + 1, y, newWord));
+        visited[x][y] = false;
+    &#125;
+
+    public static void main(String[] args) &#123;
+        String[] rows = &quot;eela,elps,weut,korn&quot;.split(&quot;,&quot;);
+        char[][] input = new char[4][4];
+        for (int i = 0; i &lt; 4; i++) &#123;
+            input[i] = rows[i].toCharArray();
+        &#125;
+
+        // prepare test data
+        BoggleSolver solver = new BoggleSolver();
+        Trie dictionary = solver.buildTrie();
+        // start finding words
+        Set&lt;String&gt; set = solver.findWords(input, dictionary);
+        // present the result
+        System.out.println(set.size() + &quot; words are found, they are: &quot;);
+        for (String str : set) &#123;
+            System.out.println(str);
+        &#125;
+    &#125;
+
+    class Item &#123;
+        public final int x, y;
+        public final String prefix;
+
+        public Item(int row, int column, String prefix) &#123;
+            this.x = row;
+            this.y = column;
+            this.prefix = prefix;
+        &#125;
+    &#125;
+&#125;
+</code></pre>
+<p>Trie.java</p>
+<pre><code>public class Trie &#123;
+    private TrieNode root;
+
+    public Trie() &#123;
+        this.root = new TrieNode();
+    &#125;
+
+    public void addWord(String word) &#123;
+        TrieNode node = this.root;
+        for (char c : word.toCharArray()) &#123;
+            node = node.addChild(c);
+            if (node == null)
+                return;
+        &#125;
+        node.setWord(true);
+    &#125;
+
+    public TrieNode match(String s) &#123;
+        TrieNode node = this.root;
+        for (char c : s.toCharArray()) &#123;
+            node = node.get(c);
+            if (node == null)
+                return null;
+        &#125;
+        return node;
+    &#125;
+&#125;
+</code></pre>
+<p>TrieNode.java</p>
+<pre><code>public class TrieNode &#123;
+    private TrieNode[] children;
+    private boolean isWord = false;
+
+    public TrieNode() &#123;
+        this.children = new TrieNode[26];
+    &#125;
+
+    public TrieNode addChild(char child) &#123;
+        if (child &lt; &#39;a&#39; || child &gt; &#39;z&#39;)
+            return null;
+
+        int offset = child - &#39;a&#39;;
+        if (this.children[offset] == null) &#123;
+            this.children[offset] = new TrieNode();
+        &#125;
+        return this.children[offset];
+    &#125;
+
+    public boolean isWord() &#123;
+        return isWord;
+    &#125;
+
+    public void setWord(boolean isWord) &#123;
+        this.isWord = isWord;
+    &#125;
+
+    public TrieNode get(char c) &#123;
+        int offset = c - &#39;a&#39;;
+        return this.children[offset];
+    &#125;
+&#125;
+</code></pre>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>Permalink:</span>
+                        <span><a href="https://mar2ndx.github.io/2014/08/29/pre-2017-2014-08-29-Boggle-solver/">https://mar2ndx.github.io/2014/08/29/pre-2017-2014-08-29-Boggle-solver/</a></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2019 <a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc/4.0/">CC-BY-NC-4.0</a> LICENSE</span>
+                    </p>
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY</strong>?</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2014/08/30/pre-2017-2014-08-30-Travelling-salesman-problem/">[Fundamental] Travelling salesman problem </a>
+            
+            
+            <a class="next" rel="next" href="/2014/08/28/pre-2017-2014-08-28-Http-cookie/">[Design] HTTP cookie</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+            </div>
+            <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>©  | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+
+</html>

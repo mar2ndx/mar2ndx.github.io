@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+
+
+
+
+<title>MySql (3) - Sharding | Tech blog</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const pagebody = document.getElementsByTagName('body')[0]
+
+            function setTheme(status) {
+
+                if (status === 'dark') {
+                    window.sessionStorage.theme = 'dark'
+                    pagebody.classList.add('dark-theme');
+
+                } else if (status === 'light') {
+                    window.sessionStorage.theme = 'light'
+                    pagebody.classList.remove('dark-theme');
+                }
+            };
+
+            setTheme(window.sessionStorage.theme)
+        })();
+    </script>
+
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">Bentham&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                <a class="menu-item" href="/archives">Posts</a>
+                
+                <a class="menu-item" href="/category">Categories</a>
+                
+                <a class="menu-item" href="/tag">Tags</a>
+                
+                <a class="menu-item" href="/about">About</a>
+                
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">Bentham&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">
+                    <svg class="menu-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M4.5 17.27q-.213 0-.356-.145T4 16.768t.144-.356t.356-.143h15q.213 0 .356.144q.144.144.144.357t-.144.356t-.356.143zm0-4.77q-.213 0-.356-.144T4 11.999t.144-.356t.356-.143h15q.213 0 .356.144t.144.357t-.144.356t-.356.143zm0-4.77q-.213 0-.356-.143Q4 7.443 4 7.23t.144-.356t.356-.143h15q.213 0 .356.144T20 7.23t-.144.356t-.356.144z"/></svg>
+                    <svg class="close-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Material Symbols Light by Google - https://github.com/google/material-design-icons/blob/master/LICENSE --><path fill="currentColor" d="m12 12.708l-5.246 5.246q-.14.14-.344.15t-.364-.15t-.16-.354t.16-.354L11.292 12L6.046 6.754q-.14-.14-.15-.344t.15-.364t.354-.16t.354.16L12 11.292l5.246-5.246q.14-.14.345-.15q.203-.01.363.15t.16.354t-.16.354L12.708 12l5.246 5.246q.14.14.15.345q.01.203-.15.363t-.354.16t-.354-.16z"/></svg>
+                </div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                <a class="menu-item" href="/archives">Posts</a>
+                
+                <a class="menu-item" href="/category">Categories</a>
+                
+                <a class="menu-item" href="/tag">Tags</a>
+                
+                <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if (toggleMenu.classList.contains("active")) {
+            toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        } else {
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    var tocbot_timer;
+    var DEPTH_MAX = 6; // 为 6 时展开所有
+    var tocbot_default_config = {
+        tocSelector: '.tocbot-list',
+        contentSelector: '.post-content',
+        headingSelector: 'h1, h2, h3, h4, h5',
+        orderedList: false,
+        scrollSmooth: true,
+        onClick: extend_click,
+    };
+
+    function extend_click() {
+        clearTimeout(tocbot_timer);
+        tocbot_timer = setTimeout(function() {
+            tocbot.refresh(obj_merge(tocbot_default_config, {
+                hasInnerContainers: true
+            }));
+        }, 420); // 这个值是由 tocbot 源码里定义的 scrollSmoothDuration 得来的
+    }
+
+    document.ready(function() {
+        tocbot.init(obj_merge(tocbot_default_config, {
+            collapseDepth: 1
+        }));
+    });
+
+    function expand_toc() {
+        var b = document.querySelector('.tocbot-toc-expand');
+        var expanded = b.getAttribute('data-expanded');
+        expanded ? b.removeAttribute('data-expanded') : b.setAttribute('data-expanded', true);
+        tocbot.refresh(obj_merge(tocbot_default_config, {
+            collapseDepth: expanded ? 1 : DEPTH_MAX
+        }));
+        b.innerText = expanded ? 'Expand all' : 'Collapse all';
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+    function obj_merge(target, source) {
+        for (var item in source) {
+            if (source.hasOwnProperty(item)) {
+                target[item] = source[item];
+            }
+        }
+        return target;
+    }
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">MySql (3) - Sharding</h1>
+            
+                <div class="post-meta">
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">October 30, 2022&nbsp;&nbsp;10:50:00</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/Design/">Design</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h1 id="MySQL-3-sharding"><a href="#MySQL-3-sharding" class="headerlink" title="MySQL-3: sharding"></a>MySQL-3: sharding</h1><ol>
+<li><p>MySQL 连接数</p>
+<p> MySQL默认100个连接。（单机最大1500连接）</p>
+</li>
+<li><p>数据量</p>
+<p> 如果单行是100 bytes，当超过50M行的时候，很吃力</p>
+</li>
+<li><p>索引</p>
+<p> 占空间大，命中率低，查询的可能很慢。</p>
+</li>
+</ol>
+<h2 id="MySQL-性能优化"><a href="#MySQL-性能优化" class="headerlink" title="MySQL 性能优化"></a>MySQL 性能优化</h2><p>4种方案：</p>
+<ol>
+<li>参数优化</li>
+<li>加Cache，加index</li>
+<li>读写分离</li>
+<li>（最终方案）： 分库分表</li>
+</ol>
+<h2 id="What-is-NewSQL"><a href="#What-is-NewSQL" class="headerlink" title="What is NewSQL"></a>What is NewSQL</h2><p>分布式 + Relational DB，例如 TiDB。</p>
+<h1 id="分库分表"><a href="#分库分表" class="headerlink" title="分库分表"></a>分库分表</h1><p>类型：</p>
+<ol>
+<li><p>垂直分</p>
+<p> eg。不同表放入不同DB种（vertical DB）<br> eg。blob文件，单独拿出来放（vertical table）</p>
+</li>
+<li><p>水平分：一张大表，切割分开</p>
+<p> 1.1 范围式分割（例如：时间）<br> 1.1 hash 分割（例如：ID取模）<br> 1.1 hybrid 式</p>
+</li>
+</ol>
+<h2 id="对比2中-水平分割方法"><a href="#对比2中-水平分割方法" class="headerlink" title="对比2中 水平分割方法"></a>对比2中 水平分割方法</h2><p>根据范围分割：</p>
+<ol>
+<li>好处：数据部分迁移，extensibility更好</li>
+<li>坏处：热点数据分布不均匀，压力不能 balance</li>
+</ol>
+<p>根据hash分割：</p>
+<ol>
+<li>好处：热点数据分布均匀，可以balance压力</li>
+<li>坏处：hash算法一旦改，数据全部需要迁移，extensibility差</li>
+</ol>
+<p>解决办法：hybrid 式</p>
+<ol>
+<li>先范围，再hash。</li>
+<li>一致性hash环（consistent hashing）</li>
+</ol>
+<h2 id="分布式事务问题"><a href="#分布式事务问题" class="headerlink" title="分布式事务问题"></a>分布式事务问题</h2><p>本地的transaction 要做到 ACID。但是distributed transaction做不到 ACID。</p>
+<p>CAP定理：</p>
+<ol>
+<li>consistency</li>
+<li>availability</li>
+<li>partition tolerance</li>
+</ol>
+<p>三者只能得其二。</p>
+<p>BASE定理 &#x3D; </p>
+<pre><code>Basically Available(基本可用)
+Soft state(软状态)
+Eventually consistent(最终一致性)
+</code></pre>
+<h2 id="分布式主键"><a href="#分布式主键" class="headerlink" title="分布式主键"></a>分布式主键</h2><ol>
+<li>Redis incr命令</li>
+<li>UUID 可以，但是：长，且不是排序的，对MySQL不太友好。</li>
+</ol>
+<p>终极解决方案：Snowflake algorithm （by Twitter）：</p>
+<pre><code>在分布式系统中，生产全局唯一，且趋势递增的 ID。
+</code></pre>
+<blockquote>
+<p>雪花算法原理就是生成一个的64位比特位的 long 类型的唯一 id。</p>
+<ol>
+<li>最高1位固定值0，因为生成的 id 是正整数，如果是1就是负数了。</li>
+<li>接下来41位存储毫秒级时间戳，2^41&#x2F;(1000606024365)&#x3D;69，大概可以使用69年。</li>
+<li>再接下10位存储机器码，包括5位 datacenterId 和5位 workerId。最多可以部署2^10&#x3D;1024台机器。</li>
+<li>最后12位存储序列号。同一毫秒时间戳时，通过这个递增的序列号来区分。即对于同一台机器而言，同一毫秒时间戳下，可以生成2^12&#x3D;4096个不重复 id。</li>
+</ol>
+<p>可以将雪花算法作为一个单独的服务进行部署，然后需要全局唯一 id 的系统，请求雪花算法服务获取 id 即可。</p>
+<p>对于每一个雪花算法服务，需要先指定10位的机器码，这个根据自身业务进行设定即可。例如机房号+机器号，机器号+服务号，或者是其他可区别标识的10位比特位的整数值都行。</p>
+</blockquote>
+<p>但是snowflake基于timestamp，所以，如果某台machine clock回拨了，可能会造成ID冲突，或ID乱序。</p>
+<h2 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h2><p>避免跨DB的join。</p>
+<p>2种办法：</p>
+<ol>
+<li>E-R分片：将有ER关系的，存在一个库中（根据ID的奇偶）</li>
+<li>“全局表”：在每一个分布式DB中，都建立一个表，并且数据是一样的。</li>
+</ol>
+<h1 id="实战"><a href="#实战" class="headerlink" title="实战"></a>实战</h1><p>问：现在有5亿行，有ID, name, city, sex,  请问如何 shard？</p>
+<p>答：</p>
+<ol>
+<li>用City，不好 ———— 会造成热点数据不均匀问题。</li>
+<li>用timestamp，也不好 ———— 也会造成热点数据不均匀。</li>
+</ol>
+<p>表的大小？</p>
+<ol>
+<li>单行 data &lt; 100 bytes，则 50M rows 一张表。</li>
+<li>单行 data &gt; 100 bytes，则 10M rows 一张表。</li>
+</ol>
+<p>所以：500M &#x2F; 50M &#x3D; 10，向上取整 &#x3D; 16。hash function 最好用（uid % 16）。</p>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>Permalink:</span>
+                        <span><a href="https://mar2ndx.github.io/2022/10/30/design-2022-MySql-3-sharding/">https://mar2ndx.github.io/2022/10/30/design-2022-MySql-3-sharding/</a></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2019 <a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc/4.0/">CC-BY-NC-4.0</a> LICENSE</span>
+                    </p>
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY</strong>?</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2022/10/30/algo-2022-1366-Rank-Teams-by-Votes/">1366. Rank Teams by Votes</a>
+            
+            
+            <a class="next" rel="next" href="/2022/10/30/design-2022-MySql-2-master-slave/">MySql (2) - Master/slave</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+            </div>
+            <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>©  | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+
+</html>

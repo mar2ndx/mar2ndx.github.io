@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+
+
+
+
+<title>System Design 2024 - TicketMaster | Tech blog</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const pagebody = document.getElementsByTagName('body')[0]
+
+            function setTheme(status) {
+
+                if (status === 'dark') {
+                    window.sessionStorage.theme = 'dark'
+                    pagebody.classList.add('dark-theme');
+
+                } else if (status === 'light') {
+                    window.sessionStorage.theme = 'light'
+                    pagebody.classList.remove('dark-theme');
+                }
+            };
+
+            setTheme(window.sessionStorage.theme)
+        })();
+    </script>
+
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">Bentham&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                <a class="menu-item" href="/archives">Posts</a>
+                
+                <a class="menu-item" href="/category">Categories</a>
+                
+                <a class="menu-item" href="/tag">Tags</a>
+                
+                <a class="menu-item" href="/about">About</a>
+                
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">Bentham&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">
+                    <svg class="menu-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M4.5 17.27q-.213 0-.356-.145T4 16.768t.144-.356t.356-.143h15q.213 0 .356.144q.144.144.144.357t-.144.356t-.356.143zm0-4.77q-.213 0-.356-.144T4 11.999t.144-.356t.356-.143h15q.213 0 .356.144t.144.357t-.144.356t-.356.143zm0-4.77q-.213 0-.356-.143Q4 7.443 4 7.23t.144-.356t.356-.143h15q.213 0 .356.144T20 7.23t-.144.356t-.356.144z"/></svg>
+                    <svg class="close-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Material Symbols Light by Google - https://github.com/google/material-design-icons/blob/master/LICENSE --><path fill="currentColor" d="m12 12.708l-5.246 5.246q-.14.14-.344.15t-.364-.15t-.16-.354t.16-.354L11.292 12L6.046 6.754q-.14-.14-.15-.344t.15-.364t.354-.16t.354.16L12 11.292l5.246-5.246q.14-.14.345-.15q.203-.01.363.15t.16.354t-.16.354L12.708 12l5.246 5.246q.14.14.15.345q.01.203-.15.363t-.354.16t-.354-.16z"/></svg>
+                </div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                <a class="menu-item" href="/archives">Posts</a>
+                
+                <a class="menu-item" href="/category">Categories</a>
+                
+                <a class="menu-item" href="/tag">Tags</a>
+                
+                <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if (toggleMenu.classList.contains("active")) {
+            toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        } else {
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    var tocbot_timer;
+    var DEPTH_MAX = 6; // 为 6 时展开所有
+    var tocbot_default_config = {
+        tocSelector: '.tocbot-list',
+        contentSelector: '.post-content',
+        headingSelector: 'h1, h2, h3, h4, h5',
+        orderedList: false,
+        scrollSmooth: true,
+        onClick: extend_click,
+    };
+
+    function extend_click() {
+        clearTimeout(tocbot_timer);
+        tocbot_timer = setTimeout(function() {
+            tocbot.refresh(obj_merge(tocbot_default_config, {
+                hasInnerContainers: true
+            }));
+        }, 420); // 这个值是由 tocbot 源码里定义的 scrollSmoothDuration 得来的
+    }
+
+    document.ready(function() {
+        tocbot.init(obj_merge(tocbot_default_config, {
+            collapseDepth: 1
+        }));
+    });
+
+    function expand_toc() {
+        var b = document.querySelector('.tocbot-toc-expand');
+        var expanded = b.getAttribute('data-expanded');
+        expanded ? b.removeAttribute('data-expanded') : b.setAttribute('data-expanded', true);
+        tocbot.refresh(obj_merge(tocbot_default_config, {
+            collapseDepth: expanded ? 1 : DEPTH_MAX
+        }));
+        b.innerText = expanded ? 'Expand all' : 'Collapse all';
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+    function obj_merge(target, source) {
+        for (var item in source) {
+            if (source.hasOwnProperty(item)) {
+                target[item] = source[item];
+            }
+        }
+        return target;
+    }
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">System Design 2024 - TicketMaster</h1>
+            
+                <div class="post-meta">
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">July 29, 2024&nbsp;&nbsp;6:32:00</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/Design/">Design</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h1 id="Design-TicketMaster"><a href="#Design-TicketMaster" class="headerlink" title="Design TicketMaster"></a>Design TicketMaster</h1><p>We’ll follow the 5-step procedure:</p>
+<ul>
+<li><p>Scenario</p>
+</li>
+<li><p>Numbers</p>
+</li>
+<li><p>API and Database</p>
+<ul>
+<li>[Important] also include HLD schema!</li>
+</ul>
+</li>
+<li><p>Performance</p>
+<ul>
+<li>Sharding and caching.</li>
+</ul>
+</li>
+<li><p>Evolve</p>
+<ul>
+<li>Read some real-world knowledge.</li>
+</ul>
+</li>
+</ul>
+<h1 id="1-Scenario"><a href="#1-Scenario" class="headerlink" title="1. Scenario"></a>1. Scenario</h1><h2 id="Functional-requirement"><a href="#Functional-requirement" class="headerlink" title="Functional requirement"></a>Functional requirement</h2><ol>
+<li>Book a ticket</li>
+<li>View an event</li>
+<li>Event discovery (search)</li>
+</ol>
+<h2 id="Non-Functional-requirement"><a href="#Non-Functional-requirement" class="headerlink" title="Non-Functional requirement"></a>Non-Functional requirement</h2><ol>
+<li>For search and viewing: <strong>High availability</strong>.</li>
+<li>However for booking, <strong>favor consistency</strong> over availability (avoid double booking)</li>
+<li>Scalability: support surges from popular events</li>
+<li>Minimize latency</li>
+</ol>
+<h3 id="Out-of-scope"><a href="#Out-of-scope" class="headerlink" title="Out of scope:"></a>Out of scope:</h3><ol>
+<li>GDPR compliance</li>
+<li>Fault tolerance</li>
+</ol>
+<h1 id="2-Numbers"><a href="#2-Numbers" class="headerlink" title="2. Numbers"></a>2. Numbers</h1><p>Skip.</p>
+<h1 id="3-API-and-Database"><a href="#3-API-and-Database" class="headerlink" title="3. API and Database"></a>3. API and Database</h1><h2 id="Core-entities"><a href="#Core-entities" class="headerlink" title="Core entities"></a>Core entities</h2><ol>
+<li>Event</li>
+<li>Venue</li>
+<li>Performer</li>
+<li>Ticket</li>
+</ol>
+<h2 id="API-design"><a href="#API-design" class="headerlink" title="API design"></a>API design</h2><p>Create an API for each of the functional requirements, and in exchange return entities in your core entities section. </p>
+<ul>
+<li>GET <code>/event/:eventId</code> -&gt; Event &amp; Venue &amp; Performer &amp; Ticket[]</li>
+<li>Get <code>/search?term=&#123;text&#125;&amp;location=&#123;lat,long&#125;&amp;type=&#123;string&#125;&amp;date=&#123;date&#125;</code> -&gt; Partial<Events>[] <ul>
+<li>It’s inspired by TypeScript, it’s perfectly fine to return array of events</li>
+</ul>
+</li>
+<li>POST <code>/booking/reserve</code> -&gt; hold the ticket for 10 minutes<ul>
+<li>Note that booking is a 2-phase process. <ol>
+<li>choose a seat (reserve phase)</li>
+<li>a timer count-down starts (eg. 10 minutes)</li>
+<li>pay within 10 minutes</li>
+</ol>
+</li>
+<li>Request example:</li>
+</ul>
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">header: JWT | sessionToken # this includes user&#x27;s information.</span><br><span class="line">body: &#123;</span><br><span class="line">    ticketId</span><br><span class="line">    # Please do not include userId here for security reason, since hacker could alter it</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>POST <code>/booking/confirm</code>  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">header: JWT | sessionToken # Never put usre&#x27;s ID in the request body.</span><br><span class="line">body: &#123;</span><br><span class="line">    ticketId,</span><br><span class="line">    paymentDetails (eg. for Stripe, there is a PaymentIntents that can be setup in client library),</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="Data-Model"><a href="#Data-Model" class="headerlink" title="Data Model"></a>Data Model</h2><ol>
+<li>Event table</li>
+<li>Venue - seatMap</li>
+<li>Performer</li>
+<li>Ticket - seat, price</li>
+</ol>
+<h3 id="Postgres-or-NoSQL"><a href="#Postgres-or-NoSQL" class="headerlink" title="Postgres or NoSQL?"></a>Postgres or NoSQL?</h3><p>Postgres (a SQL database) is easy to use, since it supports Transactions, support SQL queries, supports asset properties on Tickets. </p>
+<p>Well, Amazon’s DynamoDB (noSQL) also works. It also supports <strong>asset property</strong>. </p>
+<h2 id="HLD"><a href="#HLD" class="headerlink" title="HLD"></a>HLD</h2><p><img src="/images/system-design-ticketmaster-1.png"></p>
+<h3 id="To-book-a-ticket"><a href="#To-book-a-ticket" class="headerlink" title="To book a ticket"></a>To book a ticket</h3><p>Option 1 : keep a status column in the ticket table, another column called statusUpdateTime. </p>
+<p>If the status is “available”, or status is “reverved” but the statusUpdateTime is &gt;10min ago, that means the ticket is supposed to be released, and can be booked again.</p>
+<p>This design is horrible. </p>
+<p>Option 2 : Setup a cron job</p>
+<p>This job will periodically update the ticket reserve&#x2F;book status. </p>
+<p>This is still, not very much real-time. </p>
+<p>Option 3 : Keep a seperate service called “TicketLock”, using Redis. </p>
+<p>This is a <em>Distributed Lock</em>_. </p>
+<p>Instead of modifying our Ticket table, use Redis to keep all reserved ticket, with value like this: {ticketId, true} ttl &#x3D; 600 seconds. </p>
+<p>After 10 minutes, this K-V pair is automatically deleted from Redis.</p>
+<p>Steps: </p>
+<ol>
+<li>User request tickets with status &#x3D; available</li>
+<li>backend check Redis and remove all tickets that exists in the Redis</li>
+<li>User request to book ticket 1234</li>
+<li>add {1234, true} to Redis with ttl&#x3D;600</li>
+<li>10 minutes later without payment confirmation, Redis removes {1234, true}</li>
+<li>User comes back after 15 minutes, ticket 1234 is still available for booking.</li>
+</ol>
+<p>Q: what if the lock goes down?</p>
+<ol>
+<li>Immediately bring on up</li>
+<li>Many user will be able to book the system ticket (double book problem).</li>
+<li>Whoever submitted payment first, will win the ticket.</li>
+</ol>
+<h1 id="4-Performance"><a href="#4-Performance" class="headerlink" title="4. Performance"></a>4. Performance</h1><p>For performance deep-dive, show off your skills, especially if you are senior&#x2F;staff level. </p>
+<p>Find 1~3 places where you can optimize. Find from your non-functional requirements section. </p>
+<h2 id="4-1-Search-with-low-latency"><a href="#4-1-Search-with-low-latency" class="headerlink" title="4.1 Search with low-latency"></a>4.1 Search with low-latency</h2><p>Currently: full-table scan. </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Select * from DB</span><br><span class="line">Where type in []</span><br><span class="line">AND name like &quot;%term%&quot;</span><br></pre></td></tr></table></figure>
+
+<p>This is bad, since the wildcard means I need to do DB-scan on the entire table. </p>
+<p>New solution: ElasticSearch.</p>
+<ol>
+<li>Build an inverted-index to make searching document by ‘terms’ really fast. </li>
+<li>Tokenize the sets of strings, eg. “Golden state warriors” is a term. </li>
+<li>Map this term to the events. like this: <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">playoff: [event1, event2, event3, event4]</span><br><span class="line">swift: [event45, event134, event93]</span><br></pre></td></tr></table></figure></li>
+<li>ElasticSearch supports Geo-spacial queries as well.</li>
+<li>You can search a combination of {locations, date, terms} at the same time.</li>
+</ol>
+<p>Note: don’t use ElasticSearch as primary DB, learnt it the hard way.</p>
+<h2 id="4-2-How-to-sync-data-between-Postgres-and-ElasticSearch"><a href="#4-2-How-to-sync-data-between-Postgres-and-ElasticSearch" class="headerlink" title="4.2 How to sync data between Postgres and ElasticSearch"></a>4.2 How to sync data between Postgres and ElasticSearch</h2><p>Option 1 : write to both primary data store, and also ElasticSearch</p>
+<p>Not good. Retries happen. </p>
+<p>Option 2 : Change data capture (CDC)</p>
+<p>For any updates to Posgres, create a stream of change events, and consumed by ElasticSearch.</p>
+<p>There’s a limit for number of writes per second. </p>
+<h2 id="4-3-Handle-popular-events"><a href="#4-3-Handle-popular-events" class="headerlink" title="4.3 Handle popular events?"></a>4.3 Handle popular events?</h2><p>Caching. </p>
+<p>Option 1 : OpenSearch. </p>
+<p>AWS OpenSearch is a fully-managed ElasticSearch. It supports ‘node query caching’. </p>
+<p>It will cache the top 10K queries for each shard on your ElasticSearch cluster, using the Least recently used (LRU) Cache. </p>
+<p>Option 2 : cache &lt;search term, result&gt; K-V into Redis. </p>
+<p>Option 3 : You already got a CDN, cache API called and response. </p>
+<p>eg. people search “taylor swift” a lot, put this result in CDN cache. </p>
+<h2 id="4-4-Event-Ranking-and-Reco"><a href="#4-4-Event-Ranking-and-Reco" class="headerlink" title="4.4 Event Ranking and Reco?"></a>4.4 Event Ranking and Reco?</h2><p>Not covered. </p>
+<h1 id="5-Evolve"><a href="#5-Evolve" class="headerlink" title="5. Evolve"></a>5. Evolve</h1><h2 id="SeatMap-user-experience"><a href="#SeatMap-user-experience" class="headerlink" title="SeatMap user experience"></a>SeatMap user experience</h2><p>Front-end need to keep a HTTP-based long-pull to update seat map in real-time. </p>
+<p>Also, can use bi-directional persistent connection like WebSocket. </p>
+<p>Similarly, open a connection of Server-sent events (SSE). </p>
+<p>Keep difference:</p>
+<ol>
+<li>WebSocket is bi-directional.</li>
+<li>SSE is uni-directional.</li>
+</ol>
+<h2 id="Everyone-sees-a-black-map"><a href="#Everyone-sees-a-black-map" class="headerlink" title="Everyone sees a black map"></a>Everyone sees a black map</h2><p>For super-popular events, every seat is reserved with 1 seconds. </p>
+<p>Introduce a choke-point (essentially, a virtual waiting queue), using Redis. K-V will be like &lt;userId, token&gt;</p>
+<p>Basically, before user enters an event page, tell users to “please wait to enter this page”. Each time, only allow 100 people book tickets for a single event. </p>
+<h2 id="How-to-achive-strong-consistency"><a href="#How-to-achive-strong-consistency" class="headerlink" title="How to achive strong consistency?"></a>How to achive strong consistency?</h2><p>TicketLock using Redis.</p>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>Permalink:</span>
+                        <span><a href="https://mar2ndx.github.io/2024/07/29/design-2024-design-ticketmaster/">https://mar2ndx.github.io/2024/07/29/design-2024-design-ticketmaster/</a></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2019 <a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc/4.0/">CC-BY-NC-4.0</a> LICENSE</span>
+                    </p>
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY</strong>?</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2024/07/29/design-2024-design-twitter/">System Design 2024 - Twitter</a>
+            
+            
+            <a class="next" rel="next" href="/2024/07/29/design-2024-design-youtube/">System Design 2024 - Youtube</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+            </div>
+            <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>©  | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+
+</html>

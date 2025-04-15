@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+
+
+
+
+<title>[Java OOP] Java BlockingQueue (1)  | Tech blog</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const pagebody = document.getElementsByTagName('body')[0]
+
+            function setTheme(status) {
+
+                if (status === 'dark') {
+                    window.sessionStorage.theme = 'dark'
+                    pagebody.classList.add('dark-theme');
+
+                } else if (status === 'light') {
+                    window.sessionStorage.theme = 'light'
+                    pagebody.classList.remove('dark-theme');
+                }
+            };
+
+            setTheme(window.sessionStorage.theme)
+        })();
+    </script>
+
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">Bentham&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                <a class="menu-item" href="/archives">Posts</a>
+                
+                <a class="menu-item" href="/category">Categories</a>
+                
+                <a class="menu-item" href="/tag">Tags</a>
+                
+                <a class="menu-item" href="/about">About</a>
+                
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">Bentham&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">
+                    <svg class="menu-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M4.5 17.27q-.213 0-.356-.145T4 16.768t.144-.356t.356-.143h15q.213 0 .356.144q.144.144.144.357t-.144.356t-.356.143zm0-4.77q-.213 0-.356-.144T4 11.999t.144-.356t.356-.143h15q.213 0 .356.144t.144.357t-.144.356t-.356.143zm0-4.77q-.213 0-.356-.143Q4 7.443 4 7.23t.144-.356t.356-.143h15q.213 0 .356.144T20 7.23t-.144.356t-.356.144z"/></svg>
+                    <svg class="close-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Material Symbols Light by Google - https://github.com/google/material-design-icons/blob/master/LICENSE --><path fill="currentColor" d="m12 12.708l-5.246 5.246q-.14.14-.344.15t-.364-.15t-.16-.354t.16-.354L11.292 12L6.046 6.754q-.14-.14-.15-.344t.15-.364t.354-.16t.354.16L12 11.292l5.246-5.246q.14-.14.345-.15q.203-.01.363.15t.16.354t-.16.354L12.708 12l5.246 5.246q.14.14.15.345q.01.203-.15.363t-.354.16t-.354-.16z"/></svg>
+                </div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                <a class="menu-item" href="/archives">Posts</a>
+                
+                <a class="menu-item" href="/category">Categories</a>
+                
+                <a class="menu-item" href="/tag">Tags</a>
+                
+                <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if (toggleMenu.classList.contains("active")) {
+            toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        } else {
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    var tocbot_timer;
+    var DEPTH_MAX = 6; // 为 6 时展开所有
+    var tocbot_default_config = {
+        tocSelector: '.tocbot-list',
+        contentSelector: '.post-content',
+        headingSelector: 'h1, h2, h3, h4, h5',
+        orderedList: false,
+        scrollSmooth: true,
+        onClick: extend_click,
+    };
+
+    function extend_click() {
+        clearTimeout(tocbot_timer);
+        tocbot_timer = setTimeout(function() {
+            tocbot.refresh(obj_merge(tocbot_default_config, {
+                hasInnerContainers: true
+            }));
+        }, 420); // 这个值是由 tocbot 源码里定义的 scrollSmoothDuration 得来的
+    }
+
+    document.ready(function() {
+        tocbot.init(obj_merge(tocbot_default_config, {
+            collapseDepth: 1
+        }));
+    });
+
+    function expand_toc() {
+        var b = document.querySelector('.tocbot-toc-expand');
+        var expanded = b.getAttribute('data-expanded');
+        expanded ? b.removeAttribute('data-expanded') : b.setAttribute('data-expanded', true);
+        tocbot.refresh(obj_merge(tocbot_default_config, {
+            collapseDepth: expanded ? 1 : DEPTH_MAX
+        }));
+        b.innerText = expanded ? 'Expand all' : 'Collapse all';
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+    function obj_merge(target, source) {
+        for (var item in source) {
+            if (source.hasOwnProperty(item)) {
+                target[item] = source[item];
+            }
+        }
+        return target;
+    }
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">[Java OOP] Java BlockingQueue (1) </h1>
+            
+                <div class="post-meta">
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">January 12, 2015&nbsp;&nbsp;0:00:00</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/Java-OOP/">Java OOP</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h3 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h3><p><strong><a target="_blank" rel="noopener" href="http://tutorials.jenkov.com/java-concurrency/blocking-queues.html">A blocking queue</a></strong> is a queue that blocks when you try to <strong>dequeue from a empty queue</strong>, or if you try to <strong>enqueue items into a full queue</strong>.</p>
+<p><img src="/images/blocking-queue.png"></p>
+<h4 id="Details"><a href="#Details" class="headerlink" title="Details"></a>Details</h4><ol>
+<li><p>BlockingQueue <strong>doesn’t accept null values</strong>. Otherwise throw NullPointerException.</p>
+</li>
+<li><p>BlockingQueue implementations are <strong>thread-safe</strong>. All queuing methods are atomic in nature and use internal locks or other forms of concurrency control.</p>
+</li>
+<li><p>BlockingQueue interface is part of java collections framework and it’s primarily used for implementing <strong>producer consumer problem</strong>.</p>
+</li>
+</ol>
+<p>Two important methods:</p>
+<ol>
+<li><p>put(E e): This method is used to insert elements to the queue, if the queue is full it waits for the space to be available.</p>
+</li>
+<li><p>E take(): This method retrieves and remove the element from the head of the queue, if queue is empty it waits for the element to be available.</p>
+</li>
+</ol>
+<h4 id="Usage"><a href="#Usage" class="headerlink" title="Usage"></a>Usage</h4><p><a target="_blank" rel="noopener" href="http://tutorials.jenkov.com/java-util-concurrent/blockingqueue.html">BlockingQueue is typically used</a> to have one thread produce objects, with another thread consumes (producer consumer problem). Refer to <strong>[Design] Producer Consumer Problem</strong>.</p>
+<h3 id="Example-1"><a href="#Example-1" class="headerlink" title="Example 1"></a>Example 1</h3><p>This example shows <strong>how changing the speed of consuming and producing</strong> results in different sequence of outputs, using a BlockingQueue. The size of the BlockingQueue is initialized at 5.</p>
+<pre><code>public class Main &#123;
+
+    // original post from:
+    // http://www.journaldev.com/1034/java-blockingqueue-example-implementing-producer-consumer-problem
+
+    private static final Setting testFullQueue = new Setting(3, 10, 0);
+    private static final Setting testEmptyQueue = new Setting(10, 3, 100);
+
+    public static void main(String[] args) &#123;
+
+        // Creating BlockingQueue of size 5
+        BlockingQueue&lt;Message&gt; queue = new ArrayBlockingQueue&lt;&gt;(5);
+
+        Setting variableSetting = testFullQueue;
+        Producer producer = new Producer(queue, variableSetting.produceSpeed);
+        Consumer consumer = new Consumer(queue, variableSetting.consumeSpeed,
+                variableSetting.consumerDelay);
+
+        // starting producer to produce messages in queue
+        new Thread(producer).start();
+
+        // starting consumer to consume messages from queue
+        new Thread(consumer).start();
+
+        System.out.println(&quot;Producer and Consumer has been started&quot;);
+    &#125;
+
+    static class Setting &#123;
+        int produceSpeed;
+        int consumeSpeed;
+        int consumerDelay;
+
+        public Setting(int a, int b, int c) &#123;
+            this.produceSpeed = a;
+            this.consumeSpeed = b;
+            this.consumerDelay = c;
+        &#125;
+    &#125;
+&#125;
+</code></pre>
+<p>Producer</p>
+<pre><code>public class Producer implements Runnable &#123;
+
+    private BlockingQueue&lt;Message&gt; queue;
+    int produceSpeed;
+
+    public Producer(BlockingQueue&lt;Message&gt; q, int a) &#123;
+        this.queue = q;
+        this.produceSpeed = a;
+    &#125;
+
+    @Override
+    public void run() &#123;
+        // produce messages
+        for (int i = 0; i &lt; 13; i++) &#123;
+            Message msg = new Message(&quot;&quot; + i);
+            try &#123;
+                Thread.sleep(produceSpeed);
+                queue.put(msg);
+                System.out.println(&quot;Produced &quot; + msg.getMsg() + &quot;           (&quot;
+                        + queue.size() + &quot; items)&quot;);
+            &#125; catch (InterruptedException e) &#123;
+                e.printStackTrace();
+            &#125;
+        &#125;
+        // adding exit message
+        Message msg = new Message(&quot;exit&quot;);
+        try &#123;
+            queue.put(msg);
+        &#125; catch (InterruptedException e) &#123;
+            e.printStackTrace();
+        &#125;
+    &#125;
+
+&#125;
+</code></pre>
+<p>Consumer</p>
+<pre><code>public class Consumer implements Runnable &#123;
+
+    private BlockingQueue&lt;Message&gt; queue;
+    int consumeSpeed;
+    int consumerDelay;
+
+    public Consumer(BlockingQueue&lt;Message&gt; q, int a, int b) &#123;
+        this.queue = q;
+        this.consumeSpeed = a;
+        this.consumerDelay = b;
+    &#125;
+
+    @Override
+    public void run() &#123;
+        try &#123;
+            // initial delay: used to wait for producer to
+            // fill up the queue
+            Thread.sleep(consumerDelay);
+            Message msg;
+            // consuming messages until exit message is received
+            while ((msg = queue.take()).getMsg() != &quot;exit&quot;) &#123;
+			System.out.println(&quot;         &quot; + msg.getMsg() + &quot; Consumed&quot;+ &quot;  (&quot;
+					+ queue.size() + &quot; items)&quot;);
+                Thread.sleep(consumeSpeed);
+            &#125;
+        &#125; catch (InterruptedException e) &#123;
+            e.printStackTrace();
+        &#125;
+        System.out.println(&quot;Consumer finished working. Exit. &quot;);
+    &#125;
+&#125;
+</code></pre>
+<p>Message Class</p>
+<pre><code>public class Message &#123;
+    private String msg;
+
+    public Message(String str)&#123;
+        this.msg=str;
+    &#125;
+
+    public String getMsg() &#123;
+        return msg;
+    &#125;
+&#125;
+</code></pre>
+<p>Output (testFullQueue):</p>
+<pre><code>Producer and Consumer has been started
+Produced 0           (0 items)
+         0 Consumed  (0 items)
+Produced 1           (1 items)
+Produced 2           (2 items)
+         1 Consumed  (1 items)
+Produced 3           (2 items)
+Produced 4           (3 items)
+Produced 5           (4 items)
+         2 Consumed  (3 items)
+Produced 6           (4 items)
+Produced 7           (5 items)
+         3 Consumed  (5 items)
+Produced 8           (5 items)
+         4 Consumed  (4 items)
+Produced 9           (5 items)
+         5 Consumed  (4 items)
+Produced 10           (5 items)
+         6 Consumed  (4 items)
+Produced 11           (5 items)
+         7 Consumed  (4 items)
+Produced 12           (5 items)
+         8 Consumed  (4 items)
+         9 Consumed  (4 items)
+         10 Consumed  (3 items)
+         11 Consumed  (2 items)
+         12 Consumed  (1 items)
+Consumer finished working. Exit.
+</code></pre>
+<p>Output (testEmptyQueue):</p>
+<pre><code>Producer and Consumer has been started
+Produced 0           (1 items)
+Produced 1           (2 items)
+Produced 2           (3 items)
+Produced 3           (4 items)
+Produced 4           (5 items)
+Produced 5           (5 items)
+         0 Consumed  (5 items)
+         1 Consumed  (4 items)
+         2 Consumed  (3 items)
+Produced 6           (4 items)
+         3 Consumed  (3 items)
+         4 Consumed  (2 items)
+Produced 7           (3 items)
+         5 Consumed  (2 items)
+         6 Consumed  (1 items)
+         7 Consumed  (0 items)
+Produced 8           (1 items)
+         8 Consumed  (0 items)
+Produced 9           (1 items)
+         9 Consumed  (0 items)
+Produced 10           (1 items)
+         10 Consumed  (0 items)
+Produced 11           (0 items)
+         11 Consumed  (0 items)
+Produced 12           (1 items)
+         12 Consumed  (0 items)
+Consumer finished working. Exit.
+</code></pre>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>Permalink:</span>
+                        <span><a href="https://mar2ndx.github.io/2015/01/12/pre-2017-2015-01-12-java-blocking-queue-1/">https://mar2ndx.github.io/2015/01/12/pre-2017-2015-01-12-java-blocking-queue-1/</a></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2019 <a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc/4.0/">CC-BY-NC-4.0</a> LICENSE</span>
+                    </p>
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY</strong>?</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2015/01/12/pre-2017-2015-01-12-blocking-queue-and-thread-pool/">[Java OOP] BlockingQueue and Thread Pool </a>
+            
+            
+            <a class="next" rel="next" href="/2015/01/12/pre-2017-2015-01-12-java-blocking-queue-2/">[Java OOP] Java BlockingQueue (2) </a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+            </div>
+            <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>©  | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+
+</html>

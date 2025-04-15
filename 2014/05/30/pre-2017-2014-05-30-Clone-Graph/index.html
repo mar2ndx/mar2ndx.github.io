@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+
+
+
+
+<title>[LeetCode 133] Clone Graph | Tech blog</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const pagebody = document.getElementsByTagName('body')[0]
+
+            function setTheme(status) {
+
+                if (status === 'dark') {
+                    window.sessionStorage.theme = 'dark'
+                    pagebody.classList.add('dark-theme');
+
+                } else if (status === 'light') {
+                    window.sessionStorage.theme = 'light'
+                    pagebody.classList.remove('dark-theme');
+                }
+            };
+
+            setTheme(window.sessionStorage.theme)
+        })();
+    </script>
+
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">Bentham&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                <a class="menu-item" href="/archives">Posts</a>
+                
+                <a class="menu-item" href="/category">Categories</a>
+                
+                <a class="menu-item" href="/tag">Tags</a>
+                
+                <a class="menu-item" href="/about">About</a>
+                
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">Bentham&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">
+                    <svg class="menu-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M4.5 17.27q-.213 0-.356-.145T4 16.768t.144-.356t.356-.143h15q.213 0 .356.144q.144.144.144.357t-.144.356t-.356.143zm0-4.77q-.213 0-.356-.144T4 11.999t.144-.356t.356-.143h15q.213 0 .356.144t.144.357t-.144.356t-.356.143zm0-4.77q-.213 0-.356-.143Q4 7.443 4 7.23t.144-.356t.356-.143h15q.213 0 .356.144T20 7.23t-.144.356t-.356.144z"/></svg>
+                    <svg class="close-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Material Symbols Light by Google - https://github.com/google/material-design-icons/blob/master/LICENSE --><path fill="currentColor" d="m12 12.708l-5.246 5.246q-.14.14-.344.15t-.364-.15t-.16-.354t.16-.354L11.292 12L6.046 6.754q-.14-.14-.15-.344t.15-.364t.354-.16t.354.16L12 11.292l5.246-5.246q.14-.14.345-.15q.203-.01.363.15t.16.354t-.16.354L12.708 12l5.246 5.246q.14.14.15.345q.01.203-.15.363t-.354.16t-.354-.16z"/></svg>
+                </div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                <a class="menu-item" href="/archives">Posts</a>
+                
+                <a class="menu-item" href="/category">Categories</a>
+                
+                <a class="menu-item" href="/tag">Tags</a>
+                
+                <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if (toggleMenu.classList.contains("active")) {
+            toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        } else {
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    var tocbot_timer;
+    var DEPTH_MAX = 6; // 为 6 时展开所有
+    var tocbot_default_config = {
+        tocSelector: '.tocbot-list',
+        contentSelector: '.post-content',
+        headingSelector: 'h1, h2, h3, h4, h5',
+        orderedList: false,
+        scrollSmooth: true,
+        onClick: extend_click,
+    };
+
+    function extend_click() {
+        clearTimeout(tocbot_timer);
+        tocbot_timer = setTimeout(function() {
+            tocbot.refresh(obj_merge(tocbot_default_config, {
+                hasInnerContainers: true
+            }));
+        }, 420); // 这个值是由 tocbot 源码里定义的 scrollSmoothDuration 得来的
+    }
+
+    document.ready(function() {
+        tocbot.init(obj_merge(tocbot_default_config, {
+            collapseDepth: 1
+        }));
+    });
+
+    function expand_toc() {
+        var b = document.querySelector('.tocbot-toc-expand');
+        var expanded = b.getAttribute('data-expanded');
+        expanded ? b.removeAttribute('data-expanded') : b.setAttribute('data-expanded', true);
+        tocbot.refresh(obj_merge(tocbot_default_config, {
+            collapseDepth: expanded ? 1 : DEPTH_MAX
+        }));
+        b.innerText = expanded ? 'Expand all' : 'Collapse all';
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+    function obj_merge(target, source) {
+        for (var item in source) {
+            if (source.hasOwnProperty(item)) {
+                target[item] = source[item];
+            }
+        }
+        return target;
+    }
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">[LeetCode 133] Clone Graph</h1>
+            
+                <div class="post-meta">
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">May 30, 2014&nbsp;&nbsp;0:00:00</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/Leetcode/">Leetcode</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><p><a target="_blank" rel="noopener" href="https://oj.leetcode.com/problems/clone-graph/">link</a></p>
+<div class="question-content bg-color bg-img font-color">
+
+<p class="font-color"></p><p class="font-color">
+Clone an undirected graph. Each node in the graph contains a <code>label</code> and a list of its <code>neighbors</code>.
+</p>
+
+<div class="bg-color bg-img font-color">
+<br>
+<b>OJ's undirected graph serialization:</b>
+
+<p class="font-color">
+Nodes are labeled uniquely.
+</p>
+
+<p>We use <code>#</code> as a separator for each node, and <code>,</code> as a separator for node label and each neighbor of the node.</p>
+<p class="font-color"></p>
+
+<p class="font-color">
+As an example, consider the serialized graph <code><font color="red">&#123;<font color="black">0</font>,1,2#</font><font color="blue"><font color="black">1</font>,2#</font><font color="green"><font color="black">2</font>,2&#125;</font></code>.
+</p>
+
+<p class="font-color">
+The graph has a total of three nodes, and therefore contains three parts as separated by <code>#</code>.
+</p><ol>
+<li>First node is labeled as <code><font color="black">0</font></code>. Connect node <code><font color="black">0</font></code> to both nodes <code><font color="red">1</font></code> and <code><font color="red">2</font></code>.</li>
+<li>Second node is labeled as <code><font color="black">1</font></code>. Connect node <code><font color="black">1</font></code> to node <code><font color="blue">2</font></code>.</li>
+<li>Third node is labeled as <code><font color="black">2</font></code>. Connect node <code><font color="black">2</font></code> to node <code><font color="green">2</font></code> (itself), thus forming a self-cycle.</li>
+</ol>
+<p class="font-color"></p>
+
+<p class="font-color">
+Visually, the graph looks like the following:
+</p><pre class="bg-color bg-img font-color">       1
+      / \
+     /   \
+    0 --- 2
+         / \
+         \_/
+</pre>
+<p class="font-color"></p>
+
+</div><p class="font-color"></p>
+</div>
+
+<h3 id="Stats"><a href="#Stats" class="headerlink" title="Stats"></a>Stats</h3><table border="2">
+	<tr>
+		<td>Adjusted Difficulty</td>
+		<td bgcolor="yellow">3</td>
+	</tr>
+	<tr>
+		<td>Time to use</td>
+		<td bgcolor="red">thought for a while</td>
+	</tr>
+</table>
+
+<p>Ratings&#x2F;Color &#x3D; 1(white) 2(lime) 3(yellow) 4&#x2F;5(red)</p>
+<h3 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h3><p><strong>This is a difficult coding question, although the idea is simple</strong>.</p>
+<h3 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h3><p>Two solution: <strong>BFS (recommended) and DFS</strong>. <a target="_blank" rel="noopener" href="http://leetcode.com/2012/05/clone-graph-part-i.html">This</a> is a good analysis article.</p>
+<blockquote cite="http://leetcode.com/2012/05/clone-graph-part-i.html">
+<p>Let’s analyze this further by using the below example:</p>
+<div style="text-align: center; margin-bottom: 30px;"> <a target="_blank" rel="noopener" href="http://www.leetcode.com/wp-content/uploads/2012/05/graph.png"><img src="http://www.leetcode.com/wp-content/uploads/2012/05/graph.png" alt="" title="graph" width="211" height="84" class="aligncenter size-full wp-image-1365"></a><span style="font-size: x-small;">A simple graph</span></div>
+<p>Assume that the starting point of the graph is A. First, you make a copy of node A (A2), and found that A has only one neighbor B. You make a copy of B (B2) and connects A2-&gt;B2 by pushing B2 as A2′s neighbor. Next, you find that B has A as neighbor, which you have already made a copy of. Here, we have to be careful not to make a copy of A again, but to connect B2-&gt;A2 by pushing A2 as B2′s neighbor. But, how do we know if a node has already been copied?</p>
+</blockquote>
+
+<p><strong>Basic idea is to use HashMap to store the already-copied nodes</strong>.</p>
+<p>My first attempt is DFS by making use of a ‘visited’ Set to mark which node I have copied and which is not. This is a nice idea and it solved the problem neatly.</p>
+<p>But after reading <a target="_blank" rel="noopener" href="http://www.programcreek.com/2012/12/leetcode-clone-graph-java/">this article</a>, I realize that <strong>‘visited’ is not needed for BFS solution</strong>!</p>
+<p><strong>The trick is, whenever I do a ‘HashMap.put(curNode, newNode)’, I push ‘curNode’ to queue</strong>. This very well replaces the functionality of the ‘visited’ set. It also guarantees that when I pop a new element from the queue, <strong>I CAN ALWAYS FIND ITS CORRESPONDING COPY</strong> from the HashMap - always there.</p>
+<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><p><strong>First, my DFS code</strong></p>
+<pre><code>public UndirectedGraphNode cloneGraph(UndirectedGraphNode node) &#123;
+    if (node == null) return null;
+	UndirectedGraphNode newNode = new UndirectedGraphNode(node.label);
+	HashMap&lt;Integer, UndirectedGraphNode&gt; map =
+	    new HashMap&lt;Integer, UndirectedGraphNode&gt;();
+	map.put(node.label, newNode);
+	copy(node, newNode, map, new HashSet&lt;Integer&gt;());
+	return newNode;
+&#125;
+
+private void copy(UndirectedGraphNode orin, UndirectedGraphNode cp,
+		HashMap&lt;Integer, UndirectedGraphNode&gt; map,
+		HashSet&lt;Integer&gt; visited) &#123;
+	if (visited.contains(orin.label))
+		return;
+	else
+		visited.add(orin.label);
+	for (UndirectedGraphNode n : orin.neighbors) &#123;
+		if (map.containsKey(n.label)) &#123;
+			cp.neighbors.add(map.get(n.label));
+		&#125; else &#123;
+			UndirectedGraphNode newNode = new UndirectedGraphNode(n.label);
+			map.put(n.label, newNode);
+			cp.neighbors.add(map.get(n.label));
+		&#125;
+	&#125;
+	// do DFS recursively
+	for (int i = 0; i &lt; orin.neighbors.size(); i++) &#123;
+		copy(orin.neighbors.get(i), cp.neighbors.get(i), map, visited);
+	&#125;
+&#125;
+</code></pre>
+<p><strong>Second, my BFS code without using ‘visited’ HashSet</strong></p>
+<pre><code>public UndirectedGraphNode cloneGraph(UndirectedGraphNode node) &#123;
+	if (node == null) return null;
+	HashMap&lt;UndirectedGraphNode, UndirectedGraphNode&gt; map
+	        = new HashMap&lt;UndirectedGraphNode, UndirectedGraphNode&gt;();
+	map.put(node, new UndirectedGraphNode(node.label));
+	LinkedList&lt;UndirectedGraphNode&gt; queue = new LinkedList&lt;UndirectedGraphNode&gt;();
+	queue.add(node);
+	// queue is guaranteed to always have non-traversed nodes
+	while ( !queue.isEmpty() ) &#123;
+	    UndirectedGraphNode orin = queue.remove();
+	    UndirectedGraphNode cp = map.get(orin);
+	    for (UndirectedGraphNode n : orin.neighbors) &#123;
+			if ( !map.containsKey(n) ) &#123;
+				map.put(n, new UndirectedGraphNode(n.label));
+				queue.add(n);
+			&#125;
+			UndirectedGraphNode newNode = map.get(n);
+			cp.neighbors.add(newNode);
+		&#125;
+	&#125;
+	return map.get(node);
+&#125;
+</code></pre>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>Permalink:</span>
+                        <span><a href="https://mar2ndx.github.io/2014/05/30/pre-2017-2014-05-30-Clone-Graph/">https://mar2ndx.github.io/2014/05/30/pre-2017-2014-05-30-Clone-Graph/</a></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2019 <a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc/4.0/">CC-BY-NC-4.0</a> LICENSE</span>
+                    </p>
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY</strong>?</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2014/05/31/pre-2017-2014-05-31-Gas-Station/">[LeetCode 134] Gas Station</a>
+            
+            
+            <a class="next" rel="next" href="/2014/05/30/pre-2017-2014-05-30-Insertion-Sort-List/">[LeetCode 147] Insertion Sort List</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+            </div>
+            <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>©  | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+
+</html>

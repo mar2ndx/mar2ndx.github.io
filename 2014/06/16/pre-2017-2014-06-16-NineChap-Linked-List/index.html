@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+
+
+
+
+<title>[NineChap 4.1] Linked List | Tech blog</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const pagebody = document.getElementsByTagName('body')[0]
+
+            function setTheme(status) {
+
+                if (status === 'dark') {
+                    window.sessionStorage.theme = 'dark'
+                    pagebody.classList.add('dark-theme');
+
+                } else if (status === 'light') {
+                    window.sessionStorage.theme = 'light'
+                    pagebody.classList.remove('dark-theme');
+                }
+            };
+
+            setTheme(window.sessionStorage.theme)
+        })();
+    </script>
+
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">Bentham&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                <a class="menu-item" href="/archives">Posts</a>
+                
+                <a class="menu-item" href="/category">Categories</a>
+                
+                <a class="menu-item" href="/tag">Tags</a>
+                
+                <a class="menu-item" href="/about">About</a>
+                
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">Bentham&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">
+                    <svg class="menu-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M4.5 17.27q-.213 0-.356-.145T4 16.768t.144-.356t.356-.143h15q.213 0 .356.144q.144.144.144.357t-.144.356t-.356.143zm0-4.77q-.213 0-.356-.144T4 11.999t.144-.356t.356-.143h15q.213 0 .356.144t.144.357t-.144.356t-.356.143zm0-4.77q-.213 0-.356-.143Q4 7.443 4 7.23t.144-.356t.356-.143h15q.213 0 .356.144T20 7.23t-.144.356t-.356.144z"/></svg>
+                    <svg class="close-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Material Symbols Light by Google - https://github.com/google/material-design-icons/blob/master/LICENSE --><path fill="currentColor" d="m12 12.708l-5.246 5.246q-.14.14-.344.15t-.364-.15t-.16-.354t.16-.354L11.292 12L6.046 6.754q-.14-.14-.15-.344t.15-.364t.354-.16t.354.16L12 11.292l5.246-5.246q.14-.14.345-.15q.203-.01.363.15t.16.354t-.16.354L12.708 12l5.246 5.246q.14.14.15.345q.01.203-.15.363t-.354.16t-.354-.16z"/></svg>
+                </div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                <a class="menu-item" href="/archives">Posts</a>
+                
+                <a class="menu-item" href="/category">Categories</a>
+                
+                <a class="menu-item" href="/tag">Tags</a>
+                
+                <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if (toggleMenu.classList.contains("active")) {
+            toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        } else {
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    var tocbot_timer;
+    var DEPTH_MAX = 6; // 为 6 时展开所有
+    var tocbot_default_config = {
+        tocSelector: '.tocbot-list',
+        contentSelector: '.post-content',
+        headingSelector: 'h1, h2, h3, h4, h5',
+        orderedList: false,
+        scrollSmooth: true,
+        onClick: extend_click,
+    };
+
+    function extend_click() {
+        clearTimeout(tocbot_timer);
+        tocbot_timer = setTimeout(function() {
+            tocbot.refresh(obj_merge(tocbot_default_config, {
+                hasInnerContainers: true
+            }));
+        }, 420); // 这个值是由 tocbot 源码里定义的 scrollSmoothDuration 得来的
+    }
+
+    document.ready(function() {
+        tocbot.init(obj_merge(tocbot_default_config, {
+            collapseDepth: 1
+        }));
+    });
+
+    function expand_toc() {
+        var b = document.querySelector('.tocbot-toc-expand');
+        var expanded = b.getAttribute('data-expanded');
+        expanded ? b.removeAttribute('data-expanded') : b.setAttribute('data-expanded', true);
+        tocbot.refresh(obj_merge(tocbot_default_config, {
+            collapseDepth: expanded ? 1 : DEPTH_MAX
+        }));
+        b.innerText = expanded ? 'Expand all' : 'Collapse all';
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+    function obj_merge(target, source) {
+        for (var item in source) {
+            if (source.hasOwnProperty(item)) {
+                target[item] = source[item];
+            }
+        }
+        return target;
+    }
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">[NineChap 4.1] Linked List</h1>
+            
+                <div class="post-meta">
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">June 16, 2014&nbsp;&nbsp;0:00:00</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/NineChap/">NineChap</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h2 id="First-Word"><a href="#First-Word" class="headerlink" title="First Word"></a>First Word</h2><p>LinkedList aims to test one of the most important concepts in C++, pointers.</p>
+<p><strong>Unlike array, linked list does not have ‘in-place’ operations</strong>. This is very important to understand.</p>
+<h3 id="Type-1-Dummy-Node"><a href="#Type-1-Dummy-Node" class="headerlink" title="Type 1: Dummy Node"></a>Type 1: Dummy Node</h3><p>When the head is not determined, use DummyHead.</p>
+<p>Note that when using DummyHead to solve problems, the pointer <strong>starts from DummyHead</strong>. By doing this, we assuming that DummyHead must be valid, and we <strong>only check pointer.next (instead of checking pointer itself)</strong>. See ‘Remove Duplicates from Sorted List II’ for details.</p>
+<h3 id="Type-2-Five-Basic-Operations-in-Linked-List"><a href="#Type-2-Five-Basic-Operations-in-Linked-List" class="headerlink" title="Type 2: Five Basic Operations in Linked List"></a>Type 2: Five Basic Operations in Linked List</h3><ol>
+<li>Insert in Sorted List</li>
+<li>Remove in Sorted List</li>
+<li>Reverse a list</li>
+<li>Merge 2 Sorted List</li>
+<li>Find middle</li>
+</ol>
+<h4 id="1-Insert-in-Sorted-List"><a href="#1-Insert-in-Sorted-List" class="headerlink" title="1.Insert in Sorted List"></a>1.Insert in Sorted List</h4><pre><code>public ListNode insert(ListNode head, ListNode node) &#123;
+	// first, initialize
+	ListNode dummy = new ListNode(Integer.MIN_VALUE);
+	dummy.next = head;
+
+	// second, assume p is less than node, and check p.next
+	ListNode p = dummy;
+	while (p.next != null &amp;&amp; p.next.val &lt; node.val) &#123;
+		p = p.next;
+	&#125;
+
+	// insert node after &#39;p&#39;
+	node.next = p.next;
+	p.next = node;
+	return dummy.next;
+&#125;
+</code></pre>
+<h4 id="2-Remove-in-Sorted-List"><a href="#2-Remove-in-Sorted-List" class="headerlink" title="2.Remove in Sorted List"></a>2.Remove in Sorted List</h4><p>(written by me)</p>
+<pre><code>public ListNode remove(ListNode head, int value) &#123;
+	ListNode dummy = new ListNode(0);
+	dummy.next = head;
+	ListNode p = dummy;
+	while (p.next != null &amp;&amp; p.next.val != value) &#123;
+		p = p.next;
+	&#125;
+	if (p.next != null &amp;&amp; p.next.val == value) &#123;
+		while (p.next != null &amp;&amp; p.next.val == value)
+			p.next = p.next.next;
+	&#125;
+	return dummy.next;
+&#125;
+</code></pre>
+<h4 id="3-Reverse-a-list"><a href="#3-Reverse-a-list" class="headerlink" title="3.Reverse a list"></a>3.Reverse a list</h4><p>First variant: Reverse from a particular node to the end.</p>
+<p>四句话 statement.</p>
+<pre><code>public ListNode reverse(ListNode start) &#123;
+    ListNode result = null;
+    ListNode cur = start;
+    while (cur != null) &#123;
+        ListNode temp = cur.next;
+        cur.next = result;
+        result = cur;
+        cur = temp;
+    &#125;
+    return result;
+&#125;
+</code></pre>
+<p>Second variant: Reverse from a node until another node</p>
+<pre><code>// Given 1-&gt;2-&gt;3-&gt;4-&gt;5-&gt;NULL, start = 2 and len = 3,
+// return 1-&gt;4-&gt;3-&gt;2-&gt;5-&gt;NULL.
+public ListNode reverseRange(ListNode start, int len) &#123;
+	ListNode result = null;
+	ListNode cur = start;
+	while (len &gt; 0) &#123;
+		ListNode temp = cur.next;
+		cur.next = result;
+		result = cur;
+		cur = temp;
+		len--;
+	&#125;
+	start.next = cur;
+	return result;
+&#125;
+</code></pre>
+<p>The comparison:</p>
+<p><img src="/images/reverse-linked-list-code-compare.png"></p>
+<p>More: there is a way to reverse list recursively. This can be another good interview question. <strong><a href="/leetcode_plus/2014-06-17-Reverse-linkedlist-recursively">Reverse linkedlist recursively</a></strong></p>
+<h4 id="4-Merge-2-Sorted-List"><a href="#4-Merge-2-Sorted-List" class="headerlink" title="4.Merge 2 Sorted List"></a>4.Merge 2 Sorted List</h4><pre><code>public ListNode merge(ListNode head1, ListNode head2) &#123;
+	ListNode dummy = new ListNode(0);
+	ListNode p = dummy;
+	while (head1 != null &amp;&amp; head2 != null) &#123;
+		if (head1.val &lt; head2.val) &#123;
+			p.next = head1;
+			head1 = head1.next;
+			p = p.next;
+		&#125; else &#123;
+			p.next = head2;
+			head2 = head2.next;
+			p = p.next;
+		&#125;
+	&#125;
+	if (head1 == null) &#123;
+		p.next = head2;
+	&#125; else &#123;
+		p.next = head1;
+	&#125;
+	return dummy.next;
+&#125;
+</code></pre>
+<h4 id="5-Find-middle"><a href="#5-Find-middle" class="headerlink" title="5.Find middle"></a>5.Find middle</h4><p>There are 2 ways to do this: calculate the total length, or fast&#x2F;slow pointer. But fast&#x2F;slow pointer is better <strong>because in engineering world, a lot of problems only allows information to flow once (数据流概念)</strong>. Sometimes it’s not a good idea to read list for a second (or 1.5) time.</p>
+<pre><code>public ListNode findMiddle(ListNode head) &#123;
+	if (head == null) &#123;
+		return null;
+	&#125;
+	ListNode slow = head, fast = head.next;
+	while (fast != null &amp;&amp; fast.next != null) &#123;
+		fast = fast.next.next;
+		slow = slow.next;
+	&#125;
+	return slow;
+&#125;
+</code></pre>
+<p><strong>Dummy head questions</strong></p>
+<ol>
+<li><p><strong><a href="/leetcode/2014-05-22-Remove-Duplicates-from-Sorted-List">Remove Duplicates from Sorted List</a></strong></p>
+</li>
+<li><p><strong><a href="/leetcode/2014-05-22-Remove-Duplicates-from-Sorted-List-II">Remove Duplicates from Sorted List II</a></strong></p>
+</li>
+<li><p><strong><a href="/leetcode/2014-05-23-Partition-List">Partition List</a></strong></p>
+</li>
+<li><p><strong><a href="/leetcode/2014-05-09-Merge-Two-Sorted-Lists">Merge Two Sorted Lists</a></strong></p>
+</li>
+</ol>
+<p><strong>5 basic operations questions</strong></p>
+<ol>
+<li><p><strong><a href="/leetcode/2014-05-23-Reverse-Linked-List-II">Reverse Linked List II</a></strong> - difficult</p>
+</li>
+<li><p><strong><a href="/leetcode/2014-06-02-Sort-List">Sort List</a></strong></p>
+<p>2 operations used</p>
+</li>
+<li><p><strong><a href="/leetcode/2014-06-03-Reorder-List">Reorder List</a></strong></p>
+<p>3 operations used</p>
+</li>
+<li><p><strong><a href="/leetcode/2014-06-02-Linked-List-Cycle">Linked List Cycle</a></strong></p>
+</li>
+<li><p><strong><a href="/leetcode/2014-06-02-Linked-List-Cycle-II">Linked List Cycle II</a></strong></p>
+</li>
+<li><p><strong><a href="/leetcode/2014-05-11-Merge-k-Sorted-Lists">Merge k Sorted Lists</a></strong></p>
+<p>For this question, it’s important to write a comparator by yourself, to show your understanding of a PriorityQueue.</p>
+<p>n<em>k</em>lgk time, why? 1:14:30 recording<br>about heap 1:15:00 recording</p>
+</li>
+<li><p><strong><a href="/leetcode/2014-06-02-Copy-List-with-Random-Pointer">Copy List with Random Pointer</a></strong></p>
+</li>
+</ol>
+<h2 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h2><p><strong>Remove Duplicates from Sorted List</strong></p>
+<p>Easy, no dummy head needed.</p>
+<p><strong>Remove Duplicates from Sorted List II</strong></p>
+<pre><code>public ListNode deleteDuplicates(ListNode head) &#123;
+    ListNode dummy = new ListNode(0);
+    dummy.next = head;
+    ListNode p = dummy;
+    while (p.next != null &amp;&amp; p.next.next != null) &#123;
+        if (p.next.val == p.next.next.val) &#123;
+            int dupVal = p.next.val;
+            while (p.next != null &amp;&amp; p.next.val == dupVal) &#123;
+                p.next = p.next.next;
+            &#125;
+        &#125; else &#123;
+            p = p.next;
+        &#125;
+    &#125;
+    return dummy.next;
+&#125;
+</code></pre>
+<p><strong>Partition List</strong> - spend a lot of time on a list cycle in the result</p>
+<pre><code>public ListNode partition(ListNode head, int x) &#123;
+    if (head == null) &#123;
+        return null;
+    &#125;
+    ListNode head1 = new ListNode(0);
+    ListNode head2 = new ListNode(0);
+
+    ListNode p1 = head1;
+    ListNode p2 = head2;
+    ListNode cur = head;
+
+    while (cur != null) &#123;
+        if (cur.val &lt; x) &#123;
+            p1.next = cur;
+            p1 = cur;
+        &#125; else &#123;
+            p2.next = cur;
+            p2 = cur;
+        &#125;
+        cur = cur.next;
+    &#125;
+
+    p1.next = head2.next;
+    // VERY IMPORTANT THIS LINE !!!
+    p2.next = null;
+    // VERY IMPORTANT THIS LINE !!!
+    return head1.next;
+&#125;
+</code></pre>
+<p><strong>Merge Two Sorted Lists</strong></p>
+<pre><code>public ListNode mergeTwoLists(ListNode l1, ListNode l2) &#123;
+    ListNode dummy = new ListNode(0);
+	ListNode p = dummy;
+	while (l1 != null &amp;&amp; l2 != null) &#123;
+		if (l1.val &lt; l2.val) &#123;
+			p.next = l1;
+			l1 = l1.next;
+			p = p.next;
+		&#125; else &#123;
+			p.next = l2;
+			l2 = l2.next;
+			p = p.next;
+		&#125;
+	&#125;
+	if (l1 == null) &#123;
+		p.next = l2;
+	&#125; else &#123;
+		p.next = l1;
+	&#125;
+	return dummy.next;
+&#125;
+</code></pre>
+<h4 id="5-basic-operations"><a href="#5-basic-operations" class="headerlink" title="5 basic operations"></a>5 basic operations</h4><p><strong>Reverse Linked List II</strong></p>
+<pre><code>public ListNode reverseBetween(ListNode head, int m, int n) &#123;
+    ListNode dummy = new ListNode(0);
+    dummy.next = head;
+	ListNode start = dummy;
+	int count = 1;
+	while (head != null &amp;&amp; count &lt; m) &#123;
+		start = start.next;
+		count++;
+	&#125;
+	start.next = reverseRange(start.next, n - m + 1);
+	return dummy.next;
+&#125;
+
+private ListNode reverseRange(ListNode start, int len) &#123;
+	ListNode result = null;
+	ListNode cur = start;
+	while (len &gt; 0) &#123;
+		ListNode temp = cur.next;
+		cur.next = result;
+		result = cur;
+		cur = temp;
+		len--;
+	&#125;
+	start.next = cur;
+	return result;
+&#125;
+</code></pre>
+<p><strong>Sort List</strong></p>
+<p>Time complexity analysis: T(n) &#x3D; 2 T(n&#x2F;2) + O(n). <strong>By applying Master theorem, time &#x3D; O(nlgn)</strong>.</p>
+<pre><code>public ListNode sortList(ListNode head) &#123;
+		if (head == null || head.next == null) &#123;
+			return head;
+		&#125;
+		ListNode mid = findMid(head);
+		ListNode secondHalf = mid.next;
+		mid.next = null;
+		head = sortList(head);
+		secondHalf = sortList(secondHalf);
+		return merge(head, secondHalf);
+&#125;
+
+private ListNode findMid(ListNode head) &#123;
+	ListNode slow = head;
+	ListNode fast = head.next;
+	while (fast != null &amp;&amp; fast.next != null) &#123;
+		slow = slow.next;
+		fast = fast.next.next;
+	&#125;
+	return slow;
+&#125;
+
+private ListNode merge(ListNode h1, ListNode h2) &#123;
+	ListNode dummy = new ListNode(0);
+	ListNode p = dummy;
+	while (h1 != null &amp;&amp; h2 != null) &#123;
+		if (h1.val &lt; h2.val) &#123;
+			p.next = h1;
+			h1 = h1.next;
+		&#125; else &#123;
+			p.next = h2;
+			h2 = h2.next;
+		&#125;
+		p = p.next;
+	&#125;
+	if (h1 == null) &#123;
+		p.next = h2;
+	&#125; else if (h2 == null) &#123;
+		p.next = h1;
+	&#125;
+	return dummy.next;
+&#125;
+</code></pre>
+<p><strong>Reorder List</strong></p>
+<pre><code>public void reorderList(ListNode head) &#123;
+    if (head == null || head.next == null) &#123;
+		return;
+	&#125;
+	ListNode mid = findMid(head);
+	ListNode secondHalf = mid.next;
+	mid.next = null;
+	secondHalf = reverse(secondHalf);
+	head = mergeInterlace(head, secondHalf);
+&#125;
+
+private ListNode findMid(ListNode head) &#123;
+	if (head == null) &#123;
+		return null;
+	&#125;
+	ListNode slow = head;
+	ListNode fast = head.next;
+	while (fast != null &amp;&amp; fast.next != null) &#123;
+		slow = slow.next;
+		fast = fast.next.next;
+	&#125;
+	return slow;
+&#125;
+
+private ListNode reverse(ListNode head) &#123;
+	ListNode result = null;
+	ListNode cur = head;
+	while (cur != null) &#123;
+		ListNode temp = cur.next;
+		cur.next = result;
+		result = cur;
+		cur = temp;
+	&#125;
+	return result;
+&#125;
+
+private ListNode mergeInterlace(ListNode h1, ListNode h2) &#123;
+	ListNode result = h1;
+	h1 = h1.next;
+	ListNode p = result;
+	while (h1 != null &amp;&amp; h2 != null) &#123;
+		p.next = h2;
+		h2 = h2.next;
+		p.next.next = h1;
+		h1 = h1.next;
+		p = p.next.next;
+	&#125;
+	if (h1 == null) &#123;
+		p.next = h2;
+	&#125; else &#123;
+		p.next = h1;
+	&#125;
+	return result;
+&#125;
+</code></pre>
+<p><strong>Linked List Cycle</strong></p>
+<pre><code>public boolean hasCycle(ListNode head) &#123;
+    if (head == null || head.next == null)
+		return false;
+	ListNode slow = head;
+	ListNode fast = head.next;
+	while (fast != null &amp;&amp; fast.next != null) &#123;
+		fast = fast.next.next;
+		slow = slow.next;
+		if (fast == slow) &#123;
+			return true;
+		&#125;
+	&#125;
+	return false;
+&#125;
+</code></pre>
+<p><strong>Linked List Cycle II</strong></p>
+<pre><code>public ListNode detectCycle(ListNode head) &#123;
+    if (head == null || head.next == null)
+		return null;
+	ListNode slow = head;
+	ListNode fast = head;
+	while (fast != null &amp;&amp; fast.next != null) &#123;
+		fast = fast.next.next;
+		slow = slow.next;
+		if (fast == slow) &#123;
+			slow = head;
+			while (slow != fast) &#123;
+				slow = slow.next;
+				fast = fast.next;
+			&#125;
+			return slow;
+		&#125;
+	&#125;
+	return null;
+&#125;
+</code></pre>
+<p><strong>Merge k Sorted Lists</strong></p>
+<p>I write the code in the original post.</p>
+<p><strong>Copy List with Random Pointer</strong></p>
+<pre><code>public RandomListNode copyRandomList(RandomListNode head)  &#123;
+    if (head == null)  &#123;
+		return null;
+	&#125;
+	// 1, make a new copy of each node
+	RandomListNode p = head;
+	while (p != null) &#123;
+		RandomListNode copy = new RandomListNode(p.label);
+		copy.next = p.next;
+		p.next = copy;
+		p = copy.next;
+	&#125;
+	// 2. link the random pointer of copied nodes
+	p = head;
+	while (p != null) &#123;
+		if (p.random != null) &#123;
+			p.next.random = p.random.next;
+		&#125;
+		p = p.next.next;
+	&#125;
+	// 3. break the copied nodes from original nodes
+	RandomListNode result = head.next;
+	p = head;
+	RandomListNode p2 = head.next;
+	while (p != null) &#123;
+		p.next = p2.next;
+		if (p2.next != null) &#123;
+			p2.next = p2.next.next;
+		&#125;
+		p = p.next;
+		p2 = p2.next;
+	&#125;
+	return result;
+&#125;
+</code></pre>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>Permalink:</span>
+                        <span><a href="https://mar2ndx.github.io/2014/06/16/pre-2017-2014-06-16-NineChap-Linked-List/">https://mar2ndx.github.io/2014/06/16/pre-2017-2014-06-16-NineChap-Linked-List/</a></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2019 <a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc/4.0/">CC-BY-NC-4.0</a> LICENSE</span>
+                    </p>
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY</strong>?</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2014/06/16/pre-2017-2014-06-16-Binary-tree-serialize-deserialize/">[LeetCode Plus] Binary Tree Serialize and Deserialize</a>
+            
+            
+            <a class="next" rel="next" href="/2014/06/15/pre-2017-2014-06-15-BST-find-upper-lower-bound/">[Question] Binary Search Tree find upper/lower bound</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+            </div>
+            <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>©  | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+
+</html>

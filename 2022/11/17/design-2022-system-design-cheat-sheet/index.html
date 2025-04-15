@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+
+
+
+
+<title>System design cheat sheet | Tech blog</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const pagebody = document.getElementsByTagName('body')[0]
+
+            function setTheme(status) {
+
+                if (status === 'dark') {
+                    window.sessionStorage.theme = 'dark'
+                    pagebody.classList.add('dark-theme');
+
+                } else if (status === 'light') {
+                    window.sessionStorage.theme = 'light'
+                    pagebody.classList.remove('dark-theme');
+                }
+            };
+
+            setTheme(window.sessionStorage.theme)
+        })();
+    </script>
+
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">Bentham&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                <a class="menu-item" href="/archives">Posts</a>
+                
+                <a class="menu-item" href="/category">Categories</a>
+                
+                <a class="menu-item" href="/tag">Tags</a>
+                
+                <a class="menu-item" href="/about">About</a>
+                
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">Bentham&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">
+                    <svg class="menu-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M4.5 17.27q-.213 0-.356-.145T4 16.768t.144-.356t.356-.143h15q.213 0 .356.144q.144.144.144.357t-.144.356t-.356.143zm0-4.77q-.213 0-.356-.144T4 11.999t.144-.356t.356-.143h15q.213 0 .356.144t.144.357t-.144.356t-.356.143zm0-4.77q-.213 0-.356-.143Q4 7.443 4 7.23t.144-.356t.356-.143h15q.213 0 .356.144T20 7.23t-.144.356t-.356.144z"/></svg>
+                    <svg class="close-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Material Symbols Light by Google - https://github.com/google/material-design-icons/blob/master/LICENSE --><path fill="currentColor" d="m12 12.708l-5.246 5.246q-.14.14-.344.15t-.364-.15t-.16-.354t.16-.354L11.292 12L6.046 6.754q-.14-.14-.15-.344t.15-.364t.354-.16t.354.16L12 11.292l5.246-5.246q.14-.14.345-.15q.203-.01.363.15t.16.354t-.16.354L12.708 12l5.246 5.246q.14.14.15.345q.01.203-.15.363t-.354.16t-.354-.16z"/></svg>
+                </div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                <a class="menu-item" href="/archives">Posts</a>
+                
+                <a class="menu-item" href="/category">Categories</a>
+                
+                <a class="menu-item" href="/tag">Tags</a>
+                
+                <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if (toggleMenu.classList.contains("active")) {
+            toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        } else {
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    var tocbot_timer;
+    var DEPTH_MAX = 6; // 为 6 时展开所有
+    var tocbot_default_config = {
+        tocSelector: '.tocbot-list',
+        contentSelector: '.post-content',
+        headingSelector: 'h1, h2, h3, h4, h5',
+        orderedList: false,
+        scrollSmooth: true,
+        onClick: extend_click,
+    };
+
+    function extend_click() {
+        clearTimeout(tocbot_timer);
+        tocbot_timer = setTimeout(function() {
+            tocbot.refresh(obj_merge(tocbot_default_config, {
+                hasInnerContainers: true
+            }));
+        }, 420); // 这个值是由 tocbot 源码里定义的 scrollSmoothDuration 得来的
+    }
+
+    document.ready(function() {
+        tocbot.init(obj_merge(tocbot_default_config, {
+            collapseDepth: 1
+        }));
+    });
+
+    function expand_toc() {
+        var b = document.querySelector('.tocbot-toc-expand');
+        var expanded = b.getAttribute('data-expanded');
+        expanded ? b.removeAttribute('data-expanded') : b.setAttribute('data-expanded', true);
+        tocbot.refresh(obj_merge(tocbot_default_config, {
+            collapseDepth: expanded ? 1 : DEPTH_MAX
+        }));
+        b.innerText = expanded ? 'Expand all' : 'Collapse all';
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+    function obj_merge(target, source) {
+        for (var item in source) {
+            if (source.hasOwnProperty(item)) {
+                target[item] = source[item];
+            }
+        }
+        return target;
+    }
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">System design cheat sheet</h1>
+            
+                <div class="post-meta">
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">November 17, 2022&nbsp;&nbsp;8:56:00</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/Design/">Design</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h1 id="Answering-framework"><a href="#Answering-framework" class="headerlink" title="Answering framework"></a>Answering framework</h1><pre><code>Requirements
+    Functional Requirements
+    Non-functional requirements
+    Out of scope
+Capacity Estimation
+    Assumptions
+    Storage Estimations
+Detailed Component Design
+    Client
+    Meta Service
+    Block Service
+    Notification Service
+Database Schema
+APIs
+    Download Chunk
+    Upload Chunk
+    Get Objects
+Performance
+    Chunking Files
+    Data Deduplication
+    Caching
+Scalability
+    Horizontal Scaling
+    Database Sharding
+    Cache Sharding
+Security
+    HTTPS
+    Authentication
+Resiliency
+    Distributed Block Storage
+    Queuing
+    Load Balancing
+    Geo-redundancy
+References
+</code></pre>
+<p>Other things to remember:</p>
+<ol>
+<li>uploading file&#x2F;photo: use master&#x2F;slave model</li>
+<li>don’t forget to calculate the storage size for DB.<br>eg. 500M user data, each take 68 bytes, then storage needed &#x3D; 32GB<br>(user id 4 bytes, name 20 bytes, email 32 bytes, dataofbirth 4 bytes, creation time 4 byte, last login 4 bytes)</li>
+<li>data sharding - 如果按照 hash 分割，migration 非常困难。<br>solution：<br>先范围，再 hash。Or 一致性 hash 环（consistent hashing）</li>
+<li>如何 generate PhotoID？没有这个 id，我们无法判断哪个 shard。所以：用 snowflake 算法，unique IDs</li>
+</ol>
+<h1 id="3-most-popular-AWS-services"><a href="#3-most-popular-AWS-services" class="headerlink" title="3 most popular AWS services:"></a>3 most popular AWS services:</h1><ol>
+<li>EC2</li>
+<li>RDS: support multiple database engines including SQL Server, SQL, PostgreSQL</li>
+<li>S3: Simple Storage Service (S3)</li>
+</ol>
+<h1 id="Consistent-Hashing"><a href="#Consistent-Hashing" class="headerlink" title="Consistent Hashing"></a>Consistent Hashing</h1><p>Use for data partitioning problem</p>
+<p>Dynamo and Cassandra use Consistent Hashing to distribute their data across nodes</p>
+<h1 id="How-to-ensure-API-security"><a href="#How-to-ensure-API-security" class="headerlink" title="How to ensure API security?"></a>How to ensure API security?</h1><p>For each API request post log-in, we are doing authentication by checking the validity of auth_token in Authorization HTTP header.</p>
+<p>This makes sure that requests which originate from clients are legitimate.</p>
+<h1 id="Facebook-big-data"><a href="#Facebook-big-data" class="headerlink" title="Facebook big data"></a>Facebook big data</h1><p>Daily &#x3D; 5 Petabyte &#x3D; 5,000 Terabyte</p>
+<p>ODS &#x3D; time-series counter</p>
+<p>Scube &#x3D; in-memory</p>
+<p>Hive &#x3D; data warehouse</p>
+<p>None of the above are relational DB, thus no ACID properties.</p>
+<p>ACID &#x3D; atomic + consistency + isolation (invisible inter-mediate states) + durability (changes won’t undone)</p>
+<h1 id="Kafka"><a href="#Kafka" class="headerlink" title="Kafka"></a>Kafka</h1><p>Distributed streaming platform. Support publish-subscibe pattern. Not exactly same as messaging queue.</p>
+<p>Use cases:</p>
+<ol>
+<li>aggregate user activity on a website</li>
+<li>logs aggregation</li>
+</ol>
+<h1 id="News-Feed"><a href="#News-Feed" class="headerlink" title="News Feed"></a>News Feed</h1><p>pre-generation 然后存入一个 table。</p>
+<p>Pull（或者 long-pulling connection）比 Push 更好。</p>
+<p>因为：KOL 有 1M follower，push 不过来。但是人可以关注是又上限的：maybe 1000，所以 pull 起来更快一点。</p>
+<p>News feed 因为需要快速读写，所以 keep in memory. Eg. 100M users, each required 0.5MB space, then total space needed &#x3D; 50TB. If each computer &#x3D; 100GB, we need at least 500 machines.</p>
+<h1 id="Counter-service"><a href="#Counter-service" class="headerlink" title="Counter service"></a>Counter service</h1><p>不能用 Redis 这种 in-memory 来做，除非用户量小于 1000.</p>
+<p>用 Kafka + DB 来做。</p>
+<h1 id="Chat-app"><a href="#Chat-app" class="headerlink" title="Chat app"></a>Chat app</h1><p>XMPP protocol over WebSocket (or TCP), it’s peer-to-peer</p>
+<p>We can’t use HTTP which is client-server communication protocol, impossible for chatting app。</p>
+<h2 id="Session-Manager"><a href="#Session-Manager" class="headerlink" title="Session Manager"></a>Session Manager</h2><p>stores user ID - connection ID</p>
+<p>so I can find user’s websocket, so I know where to send the message</p>
+<h1 id="How-does-Long-polling-work"><a href="#How-does-Long-polling-work" class="headerlink" title="How does Long polling work?"></a>How does Long polling work?</h1><ol>
+<li>long polling is built on HTTP</li>
+<li>normally, client send HTTP request and server respond</li>
+<li>for long-polling, client send the request but server does not close the connection.</li>
+</ol>
+<p>The server does not close the connection, instead, the connection is kept open until there is data for the server to send</p>
+<p>Once data is received by the client, it immediately makes another HTTP Long-polling request to the server</p>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>Permalink:</span>
+                        <span><a href="https://mar2ndx.github.io/2022/11/17/design-2022-system-design-cheat-sheet/">https://mar2ndx.github.io/2022/11/17/design-2022-system-design-cheat-sheet/</a></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2019 <a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc/4.0/">CC-BY-NC-4.0</a> LICENSE</span>
+                    </p>
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY</strong>?</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2022/11/18/algo-2022-510-Inorder-Successor-in-BST-II/">510. Inorder Successor in BST II</a>
+            
+            
+            <a class="next" rel="next" href="/2022/11/17/algo-2022-TODO-Google-question/">Google questions</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+            </div>
+            <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>©  | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+
+</html>

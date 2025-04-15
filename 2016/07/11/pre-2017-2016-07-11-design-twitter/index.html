@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+
+
+
+
+<title>[Design] Design Twitter | Tech blog</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const pagebody = document.getElementsByTagName('body')[0]
+
+            function setTheme(status) {
+
+                if (status === 'dark') {
+                    window.sessionStorage.theme = 'dark'
+                    pagebody.classList.add('dark-theme');
+
+                } else if (status === 'light') {
+                    window.sessionStorage.theme = 'light'
+                    pagebody.classList.remove('dark-theme');
+                }
+            };
+
+            setTheme(window.sessionStorage.theme)
+        })();
+    </script>
+
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">Bentham&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                <a class="menu-item" href="/archives">Posts</a>
+                
+                <a class="menu-item" href="/category">Categories</a>
+                
+                <a class="menu-item" href="/tag">Tags</a>
+                
+                <a class="menu-item" href="/about">About</a>
+                
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">Bentham&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">
+                    <svg class="menu-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M4.5 17.27q-.213 0-.356-.145T4 16.768t.144-.356t.356-.143h15q.213 0 .356.144q.144.144.144.357t-.144.356t-.356.143zm0-4.77q-.213 0-.356-.144T4 11.999t.144-.356t.356-.143h15q.213 0 .356.144t.144.357t-.144.356t-.356.143zm0-4.77q-.213 0-.356-.143Q4 7.443 4 7.23t.144-.356t.356-.143h15q.213 0 .356.144T20 7.23t-.144.356t-.356.144z"/></svg>
+                    <svg class="close-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Material Symbols Light by Google - https://github.com/google/material-design-icons/blob/master/LICENSE --><path fill="currentColor" d="m12 12.708l-5.246 5.246q-.14.14-.344.15t-.364-.15t-.16-.354t.16-.354L11.292 12L6.046 6.754q-.14-.14-.15-.344t.15-.364t.354-.16t.354.16L12 11.292l5.246-5.246q.14-.14.345-.15q.203-.01.363.15t.16.354t-.16.354L12.708 12l5.246 5.246q.14.14.15.345q.01.203-.15.363t-.354.16t-.354-.16z"/></svg>
+                </div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                <a class="menu-item" href="/archives">Posts</a>
+                
+                <a class="menu-item" href="/category">Categories</a>
+                
+                <a class="menu-item" href="/tag">Tags</a>
+                
+                <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if (toggleMenu.classList.contains("active")) {
+            toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        } else {
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    var tocbot_timer;
+    var DEPTH_MAX = 6; // 为 6 时展开所有
+    var tocbot_default_config = {
+        tocSelector: '.tocbot-list',
+        contentSelector: '.post-content',
+        headingSelector: 'h1, h2, h3, h4, h5',
+        orderedList: false,
+        scrollSmooth: true,
+        onClick: extend_click,
+    };
+
+    function extend_click() {
+        clearTimeout(tocbot_timer);
+        tocbot_timer = setTimeout(function() {
+            tocbot.refresh(obj_merge(tocbot_default_config, {
+                hasInnerContainers: true
+            }));
+        }, 420); // 这个值是由 tocbot 源码里定义的 scrollSmoothDuration 得来的
+    }
+
+    document.ready(function() {
+        tocbot.init(obj_merge(tocbot_default_config, {
+            collapseDepth: 1
+        }));
+    });
+
+    function expand_toc() {
+        var b = document.querySelector('.tocbot-toc-expand');
+        var expanded = b.getAttribute('data-expanded');
+        expanded ? b.removeAttribute('data-expanded') : b.setAttribute('data-expanded', true);
+        tocbot.refresh(obj_merge(tocbot_default_config, {
+            collapseDepth: expanded ? 1 : DEPTH_MAX
+        }));
+        b.innerText = expanded ? 'Expand all' : 'Collapse all';
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+    function obj_merge(target, source) {
+        for (var item in source) {
+            if (source.hasOwnProperty(item)) {
+                target[item] = source[item];
+            }
+        }
+        return target;
+    }
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">[Design] Design Twitter</h1>
+            
+                <div class="post-meta">
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">July 11, 2016&nbsp;&nbsp;0:00:00</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/Design/">Design</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h1 id="System-design-evaluation-form"><a href="#System-design-evaluation-form" class="headerlink" title="System design evaluation form"></a>System design evaluation form</h1><ol>
+<li>work solution</li>
+<li>special cases</li>
+<li>analysis</li>
+<li>trade off</li>
+<li>knowledge base</li>
+</ol>
+<h1 id="Design-guideline-4S"><a href="#Design-guideline-4S" class="headerlink" title="Design guideline: 4S"></a>Design guideline: 4S</h1><ol>
+<li><p>Scenario</p>
+<p>ask, features, qps, DAU, interfaces</p>
+</li>
+<li><p>Service</p>
+<p>split, application, module</p>
+</li>
+<li><p>Storage</p>
+<p>schema, data, sql, NoSql, file system</p>
+</li>
+<li><p>Scale</p>
+<p>sharding, optimize, special case</p>
+</li>
+</ol>
+<h1 id="Scenario"><a href="#Scenario" class="headerlink" title="Scenario"></a>Scenario</h1><h2 id="DAU"><a href="#DAU" class="headerlink" title="DAU?"></a>DAU?</h2><p>Whta’s the DAU&#x2F;MAU rate?</p>
+<p>Chatting apps like wechat&#x2F;whatapp has a rate of around 75%, but facebook&#x2F;twitter is lower at 60%.</p>
+<h2 id="Enumerate-the-functions"><a href="#Enumerate-the-functions" class="headerlink" title="Enumerate the functions"></a>Enumerate the functions</h2><ol>
+<li>registration</li>
+<li>user profile display&#x2F;edit</li>
+<li>upload image&#x2F;video</li>
+<li>search</li>
+<li>post a tweet</li>
+<li>share a tweet</li>
+<li>timeline</li>
+<li>newsfeed</li>
+<li>follow&#x2F;unfollow</li>
+</ol>
+<h2 id="QPS"><a href="#QPS" class="headerlink" title="QPS"></a>QPS</h2><ol>
+<li><p>concurrent user</p>
+<p>150M user * 60 query&#x2F;user &#x2F; 60*60*24s &#x3D; average QPS &#x3D; 100K</p>
+<p><strong>peak QPS &#x3D; 3 * average QPS &#x3D; 300K</strong></p>
+<p>fast growing product &#x3D; 2 * peak QPS &#x3D; 600K</p>
+</li>
+<li><p>read qps: 300K QPS</p>
+</li>
+<li><p>write qps: 5K QPS</p>
+</li>
+</ol>
+<p>On average, <strong>a web server support around 1000 QPS</strong>, thus in this case, we need 300 servers to support the system.</p>
+<h1 id="Service"><a href="#Service" class="headerlink" title="Service"></a>Service</h1><h2 id="4-services-for-Twitter"><a href="#4-services-for-Twitter" class="headerlink" title="4 services for Twitter"></a>4 services for Twitter</h2><p><img src="/images/jiuzhang-four-service.png"></p>
+<ol>
+<li>user service<ol>
+<li>register</li>
+<li>login</li>
+</ol>
+</li>
+<li>tweet service<ol>
+<li>post tweet</li>
+<li>news feed</li>
+<li>timeline</li>
+</ol>
+</li>
+<li>media service<ol>
+<li>upload image</li>
+<li>upload video</li>
+</ol>
+</li>
+<li>friendship service<ol>
+<li>follow</li>
+<li>upfollow</li>
+</ol>
+</li>
+</ol>
+<h1 id="Storage"><a href="#Storage" class="headerlink" title="Storage"></a>Storage</h1><ol>
+<li><p>SQL</p>
+<p><strong>Good for</strong> accurate, small amount of data, more read than write.<br>user table</p>
+</li>
+<li><p>NoSQL</p>
+<p><strong>Good for</strong> large amount of read&#x2F;write, high scalability.<br>tweets<br>social graph (follower)</p>
+</li>
+<li><p>File System</p>
+<p><strong>Good for</strong> media files<br>photo, video</p>
+</li>
+</ol>
+<h2 id="Select-the-right-DB"><a href="#Select-the-right-DB" class="headerlink" title="Select the right DB"></a>Select the right DB</h2><p><img src="/images/jiuzhang-db-selection.png"></p>
+<p><strong>Question: can we use file system for tweets</strong>?</p>
+<p>No, it’s hard to query. Eg. query all tweets of my friends.</p>
+<h2 id="Design-data-schema"><a href="#Design-data-schema" class="headerlink" title="Design data schema"></a>Design data schema</h2><p>(optional) 3 tables needed:</p>
+<ol>
+<li>user table</li>
+<li>tweet table</li>
+<li>friendship table: this is not as straight forward, as it shall contain double directions info</li>
+</ol>
+<p><img src="/images/jiuzhang-data-schema.png"></p>
+<h1 id="Important-News-Feed"><a href="#Important-News-Feed" class="headerlink" title="Important: News Feed"></a>Important: News Feed</h1><h2 id="pull-model"><a href="#pull-model" class="headerlink" title="pull model"></a>pull model</h2><p>Read top 50 feeds from top 100 friends, then merge sort by date. (note that user is getting sync-blocked here).</p>
+<p>Post tweet is simple 1 DB write.</p>
+<p><strong>This design is bad, because file-system&#x2F;DB read is slow</strong>. If you have N friends, you query O(N) DB queries. <strong>It’s too slow (and user is getting sync-blocked, too)</strong>. We should have, ideally, &lt;&#x3D; 7 DB queries per web page.</p>
+<p><img src="/images/jiuzhang-pull-diagram.png"></p>
+<p><img src="/images/jiuzhang-pull-code.png"></p>
+<h3 id="problem"><a href="#problem" class="headerlink" title="problem"></a>problem</h3><ol>
+<li>synchronously block user from getting news feed</li>
+<li>too many DB reads</li>
+</ol>
+<h2 id="push-model"><a href="#push-model" class="headerlink" title="push model"></a>push model</h2><p>Each person have a list storing new feeds. When friend post tweet, <strong>fanout</strong> to my feed list.</p>
+<p>When I read, I simply read top 100 from the feed list. <strong>So read is 1 DB read</strong>.</p>
+<p>Post tweet is N DB writes, which is slow. <strong>However this is done async, so it does not matter</strong>.</p>
+<p><img src="/images/jiuzhang-push-diagram.png"></p>
+<p><img src="/images/jiuzhang-push-code.png"></p>
+<p>One example of async implementation: <strong>RabbitMQ</strong></p>
+<h1 id="Scale"><a href="#Scale" class="headerlink" title="Scale"></a>Scale</h1><h2 id="optimize-pull-model"><a href="#optimize-pull-model" class="headerlink" title="optimize pull model"></a>optimize pull model</h2><p>Although it looks like push is faster than pull, <strong>facebook and twitter both use pull model</strong>.</p>
+<ol>
+<li><p>add cache for DB, reduce # of DB read</p>
+</li>
+<li><p>also cache each user’s news feed</p>
+<p>your yesterday’s feeds are all cached, thus don’t need to read everytime.</p>
+</li>
+</ol>
+<h2 id="optimize-push-model"><a href="#optimize-push-model" class="headerlink" title="optimize push model"></a>optimize push model</h2><ol>
+<li><p>disk waste a lot, although disk is cheap</p>
+</li>
+<li><p>inactive user!</p>
+<p>rank follower by weight, and don’t write to inactive user (eg. last login time)</p>
+</li>
+<li><p>if follower is toooo much, like Lady Gaga, user pull for Lady Gaga.</p>
+<p>Tradeoff: Push + Pull model.</p>
+</li>
+</ol>
+<h2 id="optimize-‘Like’-info"><a href="#optimize-‘Like’-info" class="headerlink" title="optimize ‘Like’ info"></a>optimize ‘Like’ info</h2><p>In tweet table, if we need to count(user) who liked, it’s gonna take forever.</p>
+<p><strong>We must denormalize this data</strong>!</p>
+<p><img src="/images/jiuzhang-denormalize.png"></p>
+<p>Denormalize: it’s duplicate info but we store in table, because of performance improvement.</p>
+<p><strong>Shortcoming: inconsistency</strong>!</p>
+<ol>
+<li>unless using SQL transaction, async failure can result in wrong counting number</li>
+<li>race condition</li>
+</ol>
+<p>Solution: 1. use atomic operation 2. every day, schedule to update this number.</p>
+<h2 id="optimize-thundering-herd-problem"><a href="#optimize-thundering-herd-problem" class="headerlink" title="optimize thundering herd problem"></a>optimize thundering herd problem</h2><p>When cache fails, all DB query will go to DB. This results in DB crash.</p>
+<p>Hot spot (thundering herd)</p>
+<p><img src="/images/jiuzhang-thundering-herd.png"></p>
+<p>Solution: hold all incoming queries (who fails cache), and only send 1 DB query. When result is returned, return to every query.</p>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>Permalink:</span>
+                        <span><a href="https://mar2ndx.github.io/2016/07/11/pre-2017-2016-07-11-design-twitter/">https://mar2ndx.github.io/2016/07/11/pre-2017-2016-07-11-design-twitter/</a></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2019 <a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc/4.0/">CC-BY-NC-4.0</a> LICENSE</span>
+                    </p>
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY</strong>?</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2016/07/31/pre-2017-2016-07-31-mvc-mvp-mvvm/">[Design] MVC, MVP and MVVM</a>
+            
+            
+            <a class="next" rel="next" href="/2016/06/11/pre-2017-2016-06-11-add-aside-content-octopress/">[Octopress] Add Aside Content to Octopress </a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+            </div>
+            <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>©  | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+
+</html>

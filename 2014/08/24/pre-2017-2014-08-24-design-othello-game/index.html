@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+
+
+
+
+<title>[CC150v5] 8.8 Design Othello Game  | Tech blog</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const pagebody = document.getElementsByTagName('body')[0]
+
+            function setTheme(status) {
+
+                if (status === 'dark') {
+                    window.sessionStorage.theme = 'dark'
+                    pagebody.classList.add('dark-theme');
+
+                } else if (status === 'light') {
+                    window.sessionStorage.theme = 'light'
+                    pagebody.classList.remove('dark-theme');
+                }
+            };
+
+            setTheme(window.sessionStorage.theme)
+        })();
+    </script>
+
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">Bentham&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                <a class="menu-item" href="/archives">Posts</a>
+                
+                <a class="menu-item" href="/category">Categories</a>
+                
+                <a class="menu-item" href="/tag">Tags</a>
+                
+                <a class="menu-item" href="/about">About</a>
+                
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">Bentham&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">
+                    <svg class="menu-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M4.5 17.27q-.213 0-.356-.145T4 16.768t.144-.356t.356-.143h15q.213 0 .356.144q.144.144.144.357t-.144.356t-.356.143zm0-4.77q-.213 0-.356-.144T4 11.999t.144-.356t.356-.143h15q.213 0 .356.144t.144.357t-.144.356t-.356.143zm0-4.77q-.213 0-.356-.143Q4 7.443 4 7.23t.144-.356t.356-.143h15q.213 0 .356.144T20 7.23t-.144.356t-.356.144z"/></svg>
+                    <svg class="close-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Material Symbols Light by Google - https://github.com/google/material-design-icons/blob/master/LICENSE --><path fill="currentColor" d="m12 12.708l-5.246 5.246q-.14.14-.344.15t-.364-.15t-.16-.354t.16-.354L11.292 12L6.046 6.754q-.14-.14-.15-.344t.15-.364t.354-.16t.354.16L12 11.292l5.246-5.246q.14-.14.345-.15q.203-.01.363.15t.16.354t-.16.354L12.708 12l5.246 5.246q.14.14.15.345q.01.203-.15.363t-.354.16t-.354-.16z"/></svg>
+                </div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                <a class="menu-item" href="/archives">Posts</a>
+                
+                <a class="menu-item" href="/category">Categories</a>
+                
+                <a class="menu-item" href="/tag">Tags</a>
+                
+                <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if (toggleMenu.classList.contains("active")) {
+            toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        } else {
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    var tocbot_timer;
+    var DEPTH_MAX = 6; // 为 6 时展开所有
+    var tocbot_default_config = {
+        tocSelector: '.tocbot-list',
+        contentSelector: '.post-content',
+        headingSelector: 'h1, h2, h3, h4, h5',
+        orderedList: false,
+        scrollSmooth: true,
+        onClick: extend_click,
+    };
+
+    function extend_click() {
+        clearTimeout(tocbot_timer);
+        tocbot_timer = setTimeout(function() {
+            tocbot.refresh(obj_merge(tocbot_default_config, {
+                hasInnerContainers: true
+            }));
+        }, 420); // 这个值是由 tocbot 源码里定义的 scrollSmoothDuration 得来的
+    }
+
+    document.ready(function() {
+        tocbot.init(obj_merge(tocbot_default_config, {
+            collapseDepth: 1
+        }));
+    });
+
+    function expand_toc() {
+        var b = document.querySelector('.tocbot-toc-expand');
+        var expanded = b.getAttribute('data-expanded');
+        expanded ? b.removeAttribute('data-expanded') : b.setAttribute('data-expanded', true);
+        tocbot.refresh(obj_merge(tocbot_default_config, {
+            collapseDepth: expanded ? 1 : DEPTH_MAX
+        }));
+        b.innerText = expanded ? 'Expand all' : 'Collapse all';
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+    function obj_merge(target, source) {
+        for (var item in source) {
+            if (source.hasOwnProperty(item)) {
+                target[item] = source[item];
+            }
+        }
+        return target;
+    }
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">[CC150v5] 8.8 Design Othello Game </h1>
+            
+                <div class="post-meta">
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">August 24, 2014&nbsp;&nbsp;0:00:00</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/CC150v5/">CC150v5</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><blockquote>
+<p>Othello is played as follows: Each Othello piece is white on one side and black on the other. When a piece is surrounded by its opponents on both the left and right sides, or both the top and bottom, it is said to be captured and its color is flipped.</p>
+</blockquote>
+<blockquote>
+<p>The win is assigned to the person with the most pieces. Implement the object-oriented design for Othello.</p>
+</blockquote>
+<h3 id="Class"><a href="#Class" class="headerlink" title="Class"></a>Class</h3><ol>
+<li>Game<ol>
+<li>Two Player objects</li>
+<li>a board object</li>
+<li>singleton class (unless otherwise specified, this needs to be discussed)</li>
+</ol>
+</li>
+<li>Board<ol>
+<li>Keep the score (black&#x2F;white count). Of course we can put score in Game Class as well, it seems logically related to the board a bit more.</li>
+<li>Array of Piece objects</li>
+<li>getScore() method</li>
+</ol>
+</li>
+<li>Piece<ol>
+<li>stores color info</li>
+<li>flip() function</li>
+</ol>
+</li>
+<li>Player<ol>
+<li>stores color info</li>
+<li>playPiece() method</li>
+</ol>
+</li>
+<li>Color Enum</li>
+<li>Direction Enum</li>
+</ol>
+<h3 id="Functions"><a href="#Functions" class="headerlink" title="Functions"></a>Functions</h3><ol>
+<li>placePiece() by the Player (which triggers the following 2 methods)</li>
+<li>private flipSection(Position fromWhere, Color c, Direction up&#x2F;down&#x2F;left&#x2F;right) by the board</li>
+<li>private updateScore() by the board</li>
+<li>getScore() by the board</li>
+</ol>
+<h4 id="Follow-up-Do-we-need-separate-Board-and-Game-classes"><a href="#Follow-up-Do-we-need-separate-Board-and-Game-classes" class="headerlink" title="Follow up: Do we need separate Board and Game classes?"></a>Follow up: Do we need separate Board and Game classes?</h4><p>Strictly speaking, no. The drawback is adding an extra layers. A function that calls Game class is immediately calling Board class.</p>
+<p>But keeping the objects separate allows us to have a logical separation between the board (which contains just logic involving placing pieces) and the game (which involves times, game flow, etc.).</p>
+<h3 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h3><p>This is an easy, and very standard OOD question. Keep the logic clear, design the layers and object hierarchy, and the rest of things will come naturally.</p>
+<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><p>Game.java</p>
+<pre><code>public class Game &#123;
+    private Player[] players;
+    private static Game instance;
+    private Board board;
+    private final int ROWS = 10;
+    private final int COLUMNS = 10;
+
+    private Game() &#123;
+        board = new Board(ROWS, COLUMNS);
+        players = new Player[2];
+        players[0] = new Player(Color.Black);
+        players[1] = new Player(Color.White);
+        Automator.getInstance().initialize(players); // used for testing
+    &#125;
+
+    public static Game getInstance() &#123;
+        if (instance == null) &#123;
+            instance = new Game();
+        &#125;
+        return instance;
+    &#125;
+
+    public Board getBoard() &#123;
+        return board;
+    &#125;
+&#125;
+</code></pre>
+<p>Board.java</p>
+<pre><code>public class Board &#123;
+    private int blackCount = 0;
+    private int whiteCount = 0;
+    private Piece[][] board;
+
+    public Board(int rows, int columns) &#123;
+        board = new Piece[rows][columns];
+    &#125;
+
+    public void initialize() &#123;
+        /* initial board has a grid like the following in the center:
+         *     WB
+         *     BW
+         */
+        int middleRow = board.length / 2;
+        int middleColumn = board[middleRow].length / 2;
+        board[middleRow][middleColumn] = new Piece(Color.White);
+        board[middleRow + 1][middleColumn] = new Piece(Color.Black);
+        board[middleRow + 1][middleColumn + 1] = new Piece(Color.White);
+        board[middleRow][middleColumn + 1] = new Piece(Color.Black);
+        blackCount = 2;
+        whiteCount = 2;
+    &#125;
+
+    public boolean placeColor(int row, int column, Color color) &#123;
+        if (board[row][column] != null) &#123;
+            return false;
+        &#125;
+
+        /* attempt to flip each of the four directions */
+        int[] results = new int[4];
+        results[0] = flipSection(row - 1, column, color, Direction.up);
+        results[1] = flipSection(row + 1, column, color, Direction.down);
+        results[2] = flipSection(row, column + 1, color, Direction.right);
+        results[3] = flipSection(row, column - 1, color, Direction.left);
+
+        /* compute how many pieces were flipped */
+        int flipped = 0;
+        for (int result : results) &#123;
+            if (result &gt; 0) &#123;
+                flipped += result;
+            &#125;
+        &#125;
+
+        /* if nothing was flipped, then it&#39;s an invalid move */
+        if (flipped &lt; 0) &#123;
+            return false;
+        &#125;
+
+        /* flip the piece, and update the score */
+        board[row][column] = new Piece(color);
+        updateScore(color, flipped + 1);
+        return true;
+    &#125;
+
+    private int flipSection(int row, int column, Color color, Direction d) &#123;
+        /* Compute the delta for the row and the column. At all times, only the row or the column
+         * will have a delta, since we&#39;re only moving in one direction at a time.
+         */
+        int r = 0;
+        int c = 0;
+        switch (d) &#123;
+        case up:
+            r = -1;
+            break;
+        case down:
+            r = 1;
+            break;
+        case left:
+            c = -1;
+            break;
+        case right:
+            c = 1;
+            break;
+        &#125;
+
+        /* If out of bounds, or nothing to flip, return an error (-1) */
+        if (row &lt; 0 || row &gt;= board.length || column &lt; 0 || column &gt;= board[row].length || board[row][column] == null) &#123;
+            return -1;
+        &#125;
+
+        /* Found same color - return nothing flipped */
+        if (board[row][column].getColor() == color) &#123;
+            return 0;
+        &#125;
+
+        /* Recursively flip the remainder of the row. If -1 is returned, then we know we hit the boundary
+         * of the row (or a null piece) before we found our own color, so there&#39;s nothing to flip. Return
+         * the error code.
+         */
+        int flipped = flipSection(row + r, column + c, color, d);
+        if (flipped &lt; 0) &#123;
+            return -1;
+        &#125;
+
+        /* flip our own color */
+        board[row][column].flip();
+        return flipped + 1;
+    &#125;
+
+    public int getScoreForColor(Color c) &#123;
+        if (c == Color.Black) &#123;
+            return blackCount;
+        &#125; else &#123;
+            return whiteCount;
+        &#125;
+    &#125;
+
+    private void updateScore(Color newColor, int newPieces) &#123;
+        /* If we added x pieces of a color, then we actually removed x - 1 pieces of the other
+         * color. The -1 is because one of the new pieces was the just-placed one.
+         */
+        if (newColor == Color.Black) &#123;
+            whiteCount -= newPieces - 1;
+            blackCount += newPieces;
+        &#125; else &#123;
+            blackCount -= newPieces - 1;
+            whiteCount += newPieces;
+        &#125;
+    &#125;
+
+    public void printBoard() &#123;
+        for (int r = 0; r &lt; board.length; r++) &#123;
+            for (int c = 0; c &lt; board[r].length; c++) &#123;
+                if (board[r][c] == null) &#123;
+                    System.out.print(&quot;_&quot;);
+                &#125; else if (board[r][c].getColor() == Color.White) &#123;
+                    System.out.print(&quot;W&quot;);
+                &#125; else &#123;
+                    System.out.print(&quot;B&quot;);
+                &#125;
+            &#125;
+            System.out.println();
+        &#125;
+    &#125;
+&#125;
+</code></pre>
+<p>Player.java</p>
+<pre><code>public class Player &#123;
+    private Color color;
+    public Player(Color c) &#123;
+        color = c;
+    &#125;
+
+    public int getScore() &#123;
+        return Game.getInstance().getBoard().getScoreForColor(color);
+    &#125;
+
+    public boolean playPiece(int row, int column) &#123;
+        return Game.getInstance().getBoard().placeColor(row, column, color);
+    &#125;
+
+    public Color getColor() &#123;
+        return color;
+    &#125;
+&#125;
+</code></pre>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>Permalink:</span>
+                        <span><a href="https://mar2ndx.github.io/2014/08/24/pre-2017-2014-08-24-design-othello-game/">https://mar2ndx.github.io/2014/08/24/pre-2017-2014-08-24-design-othello-game/</a></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2019 <a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc/4.0/">CC-BY-NC-4.0</a> LICENSE</span>
+                    </p>
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY</strong>?</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2014/08/24/pre-2017-2014-08-24-design-online-chat-server-2/">[CC150v5] 8.7 Design Online Chat Server (2)</a>
+            
+            
+            <a class="next" rel="next" href="/2014/08/23/pre-2017-2014-08-23-BST-over-hashmap/">[Design] Merits of BST over HashTables</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+            </div>
+            <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>©  | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+
+</html>

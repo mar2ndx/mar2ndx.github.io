@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+
+
+
+
+<title>[LeetCode 99] Recover Binary Search Tree | Tech blog</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const pagebody = document.getElementsByTagName('body')[0]
+
+            function setTheme(status) {
+
+                if (status === 'dark') {
+                    window.sessionStorage.theme = 'dark'
+                    pagebody.classList.add('dark-theme');
+
+                } else if (status === 'light') {
+                    window.sessionStorage.theme = 'light'
+                    pagebody.classList.remove('dark-theme');
+                }
+            };
+
+            setTheme(window.sessionStorage.theme)
+        })();
+    </script>
+
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">Bentham&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                <a class="menu-item" href="/archives">Posts</a>
+                
+                <a class="menu-item" href="/category">Categories</a>
+                
+                <a class="menu-item" href="/tag">Tags</a>
+                
+                <a class="menu-item" href="/about">About</a>
+                
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">Bentham&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">
+                    <svg class="menu-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M4.5 17.27q-.213 0-.356-.145T4 16.768t.144-.356t.356-.143h15q.213 0 .356.144q.144.144.144.357t-.144.356t-.356.143zm0-4.77q-.213 0-.356-.144T4 11.999t.144-.356t.356-.143h15q.213 0 .356.144t.144.357t-.144.356t-.356.143zm0-4.77q-.213 0-.356-.143Q4 7.443 4 7.23t.144-.356t.356-.143h15q.213 0 .356.144T20 7.23t-.144.356t-.356.144z"/></svg>
+                    <svg class="close-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Material Symbols Light by Google - https://github.com/google/material-design-icons/blob/master/LICENSE --><path fill="currentColor" d="m12 12.708l-5.246 5.246q-.14.14-.344.15t-.364-.15t-.16-.354t.16-.354L11.292 12L6.046 6.754q-.14-.14-.15-.344t.15-.364t.354-.16t.354.16L12 11.292l5.246-5.246q.14-.14.345-.15q.203-.01.363.15t.16.354t-.16.354L12.708 12l5.246 5.246q.14.14.15.345q.01.203-.15.363t-.354.16t-.354-.16z"/></svg>
+                </div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                <a class="menu-item" href="/archives">Posts</a>
+                
+                <a class="menu-item" href="/category">Categories</a>
+                
+                <a class="menu-item" href="/tag">Tags</a>
+                
+                <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if (toggleMenu.classList.contains("active")) {
+            toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        } else {
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    var tocbot_timer;
+    var DEPTH_MAX = 6; // 为 6 时展开所有
+    var tocbot_default_config = {
+        tocSelector: '.tocbot-list',
+        contentSelector: '.post-content',
+        headingSelector: 'h1, h2, h3, h4, h5',
+        orderedList: false,
+        scrollSmooth: true,
+        onClick: extend_click,
+    };
+
+    function extend_click() {
+        clearTimeout(tocbot_timer);
+        tocbot_timer = setTimeout(function() {
+            tocbot.refresh(obj_merge(tocbot_default_config, {
+                hasInnerContainers: true
+            }));
+        }, 420); // 这个值是由 tocbot 源码里定义的 scrollSmoothDuration 得来的
+    }
+
+    document.ready(function() {
+        tocbot.init(obj_merge(tocbot_default_config, {
+            collapseDepth: 1
+        }));
+    });
+
+    function expand_toc() {
+        var b = document.querySelector('.tocbot-toc-expand');
+        var expanded = b.getAttribute('data-expanded');
+        expanded ? b.removeAttribute('data-expanded') : b.setAttribute('data-expanded', true);
+        tocbot.refresh(obj_merge(tocbot_default_config, {
+            collapseDepth: expanded ? 1 : DEPTH_MAX
+        }));
+        b.innerText = expanded ? 'Expand all' : 'Collapse all';
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+    function obj_merge(target, source) {
+        for (var item in source) {
+            if (source.hasOwnProperty(item)) {
+                target[item] = source[item];
+            }
+        }
+        return target;
+    }
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">[LeetCode 99] Recover Binary Search Tree</h1>
+            
+                <div class="post-meta">
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">May 25, 2014&nbsp;&nbsp;0:00:00</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/Leetcode/">Leetcode</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><p><a target="_blank" rel="noopener" href="https://oj.leetcode.com/problems/recover-binary-search-tree/">link</a></p>
+<div class="question-content">
+            <p></p><p>
+Two elements of a binary search tree (BST) are swapped by mistake.</p>
+
+<p>Recover the tree without changing its structure.
+</p>
+
+<p><b>Note:</b><br><br>A solution using O(<i>n</i>) space is pretty straight forward. Could you devise a constant space solution?</p>
+<p></p>
+
+<p></p>
+</div>
+
+<h3 id="Stats"><a href="#Stats" class="headerlink" title="Stats"></a>Stats</h3><table border="2">
+	<tr>
+		<td>Frequency</td>
+		<td bgcolor="lime">2</td>
+	</tr>
+	<tr>
+		<td>Difficulty</td>
+		<td bgcolor="red">4</td>
+	</tr>
+	<tr>
+		<td>Adjusted Difficulty</td>
+		<td bgcolor="red">4</td>
+	</tr>
+	<tr>
+		<td>Time to use</td>
+		<td bgcolor="lime">--------</td>
+	</tr>
+</table>
+
+<p>Ratings&#x2F;Color &#x3D; 1(white) 2(lime) 3(yellow) 4&#x2F;5(red)</p>
+<h3 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h3><p><strong>This is one of the most difficult questions that I have solved</strong>.</p>
+<p>The question can be solved using 2 pointers to point to the 2 misplaced nodes, and swap them. I solved the problem with this approach, and I found a good explanation <a target="_blank" rel="noopener" href="http://chaoren.is-programmer.com/posts/42931.html">here</a>.</p>
+<blockquote>
+<p>Only two variables (first, second) are enough to record nodes to be exchanged.</p>
+<p>If there’s only one descending order pair (e.g. 20, 10, 30, 40, 50), use first &amp; second to record it.</p>
+<p>If there are two descending order pairs (e.g. 10, 40, 30, 20, 50 or 50, 20, 30, 40, 10), use the smaller number in second pair to update variable ‘second’.</p>
+<p>In the end, swap first and second.</p>
+</blockquote>
+<p>This is a popular solution on the Internet, which <strong>uses O(1) space, plus average case O(lgn) stack space</strong> (because recursion always incur stack usage). So this solution is actually not fulfilling the requirements.</p>
+<blockquote>
+<p>中序遍历二叉树的空间复杂度是 O(logN) on average case</p>
+</blockquote>
+<p><strong>So finally I found a solution with constent space, and it’s using Treaded Binary Tree again</strong>! Look below for details.</p>
+<h3 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h3><p><a target="_blank" rel="noopener" href="http://www.geeksforgeeks.org/inorder-tree-traversal-without-recursion-and-without-stack/">This</a> is a systematic analysis of <strong>Morris Traversal</strong> based on <strong>Threaded Binary Tree</strong>.</p>
+<p><strong>A solution of using Morris Traversal is explained <a target="_blank" rel="noopener" href="http://www.cnblogs.com/TenosDoIt/p/3445682.html">here</a></strong>. Don’t worry about the tree structure being changed, because it’s reverted back after the traversal.</p>
+<blockquote>
+<p>算法 2：为了满足 O(1)空间复杂度，我们就要使用非递归且不使用栈的中序遍历算法，在 leetcode 另一个题目 Binary Tree Inorder Traversal 中，我们提到了 Morris Traversal 中序遍历算法，它既没有递归，也没有使用栈，而是用了线索二叉树的思想，用闲置的右节点指向中序序列中该节点的后缀，遍历后再恢复树的原始指针。其主要算法步骤如下：</p>
+</blockquote>
+<blockquote>
+<p>重复以下 1、2 直到当前节点为空。</p>
+</blockquote>
+<p><strong><a target="_blank" rel="noopener" href="http://fisherlei.blogspot.sg/2012/12/leetcode-recover-binary-search-tree.html">Another person</a></strong> have a very good (maybe better) English version of analysis and code:</p>
+<pre><code>1. Initialize current as root
+2. While current is not NULL
+   If current does not have left child
+      a) Print current’s data
+      b) Go to the right, i.e., current = current-&amp;gt;right
+   Else
+      a) Make current as right child of the rightmost node in current&#39;s left subtree
+      b) Go to this left child, i.e., current = current-&amp;gt;left
+</code></pre>
+<h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><p><strong>First, my code (2 pointer solution)</strong></p>
+<pre><code>TreeNode first = null, second = null;
+TreeNode pre = new TreeNode(Integer.MIN_VALUE);
+
+public void recoverTree(TreeNode root) &#123;
+    helper(root);
+    // now first and second are both found
+    int temp = first.val;
+    first.val = second.val;
+    second.val = temp;
+&#125;
+
+private void helper(TreeNode root) &#123;
+    if (root == null) return;
+    helper(root.left);
+    if (pre.val &gt; root.val) &#123;
+        if (first == null) &#123;
+            first = pre;
+            second = root;
+        &#125;
+        else second = root;
+    &#125;
+    pre = root;
+    helper(root.right);
+&#125;
+</code></pre>
+<p><strong>Second, real O(1) space solution</strong> using Threaded Binary Tree (i.e. Morris Traversal) in C++. I could not memorize this code.</p>
+<pre><code>void recoverTree(TreeNode *root) &#123;
+       TreeNode *f1=NULL, *f2=NULL;
+       TreeNode  *current,*pre, *parent=NULL;
+
+       if(root == NULL)
+             return;
+       bool found = false;
+       current = root;
+       while(current != NULL)
+       &#123;
+             if(current-&gt;left == NULL)
+             &#123;
+                    if(parent &amp;&amp; parent-&gt;val &gt; current-&gt;val)
+                    &#123;
+                           if(!found)
+                           &#123;
+                                 f1 = parent;
+                                 found = true;
+                           &#125;
+                           f2 = current;
+                    &#125;
+                    parent = current;
+                    current = current-&gt;right;
+             &#125;
+             else
+             &#123;
+                    /* Find the inorder predecessor of current */
+                    pre = current-&gt;left;
+                    while(pre-&gt;right != NULL &amp;&amp; pre-&gt;right != current)
+                           pre = pre-&gt;right;
+
+                    /* Make current as right child of its inorder predecessor */
+                    if(pre-&gt;right == NULL)
+                    &#123;
+                           pre-&gt;right = current;
+                           current = current-&gt;left;
+                    &#125;
+
+                    /* Revert the changes made in if part to restore the original
+                    tree i.e., fix the right child of predecssor */
+                    else
+                    &#123;
+                           pre-&gt;right = NULL;
+                           if(parent-&gt;val &gt; current-&gt;val)
+                           &#123;
+                                 if(!found)
+                                 &#123;
+                                        f1 = parent;
+                                        found = true;
+                                 &#125;
+                                 f2 = current;
+                           &#125;
+                           parent = current;
+                           current = current-&gt;right;
+                    &#125; /* End of if condition pre-&gt;right == NULL */
+             &#125; /* End of if condition current-&gt;left == NULL*/
+       &#125; /* End of while */
+
+       if(f1 &amp;&amp; f2)
+             swap(f1-&gt;val, f2-&gt;val);
+&#125;
+</code></pre>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>Permalink:</span>
+                        <span><a href="https://mar2ndx.github.io/2014/05/25/pre-2017-2014-05-25-Recover-Binary-Search-Tree/">https://mar2ndx.github.io/2014/05/25/pre-2017-2014-05-25-Recover-Binary-Search-Tree/</a></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2019 <a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc/4.0/">CC-BY-NC-4.0</a> LICENSE</span>
+                    </p>
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY</strong>?</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2014/05/25/pre-2017-2014-05-25-Minimum-Depth-of-Binary-Tree/">[LeetCode 111] Minimum Depth of Binary Tree</a>
+            
+            
+            <a class="next" rel="next" href="/2014/05/25/pre-2017-2014-05-25-Same-Tree/">[LeetCode 100] Same Tree</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+            </div>
+            <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>©  | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+
+</html>

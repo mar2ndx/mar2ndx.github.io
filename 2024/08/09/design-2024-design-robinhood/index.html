@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+
+
+
+
+<title>System Design 2024 - Robinhood | Tech blog</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const pagebody = document.getElementsByTagName('body')[0]
+
+            function setTheme(status) {
+
+                if (status === 'dark') {
+                    window.sessionStorage.theme = 'dark'
+                    pagebody.classList.add('dark-theme');
+
+                } else if (status === 'light') {
+                    window.sessionStorage.theme = 'light'
+                    pagebody.classList.remove('dark-theme');
+                }
+            };
+
+            setTheme(window.sessionStorage.theme)
+        })();
+    </script>
+
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">Bentham&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                <a class="menu-item" href="/archives">Posts</a>
+                
+                <a class="menu-item" href="/category">Categories</a>
+                
+                <a class="menu-item" href="/tag">Tags</a>
+                
+                <a class="menu-item" href="/about">About</a>
+                
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">Bentham&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">
+                    <svg class="menu-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M4.5 17.27q-.213 0-.356-.145T4 16.768t.144-.356t.356-.143h15q.213 0 .356.144q.144.144.144.357t-.144.356t-.356.143zm0-4.77q-.213 0-.356-.144T4 11.999t.144-.356t.356-.143h15q.213 0 .356.144t.144.357t-.144.356t-.356.143zm0-4.77q-.213 0-.356-.143Q4 7.443 4 7.23t.144-.356t.356-.143h15q.213 0 .356.144T20 7.23t-.144.356t-.356.144z"/></svg>
+                    <svg class="close-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Material Symbols Light by Google - https://github.com/google/material-design-icons/blob/master/LICENSE --><path fill="currentColor" d="m12 12.708l-5.246 5.246q-.14.14-.344.15t-.364-.15t-.16-.354t.16-.354L11.292 12L6.046 6.754q-.14-.14-.15-.344t.15-.364t.354-.16t.354.16L12 11.292l5.246-5.246q.14-.14.345-.15q.203-.01.363.15t.16.354t-.16.354L12.708 12l5.246 5.246q.14.14.15.345q.01.203-.15.363t-.354.16t-.354-.16z"/></svg>
+                </div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                <a class="menu-item" href="/archives">Posts</a>
+                
+                <a class="menu-item" href="/category">Categories</a>
+                
+                <a class="menu-item" href="/tag">Tags</a>
+                
+                <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if (toggleMenu.classList.contains("active")) {
+            toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        } else {
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    var tocbot_timer;
+    var DEPTH_MAX = 6; // 为 6 时展开所有
+    var tocbot_default_config = {
+        tocSelector: '.tocbot-list',
+        contentSelector: '.post-content',
+        headingSelector: 'h1, h2, h3, h4, h5',
+        orderedList: false,
+        scrollSmooth: true,
+        onClick: extend_click,
+    };
+
+    function extend_click() {
+        clearTimeout(tocbot_timer);
+        tocbot_timer = setTimeout(function() {
+            tocbot.refresh(obj_merge(tocbot_default_config, {
+                hasInnerContainers: true
+            }));
+        }, 420); // 这个值是由 tocbot 源码里定义的 scrollSmoothDuration 得来的
+    }
+
+    document.ready(function() {
+        tocbot.init(obj_merge(tocbot_default_config, {
+            collapseDepth: 1
+        }));
+    });
+
+    function expand_toc() {
+        var b = document.querySelector('.tocbot-toc-expand');
+        var expanded = b.getAttribute('data-expanded');
+        expanded ? b.removeAttribute('data-expanded') : b.setAttribute('data-expanded', true);
+        tocbot.refresh(obj_merge(tocbot_default_config, {
+            collapseDepth: expanded ? 1 : DEPTH_MAX
+        }));
+        b.innerText = expanded ? 'Expand all' : 'Collapse all';
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+    function obj_merge(target, source) {
+        for (var item in source) {
+            if (source.hasOwnProperty(item)) {
+                target[item] = source[item];
+            }
+        }
+        return target;
+    }
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">System Design 2024 - Robinhood</h1>
+            
+                <div class="post-meta">
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">August 9, 2024&nbsp;&nbsp;2:27:00</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/Design/">Design</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h1 id="Requirements"><a href="#Requirements" class="headerlink" title="Requirements"></a>Requirements</h1><ol>
+<li>User buy&#x2F;sell financial products via an Exchange.</li>
+<li>User can check their positions.</li>
+<li>User sees real-time value of their assets on 1 screen</li>
+<li>Minimize # of servers that listen to Exchange (this is very costly).</li>
+</ol>
+<h1 id="Numbers"><a href="#Numbers" class="headerlink" title="Numbers"></a>Numbers</h1><p>Assume 100 Million users, and 100 instruments in each portfolio. </p>
+<p>Example of instruments:</p>
+<ol>
+<li>Stock</li>
+<li>Option</li>
+</ol>
+<h1 id="HLD"><a href="#HLD" class="headerlink" title="HLD"></a>HLD</h1><h2 id="Thoughs"><a href="#Thoughs" class="headerlink" title="Thoughs"></a>Thoughs</h2><ol>
+<li>It’s a phone app, try to limit number of connections per client. </li>
+<li>If user have multiple devices, make sure they connect to the same server.<blockquote>
+<p>consistent hashing to decide which server a userId connects to.</p>
+</blockquote>
+</li>
+<li>Robinhood is an agent, not an exchange. </li>
+<li>There could be race condition when user cancel an order.</li>
+</ol>
+<h2 id="Order-Placing-Diagram"><a href="#Order-Placing-Diagram" class="headerlink" title="Order Placing Diagram"></a>Order Placing Diagram</h2><p>To place an order:</p>
+<ol>
+<li>User sent a order request to Order Pending Table.</li>
+<li>Goes to Order Gateway, place order to Exchange.</li>
+<li>Map the exchange order ID to robinhood order ID. Let’s call it Order Mapping Table. </li>
+<li>Listener cluster will listen to exchange, and update Order Table once there is a filled order.</li>
+</ol>
+<p>To cancel an order:</p>
+<ol>
+<li>User send request to Order Gateway, get exchange order ID. </li>
+<li>Use the exchange order ID to cancel order</li>
+<li>ONLY notify users once the exchange cancellation is successful.</li>
+</ol>
+<h2 id="HLD-1"><a href="#HLD-1" class="headerlink" title="HLD"></a>HLD</h2><p><img src="/images/system-design-robinhood-1.jpg"></p>
+<h2 id="What-is-“price”"><a href="#What-is-“price”" class="headerlink" title="What is “price”?"></a>What is “price”?</h2><ol>
+<li>Trade price is determined by combination of bid&#x2F;ask prices.<ol>
+<li>Last trade price</li>
+<li>Take highest buy price &amp; lowest sell price, average from multiple exchanges. </li>
+<li>Volume-weighted average price.</li>
+</ol>
+</li>
+</ol>
+<h2 id="Read-Positions"><a href="#Read-Positions" class="headerlink" title="Read Positions"></a>Read Positions</h2><p>Need to get user’s position, and each stock’s price. </p>
+<p>For position: use the Orders Table to create Positions Table using derived data, change data capture, have kafka consumer, and update total positions. </p>
+<p>For pricing, we should not let User Service to connect to Exchange directly, since its too costly. </p>
+<h1 id="Delivering-Pricing-to-User"><a href="#Delivering-Pricing-to-User" class="headerlink" title="Delivering Pricing to User"></a>Delivering Pricing to User</h1><h2 id="Exchange-Layer"><a href="#Exchange-Layer" class="headerlink" title="Exchange Layer"></a>Exchange Layer</h2><p>Publish pricing through UDP. We want this layer as small as possible. </p>
+<h2 id="Pricing-Layer"><a href="#Pricing-Layer" class="headerlink" title="Pricing Layer"></a>Pricing Layer</h2><ol>
+<li>Decide a price for each assets based on imcoming data from multiple exchanges</li>
+<li>Deliver prices to user layer (through WebSocket)</li>
+</ol>
+<p>The price is decided by multiple algorithms:</p>
+<ol>
+<li>Last trade price</li>
+<li>Some form of stateful calculation: <ol>
+<li>moving average</li>
+<li>active bids&#x2F;asks</li>
+</ol>
+</li>
+</ol>
+<p>Need to do a state machine replication to make sure pricing layer is fault-tolerance. Zookeeper can help with fail-over. </p>
+<p>We can shard the data on hashing of the ticker. </p>
+<h3 id="Some-Stock-are-Super-hot"><a href="#Some-Stock-are-Super-hot" class="headerlink" title="Some Stock are Super-hot"></a>Some Stock are Super-hot</h3><p>A pricing server can be overloaded by either:</p>
+<ol>
+<li>too many data from one exchange</li>
+<li>too many user to check price on a certain stock</li>
+</ol>
+<p>Solution:</p>
+<ol>
+<li>Only publish the average of the last 10 trades. </li>
+<li>Price over the aggregation of open bids and asks. <ol>
+<li>Either exchange layer aggregate the data</li>
+<li>Or send over the snapshot of orderbook to pricing layer, and pricing layer aggregate.</li>
+</ol>
+</li>
+</ol>
+<h3 id="Re-sharding"><a href="#Re-sharding" class="headerlink" title="Re-sharding"></a>Re-sharding</h3><p>TODO</p>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>Permalink:</span>
+                        <span><a href="https://mar2ndx.github.io/2024/08/09/design-2024-design-robinhood/">https://mar2ndx.github.io/2024/08/09/design-2024-design-robinhood/</a></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2019 <a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc/4.0/">CC-BY-NC-4.0</a> LICENSE</span>
+                    </p>
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY</strong>?</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2024/08/20/design-2024-explain-llm/">Explain LLM in Simple Terms</a>
+            
+            
+            <a class="next" rel="next" href="/2024/07/29/design-2024-design-twitter/">System Design 2024 - Twitter</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+            </div>
+            <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>©  | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+
+</html>

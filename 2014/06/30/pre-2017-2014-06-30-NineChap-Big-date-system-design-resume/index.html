@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+
+
+
+
+<title>[NineChap 9] Big Date, System Design and Resume (`) | Tech blog</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const pagebody = document.getElementsByTagName('body')[0]
+
+            function setTheme(status) {
+
+                if (status === 'dark') {
+                    window.sessionStorage.theme = 'dark'
+                    pagebody.classList.add('dark-theme');
+
+                } else if (status === 'light') {
+                    window.sessionStorage.theme = 'light'
+                    pagebody.classList.remove('dark-theme');
+                }
+            };
+
+            setTheme(window.sessionStorage.theme)
+        })();
+    </script>
+
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">Bentham&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                <a class="menu-item" href="/archives">Posts</a>
+                
+                <a class="menu-item" href="/category">Categories</a>
+                
+                <a class="menu-item" href="/tag">Tags</a>
+                
+                <a class="menu-item" href="/about">About</a>
+                
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">Bentham&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">
+                    <svg class="menu-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M4.5 17.27q-.213 0-.356-.145T4 16.768t.144-.356t.356-.143h15q.213 0 .356.144q.144.144.144.357t-.144.356t-.356.143zm0-4.77q-.213 0-.356-.144T4 11.999t.144-.356t.356-.143h15q.213 0 .356.144t.144.357t-.144.356t-.356.143zm0-4.77q-.213 0-.356-.143Q4 7.443 4 7.23t.144-.356t.356-.143h15q.213 0 .356.144T20 7.23t-.144.356t-.356.144z"/></svg>
+                    <svg class="close-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Material Symbols Light by Google - https://github.com/google/material-design-icons/blob/master/LICENSE --><path fill="currentColor" d="m12 12.708l-5.246 5.246q-.14.14-.344.15t-.364-.15t-.16-.354t.16-.354L11.292 12L6.046 6.754q-.14-.14-.15-.344t.15-.364t.354-.16t.354.16L12 11.292l5.246-5.246q.14-.14.345-.15q.203-.01.363.15t.16.354t-.16.354L12.708 12l5.246 5.246q.14.14.15.345q.01.203-.15.363t-.354.16t-.354-.16z"/></svg>
+                </div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                <a class="menu-item" href="/archives">Posts</a>
+                
+                <a class="menu-item" href="/category">Categories</a>
+                
+                <a class="menu-item" href="/tag">Tags</a>
+                
+                <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if (toggleMenu.classList.contains("active")) {
+            toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        } else {
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    var tocbot_timer;
+    var DEPTH_MAX = 6; // 为 6 时展开所有
+    var tocbot_default_config = {
+        tocSelector: '.tocbot-list',
+        contentSelector: '.post-content',
+        headingSelector: 'h1, h2, h3, h4, h5',
+        orderedList: false,
+        scrollSmooth: true,
+        onClick: extend_click,
+    };
+
+    function extend_click() {
+        clearTimeout(tocbot_timer);
+        tocbot_timer = setTimeout(function() {
+            tocbot.refresh(obj_merge(tocbot_default_config, {
+                hasInnerContainers: true
+            }));
+        }, 420); // 这个值是由 tocbot 源码里定义的 scrollSmoothDuration 得来的
+    }
+
+    document.ready(function() {
+        tocbot.init(obj_merge(tocbot_default_config, {
+            collapseDepth: 1
+        }));
+    });
+
+    function expand_toc() {
+        var b = document.querySelector('.tocbot-toc-expand');
+        var expanded = b.getAttribute('data-expanded');
+        expanded ? b.removeAttribute('data-expanded') : b.setAttribute('data-expanded', true);
+        tocbot.refresh(obj_merge(tocbot_default_config, {
+            collapseDepth: expanded ? 1 : DEPTH_MAX
+        }));
+        b.innerText = expanded ? 'Expand all' : 'Collapse all';
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+    function obj_merge(target, source) {
+        for (var item in source) {
+            if (source.hasOwnProperty(item)) {
+                target[item] = source[item];
+            }
+        }
+        return target;
+    }
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">[NineChap 9] Big Date, System Design and Resume (`)</h1>
+            
+                <div class="post-meta">
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">June 30, 2014&nbsp;&nbsp;0:00:00</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/NineChap/">NineChap</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h2 id="Resume"><a href="#Resume" class="headerlink" title="Resume"></a>Resume</h2><ol>
+<li>Do not write anything unrelated to CS. </li>
+<li>Do not write too long - 1 or 2 pages are fine. Senior engineer 3 pages. </li>
+<li>Do not write low GPA</li>
+<li>Never ever write “proficient in anything”</li>
+</ol>
+<h2 id="Big-Data"><a href="#Big-Data" class="headerlink" title="Big Data"></a>Big Data</h2><p>Most classic question is “Frequent items” (refer to July’s blog). </p>
+<h3 id="Find-top-k-hot-queries-in-a-daily-access-log-of-Google"><a href="#Find-top-k-hot-queries-in-a-daily-access-log-of-Google" class="headerlink" title="Find top k hot queries in a daily access log of Google."></a>Find top k hot queries in a daily access log of Google.</h3><p>Variation:</p>
+<ol>
+<li>k &#x3D; 1 vs k &#x3D; 100000 - majority numbers</li>
+<li>low RAM vs sufficient RAM</li>
+<li>single machine vs multiple machines</li>
+<li>accurate vs inaccurate</li>
+</ol>
+<p>Sufficient RAM</p>
+<ol>
+<li>HashTable + Heap (min-heap)</li>
+<li>Time O(n * logk), Space O(n)</li>
+</ol>
+<p>Low RAM</p>
+<ol>
+<li>Split into 1000 (i.e. LOG&#x2F;M) files by hash(query) % 1000</li>
+<li>Using HashTable + Heap to get top k for each files</li>
+<li>Collect 1000 top k queries and get global top k</li>
+<li>This method requires a lot of disk access and r&#x2F;w, still slow.</li>
+</ol>
+<p>Inaccurate (reduce memory from O(n) to O(k))</p>
+<ol>
+<li>Hash Count (only need to know this one)<br> Limit the size of HashMap. The bigger the RAM, the more accurate is the result. </li>
+<li>Space Saving</li>
+<li>Lossy Counting</li>
+<li>Sticky Sampling</li>
+<li>Count Sketch</li>
+</ol>
+<p>Bloom Filter</p>
+<ol>
+<li>Regular bloom filter - use 4 线性无关 formula</li>
+<li>Counting bloom filter - support delete</li>
+<li>Better DS than HashMap, but can loose some accuracy</li>
+</ol>
+<p>Trie</p>
+<p>Bitmap</p>
+<p>Find all unique queries - use bigmap to store 3 types of states</p>
+<h2 id="System-Design"><a href="#System-Design" class="headerlink" title="System Design"></a>System Design</h2><h3 id="Design-a-short-url-system"><a href="#Design-a-short-url-system" class="headerlink" title="Design a short url system"></a>Design a short url system</h3><ol>
+<li>Cache</li>
+</ol>
+<blockquote>
+<p>to store hot urls</p>
+</blockquote>
+<ol>
+<li>Load Balance</li>
+</ol>
+<blockquote>
+<p>Too many click in short time</p>
+</blockquote>
+<ol>
+<li>Storage balance</li>
+</ol>
+<blockquote>
+<p>Hash value of an url and then store in<br>individual machine</p>
+<p>Expansibility?</p>
+</blockquote>
+<ol>
+<li>Consistent Hash</li>
+</ol>
+<blockquote>
+<p>Node, can increase # of machines to store information</p>
+</blockquote>
+<blockquote>
+<p>Migration process</p>
+</blockquote>
+<ol>
+<li>Router</li>
+</ol>
+<blockquote>
+<p>check which machine response my query</p>
+<p>light-weight calculations</p>
+<p>what is router is down?</p>
+</blockquote>
+<ol>
+<li>Locale</li>
+</ol>
+<blockquote>
+<p>url frequently access by China, then put the url storage in Beijing</p>
+</blockquote>
+<h3 id="Need-to-know-Design-patterns"><a href="#Need-to-know-Design-patterns" class="headerlink" title="Need-to-know Design patterns"></a>Need-to-know Design patterns</h3><ol>
+<li>Singleton</li>
+<li>Factory</li>
+<li>Master-slave (esp. for relational DB)</li>
+</ol>
+<p><a target="_blank" rel="noopener" href="http://static.googleusercontent.com/media/research.google.com/en//archive/mapreduce-osdi04.pdf">MapReduce: Simplified Data Processing on Large Clusters</a></p>
+<p><a target="_blank" rel="noopener" href="http://static.googleusercontent.com/media/research.google.com/en//archive/gfs-sosp2003.pdf">The Google File System</a></p>
+<p><a target="_blank" rel="noopener" href="http://static.googleusercontent.com/media/research.google.com/en//archive/bigtable-osdi06.pdf">BigTable: A Distributed Storage System for Structured Data</a></p>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>Permalink:</span>
+                        <span><a href="https://mar2ndx.github.io/2014/06/30/pre-2017-2014-06-30-NineChap-Big-date-system-design-resume/">https://mar2ndx.github.io/2014/06/30/pre-2017-2014-06-30-NineChap-Big-date-system-design-resume/</a></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2019 <a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc/4.0/">CC-BY-NC-4.0</a> LICENSE</span>
+                    </p>
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY</strong>?</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2014/06/30/pre-2017-2014-06-30-Knapsack-problem/">[Question] 0-1 Knapsack Problem</a>
+            
+            
+            <a class="next" rel="next" href="/2014/06/28/pre-2017-2014-06-28-Majority-Number-II/">[LintCode] Majority Number II</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+            </div>
+            <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>©  | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+
+</html>

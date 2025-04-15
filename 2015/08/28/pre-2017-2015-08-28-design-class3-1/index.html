@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+
+
+
+
+<title>[NineChap System Design] Class 3.1: Web Service  | Tech blog</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const pagebody = document.getElementsByTagName('body')[0]
+
+            function setTheme(status) {
+
+                if (status === 'dark') {
+                    window.sessionStorage.theme = 'dark'
+                    pagebody.classList.add('dark-theme');
+
+                } else if (status === 'light') {
+                    window.sessionStorage.theme = 'light'
+                    pagebody.classList.remove('dark-theme');
+                }
+            };
+
+            setTheme(window.sessionStorage.theme)
+        })();
+    </script>
+
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">Bentham&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                <a class="menu-item" href="/archives">Posts</a>
+                
+                <a class="menu-item" href="/category">Categories</a>
+                
+                <a class="menu-item" href="/tag">Tags</a>
+                
+                <a class="menu-item" href="/about">About</a>
+                
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">Bentham&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">
+                    <svg class="menu-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M4.5 17.27q-.213 0-.356-.145T4 16.768t.144-.356t.356-.143h15q.213 0 .356.144q.144.144.144.357t-.144.356t-.356.143zm0-4.77q-.213 0-.356-.144T4 11.999t.144-.356t.356-.143h15q.213 0 .356.144t.144.357t-.144.356t-.356.143zm0-4.77q-.213 0-.356-.143Q4 7.443 4 7.23t.144-.356t.356-.143h15q.213 0 .356.144T20 7.23t-.144.356t-.356.144z"/></svg>
+                    <svg class="close-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Material Symbols Light by Google - https://github.com/google/material-design-icons/blob/master/LICENSE --><path fill="currentColor" d="m12 12.708l-5.246 5.246q-.14.14-.344.15t-.364-.15t-.16-.354t.16-.354L11.292 12L6.046 6.754q-.14-.14-.15-.344t.15-.364t.354-.16t.354.16L12 11.292l5.246-5.246q.14-.14.345-.15q.203-.01.363.15t.16.354t-.16.354L12.708 12l5.246 5.246q.14.14.15.345q.01.203-.15.363t-.354.16t-.354-.16z"/></svg>
+                </div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                <a class="menu-item" href="/archives">Posts</a>
+                
+                <a class="menu-item" href="/category">Categories</a>
+                
+                <a class="menu-item" href="/tag">Tags</a>
+                
+                <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if (toggleMenu.classList.contains("active")) {
+            toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        } else {
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    var tocbot_timer;
+    var DEPTH_MAX = 6; // 为 6 时展开所有
+    var tocbot_default_config = {
+        tocSelector: '.tocbot-list',
+        contentSelector: '.post-content',
+        headingSelector: 'h1, h2, h3, h4, h5',
+        orderedList: false,
+        scrollSmooth: true,
+        onClick: extend_click,
+    };
+
+    function extend_click() {
+        clearTimeout(tocbot_timer);
+        tocbot_timer = setTimeout(function() {
+            tocbot.refresh(obj_merge(tocbot_default_config, {
+                hasInnerContainers: true
+            }));
+        }, 420); // 这个值是由 tocbot 源码里定义的 scrollSmoothDuration 得来的
+    }
+
+    document.ready(function() {
+        tocbot.init(obj_merge(tocbot_default_config, {
+            collapseDepth: 1
+        }));
+    });
+
+    function expand_toc() {
+        var b = document.querySelector('.tocbot-toc-expand');
+        var expanded = b.getAttribute('data-expanded');
+        expanded ? b.removeAttribute('data-expanded') : b.setAttribute('data-expanded', true);
+        tocbot.refresh(obj_merge(tocbot_default_config, {
+            collapseDepth: expanded ? 1 : DEPTH_MAX
+        }));
+        b.innerText = expanded ? 'Expand all' : 'Collapse all';
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+    function obj_merge(target, source) {
+        for (var item in source) {
+            if (source.hasOwnProperty(item)) {
+                target[item] = source[item];
+            }
+        }
+        return target;
+    }
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">[NineChap System Design] Class 3.1: Web Service </h1>
+            
+                <div class="post-meta">
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">August 28, 2015&nbsp;&nbsp;0:00:00</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/NineChap/">NineChap</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h1 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h1><p>Today we’ll look at 6 examples of problems associated with Web Service:</p>
+<ol>
+<li>how the internet works</li>
+<li>DNS</li>
+<li>Web server</li>
+<li>Music Player</li>
+<li>MP3 file</li>
+<li>秒杀</li>
+</ol>
+<h1 id="Question-0"><a href="#Question-0" class="headerlink" title="Question 0"></a>Question 0</h1><p><strong>how to solve raido-play failures</strong></p>
+<pre><code>&gt; Failure rate  = % user who can&#39;t listen to music properly
+
+&gt; = # user who fail to plya one song / # total users
+</code></pre>
+<p>Misson: reduce failure rate.</p>
+<h2 id="How-does-server-identify-a-user"><a href="#How-does-server-identify-a-user" class="headerlink" title="How does server identify a user?"></a>How does server identify a user?</h2><p><img src="/images/design-class3-http-request-overview.png"></p>
+<blockquote>
+<p>If a server uses <strong>Cookie</strong> to identify unique users, the result might be &gt; real users.</p>
+</blockquote>
+<blockquote>
+<p>However, if server uses <strong>IP address</strong>, the result might be &lt; real users.</p>
+</blockquote>
+<h2 id="How-to-collect-data-for-failure-rate"><a href="#How-to-collect-data-for-failure-rate" class="headerlink" title="How to collect data for failure rate"></a>How to collect data for failure rate</h2><h3 id="Version-1"><a href="#Version-1" class="headerlink" title="Version 1"></a>Version 1</h3><p>Log:</p>
+<ol>
+<li>user send a log to server when it visits</li>
+<li>user send another log after it plays a song</li>
+<li>we can identify users who failed to play a song</li>
+</ol>
+<p><img src="/images/design-class3-server-failure-rate-1.png"></p>
+<blockquote>
+<p>In fact, everything should be logged, including play, pause, switch song, refresh etc.</p>
+</blockquote>
+<h3 id="Version-2"><a href="#Version-2" class="headerlink" title="Version 2"></a>Version 2</h3><p>User login are, in fact, <strong>automatically logged</strong> when user visits. Thus user ONLY have to send log <strong>after it plays music</strong>.</p>
+<h2 id="Summary"><a href="#Summary" class="headerlink" title="Summary"></a>Summary</h2><ol>
+<li>define failure rate</li>
+<li>user cookie to identify user</li>
+<li>use log to collect failure data</li>
+<li>analysis pattern of failure againt date&#x2F;time</li>
+</ol>
+<h1 id="Question-1"><a href="#Question-1" class="headerlink" title="Question 1"></a>Question 1</h1><p><strong>the process of playing music</strong></p>
+<p><img src="/images/design-class3-web-browser-17-steps.png"></p>
+<ol>
+<li><p>Prepare</p>
+</li>
+<li><p>Send DNS request</p>
+</li>
+<li><p>Prepare DNS reply</p>
+</li>
+<li><p>Send DNS reply</p>
+</li>
+<li><p>Process DNS reply</p>
+<ul>
+<li></li>
+</ul>
+</li>
+<li><p>Send webpage request</p>
+</li>
+<li><p>Prepare webpage reply</p>
+</li>
+<li><p>Send webpage reply</p>
+</li>
+<li><p>Process webpage</p>
+<ul>
+<li></li>
+</ul>
+</li>
+<li><p>Request music player</p>
+</li>
+<li><p>Prepare music player</p>
+</li>
+<li><p>Send music player</p>
+</li>
+<li><p>Process music player</p>
+<ul>
+<li></li>
+</ul>
+</li>
+<li><p>Request MP3</p>
+</li>
+<li><p>Prepare MP3</p>
+</li>
+<li><p>Send MP3</p>
+</li>
+<li><p>Play MP3</p>
+</li>
+</ol>
+<p>What is process Music Play?</p>
+<blockquote>
+<p>Local browser will do rendering, flash decoding etc. If any point of this 17 steps went wrong, the music-play fails.</p>
+</blockquote>
+<p>Is there a system&#x2F;browser default Music Play?</p>
+<blockquote>
+<p>HTML player is, but flash player is not. So the flash module have to be requested every time.</p>
+</blockquote>
+<h2 id="Real-data-failure-rate-20"><a href="#Real-data-failure-rate-20" class="headerlink" title="Real data: failure rate 20%"></a>Real data: failure rate 20%</h2><p>In practise, the real failure rate is 20%. Which is:</p>
+<ol>
+<li>8% DNS</li>
+<li>5% Web</li>
+<li>5% MP3</li>
+<li>2% Player</li>
+</ol>
+<h1 id="Question-2"><a href="#Question-2" class="headerlink" title="Question 2"></a>Question 2</h1><p><strong>fix DNS problem</strong></p>
+<p>First of all, how to find out DNS failures? There are 2 ways. First way, help desk do it. Second way is to use the Desktop app to help detect the host address.</p>
+<h2 id="Step-1-HOSTs-hijack"><a href="#Step-1-HOSTs-hijack" class="headerlink" title="Step 1. HOSTs hijack"></a>Step 1. HOSTs hijack</h2><p>Some users’ host file can modified by competitors.</p>
+<ol>
+<li>ping the website url</li>
+<li>modify host file manually or by desktop app</li>
+</ol>
+<h2 id="Step-2-ISP"><a href="#Step-2-ISP" class="headerlink" title="Step 2. ISP"></a>Step 2. ISP</h2><p>Each ISP have different DNS service. Eg. CSTNET fails to update the latest DNS, after a server change.</p>
+<p>After this step, DNS failure rate fall from 8% to 1%. Why still 1%? Some companies bans music play in company web.</p>
+<h1 id="Question-3"><a href="#Question-3" class="headerlink" title="Question 3"></a>Question 3</h1><p><strong>fix the web problem</strong></p>
+<p>Highest failure rate:</p>
+<ol>
+<li>3pm office hour</li>
+<li>9pm highest bandwidth nation-wide</li>
+</ol>
+<p><img src="/images/design-class3-web-failure-graph.png"></p>
+<h2 id="Solution-1-reverse-proxy"><a href="#Solution-1-reverse-proxy" class="headerlink" title="Solution 1, reverse proxy"></a>Solution 1, reverse proxy</h2><p>Reverse proxy w&#x2F; more servers. Reverse proxy acts like a load balancer.</p>
+<p><img src="/images/design-class3-reverse-proxly.png"></p>
+<blockquote>
+<p><strong><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Reverse_proxy">Reverse proxy</a></strong> is a type of proxy server that retrieves resources on behalf of a client from one or more servers. These resources are then returned to the client as though they originated from the proxy server itself.</p>
+</blockquote>
+<p><a target="_blank" rel="noopener" href="https://www.nginx.com/resources/glossary/reverse-proxy-server/">Common uses for a reverse proxy server</a> include:</p>
+<blockquote>
+<ol>
+<li>Load balancing</li>
+</ol>
+</blockquote>
+<blockquote>
+<p>act as a “traffic cop,” sitting in front of your back-end servers and client requests. Try to <strong>maximizes speed and capacity utilization</strong> while ensuring <strong>no one server is overloaded</strong>.</p>
+</blockquote>
+<blockquote>
+<p>If a server goes down, the load balancer redirects traffic to the remaining online servers.</p>
+</blockquote>
+<blockquote>
+<ol>
+<li>Web acceleration</li>
+</ol>
+</blockquote>
+<blockquote>
+<pre><code>can compress inbound and outbound data, as well as __cache commonly requested content__
+</code></pre>
+</blockquote>
+<blockquote>
+<pre><code>also perform additional tasks such as SSL encryption to take __load off of your web servers__
+</code></pre>
+</blockquote>
+<blockquote>
+<ol>
+<li>Security and anonymity</li>
+</ol>
+</blockquote>
+<blockquote>
+<pre><code>By intercepting requests headed for your back-end servers, a reverse proxy server protects their identities and acts as an additional defense against security attacks.
+</code></pre>
+</blockquote>
+<h2 id="Solution-2-reduce-size-of-web-page"><a href="#Solution-2-reduce-size-of-web-page" class="headerlink" title="Solution 2, reduce size of web page"></a>Solution 2, reduce size of web page</h2><ol>
+<li>simplify javascript files</li>
+<li>compress images (lower dpi)</li>
+<li>merge large images to 1 image (less requests)</li>
+<li>lazy loading (Pinterest uses it a lot)</li>
+</ol>
+<h2 id="Solution-3-more-cacheable-pages"><a href="#Solution-3-more-cacheable-pages" class="headerlink" title="Solution 3, more cacheable pages"></a>Solution 3, more cacheable pages</h2><p><strong>Change dynamic webpages to static pages</strong>. The advantage of this is:</p>
+<ol>
+<li>more search engine friendly.</li>
+<li>more cache friendly.</li>
+</ol>
+<h3 id="Summary-on-caching"><a href="#Summary-on-caching" class="headerlink" title="Summary on caching"></a>Summary on caching</h3><p>Caching can happen at place Number 1, 2 and 3:</p>
+<p><img src="/images/design-class3-web-hosting-4-layers.png"></p>
+<p>AT Number 4, we can add <strong>more servers</strong>. Number 3, <strong>reverse proxy</strong>. Number 2 is <strong>caching within the ISP network</strong>, which avoids requesting info again from backend. Number 1 is <strong>front-end browser cache</strong>.</p>
+<p>After this step, Web failure rate fall from 7% to 4%. Why still 4%? Well, these failure is mainly from the junk users created by marketing.</p>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>Permalink:</span>
+                        <span><a href="https://mar2ndx.github.io/2015/08/28/pre-2017-2015-08-28-design-class3-1/">https://mar2ndx.github.io/2015/08/28/pre-2017-2015-08-28-design-class3-1/</a></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2019 <a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc/4.0/">CC-BY-NC-4.0</a> LICENSE</span>
+                    </p>
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY</strong>?</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2015/08/30/pre-2017-2015-08-30-how-google-search-works/">[Design] How Google search works </a>
+            
+            
+            <a class="next" rel="next" href="/2015/08/28/pre-2017-2015-08-28-design-class3-2/">[NineChap System Design] Class 3.2: Web Service </a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+            </div>
+            <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>©  | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+
+
+
+
+<title>[Design] Cache and Page Replacement Algorithms | Tech blog</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const pagebody = document.getElementsByTagName('body')[0]
+
+            function setTheme(status) {
+
+                if (status === 'dark') {
+                    window.sessionStorage.theme = 'dark'
+                    pagebody.classList.add('dark-theme');
+
+                } else if (status === 'light') {
+                    window.sessionStorage.theme = 'light'
+                    pagebody.classList.remove('dark-theme');
+                }
+            };
+
+            setTheme(window.sessionStorage.theme)
+        })();
+    </script>
+
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">Bentham&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                <a class="menu-item" href="/archives">Posts</a>
+                
+                <a class="menu-item" href="/category">Categories</a>
+                
+                <a class="menu-item" href="/tag">Tags</a>
+                
+                <a class="menu-item" href="/about">About</a>
+                
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">Bentham&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">
+                    <svg class="menu-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M4.5 17.27q-.213 0-.356-.145T4 16.768t.144-.356t.356-.143h15q.213 0 .356.144q.144.144.144.357t-.144.356t-.356.143zm0-4.77q-.213 0-.356-.144T4 11.999t.144-.356t.356-.143h15q.213 0 .356.144t.144.357t-.144.356t-.356.143zm0-4.77q-.213 0-.356-.143Q4 7.443 4 7.23t.144-.356t.356-.143h15q.213 0 .356.144T20 7.23t-.144.356t-.356.144z"/></svg>
+                    <svg class="close-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Material Symbols Light by Google - https://github.com/google/material-design-icons/blob/master/LICENSE --><path fill="currentColor" d="m12 12.708l-5.246 5.246q-.14.14-.344.15t-.364-.15t-.16-.354t.16-.354L11.292 12L6.046 6.754q-.14-.14-.15-.344t.15-.364t.354-.16t.354.16L12 11.292l5.246-5.246q.14-.14.345-.15q.203-.01.363.15t.16.354t-.16.354L12.708 12l5.246 5.246q.14.14.15.345q.01.203-.15.363t-.354.16t-.354-.16z"/></svg>
+                </div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                <a class="menu-item" href="/archives">Posts</a>
+                
+                <a class="menu-item" href="/category">Categories</a>
+                
+                <a class="menu-item" href="/tag">Tags</a>
+                
+                <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if (toggleMenu.classList.contains("active")) {
+            toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        } else {
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    var tocbot_timer;
+    var DEPTH_MAX = 6; // 为 6 时展开所有
+    var tocbot_default_config = {
+        tocSelector: '.tocbot-list',
+        contentSelector: '.post-content',
+        headingSelector: 'h1, h2, h3, h4, h5',
+        orderedList: false,
+        scrollSmooth: true,
+        onClick: extend_click,
+    };
+
+    function extend_click() {
+        clearTimeout(tocbot_timer);
+        tocbot_timer = setTimeout(function() {
+            tocbot.refresh(obj_merge(tocbot_default_config, {
+                hasInnerContainers: true
+            }));
+        }, 420); // 这个值是由 tocbot 源码里定义的 scrollSmoothDuration 得来的
+    }
+
+    document.ready(function() {
+        tocbot.init(obj_merge(tocbot_default_config, {
+            collapseDepth: 1
+        }));
+    });
+
+    function expand_toc() {
+        var b = document.querySelector('.tocbot-toc-expand');
+        var expanded = b.getAttribute('data-expanded');
+        expanded ? b.removeAttribute('data-expanded') : b.setAttribute('data-expanded', true);
+        tocbot.refresh(obj_merge(tocbot_default_config, {
+            collapseDepth: expanded ? 1 : DEPTH_MAX
+        }));
+        b.innerText = expanded ? 'Expand all' : 'Collapse all';
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+    function obj_merge(target, source) {
+        for (var item in source) {
+            if (source.hasOwnProperty(item)) {
+                target[item] = source[item];
+            }
+        }
+        return target;
+    }
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">[Design] Cache and Page Replacement Algorithms</h1>
+            
+                <div class="post-meta">
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">June 23, 2014&nbsp;&nbsp;0:00:00</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/Design/">Design</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h3 id="Cache-Algorithms"><a href="#Cache-Algorithms" class="headerlink" title="Cache Algorithms"></a>Cache Algorithms</h3><p>This post is originally written for <strong>Cache Algo</strong> only, before I found out this 2 topics are very similar, so I changed the title to “Cache and Page Replacement Algorithms”.</p>
+<h4 id="Equation"><a href="#Equation" class="headerlink" title="Equation"></a>Equation</h4><p>of memory reference time is:</p>
+<p>T &#x3D; m * T(m) + T(h) + E</p>
+<blockquote>
+<p>m: miss ratio &#x3D; 1 - hit ratio</p>
+<p>T(m): time for main memory access</p>
+<p>T(h): latency (when there’s a hit)</p>
+<p>E: secondary effects liek queuing effects etc.</p>
+</blockquote>
+<h4 id="hit-ratio"><a href="#hit-ratio" class="headerlink" title="hit ratio"></a>hit ratio</h4><p>how often a searched-for item is actually found in the cache</p>
+<h4 id="latency"><a href="#latency" class="headerlink" title="latency"></a>latency</h4><p>how long after requesting a desired item the cache can return that item (when there is a hit).</p>
+<h3 id="Replacement-policy"><a href="#Replacement-policy" class="headerlink" title="Replacement policy"></a>Replacement policy</h3><h4 id="Belady’s-Algorithm-Optimal-Algorithm"><a href="#Belady’s-Algorithm-Optimal-Algorithm" class="headerlink" title="Bélády’s Algorithm (Optimal Algorithm)"></a>Bélády’s Algorithm (Optimal Algorithm)</h4><p>The optimal algorithm, not implementable in practise.</p>
+<h4 id="LFU"><a href="#LFU" class="headerlink" title="LFU"></a>LFU</h4><p>Least Frequently Used, slow and not very adaptive.</p>
+<h4 id="LRU"><a href="#LRU" class="headerlink" title="LRU"></a>LRU</h4><p>Fast and adaptive, but hard to implement.</p>
+<p>It can be implemented with either a counter or a stack&#x2F;doubleLinkedList.</p>
+<p>Web browser use this.</p>
+<h4 id="LRU2-and-2Qs"><a href="#LRU2-and-2Qs" class="headerlink" title="LRU2 and 2Qs"></a>LRU2 and 2Qs</h4><p><strong>LRU2</strong> - Only add entries to the cache the second time they are accessed.</p>
+<p><strong>Two Queues</strong> - Add entries to an normal LRU cache. If accessed again, move it to second, larger, LRU cache.</p>
+<h4 id="MRU-most-recent-used"><a href="#MRU-most-recent-used" class="headerlink" title="MRU (most recent used)"></a>MRU (most recent used)</h4><p>Some claim that MRU cache algorithms have more hits than LRU due to their tendency to retain older data.</p>
+<h4 id="FIFO"><a href="#FIFO" class="headerlink" title="FIFO"></a>FIFO</h4><p>Low-overhead, fast but not adaptive.</p>
+<h4 id="Second-chance"><a href="#Second-chance" class="headerlink" title="Second-chance"></a>Second-chance</h4><p>Modified version of FIFO. Relatively better than FIFO at little cost.</p>
+<p>Initially, a reference bit is set. Instead of removing old entries, it clears reference bit first, and insert that entry at the back of the queue. An entry is only cleared if the reference bit is not set. This is like a circular queue.</p>
+<p>If all the pages have been referenced, second chance degenerates into pure FIFO. Why? Let’s say all entries reference are set, the pointer will go around the entire list and clear all references, and in the end come back to the starting point. Then, it’s like a FIFO. For more, see the <a target="_blank" rel="noopener" href="http://javalandscape.blogspot.sg/2009/01/cachingcaching-algorithms-and-caching.html">link</a>.</p>
+<h4 id="Clock"><a href="#Clock" class="headerlink" title="Clock"></a>Clock</h4><p>Modified version of second-hand. Better than second hand. Instead of pushing to the back, it keep a “hand” pointer in the circular list. <a target="_blank" rel="noopener" href="http://javalandscape.blogspot.sg/2009/01/cachingcaching-algorithms-and-caching.html">link</a></p>
+<p>When cache miss occurs and no empty place exists, then I consult the R (referenced) bit at the hand’s location to know what I should do. If R is 0, then I will place the new entry at the “hand” position, otherwise I will clear the R bit. Then, I will increment the hand (iterator) and repeat the process until an entry is replaced.</p>
+<h4 id="Simple-time-based"><a href="#Simple-time-based" class="headerlink" title="Simple time-based"></a>Simple time-based</h4><p>Fast, but not adaptive. Entries remain in cache for a specific amount of time.</p>
+<h4 id="Extended-time-based-expiration"><a href="#Extended-time-based-expiration" class="headerlink" title="Extended time-based expiration"></a>Extended time-based expiration</h4><p>Only clear cache at certain points in time (say every 5 minutes).</p>
+<h3 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h3><p>Each replacement strategy is a <strong>compromise between hit rate and latency</strong>.</p>
+<h4 id="One-more-thing"><a href="#One-more-thing" class="headerlink" title="One more thing"></a>One more thing</h4><p>What is Distributed cache?</p>
+<p><a target="_blank" rel="noopener" href="http://en.wikipedia.org/wiki/Distributed_cache">Distributed cache</a> is an extension of the traditional concept of cache used in a single locale.</p>
+<p>A distributed cache may <strong>span multiple servers</strong> so that it can grow in size and in transactional capacity. It is mainly used to store <strong>application data residing in database and web session data</strong>.</p>
+<p>The idea of distributed caching has become feasible now because main memory has become very cheap and network cards have become very fast (speed of 1 Gbit is now standard, and 10 Gbit is gaining traction).</p>
+<p>Also, a distributed cache works well on <strong>lower cost machines usually employed for web servers</strong> as opposed to <strong>database servers</strong> which require expensive hardware.</p>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>Permalink:</span>
+                        <span><a href="https://mar2ndx.github.io/2014/06/23/pre-2017-2014-06-23-Cache-algorithms/">https://mar2ndx.github.io/2014/06/23/pre-2017-2014-06-23-Cache-algorithms/</a></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2019 <a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc/4.0/">CC-BY-NC-4.0</a> LICENSE</span>
+                    </p>
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY</strong>?</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2014/06/24/pre-2017-2014-06-24-NineChap-Dynamic-Programming/">[NineChap 5.1] Dynamic Programming</a>
+            
+            
+            <a class="next" rel="next" href="/2014/06/18/pre-2017-2014-06-18-NineChap-Linked-List-additional/">[NineChap 4.2] Linked List Additional</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+            </div>
+            <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>©  | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+
+</html>
