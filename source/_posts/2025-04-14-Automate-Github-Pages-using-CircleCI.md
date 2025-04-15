@@ -1,10 +1,12 @@
 ---
-title: Automate Github Pages using CircleCI
+title: CircleCI auto deploy Github Pages
 category: unknown
 tags: []
 comments: true
 date: 2025-04-14 04:40:37
 ---
+
+Script: 
 
 ```
 version: 2.1
