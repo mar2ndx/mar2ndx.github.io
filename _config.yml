@@ -89,7 +89,7 @@ include:
 exclude:
 ignore:
 
-theme: obsidian
+theme: Chic
 
 # Deployment
 ## Docs: https://hexo.io/docs/one-command-deployment
