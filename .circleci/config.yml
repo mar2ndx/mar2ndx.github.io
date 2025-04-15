@@ -1,15 +1,19 @@
 version: 2.1
 orbs:
-  node: circleci/node@5
+  node: circleci/node@5.1.0
 jobs:
   hexo_deploy:
-    executor: node/default
+    executor:
+      name: node/default
+      tag: "20.10.0"
     steps:
       - checkout:
           submodules: true # This is the key line!
+      - run:
+          name: Install pnpm
+          command: npm install -g pnpm
       - node/install-packages:
-          cache-path: node_modules
-          override-ci-command: npm install
+          pkg-manager: pnpm
       - run:
           name: Install Hexo CLI
           command: npm install -g hexo-cli
@@ -32,7 +36,11 @@ jobs:
           command: |
             npx gh-pages -d public -b gh-pages -m "Build generated [skip ci]"
 workflows:
-  version: 2
+  version: 2.1
   build-and-deploy:
     jobs:
-      - hexo_deploy
+      - hexo_deploy:
+          filters:
+            branches:
+              only:
+                - master
