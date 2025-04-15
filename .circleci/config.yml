@@ -5,8 +5,7 @@ jobs:
   hexo_deploy:
     executor: node/default
     steps:
-      - checkout:
-          submodules: true # This is the key line!
+      - checkout
       - run: git submodule sync
       - run: git submodule update --init
       - node/install-packages:

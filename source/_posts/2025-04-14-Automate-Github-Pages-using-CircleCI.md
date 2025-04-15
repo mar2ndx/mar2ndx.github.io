@@ -8,7 +8,9 @@ date: 2025-04-14 04:40:37
 
 CircleCI Script: 
 
-CircleCI does not check out submodules. If your project requires submodules, add run steps like below: 
+CircleCI does not check out submodules. If your project requires submodules, modify script: 
+
+(this does not work, I ended up hardcode theme and removed any submodules)
 
 ```
 version: 2.1
