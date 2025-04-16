@@ -247,15 +247,8 @@
 </code></pre>
 <h1 id="config-file：-nginx-conf"><a href="#config-file：-nginx-conf" class="headerlink" title="config file： nginx.conf"></a>config file： nginx.conf</h1><p><strong>nginx.conf</strong></p>
 <p>By default, the configuration file is placed in <strong>&#x2F;etc&#x2F;nginx</strong>. (If not, check &#x2F;usr&#x2F;local&#x2F;nginx&#x2F;conf, or &#x2F;usr&#x2F;local&#x2F;etc&#x2F;nginx.)</p>
-<h2 id="first-part"><a href="#first-part" class="headerlink" title="first part"></a>first part</h2><pre><code>user www-data;
-worker_processes 4;
-pid /run/nginx.pid;
+<h2 id="first-part"><a href="#first-part" class="headerlink" title="first part"></a>first part</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">user www-data;</span><br><span class="line">worker_processes 4;</span><br><span class="line">pid /run/nginx.pid;</span><br><span class="line"></span><br><span class="line">events &#123;</span><br><span class="line">	worker_connections 768;</span><br><span class="line">	# multi_accept on;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-events &#123;
-	worker_connections 768;
-	# multi_accept on;
-&#125;
-</code></pre>
 <ol>
 <li><p>user</p>
 <p> Defines which Linux system user will own and run the Nginx server. Most Debian-based distributions use www-data</p>
@@ -271,140 +264,45 @@ events &#123;
 </blockquote>
 </li>
 </ol>
-<h2 id="http-part"><a href="#http-part" class="headerlink" title="http part"></a>http part</h2><pre><code>http &#123;
+<h2 id="http-part"><a href="#http-part" class="headerlink" title="http part"></a>http part</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></td><td class="code"><pre><span class="line">http &#123;</span><br><span class="line"></span><br><span class="line">	##</span><br><span class="line">	# Basic Settings</span><br><span class="line">	##</span><br><span class="line"></span><br><span class="line">	sendfile on;</span><br><span class="line">	tcp_nopush on;</span><br><span class="line">	tcp_nodelay on;</span><br><span class="line">	keepalive_timeout 65;</span><br><span class="line">	types_hash_max_size 2048;</span><br><span class="line">	# server_tokens off;</span><br><span class="line"></span><br><span class="line">	# server_names_hash_bucket_size 64;</span><br><span class="line">	# server_name_in_redirect off;</span><br><span class="line"></span><br><span class="line">	include /etc/nginx/mime.types;</span><br><span class="line">	default_type application/octet-stream;</span><br><span class="line"></span><br><span class="line">	##</span><br><span class="line">	# Logging Settings</span><br><span class="line">	##</span><br><span class="line"></span><br><span class="line">	access_log /var/log/nginx/access.log;</span><br><span class="line">	error_log /var/log/nginx/error.log;</span><br><span class="line"></span><br><span class="line">	##</span><br><span class="line">	# Gzip Settings</span><br><span class="line">	##</span><br><span class="line"></span><br><span class="line">	gzip on;</span><br><span class="line">	gzip_disable &quot;msie6&quot;;</span><br><span class="line"></span><br><span class="line">	# gzip_vary on;</span><br><span class="line">	# gzip_proxied any;</span><br><span class="line">	# gzip_comp_level 6;</span><br><span class="line">	# gzip_buffers 16 8k;</span><br><span class="line">	# gzip_http_version 1.1;</span><br><span class="line">	# gzip_types text/plain text/css application/json application/x-javascript text/xml application/xml application/xml+rss text/javascript;</span><br><span class="line"></span><br><span class="line">	##</span><br><span class="line">	# nginx-naxsi config</span><br><span class="line">	##</span><br><span class="line">	# Uncomment it if you installed nginx-naxsi</span><br><span class="line">	##</span><br><span class="line"></span><br><span class="line">	#include /etc/nginx/naxsi_core.rules;</span><br><span class="line"></span><br><span class="line">	##</span><br><span class="line">	# nginx-passenger config</span><br><span class="line">	##</span><br><span class="line">	# Uncomment it if you installed nginx-passenger</span><br><span class="line">	##</span><br><span class="line">	</span><br><span class="line">	#passenger_root /usr;</span><br><span class="line">	#passenger_ruby /usr/bin/ruby;</span><br><span class="line"></span><br><span class="line">	##</span><br><span class="line">	# Virtual Host Configs</span><br><span class="line">	##</span><br><span class="line"></span><br><span class="line">	include /etc/nginx/conf.d/*.conf;</span><br><span class="line">	include /etc/nginx/sites-enabled/*;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-	##
-	# Basic Settings
-	##
-
-	sendfile on;
-	tcp_nopush on;
-	tcp_nodelay on;
-	keepalive_timeout 65;
-	types_hash_max_size 2048;
-	# server_tokens off;
-
-	# server_names_hash_bucket_size 64;
-	# server_name_in_redirect off;
-
-	include /etc/nginx/mime.types;
-	default_type application/octet-stream;
-
-	##
-	# Logging Settings
-	##
-
-	access_log /var/log/nginx/access.log;
-	error_log /var/log/nginx/error.log;
-
-	##
-	# Gzip Settings
-	##
-
-	gzip on;
-	gzip_disable &quot;msie6&quot;;
-
-	# gzip_vary on;
-	# gzip_proxied any;
-	# gzip_comp_level 6;
-	# gzip_buffers 16 8k;
-	# gzip_http_version 1.1;
-	# gzip_types text/plain text/css application/json application/x-javascript text/xml application/xml application/xml+rss text/javascript;
-
-	##
-	# nginx-naxsi config
-	##
-	# Uncomment it if you installed nginx-naxsi
-	##
-
-	#include /etc/nginx/naxsi_core.rules;
-
-	##
-	# nginx-passenger config
-	##
-	# Uncomment it if you installed nginx-passenger
-	##
-	
-	#passenger_root /usr;
-	#passenger_ruby /usr/bin/ruby;
-
-	##
-	# Virtual Host Configs
-	##
-
-	include /etc/nginx/conf.d/*.conf;
-	include /etc/nginx/sites-enabled/*;
-&#125;
-</code></pre>
 <p>Note: The HTTP block of the nginx.conf file contains the statement include <strong>&#x2F;etc&#x2F;nginx&#x2F;sites-enabled&#x2F;*;</strong>. This allows for server block configurations to be loaded in from separate files found in <strong>the sites-enabled sub-directory</strong>. </p>
 <p>Usually these are <strong>symlinks to files stored in &#x2F;etc&#x2F;nginx&#x2F;sites-available&#x2F;</strong>. By using symlinks you can quickly enable or disable a virtual server while preserving its configuration file. </p>
 <h1 id="config-file-for-sites"><a href="#config-file-for-sites" class="headerlink" title="config file for sites"></a>config file for sites</h1><h2 id="sites-available"><a href="#sites-available" class="headerlink" title="sites-available"></a>sites-available</h2><p><strong>&#x2F;etc&#x2F;nginx&#x2F;sites-available&#x2F;default</strong> is a template provided for you. </p>
-<pre><code>server &#123;
-        listen 80 default_server;
-        listen [::]:80 default_server ipv6only=on;
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">        listen 80 default_server;</span><br><span class="line">        listen [::]:80 default_server ipv6only=on;</span><br><span class="line"></span><br><span class="line">        root /usr/share/nginx/html;</span><br><span class="line">        index index.html index.htm;</span><br><span class="line"></span><br><span class="line">        # Make site accessible from http://localhost/</span><br><span class="line">        server_name localhost;</span><br><span class="line"></span><br><span class="line">        location / &#123;</span><br><span class="line">                # First attempt to serve request as file, then</span><br><span class="line">                # as directory, then fall back to displaying a 404.</span><br><span class="line">                try_files $uri $uri/ /index.html;</span><br><span class="line">                # Uncomment to enable naxsi on this location</span><br><span class="line">                # include /etc/nginx/naxsi.rules</span><br><span class="line">        &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-        root /usr/share/nginx/html;
-        index index.html index.htm;
-
-        # Make site accessible from http://localhost/
-        server_name localhost;
-
-        location / &#123;
-                # First attempt to serve request as file, then
-                # as directory, then fall back to displaying a 404.
-                try_files $uri $uri/ /index.html;
-                # Uncomment to enable naxsi on this location
-                # include /etc/nginx/naxsi.rules
-        &#125;
-&#125;
-</code></pre>
 <p><strong>Do not modify this file</strong>. Generally, you’ll want to make a separate file with its own server block for each virtual domain on your server.  So do: </p>
 <pre><code>cp /etc/nginx/sites-available/default /etc/nginx/sites-available/example.com
 </code></pre>
-<h2 id="listen-directive"><a href="#listen-directive" class="headerlink" title="listen directive"></a>listen directive</h2><pre><code>listen 80 default_server;
-listen [::]:80 default_server ipv6only=on;
-</code></pre>
+<h2 id="listen-directive"><a href="#listen-directive" class="headerlink" title="listen directive"></a>listen directive</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">listen 80 default_server;</span><br><span class="line">listen [::]:80 default_server ipv6only=on;</span><br></pre></td></tr></table></figure>
+
 <p>The argument <strong>default_server</strong> means this virtual host will answer requests on port 80 that don’t match any other virtual host’s listen statement. </p>
 <p>The second statement listens over IPv6 and behaves in the same way.</p>
-<pre><code>listen     127.0.0.1:80;
-listen     localhost:80;
-</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">listen     127.0.0.1:80;</span><br><span class="line">listen     localhost:80;</span><br></pre></td></tr></table></figure>
+
 <p>Note: localhost is conventionally set as the hostname for 127.0.0.1 in &#x2F;etc&#x2F;hosts.</p>
-<pre><code>listen     80;
-listen     *:80;
-</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">listen     80;</span><br><span class="line">listen     *:80;</span><br></pre></td></tr></table></figure>
+
 <p>This will listen on all domains and IP addresses on port 80. <strong>listen 80;</strong> is equivalent to <strong>listen *:80;</strong></p>
-<pre><code>listen     12.34.56.77:80;
-listen     12.34.56.78:80;
-listen     12.34.56.79:80;       
-listen     12.34.56.79:8080;       
-</code></pre>
-<p>This will listen on multiple IP&#x2F;port. </p>
-<h2 id="server-name-directive"><a href="#server-name-directive" class="headerlink" title="server_name directive"></a>server_name directive</h2><p>Common:</p>
-<pre><code>server_name   example.com;
-</code></pre>
-<p>Or</p>
-<pre><code>server_name   example.com www.example.com;
-</code></pre>
-<p>Now this:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">	listen     12.34.56.77:80;</span><br><span class="line">	listen     12.34.56.78:80;</span><br><span class="line">	listen     12.34.56.79:80;       </span><br><span class="line">	listen     12.34.56.79:8080;   </span><br><span class="line">```    </span><br><span class="line"></span><br><span class="line">This will listen on multiple IP/port. </span><br><span class="line"></span><br><span class="line">## server_name directive</span><br><span class="line"></span><br><span class="line">Common:</span><br><span class="line"></span><br><span class="line">	server_name   example.com;</span><br><span class="line"></span><br><span class="line">Or</span><br><span class="line"></span><br><span class="line">	server_name   example.com www.example.com;</span><br><span class="line"></span><br><span class="line">Now this:</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 <pre><code>server_name   *.example.com;
 server_name   .example.com;
 </code></pre>
-<p>will listen to all subdomains of example.com, including <a target="_blank" rel="noopener" href="http://www.example.com/">www.example.com</a>, foo.example.com, etc. <strong>Both equivalent</strong>.</p>
-<pre><code>server_name   &quot;&quot;;
-</code></pre>
-<p>If you set server_name to the empty quote set (”“), Nginx will process <strong>all requests that either</strong> do not have a hostname, <strong>or</strong> that have an unspecified hostname, such as requests for the IP address itself.</p>
-<h2 id="location-directive"><a href="#location-directive" class="headerlink" title="location directive"></a>location directive</h2><p><strong>location</strong> setting lets you configure how Nginx will respond to requests for resources within the server.</p>
-<p>eg. </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">will listen to all subdomains of example.com, including www.example.com, foo.example.com, etc. __Both equivalent__.</span><br><span class="line"></span><br><span class="line">	server_name   &quot;&quot;;</span><br><span class="line"></span><br><span class="line">If you set server_name to the empty quote set (”“), Nginx will process __all requests that either__ do not have a hostname, __or__ that have an unspecified hostname, such as requests for the IP address itself.</span><br><span class="line"></span><br><span class="line">## location directive</span><br><span class="line"></span><br><span class="line">__location__ setting lets you configure how Nginx will respond to requests for resources within the server.</span><br><span class="line"></span><br><span class="line">eg. </span><br><span class="line"></span><br></pre></td></tr></table></figure>
 <pre><code>location / &#123; &#125; 
 location /images/ &#123; &#125; 
 location /blog/ &#123; &#125; 
 location /planet/ &#123; &#125; 
 location /planet/blog/ &#123; &#125;
 </code></pre>
-<p>The location can set actual path in the file system (that is under &#x2F;etc&#x2F;nginx&#x2F; folder). Or we can also set <strong>proxy_pass</strong> directive. </p>
-<p>Ref 1: <a target="_blank" rel="noopener" href="http://nginx.org/en/docs/beginners_guide.html">nginx Beginner’s Guide</a></p>
-<p>Ref 2: <a target="_blank" rel="noopener" href="https://www.linode.com/docs/websites/nginx/basic-nginx-configuration#location-root-and-index">Basic Nginx Configuration by Linode</a></p>
+<pre><code>
+The location can set actual path in the file system (that is under /etc/nginx/ folder). Or we can also set __proxy_pass__ directive. 
+
+Ref 1: [nginx Beginner’s Guide](http://nginx.org/en/docs/beginners_guide.html)
+
+
+Ref 2: [Basic Nginx Configuration by Linode](https://www.linode.com/docs/websites/nginx/basic-nginx-configuration#location-root-and-index)
+</code></pre>
 
         </div>
 
