@@ -49,6 +49,7 @@ By default, the configuration file is placed in __/etc/nginx__. (If not, check /
 
 ## first part
 
+```
 	user www-data;
 	worker_processes 4;
 	pid /run/nginx.pid;
@@ -57,6 +58,7 @@ By default, the configuration file is placed in __/etc/nginx__. (If not, check /
 		worker_connections 768;
 		# multi_accept on;
 	}
+```
 
 1. user
 
@@ -76,6 +78,7 @@ By default, the configuration file is placed in __/etc/nginx__. (If not, check /
 
 ## http part
 
+```
 	http {
 	
 		##
@@ -140,6 +143,7 @@ By default, the configuration file is placed in __/etc/nginx__. (If not, check /
 		include /etc/nginx/conf.d/*.conf;
 		include /etc/nginx/sites-enabled/*;
 	}
+```
 
 Note: The HTTP block of the nginx.conf file contains the statement include __/etc/nginx/sites-enabled/*;__. This allows for server block configurations to be loaded in from separate files found in __the sites-enabled sub-directory__. 
 
@@ -151,6 +155,7 @@ Usually these are __symlinks to files stored in /etc/nginx/sites-available/__. B
 
 __/etc/nginx/sites-available/default__ is a template provided for you. 
 
+```
 	server {
 	        listen 80 default_server;
 	        listen [::]:80 default_server ipv6only=on;
@@ -169,6 +174,7 @@ __/etc/nginx/sites-available/default__ is a template provided for you.
 	                # include /etc/nginx/naxsi.rules
 	        }
 	}
+```
 
 __Do not modify this file__. Generally, you’ll want to make a separate file with its own server block for each virtual domain on your server.  So do: 
 
@@ -176,27 +182,35 @@ __Do not modify this file__. Generally, you’ll want to make a separate file wi
 
 ## listen directive
 
+```
 	listen 80 default_server;
 	listen [::]:80 default_server ipv6only=on;
+```
 
 The argument __default_server__ means this virtual host will answer requests on port 80 that don’t match any other virtual host’s listen statement. 
 
 The second statement listens over IPv6 and behaves in the same way.
 
+```
 	listen     127.0.0.1:80;
 	listen     localhost:80;
+```
 
 Note: localhost is conventionally set as the hostname for 127.0.0.1 in /etc/hosts.
 
+```
 	listen     80;
 	listen     *:80;
+```
 
 This will listen on all domains and IP addresses on port 80. __listen 80;__ is equivalent to __listen *:80;__
 
+```
 	listen     12.34.56.77:80;
 	listen     12.34.56.78:80;
 	listen     12.34.56.79:80;       
-	listen     12.34.56.79:8080;       
+	listen     12.34.56.79:8080;   
+```    
 
 This will listen on multiple IP/port. 
 
@@ -212,8 +226,10 @@ Or
 
 Now this:
 
+```
 	server_name   *.example.com;
 	server_name   .example.com;
+```
 
 will listen to all subdomains of example.com, including www.example.com, foo.example.com, etc. __Both equivalent__.
 
@@ -227,11 +243,13 @@ __location__ setting lets you configure how Nginx will respond to requests for r
 
 eg. 
 
+```
 	location / { } 
 	location /images/ { } 
 	location /blog/ { } 
 	location /planet/ { } 
 	location /planet/blog/ { }
+```
 
 The location can set actual path in the file system (that is under /etc/nginx/ folder). Or we can also set __proxy_pass__ directive. 
 
