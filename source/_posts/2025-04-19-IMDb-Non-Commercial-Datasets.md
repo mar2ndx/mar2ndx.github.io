@@ -440,6 +440,26 @@ Remove checks:
     CHECK (birth_year > 1800),
     CHECK (death_year >= birth_year)
 
+Remove some unavailable titles from `principals` table.
+
+```
+DELETE FROM imdb.title_principals
+WHERE tconst IN (
+    'tt36455508', 'tt0229782', 'tt1464025', 'tt36587729', 'tt36490446',
+    'tt30062722', 'tt30063520', 'tt32868697', 'tt36415652', 'tt10719918',
+    'tt36042551', 'tt6118406', 'tt8141116', 'tt27726906', 'tt36491536',
+    'tt11024622', 'tt33567817', 'tt36590614', 'tt7205998', 'tt13478388',
+    'tt14512626', 'tt2277124', 'tt26455860', 'tt32909558', 'tt34221354',
+    'tt36270736', 'tt36590638', 'tt8264988', 'tt21451682', 'tt26455938',
+    'tt26455946', 'tt26455958', 'tt5801700', 'tt7019426', 'tt7019888',
+    'tt18987786', 'tt36480536', 'tt36480540', 'tt36480705', 'tt36480911',
+    'tt36481055', 'tt36481157', 'tt36481176', 'tt36481178', 'tt36481184',
+    'tt36586613'
+);
+```
+
+Updated Table as of Apr 20th, 2025: 
+
 ```
 -- imdb.name_basics definition
 
@@ -590,4 +610,3 @@ ORDER BY count DESC;
 ```
 
 Also, need to convert text format of directors, writers column of `title_crew` to list format. 
-
