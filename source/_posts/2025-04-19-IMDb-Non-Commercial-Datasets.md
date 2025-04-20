@@ -449,7 +449,7 @@ Remove checks:
 
 CREATE TABLE imdb.name_basics (
 	nconst varchar(20) NOT NULL,
-	primary_name text NULL,
+	primary_name text NOT NULL,
 	birth_year int4 NULL,
 	death_year int4 NULL,
 	primary_profession _text NULL,
@@ -484,23 +484,6 @@ CREATE INDEX idx_title_basics_start_year ON imdb.title_basics USING btree (start
 CREATE INDEX idx_title_basics_title_type ON imdb.title_basics USING btree (title_type);
 
 
--- imdb.title_principals definition
-
--- Drop table
-
--- DROP TABLE imdb.title_principals;
-
-CREATE TABLE imdb.title_principals (
-	tconst varchar(20) NOT NULL,
-	"ordering" int2 NOT NULL,
-	nconst varchar(20) NULL,
-	category varchar(50) NOT NULL,
-	job text NULL,
-	"characters" text NULL,
-	CONSTRAINT title_principals_pkey PRIMARY KEY (tconst, ordering)
-);
-
-
 -- imdb.title_akas definition
 
 -- Drop table
@@ -513,7 +496,7 @@ CREATE TABLE imdb.title_akas (
 	title text NOT NULL,
 	region varchar(10) NULL,
 	"language" varchar(10) NULL,
-	"types" text NULL,
+	"types" varchar(10) NULL,
 	"attributes" text NULL,
 	is_original_title bool NULL,
 	CONSTRAINT title_akas_pkey PRIMARY KEY (title_id, ordering),
@@ -521,7 +504,6 @@ CREATE TABLE imdb.title_akas (
 );
 CREATE INDEX idx_title_akas_language ON imdb.title_akas USING btree (language);
 CREATE INDEX idx_title_akas_region ON imdb.title_akas USING btree (region);
-CREATE INDEX title_akas_title_id_idx ON imdb.title_akas USING btree (title_id);
 
 
 -- imdb.title_crew definition
@@ -558,6 +540,25 @@ CREATE TABLE imdb.title_episode (
 CREATE INDEX idx_title_episode_parent_tconst ON imdb.title_episode USING btree (parent_tconst);
 
 
+-- imdb.title_principals definition
+
+-- Drop table
+
+-- DROP TABLE imdb.title_principals;
+
+CREATE TABLE imdb.title_principals (
+	tconst varchar(20) NOT NULL,
+	"ordering" int2 NOT NULL,
+	nconst varchar(20) NULL,
+	category varchar(50) NOT NULL,
+	job text NULL,
+	"characters" text NULL,
+	CONSTRAINT title_principals_pkey PRIMARY KEY (tconst, ordering),
+	CONSTRAINT title_principals_title_basics_fk FOREIGN KEY (tconst) REFERENCES imdb.title_basics(tconst) ON DELETE CASCADE ON UPDATE RESTRICT
+);
+CREATE INDEX title_principals_nconst_idx ON imdb.title_principals USING btree (nconst);
+
+
 -- imdb.title_ratings definition
 
 -- Drop table
@@ -574,3 +575,19 @@ CREATE TABLE imdb.title_ratings (
 	CONSTRAINT fk_title_ratings_title_basics FOREIGN KEY (tconst) REFERENCES imdb.title_basics(tconst) ON DELETE CASCADE ON UPDATE RESTRICT
 );
 ```
+
+Below 3291 people are present in title_principals, but missing from name_basics.
+
+That's why I have to drop the `fk_title_principals_name_basics` constraint. 
+
+```
+SELECT tp.nconst , COUNT(*) as count
+FROM imdb.title_principals tp
+LEFT JOIN imdb.name_basics nb ON tp.nconst = nb.nconst
+WHERE nb.nconst IS NULL
+GROUP BY tp.nconst 
+ORDER BY count DESC;
+```
+
+Also, need to convert text format of directors, writers column of `title_crew` to list format. 
+
