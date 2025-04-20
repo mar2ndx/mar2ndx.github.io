@@ -194,6 +194,82 @@ Last, copy data:
 \q  -- Quit psql
 ```
 
+If use docker on Mac:
+```
+docker volume create imdb_data
+docker run -d \
+	--name imdb-postgres \
+	-e POSTGRES_USER=imdb \
+	-e POSTGRES_PASSWORD=1234 \
+	-e POSTGRES_DB=imdb_db \
+	-p 5432:5432 \
+	-v imdb_data:/var/lib/postgresql/data \
+	-v /Users/mac/Downloads/imdb:/data/imdb \
+	postgres:latest
+docker ps
+docker exec -it imdb-postgres psql -U imdb -d imdb_db
+docker exec -i  imdb-postgres psql -U imdb -d imdb_db < /Users/mac/Downloads/imdb/scripts/create_table.sql
+```
+
+Now you've created Postgres with username/password `imdb/1234`, and db name `imdb_db`
+
+### Import data dump into Postgres
+
+Seems like there's slight issue with the genres of title_basics, thus need to convert the comma-separated list in the last field to a PostgreSQL array format
+
+Run this: 
+
+```
+awk -F'\t' -v OFS='\t' '{if ($9 != "") $9 = "{"$9"}"; print}' title.basics.tsv2 > title.basics.tsv3
+docker exec -i imdb-postgres psql -U imdb -d imdb_db -c "\copy imdb.title_basics FROM '/data/imdb/title.basics.tsv3' DELIMITER E'\t' QUOTE E'\b' CSV HEADER;"
+```
+
+Great it works! 
+
+![IMDb-Non-Commercial-Datasets](/images/IMDb-Non-Commercial-Datasets.png)
+
+### 2nd Table
+
+```
+awk -F'\t' -v OFS='\t' '{if ($5 != "") $5 = "{"$5"}"; if ($6 != "") $6 = "{"$6"}"; print}' name.basics.tsv2 > name.basics.tsv3
+docker exec -i imdb-postgres psql -U imdb -d imdb_db -c "\copy imdb.name_basics FROM '/data/imdb/name.basics.tsv3' DELIMITER E'\t' QUOTE E'\b' CSV HEADER;"
+```
+
+Small problem with this [person](https://www.imdb.com/name/nm10019610/), thus line 938151 is empty, we need to remove it.
+
+```
+sed -n '938151p' name.basics.tsv3 # Read this line
+sed '938151d' name.basics.tsv3 > name.basics.tsv4
+docker exec -i imdb-postgres psql -U imdb -d imdb_db -c "\copy imdb.name_basics FROM '/data/imdb/name.basics.tsv4' DELIMITER E'\t' QUOTE E'\b' CSV HEADER;"
+```
+
+After this I somehow I need to run 
+
+```
+insert into imdb.name_basics values ('nm17199025', 'Kay Masten')
+insert into imdb.name_basics values ('nm0203940', 'Robert Davies')
+```
+
+to avoid a fk_title_principals_name_basics error (in later stage).
+
+Alternatively: `ALTER TABLE imdb.name_basics ALTER COLUMN primary_name DROP NOT NULL;` does the trick well! 
+
+### 3nd to 7th Tables
+
+```
+docker exec -i imdb-postgres psql -U imdb -d imdb_db -c "\copy imdb.title_crew FROM '/data/imdb/title.crew.tsv2' DELIMITER E'\t' QUOTE E'\b' CSV HEADER;"
+
+docker exec -i imdb-postgres psql -U imdb -d imdb_db -c "\copy imdb.title_episode FROM '/data/imdb/title.episode.tsv2' DELIMITER E'\t' QUOTE E'\b' CSV HEADER;"
+
+docker exec -i imdb-postgres psql -U imdb -d imdb_db -c "\copy imdb.title_ratings FROM '/data/imdb/title.ratings.tsv2' DELIMITER E'\t' QUOTE E'\b' CSV HEADER;"
+
+docker exec -i imdb-postgres psql -U imdb -d imdb_db -c "\copy imdb.title_principals FROM '/data/imdb/title.principals.tsv2' DELIMITER E'\t' QUOTE E'\b' CSV HEADER;"
+
+TODO
+
+docker exec -i imdb-postgres psql -U imdb -d imdb_db -c "\copy imdb.title_akas FROM '/data/imdb/title.akas.tsv2' DELIMITER E'\t' QUOTE E'\b' CSV HEADER;"
+```
+
 # SQL
 
 ```
@@ -233,8 +309,8 @@ CREATE TABLE imdb.title_basics (
 -- Represents the crew (directors and writers) for a movie/show.
 CREATE TABLE imdb.title_crew (
     tconst VARCHAR(20) PRIMARY KEY, -- tconst of the title in title_basics
-    directors VARCHAR(20)[], -- Array of nconsts of directors
-    writers VARCHAR(20)[] -- Array of nconsts of writers
+    directors text, -- Array of nconsts of directors
+    writers text -- Array of nconsts of writers
 );
 
 -- Table: title_episode
@@ -244,8 +320,7 @@ CREATE TABLE imdb.title_episode (
     parent_tconst VARCHAR(20), -- tconst of the parent series in title_basics
     season_number INTEGER, -- Season number of the episode
     episode_number INTEGER, -- Episode number within the season
-    CHECK (season_number > 0),
-    CHECK (episode_number > 0)
+    CHECK (season_number > 0)
 );
 
 -- Table: title_principals
@@ -282,8 +357,6 @@ CREATE TABLE imdb.name_basics (
     death_year INTEGER, -- Year the person died
     primary_profession TEXT[], -- Array of professions for the person
     known_for_titles VARCHAR(20)[], -- Array of tconsts of titles the person is known for
-    CHECK (birth_year > 1800),
-    CHECK (death_year >= birth_year)
 );
 
 -- Foreign Key Constraints
@@ -351,4 +424,153 @@ CREATE INDEX idx_title_basics_genres ON imdb.title_basics USING GIN (genres);
 CREATE INDEX idx_title_episode_parent_tconst ON imdb.title_episode (parent_tconst);
 CREATE INDEX idx_title_principals_nconst ON imdb.title_principals (nconst);
 CREATE INDEX idx_name_basics_primary_profession ON imdb.name_basics USING GIN (primary_profession);
+```
+
+## Updated schema (live data)
+
+Type changes:
+
+    directors VARCHAR(20)[]
+    writers VARCHAR(20)[]
+
+Remove checks:
+
+    CHECK (season_number > 0),
+    CHECK (episode_number > 0)
+    CHECK (birth_year > 1800),
+    CHECK (death_year >= birth_year)
+
+```
+-- imdb.name_basics definition
+
+-- Drop table
+
+-- DROP TABLE imdb.name_basics;
+
+CREATE TABLE imdb.name_basics (
+	nconst varchar(20) NOT NULL,
+	primary_name text NULL,
+	birth_year int4 NULL,
+	death_year int4 NULL,
+	primary_profession _text NULL,
+	known_for_titles _varchar NULL,
+	CONSTRAINT name_basics_pkey PRIMARY KEY (nconst)
+);
+CREATE INDEX idx_name_basics_primary_profession ON imdb.name_basics USING gin (primary_profession);
+
+
+-- imdb.title_basics definition
+
+-- Drop table
+
+-- DROP TABLE imdb.title_basics;
+
+CREATE TABLE imdb.title_basics (
+	tconst varchar(20) NOT NULL,
+	title_type varchar(50) NOT NULL,
+	primary_title text NOT NULL,
+	original_title text NOT NULL,
+	is_adult bool NULL,
+	start_year int4 NULL,
+	end_year int4 NULL,
+	runtime_minutes int4 NULL,
+	genres _text NULL,
+	CONSTRAINT title_basics_check CHECK ((end_year >= start_year)),
+	CONSTRAINT title_basics_pkey PRIMARY KEY (tconst),
+	CONSTRAINT title_basics_start_year_check CHECK ((start_year > 1800))
+);
+CREATE INDEX idx_title_basics_genres ON imdb.title_basics USING gin (genres);
+CREATE INDEX idx_title_basics_start_year ON imdb.title_basics USING btree (start_year);
+CREATE INDEX idx_title_basics_title_type ON imdb.title_basics USING btree (title_type);
+
+
+-- imdb.title_principals definition
+
+-- Drop table
+
+-- DROP TABLE imdb.title_principals;
+
+CREATE TABLE imdb.title_principals (
+	tconst varchar(20) NOT NULL,
+	"ordering" int2 NOT NULL,
+	nconst varchar(20) NULL,
+	category varchar(50) NOT NULL,
+	job text NULL,
+	"characters" text NULL,
+	CONSTRAINT title_principals_pkey PRIMARY KEY (tconst, ordering)
+);
+
+
+-- imdb.title_akas definition
+
+-- Drop table
+
+-- DROP TABLE imdb.title_akas;
+
+CREATE TABLE imdb.title_akas (
+	title_id varchar(20) NOT NULL,
+	"ordering" int2 NOT NULL,
+	title text NOT NULL,
+	region varchar(10) NULL,
+	"language" varchar(10) NULL,
+	"types" text NULL,
+	"attributes" text NULL,
+	is_original_title bool NULL,
+	CONSTRAINT title_akas_pkey PRIMARY KEY (title_id, ordering),
+	CONSTRAINT title_akas_title_basics_fk FOREIGN KEY (title_id) REFERENCES imdb.title_basics(tconst) ON DELETE CASCADE ON UPDATE RESTRICT
+);
+CREATE INDEX idx_title_akas_language ON imdb.title_akas USING btree (language);
+CREATE INDEX idx_title_akas_region ON imdb.title_akas USING btree (region);
+CREATE INDEX title_akas_title_id_idx ON imdb.title_akas USING btree (title_id);
+
+
+-- imdb.title_crew definition
+
+-- Drop table
+
+-- DROP TABLE imdb.title_crew;
+
+CREATE TABLE imdb.title_crew (
+	tconst varchar(20) NOT NULL,
+	directors text NULL,
+	writers text NULL,
+	CONSTRAINT title_crew_pkey PRIMARY KEY (tconst),
+	CONSTRAINT fk_title_crew_title_basics FOREIGN KEY (tconst) REFERENCES imdb.title_basics(tconst) ON DELETE CASCADE ON UPDATE RESTRICT
+);
+
+
+-- imdb.title_episode definition
+
+-- Drop table
+
+-- DROP TABLE imdb.title_episode;
+
+CREATE TABLE imdb.title_episode (
+	tconst varchar(20) NOT NULL,
+	parent_tconst varchar(20) NULL,
+	season_number int4 NULL,
+	episode_number int4 NULL,
+	CONSTRAINT title_episode_pkey PRIMARY KEY (tconst),
+	CONSTRAINT title_episode_season_number_check CHECK ((season_number > 0)),
+	CONSTRAINT fk_title_episode_parent_title_basics FOREIGN KEY (parent_tconst) REFERENCES imdb.title_basics(tconst) ON DELETE SET NULL ON UPDATE RESTRICT,
+	CONSTRAINT fk_title_episode_title_basics FOREIGN KEY (tconst) REFERENCES imdb.title_basics(tconst) ON DELETE CASCADE ON UPDATE RESTRICT
+);
+CREATE INDEX idx_title_episode_parent_tconst ON imdb.title_episode USING btree (parent_tconst);
+
+
+-- imdb.title_ratings definition
+
+-- Drop table
+
+-- DROP TABLE imdb.title_ratings;
+
+CREATE TABLE imdb.title_ratings (
+	tconst varchar(20) NOT NULL,
+	average_rating numeric(3, 1) NULL,
+	num_votes int4 NOT NULL,
+	CONSTRAINT title_ratings_check CHECK ((((num_votes > 0) AND (average_rating >= (0)::numeric) AND (average_rating <= (10)::numeric)) OR ((num_votes = 0) AND (average_rating IS NULL)))),
+	CONSTRAINT title_ratings_num_votes_check CHECK ((num_votes >= 0)),
+	CONSTRAINT title_ratings_pkey PRIMARY KEY (tconst),
+	CONSTRAINT fk_title_ratings_title_basics FOREIGN KEY (tconst) REFERENCES imdb.title_basics(tconst) ON DELETE CASCADE ON UPDATE RESTRICT
+);
 ```
