@@ -34,6 +34,10 @@ Domain Models
 
 DTOs
 
+![](/images/data-transfer-objects-dtos-for-effortless-communication.jpg)
+
+as described by Martin Fowler in his book “Patterns of Enterprise Application Architecture,” are objects used to carry data.
+
 1. Transfer-oriented
 1. Purpose-specific shapes
 1. Simple data containers
