@@ -68,3 +68,5 @@ as described by Martin Fowler in his book “Patterns of Enterprise Application 
 1. Service Layer: Converts DTOs to Domain Models and applies business rules
 1. Repository Layer: Transforms Domain Models to Entities
 1. Database Layer: Persists Entities as database rows/documents
+
+Reference: https://medium.com/@lpramithamj/synchronizing-spring-the-artistry-of-data-transfer-objects-dtos-for-effortless-communication-in-3b91697591fc
