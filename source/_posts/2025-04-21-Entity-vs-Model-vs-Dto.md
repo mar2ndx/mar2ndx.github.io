@@ -1,6 +1,6 @@
 ---
 title: Entity vs Model vs Dto
-category: unknown
+category: programming
 tags: []
 comments: true
 date: 2025-04-21 04:09:31
