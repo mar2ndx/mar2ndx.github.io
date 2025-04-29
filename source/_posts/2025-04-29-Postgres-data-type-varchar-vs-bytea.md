@@ -22,8 +22,19 @@ The overhead comes from encoding as hex.
 
 ## bytea
 
-This is PostgreSQL’s type for storing binary data.
-If you store the raw output of SHA-256, it is exactly 32 bytes (since the hash is 256 bits).
-Total bytes: 32 bytes
-Total bits: 32 × 8 = 256 bits
+for PostgreSQL, this is raw output of SHA-256, it is exactly 32 bytes. Total bits: 32 × 8 = 256 bits.
+
 This is as compact as possible, no extra storage overhead for encoding.
+
+# Conclusion
+
+bytea: Use for best storage efficiency. Store the plain binary hash.
+
+varchar(64): Use if you absolutely need a hex string for human readability or simple debugging, but it consumes twice the space.
+
+--- 
+
+When you store a hex string as text (e.g., "b1a89231..."), each character is a hex digit.
+If the string is plain ASCII (which is always the case for hex: only 0-9, A-F), each character is 1 byte in almost all encodings (including UTF-8, ASCII, Latin1).
+
+UTF-8 stores ASCII characters in 1 byte per character, so a 64-character hex string is 64 bytes (when encoded/saved).
