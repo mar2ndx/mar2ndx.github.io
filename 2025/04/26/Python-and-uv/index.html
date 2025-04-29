@@ -11,7 +11,7 @@
 
 
 
-<title>[LeetCode 67] Add Binary | Tech blog</title>
+<title>Python and uv | Tech blog</title>
 
 
 
@@ -132,90 +132,25 @@
                 <div class="container">
     
     
-        <div class="post-toc">
-    <div class="tocbot-list">
-    </div>
-    <div class="tocbot-list-menu">
-        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
-        <a onclick="go_top()">Back to top</a>
-        <a onclick="go_bottom()">Go to bottom</a>
-    </div>
-</div>
-
-<script>
-    var tocbot_timer;
-    var DEPTH_MAX = 6; // 为 6 时展开所有
-    var tocbot_default_config = {
-        tocSelector: '.tocbot-list',
-        contentSelector: '.post-content',
-        headingSelector: 'h1, h2, h3, h4, h5',
-        orderedList: false,
-        scrollSmooth: true,
-        onClick: extend_click,
-    };
-
-    function extend_click() {
-        clearTimeout(tocbot_timer);
-        tocbot_timer = setTimeout(function() {
-            tocbot.refresh(obj_merge(tocbot_default_config, {
-                hasInnerContainers: true
-            }));
-        }, 420); // 这个值是由 tocbot 源码里定义的 scrollSmoothDuration 得来的
-    }
-
-    document.ready(function() {
-        tocbot.init(obj_merge(tocbot_default_config, {
-            collapseDepth: 1
-        }));
-    });
-
-    function expand_toc() {
-        var b = document.querySelector('.tocbot-toc-expand');
-        var expanded = b.getAttribute('data-expanded');
-        expanded ? b.removeAttribute('data-expanded') : b.setAttribute('data-expanded', true);
-        tocbot.refresh(obj_merge(tocbot_default_config, {
-            collapseDepth: expanded ? 1 : DEPTH_MAX
-        }));
-        b.innerText = expanded ? 'Expand all' : 'Collapse all';
-    }
-
-    function go_top() {
-        window.scrollTo(0, 0);
-    }
-
-    function go_bottom() {
-        window.scrollTo(0, document.body.scrollHeight);
-    }
-
-    function obj_merge(target, source) {
-        for (var item in source) {
-            if (source.hasOwnProperty(item)) {
-                target[item] = source[item];
-            }
-        }
-        return target;
-    }
-</script>
-    
 
     
     <article class="post-wrap">
         <header class="post-header">
-            <h1 class="post-title">[LeetCode 67] Add Binary</h1>
+            <h1 class="post-title">Python and uv</h1>
             
                 <div class="post-meta">
                     
 
                     
                         <span class="post-time">
-                        Date: <a href="#">May 21, 2014&nbsp;&nbsp;0:00:00</a>
+                        Date: <a href="#">April 26, 2025&nbsp;&nbsp;9:46:21</a>
                         </span>
                     
                     
                         <span class="post-category">
                     Category:
                             
-                                <a href="/categories/Leetcode/">Leetcode</a>
+                                <a href="/categories/unknown/">unknown</a>
                             
                         </span>
                     
@@ -224,62 +159,21 @@
         </header>
 
         <div class="post-content">
-            <h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><p><a target="_blank" rel="noopener" href="http://oj.leetcode.com/problems/add-binary/">link</a></p>
-<div class="question-content">
-            <p></p><p>
-Given two binary strings, return their sum (also a binary string).
-</p>
+            <p>Properly install Python on Mac OS:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew install python</span><br></pre></td></tr></table></figure>
 
-<p>
-For example,<br>
-a = <code>"11"</code><br>
-b = <code>"1"</code><br>
-Return <code>"100"</code>.
-</p><p></p>
-          </div>
+<p>Homebrew recommends modifying the ~&#x2F;.zprofile file by adding the following line as the last line in the ~&#x2F;.zprofile file:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">export PATH=&quot;$(brew --prefix python)/libexec/bin:$PATH&quot;</span><br></pre></td></tr></table></figure>
 
-<h3 id="Stats"><a href="#Stats" class="headerlink" title="Stats"></a>Stats</h3><table border="2">
-	<tr>
-		<td>Frequency</td>
-		<td bgcolor="red">4</td>
-	</tr>
-	<tr>
-		<td>Difficulty</td>
-		<td bgcolor="lime">2</td>
-	</tr>
-	<tr>
-		<td>Adjusted Difficulty</td>
-		<td bgcolor="lime">2</td>
-	</tr>
-	<tr>
-		<td>Time to use</td>
-		<td bgcolor="yellow">----------</td>
-	</tr>
-</table>
+<p>Check current Python versions:</p>
+<p><code>uv python list</code></p>
+<p>To run a specifc version of python:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">uvx python@3.12 -c &quot;print(&#x27;hello world&#x27;)&quot;</span><br></pre></td></tr></table></figure>
 
-<p>Ratings&#x2F;Color &#x3D; 1(white) 2(lime) 3(yellow) 4&#x2F;5(red)</p>
-<h3 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h3><p><strong>This is an easy question</strong>. Pure coding.</p>
-<p>There are some boundary issues during my first attempt. And special note to the trim() operation after “String.valueOf(ans)”, it’s easy to omit.</p>
-<h3 id="My-code"><a href="#My-code" class="headerlink" title="My code"></a>My code</h3><pre><code>public String addBinary(String a, String b) &#123;
-    int m = a.length(), n = b.length();
-    char[] ans = new char[Math.max(m, n) + 1];
-    int p = m - 1, q = n - 1, r = ans.length - 1;
-    int carry = 0;
-    while (r &gt;= 0) &#123;
-        if (p &gt;= 0)
-            ans[r] += a.charAt(p--) - &#39;0&#39;;
-        if (q &gt;= 0)
-            ans[r] += b.charAt(q--) - &#39;0&#39;;
-        int temp = ans[r] + carry;
-        ans[r] = (char) (temp % 2 + &#39;0&#39;);
-        carry = temp / 2;
-        r--;
-    &#125;
-    if (ans[0] == &#39;0&#39;)
-        ans[0] = &#39; &#39;;
-    return String.valueOf(ans).trim();
-&#125;
-</code></pre>
+<p>(if the version you specify does not exist, uv will install it for you)</p>
+<p>Remove a python version using uv:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">uv python uninstall cpython-3.11.12-macos-x86_64-none</span><br></pre></td></tr></table></figure>
+
 
         </div>
 
@@ -294,7 +188,7 @@ Return <code>"100"</code>.
                 
                     <p class="copyright-item">
                         <span>Permalink:</span>
-                        <span><a href="https://mar2ndx.github.io/2014/05/21/pre-2017-2014-05-21-Add-Binary/">https://mar2ndx.github.io/2014/05/21/pre-2017-2014-05-21-Add-Binary/</a></span>
+                        <span><a href="https://mar2ndx.github.io/2025/04/26/Python-and-uv/">https://mar2ndx.github.io/2025/04/26/Python-and-uv/</a></span>
                     </p>
                 
                 
@@ -327,10 +221,10 @@ Return <code>"100"</code>.
         </section>
         <section class="post-nav">
             
-                <a class="prev" rel="prev" href="/2014/05/22/pre-2017-2014-05-22-Subsets/">[LeetCode 78] Subsets</a>
+                <a class="prev" rel="prev" href="/2025/04/29/Postgres-data-type-varchar-vs-bytea/">Postgres data type varchar vs bytea</a>
             
             
-            <a class="next" rel="next" href="/2014/05/21/pre-2017-2014-05-21-Climbing-Stairs/">[LeetCode 70] Climbing Stairs</a>
+            <a class="next" rel="next" href="/2025/04/25/Module-Level-Configuration-vs-Pydantic/">Module-Level Configuration vs Pydantic-Based Configuration</a>
             
         </section>
 

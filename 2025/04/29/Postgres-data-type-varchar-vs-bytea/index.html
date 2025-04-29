@@ -11,7 +11,7 @@
 
 
 
-<title>[LeetCode 67] Add Binary | Tech blog</title>
+<title>Postgres data type varchar vs bytea | Tech blog</title>
 
 
 
@@ -201,21 +201,21 @@
     
     <article class="post-wrap">
         <header class="post-header">
-            <h1 class="post-title">[LeetCode 67] Add Binary</h1>
+            <h1 class="post-title">Postgres data type varchar vs bytea</h1>
             
                 <div class="post-meta">
                     
 
                     
                         <span class="post-time">
-                        Date: <a href="#">May 21, 2014&nbsp;&nbsp;0:00:00</a>
+                        Date: <a href="#">April 29, 2025&nbsp;&nbsp;20:25:57</a>
                         </span>
                     
                     
                         <span class="post-category">
                     Category:
                             
-                                <a href="/categories/Leetcode/">Leetcode</a>
+                                <a href="/categories/unknown/">unknown</a>
                             
                         </span>
                     
@@ -224,62 +224,21 @@
         </header>
 
         <div class="post-content">
-            <h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><p><a target="_blank" rel="noopener" href="http://oj.leetcode.com/problems/add-binary/">link</a></p>
-<div class="question-content">
-            <p></p><p>
-Given two binary strings, return their sum (also a binary string).
-</p>
-
-<p>
-For example,<br>
-a = <code>"11"</code><br>
-b = <code>"1"</code><br>
-Return <code>"100"</code>.
-</p><p></p>
-          </div>
-
-<h3 id="Stats"><a href="#Stats" class="headerlink" title="Stats"></a>Stats</h3><table border="2">
-	<tr>
-		<td>Frequency</td>
-		<td bgcolor="red">4</td>
-	</tr>
-	<tr>
-		<td>Difficulty</td>
-		<td bgcolor="lime">2</td>
-	</tr>
-	<tr>
-		<td>Adjusted Difficulty</td>
-		<td bgcolor="lime">2</td>
-	</tr>
-	<tr>
-		<td>Time to use</td>
-		<td bgcolor="yellow">----------</td>
-	</tr>
-</table>
-
-<p>Ratings&#x2F;Color &#x3D; 1(white) 2(lime) 3(yellow) 4&#x2F;5(red)</p>
-<h3 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h3><p><strong>This is an easy question</strong>. Pure coding.</p>
-<p>There are some boundary issues during my first attempt. And special note to the trim() operation after “String.valueOf(ans)”, it’s easy to omit.</p>
-<h3 id="My-code"><a href="#My-code" class="headerlink" title="My code"></a>My code</h3><pre><code>public String addBinary(String a, String b) &#123;
-    int m = a.length(), n = b.length();
-    char[] ans = new char[Math.max(m, n) + 1];
-    int p = m - 1, q = n - 1, r = ans.length - 1;
-    int carry = 0;
-    while (r &gt;= 0) &#123;
-        if (p &gt;= 0)
-            ans[r] += a.charAt(p--) - &#39;0&#39;;
-        if (q &gt;= 0)
-            ans[r] += b.charAt(q--) - &#39;0&#39;;
-        int temp = ans[r] + carry;
-        ans[r] = (char) (temp % 2 + &#39;0&#39;);
-        carry = temp / 2;
-        r--;
-    &#125;
-    if (ans[0] == &#39;0&#39;)
-        ans[0] = &#39; &#39;;
-    return String.valueOf(ans).trim();
-&#125;
-</code></pre>
+            <p>I need to store some hash value with SHA-256 encryption. </p>
+<blockquote>
+<p>SHA-256</p>
+</blockquote>
+<p>What Data Type should I use? </p>
+<h2 id="varchar-64"><a href="#varchar-64" class="headerlink" title="varchar(64)"></a>varchar(64)</h2><p>Each character is stored as 1 byte (if using standard ASCII&#x2F;UTF-8). Total bytes: 64 bytes (&#x3D; 512 bits).</p>
+<p>This is more than needed to store the true SHA-256 hash, since the original hash is only 32 bytes (256 bits). </p>
+<p>The overhead comes from encoding as hex.</p>
+<h2 id="bytea"><a href="#bytea" class="headerlink" title="bytea"></a>bytea</h2><p>for PostgreSQL, this is raw output of SHA-256, it is exactly 32 bytes. Total bits: 32 × 8 &#x3D; 256 bits.</p>
+<p>This is as compact as possible, no extra storage overhead for encoding.</p>
+<h1 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h1><p>bytea: Use for best storage efficiency. Store the plain binary hash.</p>
+<p>varchar(64): Use if you absolutely need a hex string for human readability or simple debugging, but it consumes twice the space.</p>
+<hr>
+<p>When you store a hex string as text (e.g., “b1a89231…”), each character is a hex digit.<br>If the string is plain ASCII (which is always the case for hex: only 0-9, A-F), each character is 1 byte in almost all encodings (including UTF-8, ASCII, Latin1).</p>
+<p>UTF-8 stores ASCII characters in 1 byte per character, so a 64-character hex string is 64 bytes (when encoded&#x2F;saved).</p>
 
         </div>
 
@@ -294,7 +253,7 @@ Return <code>"100"</code>.
                 
                     <p class="copyright-item">
                         <span>Permalink:</span>
-                        <span><a href="https://mar2ndx.github.io/2014/05/21/pre-2017-2014-05-21-Add-Binary/">https://mar2ndx.github.io/2014/05/21/pre-2017-2014-05-21-Add-Binary/</a></span>
+                        <span><a href="https://mar2ndx.github.io/2025/04/29/Postgres-data-type-varchar-vs-bytea/">https://mar2ndx.github.io/2025/04/29/Postgres-data-type-varchar-vs-bytea/</a></span>
                     </p>
                 
                 
@@ -327,10 +286,8 @@ Return <code>"100"</code>.
         </section>
         <section class="post-nav">
             
-                <a class="prev" rel="prev" href="/2014/05/22/pre-2017-2014-05-22-Subsets/">[LeetCode 78] Subsets</a>
             
-            
-            <a class="next" rel="next" href="/2014/05/21/pre-2017-2014-05-21-Climbing-Stairs/">[LeetCode 70] Climbing Stairs</a>
+            <a class="next" rel="next" href="/2025/04/26/Python-and-uv/">Python and uv</a>
             
         </section>
 

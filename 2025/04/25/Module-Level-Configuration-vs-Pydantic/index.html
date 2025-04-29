@@ -11,7 +11,7 @@
 
 
 
-<title>[LeetCode 67] Add Binary | Tech blog</title>
+<title>Module-Level Configuration vs Pydantic-Based Configuration | Tech blog</title>
 
 
 
@@ -201,21 +201,21 @@
     
     <article class="post-wrap">
         <header class="post-header">
-            <h1 class="post-title">[LeetCode 67] Add Binary</h1>
+            <h1 class="post-title">Module-Level Configuration vs Pydantic-Based Configuration</h1>
             
                 <div class="post-meta">
                     
 
                     
                         <span class="post-time">
-                        Date: <a href="#">May 21, 2014&nbsp;&nbsp;0:00:00</a>
+                        Date: <a href="#">April 25, 2025&nbsp;&nbsp;1:35:11</a>
                         </span>
                     
                     
                         <span class="post-category">
                     Category:
                             
-                                <a href="/categories/Leetcode/">Leetcode</a>
+                                <a href="/categories/unknown/">unknown</a>
                             
                         </span>
                     
@@ -224,62 +224,15 @@
         </header>
 
         <div class="post-content">
-            <h3 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h3><p><a target="_blank" rel="noopener" href="http://oj.leetcode.com/problems/add-binary/">link</a></p>
-<div class="question-content">
-            <p></p><p>
-Given two binary strings, return their sum (also a binary string).
-</p>
+            <h1 id="Module-Level-Configuration"><a href="#Module-Level-Configuration" class="headerlink" title="Module-Level Configuration"></a>Module-Level Configuration</h1><p>Defined at the top-level of a Python module (file), typically as global variables or constants. For example:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># settings.py</span></span><br><span class="line">API_KEY = <span class="string">&#x27;your-key-here&#x27;</span></span><br><span class="line">DEBUG = <span class="literal">True</span></span><br><span class="line">TIMEOUT = <span class="number">30</span></span><br></pre></td></tr></table></figure>
 
-<p>
-For example,<br>
-a = <code>"11"</code><br>
-b = <code>"1"</code><br>
-Return <code>"100"</code>.
-</p><p></p>
-          </div>
+<p>Usage:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> settings <span class="keyword">import</span> API_KEY, DEBUG, TIMEOUT</span><br></pre></td></tr></table></figure>
 
-<h3 id="Stats"><a href="#Stats" class="headerlink" title="Stats"></a>Stats</h3><table border="2">
-	<tr>
-		<td>Frequency</td>
-		<td bgcolor="red">4</td>
-	</tr>
-	<tr>
-		<td>Difficulty</td>
-		<td bgcolor="lime">2</td>
-	</tr>
-	<tr>
-		<td>Adjusted Difficulty</td>
-		<td bgcolor="lime">2</td>
-	</tr>
-	<tr>
-		<td>Time to use</td>
-		<td bgcolor="yellow">----------</td>
-	</tr>
-</table>
-
-<p>Ratings&#x2F;Color &#x3D; 1(white) 2(lime) 3(yellow) 4&#x2F;5(red)</p>
-<h3 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h3><p><strong>This is an easy question</strong>. Pure coding.</p>
-<p>There are some boundary issues during my first attempt. And special note to the trim() operation after “String.valueOf(ans)”, it’s easy to omit.</p>
-<h3 id="My-code"><a href="#My-code" class="headerlink" title="My code"></a>My code</h3><pre><code>public String addBinary(String a, String b) &#123;
-    int m = a.length(), n = b.length();
-    char[] ans = new char[Math.max(m, n) + 1];
-    int p = m - 1, q = n - 1, r = ans.length - 1;
-    int carry = 0;
-    while (r &gt;= 0) &#123;
-        if (p &gt;= 0)
-            ans[r] += a.charAt(p--) - &#39;0&#39;;
-        if (q &gt;= 0)
-            ans[r] += b.charAt(q--) - &#39;0&#39;;
-        int temp = ans[r] + carry;
-        ans[r] = (char) (temp % 2 + &#39;0&#39;);
-        carry = temp / 2;
-        r--;
-    &#125;
-    if (ans[0] == &#39;0&#39;)
-        ans[0] = &#39; &#39;;
-    return String.valueOf(ans).trim();
-&#125;
-</code></pre>
+<h1 id="Pydantic-Based-Configuration"><a href="#Pydantic-Based-Configuration" class="headerlink" title="Pydantic-Based Configuration"></a>Pydantic-Based Configuration</h1><p>Pydantic is a data validation and parsing library.</p>
+<p>define config (or any data model) as a class with type annotations, validation, and parsing built-in.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">from pydantic import BaseSettings</span><br><span class="line"></span><br><span class="line">class Settings(BaseSettings):</span><br><span class="line">    api_key: str</span><br><span class="line">    debug: bool = False</span><br><span class="line">    timeout: int = 30</span><br><span class="line"></span><br><span class="line">    class Config:</span><br><span class="line">        env_file = &quot;.env&quot;</span><br><span class="line"></span><br><span class="line">settings = Settings()</span><br></pre></td></tr></table></figure>
 
         </div>
 
@@ -294,7 +247,7 @@ Return <code>"100"</code>.
                 
                     <p class="copyright-item">
                         <span>Permalink:</span>
-                        <span><a href="https://mar2ndx.github.io/2014/05/21/pre-2017-2014-05-21-Add-Binary/">https://mar2ndx.github.io/2014/05/21/pre-2017-2014-05-21-Add-Binary/</a></span>
+                        <span><a href="https://mar2ndx.github.io/2025/04/25/Module-Level-Configuration-vs-Pydantic/">https://mar2ndx.github.io/2025/04/25/Module-Level-Configuration-vs-Pydantic/</a></span>
                     </p>
                 
                 
@@ -327,10 +280,10 @@ Return <code>"100"</code>.
         </section>
         <section class="post-nav">
             
-                <a class="prev" rel="prev" href="/2014/05/22/pre-2017-2014-05-22-Subsets/">[LeetCode 78] Subsets</a>
+                <a class="prev" rel="prev" href="/2025/04/26/Python-and-uv/">Python and uv</a>
             
             
-            <a class="next" rel="next" href="/2014/05/21/pre-2017-2014-05-21-Climbing-Stairs/">[LeetCode 70] Climbing Stairs</a>
+            <a class="next" rel="next" href="/2025/04/21/Entity-vs-Model-vs-Dto/">Entity vs Model vs Dto</a>
             
         </section>
 
