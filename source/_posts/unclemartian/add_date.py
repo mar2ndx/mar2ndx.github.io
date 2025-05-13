@@ -1,7 +1,6 @@
 import os
 import re
 import datetime
-from collections import OrderedDict
 
 
 def sanitize_filename(filename):
