@@ -9,32 +9,33 @@ date: 2025-04-29 20:25:57
 I need to store some hash value with SHA-256 encryption. 
 
 > SHA-256
+>
+> a cryptographic hash function that produces a **256-bit hash value** from any input data.
 
-What Data Type should I use? 
+Whatr Data Type should I use? 
 
-## varchar(64)
+## Calculation
 
-Each character is stored as 1 byte (if using standard ASCII/UTF-8). Total bytes: 64 bytes (= 512 bits).
+Base-16 = 十六进制 = Hexadecimal
 
-This is more than needed to store the true SHA-256 hash, since the original hash is only 32 bytes (256 bits). 
+Each hex digit can have 16 possible values (0-9, A-F), represented by 4 bits (2^4 = 16).
 
-The overhead comes from encoding as hex.
+So, to store a 256-bit hash value, we need 32 bytes * 8 = 256-bit.
 
-## bytea
+## BYTEA
 
-for PostgreSQL, this is raw output of SHA-256, it is exactly 32 bytes. Total bits: 32 × 8 = 256 bits.
+For PostgreSQL raw output of SHA-256, it's exactly 32 bytes. Total bits: 32 × 8 = 256 bits.
 
-This is as compact as possible, no extra storage overhead for encoding.
+This is clean and compact, no storage overhead.
+
+## VARCHAR(64)
+
+When storing hex string as text (e.g., "b1a89231..."), each char is a digit (using standard ASCII/UTF-8). 
+
+So a 64-character hex string is 64 bytes. Thus VARCHAR(64)
 
 # Conclusion
 
-bytea: Use for best storage efficiency. Store the plain binary hash.
+BYTEA: Use for best storage efficiency. Store the plain binary hash. (32bytes)
 
-varchar(64): Use if you absolutely need a hex string for human readability or simple debugging, but it consumes twice the space.
-
---- 
-
-When you store a hex string as text (e.g., "b1a89231..."), each character is a hex digit.
-If the string is plain ASCII (which is always the case for hex: only 0-9, A-F), each character is 1 byte in almost all encodings (including UTF-8, ASCII, Latin1).
-
-UTF-8 stores ASCII characters in 1 byte per character, so a 64-character hex string is 64 bytes (when encoded/saved).
+VARCHAR(64): if you need a hex string for human readability, it consumes twice the space. (64bytes)
