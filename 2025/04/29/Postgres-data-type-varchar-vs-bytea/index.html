@@ -227,18 +227,18 @@
             <p>I need to store some hash value with SHA-256 encryption. </p>
 <blockquote>
 <p>SHA-256</p>
+<p>a cryptographic hash function that produces a <strong>256-bit hash value</strong> from any input data.</p>
 </blockquote>
-<p>What Data Type should I use? </p>
-<h2 id="varchar-64"><a href="#varchar-64" class="headerlink" title="varchar(64)"></a>varchar(64)</h2><p>Each character is stored as 1 byte (if using standard ASCII&#x2F;UTF-8). Total bytes: 64 bytes (&#x3D; 512 bits).</p>
-<p>This is more than needed to store the true SHA-256 hash, since the original hash is only 32 bytes (256 bits). </p>
-<p>The overhead comes from encoding as hex.</p>
-<h2 id="bytea"><a href="#bytea" class="headerlink" title="bytea"></a>bytea</h2><p>for PostgreSQL, this is raw output of SHA-256, it is exactly 32 bytes. Total bits: 32 × 8 &#x3D; 256 bits.</p>
-<p>This is as compact as possible, no extra storage overhead for encoding.</p>
-<h1 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h1><p>bytea: Use for best storage efficiency. Store the plain binary hash.</p>
-<p>varchar(64): Use if you absolutely need a hex string for human readability or simple debugging, but it consumes twice the space.</p>
-<hr>
-<p>When you store a hex string as text (e.g., “b1a89231…”), each character is a hex digit.<br>If the string is plain ASCII (which is always the case for hex: only 0-9, A-F), each character is 1 byte in almost all encodings (including UTF-8, ASCII, Latin1).</p>
-<p>UTF-8 stores ASCII characters in 1 byte per character, so a 64-character hex string is 64 bytes (when encoded&#x2F;saved).</p>
+<p>Whatr Data Type should I use? </p>
+<h2 id="Calculation"><a href="#Calculation" class="headerlink" title="Calculation"></a>Calculation</h2><p>Base-16 &#x3D; 十六进制 &#x3D; Hexadecimal</p>
+<p>Each hex digit can have 16 possible values (0-9, A-F), represented by 4 bits (2^4 &#x3D; 16).</p>
+<p>So, to store a 256-bit hash value, we need 32 bytes * 8 &#x3D; 256-bit.</p>
+<h2 id="BYTEA"><a href="#BYTEA" class="headerlink" title="BYTEA"></a>BYTEA</h2><p>For PostgreSQL raw output of SHA-256, it’s exactly 32 bytes. Total bits: 32 × 8 &#x3D; 256 bits.</p>
+<p>This is clean and compact, no storage overhead.</p>
+<h2 id="VARCHAR-64"><a href="#VARCHAR-64" class="headerlink" title="VARCHAR(64)"></a>VARCHAR(64)</h2><p>When storing hex string as text (e.g., “b1a89231…”), each char is a digit (using standard ASCII&#x2F;UTF-8). </p>
+<p>So a 64-character hex string is 64 bytes. Thus VARCHAR(64)</p>
+<h1 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h1><p>BYTEA: Use for best storage efficiency. Store the plain binary hash. (32bytes)</p>
+<p>VARCHAR(64): if you need a hex string for human readability, it consumes twice the space. (64bytes)</p>
 
         </div>
 
@@ -285,6 +285,8 @@
             </div>
         </section>
         <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2025/05/02/Demis-Hassabis-and-Mustafa-Suleyman/">Demis Hassabis and Mustafa Suleyman</a>
             
             
             <a class="next" rel="next" href="/2025/04/26/Python-and-uv/">Python and uv</a>

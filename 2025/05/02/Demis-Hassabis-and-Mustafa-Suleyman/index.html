@@ -11,7 +11,7 @@
 
 
 
-<title>【Tech】 Gnome extension - Gnomenu | Tech blog</title>
+<title>Demis Hassabis and Mustafa Suleyman | Tech blog</title>
 
 
 
@@ -201,14 +201,14 @@
     
     <article class="post-wrap">
         <header class="post-header">
-            <h1 class="post-title">【Tech】 Gnome extension - Gnomenu</h1>
+            <h1 class="post-title">Demis Hassabis and Mustafa Suleyman</h1>
             
                 <div class="post-meta">
                     
 
                     
                         <span class="post-time">
-                        Date: <a href="#">April 24, 2022&nbsp;&nbsp;0:00:00</a>
+                        Date: <a href="#">May 2, 2025&nbsp;&nbsp;22:01:32</a>
                         </span>
                     
                     
@@ -224,38 +224,22 @@
         </header>
 
         <div class="post-content">
-            <h1 id="Gnomenu"><a href="#Gnomenu" class="headerlink" title="Gnomenu"></a>Gnomenu</h1><p><a target="_blank" rel="noopener" href="https://extensions.gnome.org/extension/608/gnomenu/">Gno-Menu</a> is a traditional styled <strong>full featured Gnome-Shell apps menu</strong>, that aims to offer all the essentials in a simple uncluttered intuitive interface.</p>
-<p>Source Code: <a target="_blank" rel="noopener" href="https://github.com/The-Panacea-Projects/Gnomenu">https://github.com/The-Panacea-Projects/Gnomenu</a></p>
-<h1 id="Challenges"><a href="#Challenges" class="headerlink" title="Challenges"></a>Challenges</h1><p>在 Pop!_OS上面，安装报错如下：</p>
-<pre><code>pop-os gnome-shell[60693]: JS ERROR: Extension gnomenu@panacier.gmail.com: Error: Requiring GMenu, version none: Typelib file for namespace &#39;GMenu&#39; (an&gt;
-    @/home/username/.local/share/gnome-shell/extensions/gnomenu@panacier.gmail.com/extension.js:22:15
-    _callExtensionInit@resource:///org/gnome/shell/ui/extensionSystem.js:425:13
-    loadExtension@resource:///org/gnome/shell/ui/extensionSystem.js:346:27
-    callback@resource:///org/gnome/shell/ui/extensionDownloader.js:234:39
-    gotExtensionZipFile/&lt;@resource:///org/gnome/shell/ui/extensionDownloader.js:115:13
-</code></pre>
-<h2 id="查看错误"><a href="#查看错误" class="headerlink" title="查看错误"></a>查看错误</h2><p>用 journalctl 来查看报错：</p>
-<pre><code>sudo journalctl /usr/bin/gnome-shell --since &quot;2022-04-23 23:15:00&quot;
-</code></pre>
-<p>Or:</p>
-<pre><code>sudo journalctl /usr/bin/gnome-shell | grep &#39;gnomenu&#39;
-</code></pre>
-<h2 id="GMenu"><a href="#GMenu" class="headerlink" title="GMenu"></a>GMenu</h2><p>从报错看，是缺少了 GMenu。但是直接 apt install 是不行了。<a target="_blank" rel="noopener" href="https://github.com/The-Panacea-Projects/Gnomenu/issues/125">原因在此</a>.</p>
-<p>Quote: </p>
-<blockquote>
-<p>With Pop_OS 19.04 you need package gir1.2-gmenu-3.0 and it dependency libgnome-menu-3-0 for this extension to work. After that “Download button” top right. Rename the extracted folder to “ <a href="mailto:&#103;&#110;&#x6f;&#109;&#x65;&#x6e;&#x75;&#64;&#x70;&#x61;&#110;&#x61;&#x63;&#105;&#101;&#114;&#46;&#103;&#109;&#97;&#x69;&#108;&#46;&#99;&#111;&#x6d;">gnomenu@panacier.gmail.com</a> “ and move to your extensions folder. restart gnome-shell or logout&#x2F;login.</p>
-<p>For the record the error message was:<br>Aug 10 17:25:33 pop-os gnome-shell[3231]: Extension “<a href="mailto:&#103;&#110;&#111;&#109;&#x65;&#x6e;&#x75;&#64;&#112;&#x61;&#110;&#x61;&#x63;&#105;&#101;&#x72;&#x2e;&#x67;&#x6d;&#97;&#105;&#x6c;&#x2e;&#99;&#111;&#x6d;">gnomenu@panacier.gmail.com</a>“ had error: Error: Requiring GMenu, version none: Typelib file for namespace ‘GMenu’ (any version) not found</p>
-<p>methilnet commented on Aug 11, 2019</p>
-</blockquote>
-<h2 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h2><p>安装依赖：</p>
-<pre><code>sudo apt install gnome-menus
-sudo apt install gir1.2-gmenu-3.0
-</code></pre>
-<p>下载 zip，手动解压并重命名为“<a href="mailto:&#103;&#110;&#x6f;&#x6d;&#x65;&#x6e;&#x75;&#x40;&#x70;&#x61;&#110;&#x61;&#x63;&#x69;&#x65;&#114;&#x2e;&#x67;&#109;&#97;&#x69;&#x6c;&#46;&#99;&#111;&#109;">gnomenu@panacier.gmail.com</a>”，移动到 &#x2F;home&#x2F;username&#x2F;.local&#x2F;share&#x2F;gnome-shell&#x2F;extensions&#x2F;</p>
-<p><a target="_blank" rel="noopener" href="https://github.com/The-Panacea-Projects/Gnomenu">https://github.com/The-Panacea-Projects/Gnomenu</a></p>
-<p>最后，重启 gnome</p>
-<p>Alt + F2，输入‘r’ (<a target="_blank" rel="noopener" href="https://ubunlog.com/en/restart-frozen-gnome-session/">This command mainly restarts the session without closing it.</a>)</p>
-<p>大功告成！</p>
+            <h1 id="Demis-Hassabis"><a href="#Demis-Hassabis" class="headerlink" title="Demis Hassabis"></a>Demis Hassabis</h1><ul>
+<li>Co-founder and CEO of DeepMind:</li>
+<li>PhD in cognitive neuroscience</li>
+<li>A child chess prodigy &amp; video game designer</li>
+</ul>
+<h1 id="Mustafa-Suleyman"><a href="#Mustafa-Suleyman" class="headerlink" title="Mustafa Suleyman"></a>Mustafa Suleyman</h1><ul>
+<li>CEO of Microsoft AI since March 2024.</li>
+<li>Co-founded Inflection AI (with Reid Hoffman and Karén Simonyan) in 2022. </li>
+<li>Head of Applied AI at DeepMind (focus on energy efficiency in data centers, health applications)</li>
+<li>Suleyman faced public accusations of workplace misconduct and harassment, disclosed by a 2019 investigation.</li>
+</ul>
+<h1 id="DeepMind"><a href="#DeepMind" class="headerlink" title="DeepMind"></a>DeepMind</h1><p>DeepMind was found in 2010 by Hassabis and Suleyman, with a 3rd co-founder: Shane Legg. </p>
+<h2 id="Major-milestones"><a href="#Major-milestones" class="headerlink" title="Major milestones"></a>Major milestones</h2><ul>
+<li>AlphaGo: The AI that defeated world champion Lee Sedol at the complex game of Go, a feat many thought was decades away.</li>
+<li>AlphaFold: A revolutionary AI system that accurately predicted the 3D structure of proteins, solving a 50-year grand challenge in biology with massive implications for medicine and drug discovery.</li>
+</ul>
 
         </div>
 
@@ -270,7 +254,7 @@ sudo apt install gir1.2-gmenu-3.0
                 
                     <p class="copyright-item">
                         <span>Permalink:</span>
-                        <span><a href="https://mar2ndx.github.io/2022/04/24/unclemartian-gnome-extension-Gmenu/">https://mar2ndx.github.io/2022/04/24/unclemartian-gnome-extension-Gmenu/</a></span>
+                        <span><a href="https://mar2ndx.github.io/2025/05/02/Demis-Hassabis-and-Mustafa-Suleyman/">https://mar2ndx.github.io/2025/05/02/Demis-Hassabis-and-Mustafa-Suleyman/</a></span>
                     </p>
                 
                 
@@ -293,10 +277,6 @@ sudo apt install gir1.2-gmenu-3.0
                 <span>Tag(s):</span>
                 <span class="tag">
                     
-                    
-                        <a href="/tags/ubuntu/"># ubuntu</a>
-                    
-                        
                 </span>
             </div>
             <div>
@@ -307,10 +287,8 @@ sudo apt install gir1.2-gmenu-3.0
         </section>
         <section class="post-nav">
             
-                <a class="prev" rel="prev" href="/2022/04/26/unclemartian-mp3-compression/">【Tech】 MP3 compression</a>
             
-            
-            <a class="next" rel="next" href="/2022/04/24/unclemartian-gnome-extension-radio/">【Tech】 Gnome extension - Internet Radio</a>
+            <a class="next" rel="next" href="/2025/04/29/Postgres-data-type-varchar-vs-bytea/">Postgres data type varchar vs bytea</a>
             
         </section>
 
